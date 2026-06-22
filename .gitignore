@@ -1,0 +1,28 @@
+# Local/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# Python/local envs
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Security/data safety
+.env
+.env.*
+!.env.example
+secrets/
+evidence/private/
+findings/private/
+*.har
+*.pcap
+*.pcapng
+
+# Generated outputs
+reports/generated/
+artifacts/tmp/
