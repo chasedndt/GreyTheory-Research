@@ -87,7 +87,11 @@ flowchart TD
     A1 -->|no| D10[DENY<br/>authority_level_exceeded]
     A1 -->|yes| A2{Within posture<br/>ceiling?}
     A2 -->|no| D11[DENY<br/>posture_ceiling_exceeded]
-    A2 -->|yes| OK[ALLOW<br/>+ authority_ref]
+    A2 -->|yes| AP{Above approval<br/>threshold?}
+    AP -->|no| OK[ALLOW<br/>+ authority_ref]
+    AP -->|yes| APC{Approval valid?}
+    APC -->|missing / not found /<br/>denied / unbound /<br/>expired / already spent| D12[DENY<br/>approval_*]
+    APC -->|granted, bound,<br/>fresh, unspent| OK
 
     OK --> LOG[(audit.jsonl)]
     D1 --> LOG
@@ -101,12 +105,13 @@ flowchart TD
     D9 --> LOG
     D10 --> LOG
     D11 --> LOG
+    D12 --> LOG
 
     style OK fill:#065f46,stroke:#10b981,color:#fff
     style LOG fill:#1e3a8a,stroke:#60a5fa,color:#fff
 ```
 
-Eleven ways to be denied, one way to be allowed. That ratio is the design.
+Seventeen ways to be denied, one way to be allowed. That ratio is the design.
 
 ---
 
@@ -233,3 +238,123 @@ flowchart LR
 ```
 
 Greyed levels are unreachable under the current posture regardless of what any contract says.
+
+---
+
+## 7. Approvals — bound, expiring, single-use
+
+Implemented in [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py). Scope says *what may be touched*; an approval says *that this specific act was consented to, once, recently*. Neither substitutes for the other.
+
+```mermaid
+flowchart TD
+    REQ[Request above the<br/>approval threshold] --> S{Store configured?}
+    S -->|no| E1[DENY approval_required]
+    S -->|yes| P{approval_id<br/>presented?}
+    P -->|no| E2[DENY approval_required]
+    P -->|yes| L{Record found?}
+    L -->|no| E3[DENY approval_not_found]
+    L -->|yes| G{Decision is<br/>APPROVE?}
+    G -->|no| E4[DENY approval_denied]
+    G -->|yes| B{Covers this<br/>action AND<br/>this target?}
+    B -->|no| E5[DENY approval_not_binding]
+    B -->|yes| X{Within the<br/>expiry window?}
+    X -->|no| E6[DENY approval_expired]
+    X -->|yes| C{Already spent?}
+    C -->|yes| E7[DENY approval_already_consumed]
+    C -->|no| OK[ALLOW<br/>approval consumed]
+
+    C -.->|checked against| AUD[(audit.jsonl<br/>prior allows)]
+
+    style OK fill:#065f46,stroke:#10b981,color:#fff
+    style AUD fill:#1e3a8a,stroke:#60a5fa,color:#fff
+```
+
+Single-use is enforced against the audit log rather than a second ledger — the log already records every allow, so it already knows what has been spent. Only *allows* consume: a denied attempt on the wrong target does not silently void a legitimate approval.
+
+### Where approvals come from
+
+```mermaid
+flowchart LR
+    subgraph GT["GreyTheory (Apache-2.0, standalone)"]
+        PROTO[ApprovalStore<br/>protocol]
+        LOCAL[LocalApprovalStore<br/>self-sufficient default]
+        ADAPT[ChaseOSApprovalStore<br/>adapter]
+        GATE{{Gate}}
+    end
+
+    OSRIL[(ChaseOS OSRIL<br/>&lt;vault&gt;/runtime/osril/approvals/<br/>*.response.json)]
+
+    LOCAL --> PROTO
+    ADAPT --> PROTO
+    PROTO --> GATE
+    OSRIL -.->|filesystem contract,<br/>not a Python import| ADAPT
+
+    style GT fill:#111827,stroke:#f59e0b,color:#f9fafb
+    style OSRIL fill:#374151,stroke:#6b7280,color:#f9fafb
+    style GATE fill:#78350f,stroke:#f59e0b,color:#fff
+```
+
+GreyTheory requires nothing external to run. Where an approval system already exists it reads from that one instead of keeping a parallel set of records — approvals recorded in one place and invisible to another are worse than either alone.
+
+---
+
+## 8. Evidence — raw stays, redacted travels
+
+Implemented in [`greytheory/evidence.py`](../greytheory/evidence.py), policy in [`evidence-policy.md`](evidence-policy.md).
+
+```mermaid
+flowchart TD
+    CAP[Capture] --> AUTH{authority_ref<br/>present?}
+    AUTH -->|no| R1[Refused — I2]
+    AUTH -->|yes| DUP{Artifact id<br/>already exists?}
+    DUP -->|yes| R2[Refused —<br/>raw is written once]
+    DUP -->|no| RAW[(raw/&lt;finding&gt;/&lt;id&gt;<br/>sha256 recorded<br/>sensitive = true)]
+
+    RAW --> RED[Operator redacts]
+    RED --> SAME{Byte-identical<br/>to raw?}
+    SAME -->|yes| R3[Refused —<br/>nothing was redacted]
+    SAME -->|no| REDACTED[(redacted/&lt;finding&gt;/&lt;id&gt;<br/>sha256 recorded)]
+
+    REDACTED --> EXP{Export requested}
+    RAW -.->|never| EXP
+    EXP --> ALL{Every artifact<br/>redacted?}
+    ALL -->|no| R4[Refused —<br/>export is all-or-nothing]
+    ALL -->|yes| VER{Hashes still<br/>match disk?}
+    VER -->|no| R5[Refused —<br/>integrity check failed]
+    VER -->|yes| PKG[Export package<br/>redacted paths only]
+
+    style RAW fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style REDACTED fill:#065f46,stroke:#10b981,color:#fff
+    style PKG fill:#065f46,stroke:#10b981,color:#fff
+    style R1 fill:#374151,stroke:#6b7280,color:#f9fafb
+    style R2 fill:#374151,stroke:#6b7280,color:#f9fafb
+    style R3 fill:#374151,stroke:#6b7280,color:#f9fafb
+    style R4 fill:#374151,stroke:#6b7280,color:#f9fafb
+    style R5 fill:#374151,stroke:#6b7280,color:#f9fafb
+```
+
+Red is private and never leaves. Green is the only thing that may be shared.
+
+### Where the vault lives
+
+```mermaid
+flowchart TD
+    START[Resolve evidence root] --> E1{explicit<br/>argument?}
+    E1 -->|yes| USE[Use it]
+    E1 -->|no| E2{GREYTHEORY_<br/>EVIDENCE_ROOT?}
+    E2 -->|yes| USE
+    E2 -->|no| E3{CHASEOS_<br/>VAULT_ROOT?}
+    E3 -->|yes| CH[&lt;vault&gt;/07_LOGS/<br/>greytheory-evidence]
+    E3 -->|no| DEF[Platform user-data dir<br/>standalone default]
+    CH --> GUARD
+    DEF --> GUARD
+    USE --> GUARD{Inside a git<br/>working tree?}
+    GUARD -->|yes| REFUSE[VaultLocationError<br/>refuse to initialise]
+    GUARD -->|no| OPEN[Vault opens]
+
+    style REFUSE fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style OPEN fill:#065f46,stroke:#10b981,color:#fff
+    style DEF fill:#065f46,stroke:#10b981,color:#fff
+```
+
+The guard is a wall rather than a convention. A `.gitignore` entry can be defeated by a `git add -f` or a tired evening, and raw evidence once committed and pushed is unrecoverable — it survives in the reflog, in forks, in caches.

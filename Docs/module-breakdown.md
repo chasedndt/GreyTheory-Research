@@ -10,7 +10,9 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/audit.py`](../greytheory/audit.py) | Append-only hash-chained JSONL. Detects edits, reorders and deletions. | Access control on the log file itself; that is the filesystem's job. |
 | [`greytheory/authority/scope.py`](../greytheory/authority/scope.py) | `ScopeContract`, pattern matching, staleness, fingerprinting. | DNS resolution. A hostname is not an address and will not be resolved to match a CIDR. |
 | [`greytheory/authority/compiler.py`](../greytheory/authority/compiler.py) | Programme source → contract. Fails closed on ambiguity. Hashes the source. | Fetching programme pages. Input arrives as a local record. |
-| [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
+| [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py) | Binding, expiry and single-use enforcement over whatever store is in play. | Storing approvals when a platform already owns them. Deciding *whether* to approve — that is the operator's. |
+| [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, approval threshold, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
+| [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
 | [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify. | Anything that touches a network. |
 
@@ -18,23 +20,34 @@ What exists, what each module is responsible for, and what it is deliberately *n
 
 ```
 cli ──▶ authority.gate ──▶ authority.scope
- │           │
+ │           │         └──▶ authority.approvals
  │           └──▶ audit
  ├──▶ authority.compiler ──▶ authority.scope
+ ├──▶ evidence ──▶ audit
  └──▶ findings ──▶ provenance
 ```
 
-Nothing in `authority/` imports `findings`. The gate does not know what a finding is, and does not need to.
+Nothing in `authority/` imports `findings` or `evidence`. The gate does not know what a finding is, and does not need to.
+
+### Integration points
+
+Each one ships a self-sufficient default beside it, so nothing external is ever required:
+
+| Point | Standalone default | Optional integration |
+|---|---|---|
+| Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` reading OSRIL records |
+| Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
+
+Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
 
 ## Designed, not built
 
 | Module | Plane | Blocked on |
 |---|---|---|
-| Evidence vault | 3 | Open question O3 — where raw evidence lives |
-| Validation gates A–F | 3 | Evidence vault |
+| Validation gates B–F | 3 | Nothing. Next build slice, over the evidence vault. |
 | Report studio | 3 | Validation gates |
-| Approval store | 1 | Open question O2 — whether ChaseOS already owns one |
-| Programme registry | 1 | Nothing; next natural slice after the vault |
+| Programme registry | 1 | Nothing |
+| Dashboard read model | 1/3 | Open question O10 — operator's panel specification |
 
 ## Aspirational
 

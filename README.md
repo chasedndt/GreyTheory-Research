@@ -73,7 +73,11 @@ Every one of those decisions — allows and denials alike — is in the audit lo
 
 ### Diagrams
 
-Architecture, gate decision flow, contract compilation, finding lifecycle and provenance rules are all in [`Docs/diagrams.md`](Docs/diagrams.md).
+Eight Mermaid diagrams — three planes, gate decision flow, contract compilation, finding lifecycle, provenance, authority levels, approvals, evidence — in [`Docs/diagrams.md`](Docs/diagrams.md).
+
+### Documentation
+
+[`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`Docs/definition.md`](Docs/definition.md) is canonical and outranks this file.
 
 ### Standalone, with optional integration
 

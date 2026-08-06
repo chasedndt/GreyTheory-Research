@@ -31,7 +31,8 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - `Docs/evidence-policy.md` — answers O3. Root resolution order, the repository guard, the rules the vault enforces, and retention.
 - `Docs/chaseos-reconciliation.md` — answers O2. ChaseOS owns approvals, audit and graph; GreyTheory imports rather than duplicates. Records one divergence worth acting on: ChaseOS run audits are not tamper-evident.
 - `Docs/diagrams.md` — architecture, gate flow, compilation sequence, finding lifecycle, provenance, authority levels.
-- `SECURITY.md`, this changelog, CI workflow.
+- `Docs/README.md` — documentation map, including the authority order between documents.
+- `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue and pull request templates, this changelog, CI workflow.
 
 ### Changed
 
