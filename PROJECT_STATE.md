@@ -60,14 +60,14 @@ Tracked in `Docs/open-questions.md`. O2 (ChaseOS reconciliation) and O3 (evidenc
 Deferred until the Signal Plane is built: exact tool stack per lane, crawl/recon architecture, AI-app test isolation.
 
 ## Built
-The full path from authorisation to a validated report draft. `greytheory/` package, 177 tests, zero runtime dependencies, no network surface (CI-enforced).
+The full path from authorisation to a validated report draft. `greytheory/` package, 213 tests, zero runtime dependencies, no network surface (CI-enforced).
 
-Scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, finding lifecycle, CLI.
+Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, finding lifecycle, CLI.
 
 Architecture articulated in `Docs/system-overview.md`.
 
 ## Immediate Next Step
-Programme registry, then the dashboard read model once panels are specified (O10). Signal Plane lanes remain unbuilt and require the posture ceiling to be raised, which is a separate explicit decision.
+Dashboard read model, once panels are specified (O10). Signal Plane lanes remain unbuilt and require the posture ceiling to be raised, which is a separate explicit decision.
 
 ## Do Not Do Yet
 - no exploit automation assumptions

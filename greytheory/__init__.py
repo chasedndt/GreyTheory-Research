@@ -38,6 +38,13 @@ from greytheory.evidence import (
 )
 from greytheory.findings import Finding, Taxonomy, TransitionError
 from greytheory.provenance import Claim, ProvenanceError, Tag
+from greytheory.registry import (
+    Attention,
+    ContractVersion,
+    ProgrammeRegistry,
+    RegistryError,
+    ScopeDiff,
+)
 from greytheory.report import ReportDraft
 from greytheory.validation import (
     Attestation,
@@ -56,6 +63,7 @@ __all__ = [
     "ApprovalStore",
     "AssetPattern",
     "Attestation",
+    "Attention",
     "AuditLog",
     "AuditRecord",
     "AuditVerificationError",
@@ -63,6 +71,7 @@ __all__ = [
     "ChaseOSApprovalStore",
     "Claim",
     "ContractStatus",
+    "ContractVersion",
     "Decision",
     "EvidenceArtifact",
     "EvidenceError",
@@ -73,11 +82,14 @@ __all__ = [
     "GateResult",
     "GateStatus",
     "LocalApprovalStore",
+    "ProgrammeRegistry",
     "ProvenanceError",
     "Reason",
+    "RegistryError",
     "ReportDraft",
     "ScopeClassification",
     "ScopeContract",
+    "ScopeDiff",
     "Tag",
     "Taxonomy",
     "TransitionError",

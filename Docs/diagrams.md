@@ -425,3 +425,39 @@ flowchart LR
 ```
 
 Every arrow is a place the system can refuse. The dotted lines matter as much as the solid ones — a denial and a blocked validation are both recorded as lessons rather than discarded.
+
+---
+
+## 11. Programme registry — scope over time
+
+Implemented in [`greytheory/registry.py`](../greytheory/registry.py). The compiler answers "what do these rules mean today"; the registry answers "what changed since you last looked, and does your permission still hold".
+
+```mermaid
+flowchart TD
+    SRC[Programme source text] --> REG[register]
+    REG --> H{Source hash vs<br/>previous version}
+    H -->|first registration| V1[v1 · PENDING_REVIEW]
+    H -->|unchanged| CARRY[New version ·<br/>review carried forward]
+    H -->|changed| FRESH[New version ·<br/>REVIEW INVALIDATED]
+
+    CARRY --> D
+    FRESH --> D[Diff vs previous]
+    V1 --> STORE
+    D --> N{Narrowing?}
+    N -->|yes| WARN[Permission shrank —<br/>re-examine work already<br/>done on removed assets]
+    N -->|no| STORE[(v N .json<br/>+ source/v N .txt)]
+    WARN --> STORE
+
+    STORE --> ATT[needs_attention]
+    ATT --> B[blocked]
+    ATT --> A[awaiting_review]
+    ATT --> S[stale]
+
+    style FRESH fill:#78350f,stroke:#f59e0b,color:#fff
+    style WARN fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style CARRY fill:#065f46,stroke:#10b981,color:#fff
+```
+
+The rule that carries the module: **changed source invalidates the human review**, however thoroughly the previous version was verified. Review attaches to the text a person actually read, not to the programme in the abstract. Identical source carries the review forward, because re-reading unchanged text is friction with no safety value.
+
+`needs_attention()` is the registry's real output. A list of programmes is inert; a list of reasons the permissions might not hold any more is what prevents scope amnesia.

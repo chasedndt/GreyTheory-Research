@@ -14,8 +14,8 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 
 | | |
 |---|---|
-| **Live** | The full path from authorisation to a validated report draft: scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, CLI. 177 tests. |
-| **Designed** (build-ready, not built) | Programme registry; dashboard read model |
+| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, CLI. 213 tests. |
+| **Designed** (build-ready, not built) | Dashboard read model |
 | **Aspirational** (architected, not build-ready) | All four lanes; report studio; curriculum; earnings ledger |
 | **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
 

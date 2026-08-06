@@ -195,7 +195,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Finding schema + lifecycle | 1/3 | **Live** — `greytheory/findings.py`, I5 enforced at the internal/external seam |
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
-| Programme registry | 1 | **Designed** |
+| Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
 | Lane 1 Known-Vuln | 2 | **Aspirational** — no implementation |
 | Lane 2 Exposure | 2 | **Aspirational** — no implementation |
 | Lane 3 Web Vuln | 2 | **Aspirational** — no implementation |
@@ -259,3 +259,5 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D15 | Validation gates split deterministic / attested | Judgement cannot be machine-decided, so it demands a named human statement rather than a model's opinion dressed as a check. |
 | D16 | An unattested gate is `NOT_ASSESSED`, not `FAIL` | "Nobody looked" and "someone looked and it did not hold" call for different actions. Both block. |
 | D17 | Gate E rejects claims of duplicate certainty | Duplicate risk can be reduced and estimated, never eliminated. Believing otherwise costs more than the duplicate. |
+| D18 | Changed programme source invalidates the human review | Review attaches to the text a person actually read, not to the programme in the abstract. This is the structural defence against scope amnesia. |
+| D19 | Narrowing scope changes are called out separately | A widened scope is an opportunity; a narrowed one means work already done may have been against an asset that is no longer authorised. |

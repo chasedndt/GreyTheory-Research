@@ -19,6 +19,8 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - `greytheory.authority.approvals` — operator approvals **read from ChaseOS**, never stored here. `ChaseOSApprovalStore` reads OSRIL responses; `LocalApprovalStore` covers standalone use. Adds binding (one action, one target), expiry (8h default), and single-use enforcement via the audit log.
 - Gate integration: six new denial reasons for approvals, and an `approval_required_above` threshold independent of both the contract grant and the posture ceiling.
 
+- `greytheory.registry` — the programme registry. Versioned contracts, verbatim source snapshots, scope diffing, and an attention queue (blocked / awaiting review / stale). Changed source invalidates the human review; identical source carries it forward. Narrowing changes — removed assets, new exclusions, new prohibitions, reduced authority — are called out separately from widening ones. Refuses to store a programme marked `confidential` inside a git working tree.
+- `greytheory.cli` — `programme register | review | status | diff`.
 - `greytheory.validation` — gates B–F. Deterministic gates (evidence, report quality) re-derive from artifacts every run; attested gates (reproducibility, impact, duplicate risk) require a recorded human statement. An unattested gate is `NOT_ASSESSED`, not `FAIL`. Gate E rejects claims that duplicate risk is eliminated.
 - `greytheory.report` — report drafts with enforced structure, placeholder detection, absolute-claim warnings, and markdown rendering.
 - `greytheory.evidence` — the evidence vault. Raw/redacted split, SHA-256 on both, write-once raw, manifests per finding, integrity verification, and redacted-only all-or-nothing export. Refuses to initialise inside a git working tree.

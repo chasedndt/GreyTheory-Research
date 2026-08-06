@@ -12,6 +12,9 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/authority/compiler.py`](../greytheory/authority/compiler.py) | Programme source → contract. Fails closed on ambiguity. Hashes the source. | Fetching programme pages. Input arrives as a local record. |
 | [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py) | Binding, expiry and single-use enforcement over whatever store is in play. | Storing approvals when a platform already owns them. Deciding *whether* to approve — that is the operator's. |
 | [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, approval threshold, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
+| [`greytheory/registry.py`](../greytheory/registry.py) | Versioned programme records, source snapshots, scope drift detection, the attention queue. | Fetching programme pages. Deciding a contract is trustworthy — that is the gate's. |
+| [`greytheory/validation.py`](../greytheory/validation.py) | Gates B–F. Deterministic where possible, attested where not. | Submitting. Passing the gates makes a finding *eligible* for Gate G, nothing more. |
+| [`greytheory/report.py`](../greytheory/report.py) | Report structure, placeholder detection, markdown rendering. | Writing the report. Structure is enforced; prose is not. |
 | [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
 | [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify. | Anything that touches a network. |
@@ -22,9 +25,11 @@ What exists, what each module is responsible for, and what it is deliberately *n
 cli ──▶ authority.gate ──▶ authority.scope
  │           │         └──▶ authority.approvals
  │           └──▶ audit
- ├──▶ authority.compiler ──▶ authority.scope
+ ├──▶ registry ──▶ authority.compiler ──▶ authority.scope
+ │        └──▶ evidence (repository guard only)
  ├──▶ evidence ──▶ audit
- └──▶ findings ──▶ provenance
+ └──▶ validation ──▶ evidence, findings, report
+              └──▶ findings ──▶ provenance
 ```
 
 Nothing in `authority/` imports `findings` or `evidence`. The gate does not know what a finding is, and does not need to.
@@ -44,9 +49,6 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module | Plane | Blocked on |
 |---|---|---|
-| Validation gates B–F | 3 | Nothing. Next build slice, over the evidence vault. |
-| Report studio | 3 | Validation gates |
-| Programme registry | 1 | Nothing |
 | Dashboard read model | 1/3 | Open question O10 — operator's panel specification |
 
 ## Aspirational
