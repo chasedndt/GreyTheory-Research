@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test (python ${{ matrix.python-version }} / ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Test
+        run: python -m pytest -q
+
+  proof:
+    name: authority plane proof
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip && python -m pip install -e .
+
+      # The ambiguous fixture must fail closed. A zero exit here means the
+      # compiler started guessing, which is the failure mode this whole plane
+      # exists to prevent.
+      - name: Ambiguous programme must be BLOCKED
+        run: |
+          if python -m greytheory.cli --audit ci.jsonl compile fixtures/programmes/mock-ambiguous.json; then
+            echo "::error::ambiguous fixture compiled clean — the compiler is not failing closed"
+            exit 1
+          fi
+
+      - name: Clean programme compiles, and grants nothing before review
+        run: |
+          python -m greytheory.cli --audit ci.jsonl compile fixtures/programmes/mock-verified.json -o contract.json
+          if python -m greytheory.cli --audit ci.jsonl check contract.json --asset app.mock-verified.test; then
+            echo "::error::unreviewed contract granted access"
+            exit 1
+          fi
+
+      - name: After review, in-scope is allowed and out-of-scope is not
+        run: |
+          python -m greytheory.cli --audit ci.jsonl review contract.json --reviewer ci
+          python -m greytheory.cli --audit ci.jsonl check contract.json --asset app.mock-verified.test
+          if python -m greytheory.cli --audit ci.jsonl check contract.json --asset x.blog.mock-verified.test; then
+            echo "::error::out-of-scope asset was allowed"
+            exit 1
+          fi
+
+      - name: Audit chain must verify
+        run: python -m greytheory.cli --audit ci.jsonl audit-verify
+
+  no-network-in-core:
+    name: core has no network surface
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # The Authority Plane must stay offline by construction, not by promise.
+      - name: Reject network imports in greytheory/
+        run: |
+          if grep -rnE '^\s*(import|from)\s+(socket|http|urllib|requests|httpx|aiohttp|ftplib|telnetlib|smtplib)\b' greytheory/; then
+            echo "::error::network import found in the Authority Plane"
+            exit 1
+          fi
+          echo "no network imports found"

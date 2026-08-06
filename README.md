@@ -6,7 +6,92 @@
 > **Revision:** ChaseOS Security Research Product Lane foundation  
 > **Design philosophy:** The LLM reasons, triages, and explains. Deterministic tools gather signals and validate. Humans decide before anything consequential fires.
 
-GreyTheory AI × ChaseOS is a safe security-research product lane for local-first AI/security tooling, governance templates, repo/docs audits, authority-boundary checklists, and defensive demo products — with no unauthorized target interaction.
+> **GreyTheory AI is a proof-first security research control plane. It converts authorisation into evidence — and refuses to move without either.**
+
+The canonical definition of this system lives in [`Docs/definition.md`](Docs/definition.md). **Where this README conflicts with it, the definition wins.** The sections below describe the Signal Plane (the four lanes) in detail; they are design material, not shipped capability.
+
+### Capability status — read this before anything else
+
+| | |
+|---|---|
+| **Live** | Authority Plane: scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, CLI. 138 tests. Scope/authority policy and disclosure checklist. |
+| **Designed** (build-ready, not built) | Validation gates B–F; programme registry; report studio |
+| **Aspirational** (architected, not build-ready) | All four lanes; report studio; curriculum; earnings ledger |
+| **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
+
+The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **No lane is implemented — the system currently detects nothing.** What works is the part that decides whether anything is allowed to run.
+
+### Quickstart
+
+```bash
+pip install -e ".[dev]" && python -m pytest -q
+```
+
+Compile a deliberately broken programme and watch it fail closed:
+
+```bash
+python -m greytheory.cli compile fixtures/programmes/mock-ambiguous.json
+```
+
+```
+status:      BLOCKED
+
+BLOCKED by 6 ambiguity/ies:
+  - in_scope[2] could not be parsed: invalid CIDR 'not-a-cidr'
+  - '*.mock-ambiguous.test' appears in both in-scope and out-of-scope
+  - max_authority PASSIVE_HTTP permits target interaction but no rate limit is defined
+  - notes contains unresolved marker 'unclear'
+  ...
+```
+
+Now a clean one. Note that compiling cleanly grants nothing — a human has to review it first:
+
+```bash
+python -m greytheory.cli compile fixtures/programmes/mock-verified.json -o contract.json
+python -m greytheory.cli check contract.json --asset app.mock-verified.test    # DENY: contract_not_verified
+python -m greytheory.cli review contract.json --reviewer chase
+python -m greytheory.cli check contract.json --asset app.mock-verified.test    # ALLOW
+```
+
+Scope is not inherited, and the operating posture caps what any contract can grant:
+
+```bash
+python -m greytheory.cli check contract.json --asset x.blog.mock-verified.test
+# DENY  asset_out_of_scope
+
+python -m greytheory.cli check contract.json --asset cdn.thirdparty.test --derived-from app.mock-verified.test
+# DENY  derived_asset_not_inherited
+
+python -m greytheory.cli check contract.json --asset app.mock-verified.test --level AUTHENTICATED
+# DENY  authority_level_exceeded
+
+python -m greytheory.cli audit-verify
+# audit chain intact - 8 record(s) verified
+```
+
+Every one of those decisions — allows and denials alike — is in the audit log, chained so a later edit is detectable.
+
+### Diagrams
+
+Architecture, gate decision flow, contract compilation, finding lifecycle and provenance rules are all in [`Docs/diagrams.md`](Docs/diagrams.md).
+
+### Standalone, with optional integration
+
+**GreyTheory runs on its own.** Zero runtime dependencies, standard library only, no external system required. `pip install` and it works.
+
+It also integrates. Where an approval system already exists, GreyTheory reads from it rather than keeping a parallel set of records — approvals recorded in one place and invisible to another are worse than either alone. `ChaseOSApprovalStore` is the first such adapter and reads ChaseOS's OSRIL records through their filesystem contract, not a Python import. Set `CHASEOS_VAULT_ROOT` and the evidence vault co-locates too.
+
+Every integration point ships a self-sufficient default beside it: `LocalApprovalStore`, and a platform user-data evidence root. See [`Docs/chaseos-reconciliation.md`](Docs/chaseos-reconciliation.md).
+
+### Evidence
+
+Raw evidence and redacted evidence are separate artifacts, and only redacted ones can leave. The vault **refuses to initialise inside a git working tree** — a `.gitignore` entry is a convention, and committed raw evidence is unrecoverable. A redacted copy byte-identical to the raw capture is rejected as "nothing was redacted", and export is all-or-nothing so a partial package can't tempt anyone into filling the gap by hand. See [`Docs/evidence-policy.md`](Docs/evidence-policy.md).
+
+### Licence
+
+Apache-2.0. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+
+Nothing in this repository grants authority to test anything — see [`SECURITY.md`](SECURITY.md).
 
 ## ChaseOS operating mode
 
@@ -62,7 +147,9 @@ See:
 
 ### What GreyTheory AI Is
 
-GreyTheory AI is a modular, AI-assisted bug bounty operating system designed for a solo researcher who wants to develop real security skills while building tooling that generates genuine, submittable findings.
+GreyTheory AI is a proof-first security research control plane, built for a solo researcher who wants to develop real security skills while building tooling that produces genuine, submittable evidence.
+
+It is structured as three ranked planes — **Authority** (root, fail-closed), **Signal** (the four lanes, as pluggable collectors), and **Judgement** (the operator loop). See [`Docs/definition.md`](Docs/definition.md) for the canonical structure; this README details the Signal Plane.
 
 It is not a scanner. It is not an autonomous exploit engine. It is a structured, observable research pipeline that:
 
@@ -88,7 +175,7 @@ Nothing reaches report-ready status without passing all five.
 
 | Constraint | Rationale |
 |---|---|
-| Semi-autonomous only | Recon, passive enumeration, and predefined low-risk validations (e.g. HTTP probing, CVE template matching, subdomain takeover fingerprint checks) may run automatically within scope. Higher-risk actions — authenticated workflows, secret validation, extraction operations, or anything that could materially affect the target — require explicit human approval before execution. |
+| No execution without authority | Nothing runs against any asset without a verified `ScopeContract` and a recorded authority reference. **Under the current operating posture, no external interaction is permitted at all** — see [`Docs/scope-policy.md`](Docs/scope-policy.md). When external work is eventually authorised, recon and predefined low-risk validations may run automatically *within a verified contract*; authenticated workflows, secret validation, extraction, and anything that could materially affect a target remain human-approved per action. |
 | Proof-first, report-second | No finding is treated as real until it passes deterministic validation |
 | Learn and earn simultaneously | Every module exposes its reasoning. Nothing is hidden behind black-box automation |
 | Solo-buildable | No module requires team infrastructure, paid platforms beyond reasonable API tiers, or DevOps overhead |
@@ -192,10 +279,12 @@ The system may encounter real secrets, credentials, tokens, and user data during
 
 | Lane | Core Question | V1 Status | V2 Status |
 |---|---|---|---|
-| **Lane 1** — Known Vuln | Does any service have a known CVE that is reachable and exploitable? | Planned V1 implementation | Expanded (JS libs, container CVEs) |
-| **Lane 2** — Exposure | Has the target left something sensitive accidentally accessible? | Planned V1 implementation | Expanded (GraphQL, CI configs) |
-| **Lane 3** — Web Vuln | Can the application's logic or access controls be manipulated? | Subdomain Takeover module only | Full web vuln suite + Burp MCP |
+| **Lane 1** — Known Vuln | Does any service have a known CVE that is reachable and exploitable? | Designed, not built | Expanded (JS libs, container CVEs) |
+| **Lane 2** — Exposure | Has the target left something sensitive accidentally accessible? | Designed, not built | Expanded (GraphQL, CI configs) |
+| **Lane 3** — Web Vuln | Can the application's logic or access controls be manipulated? | Subdomain Takeover module only, not built | Full web vuln suite + Burp MCP |
 | **Lane 4** — AI-App | Can AI components in the target be abused or manipulated? | Architected, not implemented | First implementation |
+
+Lanes are **collectors, not conclusions**. A lane observes and emits a `RawSignal` with a required authority level; it may not promote its own output past `contextual`. Promotion is the Judgement Plane's job, under the Authority Plane's permission.
 
 ---
 

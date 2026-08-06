@@ -2,7 +2,9 @@
 ## Proof-First Security Research
 ### Architecture Document v0.2
 
-> **Status:** Architecture Phase — Pre-Implementation  
+> ⚠️ **SUPERSEDED — historical reference only.** The canonical definition of GreyTheory AI is [`definition.md`](definition.md), which reframes the four lanes as pluggable collectors inside a three-plane control plane. This document is retained for its lane-level detection detail, which remains valid as Signal Plane design. Do not treat its system-level framing, status labels, or scanning posture as current.
+
+> **Status:** Architecture Phase — Pre-Implementation (superseded 2026-08-06)  
 > **Revision:** Full correction pass from v0.1  
 > **Design philosophy:** The LLM reasons, triages, and explains. Deterministic tools gather signals and validate. Humans decide before anything consequential fires.
 

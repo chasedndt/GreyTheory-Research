@@ -1,0 +1,25 @@
+{
+  "id": "mock-ambiguous",
+  "contract_id": "scope_mock_ambiguous_v1",
+  "name": "Mock Programme — Blocked Compile",
+  "_fixture_note": "Local fixture. Every defect below is deliberate: this record exists to prove the compiler fails closed rather than guessing.",
+  "verified_at": "2026-08-06T00:00:00+00:00",
+  "max_authority": "PASSIVE_HTTP",
+  "in_scope": [
+    { "type": "wildcard", "value": "*.mock-ambiguous.test", "note": "main app" },
+    { "type": "exact", "value": "api.mock-ambiguous.test", "note": "TBD whether the v3 API is included" },
+    { "type": "cidr", "value": "not-a-cidr", "note": "unparseable on purpose" }
+  ],
+  "out_of_scope": [
+    { "type": "wildcard", "value": "*.mock-ambiguous.test", "note": "conflicts with the in-scope wildcard above" }
+  ],
+  "prohibited_techniques": ["denial_of_service"],
+  "notes": "Rate limit unclear — ask the programme before testing.",
+  "_expected_ambiguities": [
+    "in_scope[2] unparseable CIDR",
+    "'*.mock-ambiguous.test' in both in-scope and out-of-scope",
+    "PASSIVE_HTTP granted with no rate limit",
+    "unresolved 'tbd' marker in a scope note",
+    "unresolved 'ask'/'unclear' markers in notes"
+  ]
+}

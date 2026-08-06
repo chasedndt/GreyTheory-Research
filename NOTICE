@@ -1,0 +1,18 @@
+GreyTheory AI
+Copyright 2026 ChaseInTech
+
+This product includes software developed by ChaseInTech.
+
+Licensed under the Apache License, Version 2.0. See the LICENSE file for the
+full terms.
+
+---
+
+GreyTheory AI is defensive security tooling. It governs whether security
+research activity is authorised and records what happened; it does not scan,
+exploit, or interact with any system on its own.
+
+Use of this software does not grant authority to test any system. Authorisation
+comes from a bug bounty or vulnerability disclosure programme, a contracted
+engagement, ownership of the target, or a deliberately vulnerable local lab —
+never from this tool. See SECURITY.md and Docs/scope-policy.md.

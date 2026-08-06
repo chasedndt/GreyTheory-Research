@@ -1,0 +1,25 @@
+{
+  "id": "mock-verified",
+  "contract_id": "scope_mock_verified_v1",
+  "name": "Mock Programme — Clean Compile",
+  "_fixture_note": "Local fixture. Uses the reserved .test TLD (RFC 6761); none of these hosts resolve or exist. Nothing here is a real programme or a real target.",
+  "verified_at": "2026-08-06T00:00:00+00:00",
+  "max_authority": "LOCAL_FIXTURE",
+  "rate_limit_rps": 2,
+  "in_scope": [
+    { "type": "wildcard", "value": "*.mock-verified.test", "note": "primary application surface" },
+    { "type": "exact", "value": "mock-verified.test", "note": "apex, listed explicitly" },
+    { "type": "cidr", "value": "192.0.2.0/24", "note": "documentation range, RFC 5737" }
+  ],
+  "out_of_scope": [
+    { "type": "wildcard", "value": "*.blog.mock-verified.test", "note": "third-party hosted marketing site" },
+    { "type": "exact", "value": "legacy.mock-verified.test", "note": "decommissioned, do not touch" }
+  ],
+  "prohibited_techniques": [
+    "denial_of_service",
+    "social_engineering",
+    "brute_force",
+    "physical"
+  ],
+  "notes": "Fixture programme used to demonstrate a clean compile. Grants nothing until reviewed."
+}

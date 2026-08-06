@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "greytheory"
+version = "0.1.0"
+description = "GreyTheory AI — Authority Plane. Converts authorisation into evidence."
+requires-python = ">=3.11"
+license = "Apache-2.0"
+license-files = ["LICENSE", "NOTICE"]
+authors = [{ name = "ChaseInTech" }]
+keywords = ["security", "authorization", "bug-bounty", "audit", "provenance"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Information Technology",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Security",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+greytheory = "greytheory.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["greytheory*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

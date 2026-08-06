@@ -26,3 +26,15 @@ findings/private/
 # Generated outputs
 reports/generated/
 artifacts/tmp/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Authority Plane runtime output
+# The audit log is operational evidence, not source. It is generated locally
+# and may reference real programme names once contracts are compiled.
+audit.jsonl
+*.audit.jsonl
+contracts/local/
