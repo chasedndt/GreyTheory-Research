@@ -60,20 +60,20 @@ Tracked in `Docs/open-questions.md`. O2 (ChaseOS reconciliation) and O3 (evidenc
 Deferred until the Signal Plane is built: exact tool stack per lane, crawl/recon architecture, AI-app test isolation.
 
 ## Built
-The full path from authorisation to a validated report draft. `greytheory/` package, 240 tests, zero runtime dependencies, no network surface (CI-enforced).
+The full path from authorisation to a validated report draft. `greytheory/` package, 296 tests, zero runtime dependencies, no network surface (CI-enforced).
 
-Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, triage and earnings ledger, finding lifecycle, CLI.
+Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, triage and earnings ledger, finding lifecycle, operator dashboard, Signal Plane lane framework with two static offline collectors (Lane 1, Lane 4), CLI.
 
 Architecture articulated in `Docs/system-overview.md`.
 
 ## Immediate Next Step
-Dashboard read model, once panels are specified (O10). Signal Plane lanes remain unbuilt and require the posture ceiling to be raised, which is a separate explicit decision.
+Lane 2 (exposure) over local trees - still offline, still buildable now. Lane 3 and network collectors need the posture ceiling raised above LOCAL_FIXTURE, which is an explicit operator decision. Signal Plane lanes remain unbuilt and require the posture ceiling to be raised, which is a separate explicit decision.
 
 ## Do Not Do Yet
 - no exploit automation assumptions
 - no giant monolithic agent
 - no unsafe autonomous behavior
-- no lane implementation before the Authority Plane can gate it
+- no network collector inside greytheory/ - the runner refuses them
 - no external network calls in the core package
 - no duplicate approval/audit/graph system - ChaseOS owns these, GreyTheory adapts
 

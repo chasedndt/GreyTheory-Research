@@ -1,0 +1,25 @@
+{
+  "_fixture_note": "A correctly configured local fixture. Lane 4 must find nothing here.",
+  "name": "example-assistant",
+  "tools": [
+    {
+      "name": "delete_record",
+      "description": "Delete a record",
+      "requires_approval": true,
+      "permissions": ["records.delete"]
+    },
+    {
+      "name": "read_docs",
+      "description": "Read local documentation",
+      "requires_approval": false,
+      "permissions": ["docs.read"]
+    }
+  ],
+  "connectors": {
+    "crm": { "url": "https://crm.example.test/api", "api_key": "${CRM_API_KEY}" }
+  },
+  "runtime": {
+    "allowed_hosts": ["crm.example.test"],
+    "audit": { "enabled": true }
+  }
+}

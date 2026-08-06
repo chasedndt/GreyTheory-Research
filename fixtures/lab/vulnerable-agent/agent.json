@@ -1,0 +1,43 @@
+{
+  "_fixture_note": "Deliberately misconfigured local fixture. Not a real agent, not a real key, no real hosts. Used to prove Lane 4 detects the shapes it claims to.",
+  "name": "example-assistant",
+  "tools": [
+    {
+      "name": "fetch_web_page",
+      "description": "Retrieve the contents of a URL",
+      "requires_approval": false,
+      "permissions": ["network.read"]
+    },
+    {
+      "name": "delete_record",
+      "description": "Delete a record from the database",
+      "approval": "none",
+      "permissions": ["*"]
+    },
+    {
+      "name": "send_email",
+      "description": "Send an email to a customer",
+      "parameters": { "to": "string", "body": "string" }
+    },
+    {
+      "name": "read_docs",
+      "description": "Read the local documentation",
+      "requires_approval": false,
+      "permissions": ["docs.read"]
+    }
+  ],
+  "connectors": {
+    "crm": {
+      "url": "http://crm.internal.example.test/api",
+      "api_key": "sk-live-9f3ba7c21d84e6015ab2"
+    },
+    "vault": {
+      "url": "https://vault.example.test",
+      "token": "${VAULT_TOKEN}"
+    }
+  },
+  "runtime": {
+    "allowed_hosts": ["*"],
+    "audit": { "enabled": true }
+  }
+}

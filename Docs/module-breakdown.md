@@ -2,7 +2,7 @@
 
 What exists, what each module is responsible for, and what it is deliberately *not* responsible for.
 
-## Implemented — Plane 1 (Authority)
+## Implemented — Plane 1 (Authority) and Plane 3 (Judgement)
 
 | Module | Responsibility | Explicitly not its job |
 |---|---|---|
@@ -18,7 +18,17 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
 | [`greytheory/ledger.py`](../greytheory/ledger.py) | Sessions, triage outcomes, payouts, expenses, and honest metrics. Refuses to forecast below thresholds. | Deciding what a finding was worth, or predicting what the next one will be. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
-| [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify. | Anything that touches a network. |
+| [`greytheory/dashboard.py`](../greytheory/dashboard.py) | Read model over every store, plus text/HTML/JSON renderers. | Inventing data. Absent stores report unknown, never zero. |
+| [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify, programme, dashboard. | Anything that touches a network. |
+
+## Implemented — Plane 2 (Signal)
+
+| Module | Responsibility | Explicitly not its job |
+|---|---|---|
+| [`signal/contract.py`](../greytheory/signal/contract.py) | What a lane is: `LaneSpec`, `RawSignal`, the rooted `LaneContext`. | Letting a collector conclude. There is no field above `contextual`. |
+| [`signal/runner.py`](../greytheory/signal/runner.py) | The only path by which a collector executes. Gate-mediated, authority-stamped, denials recorded. | Running a lane that declares network I/O. |
+| [`signal/lanes/agent_config.py`](../greytheory/signal/lanes/agent_config.py) | Lane 4. Static agent/MCP config review. | Sending prompts or invoking a model. |
+| [`signal/lanes/dependency_manifest.py`](../greytheory/signal/lanes/dependency_manifest.py) | Lane 1. Manifest versions vs a local advisory set. | Calling a version match a vulnerability. |
 
 ### Dependency direction
 
@@ -51,7 +61,8 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module | Plane | Blocked on |
 |---|---|---|
-| Dashboard read model | 1/3 | Open question O10 — operator's panel specification |
+| Lane 2 (exposure) over local trees | 2 | Nothing. Next natural collector, still offline. |
+| Lane 3 (web) collectors | 2 | The posture ceiling being raised above `LOCAL_FIXTURE` |
 
 ## Aspirational
 

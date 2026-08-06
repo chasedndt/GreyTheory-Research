@@ -196,12 +196,13 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
 | Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
-| Lane 1 Known-Vuln | 2 | **Aspirational** — no implementation |
-| Lane 2 Exposure | 2 | **Aspirational** — no implementation |
-| Lane 3 Web Vuln | 2 | **Aspirational** — no implementation |
+| Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
+| Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, offline manifest vs advisories |
+| Lane 4 AI-App | 2 | **Live (static)** — `lane4_agent_config`, offline config review |
 | Lane 4 AI-App | 2 | **Aspirational** — architected only |
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |
 | Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
+| Dashboard | 1/3 | **Live** — `greytheory/dashboard.py`, absent data reports unknown, never zero |
 | Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
 | Curriculum / skill graph | 3 | **Aspirational** |
 | Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
@@ -262,5 +263,9 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D18 | Changed programme source invalidates the human review | Review attaches to the text a person actually read, not to the programme in the abstract. This is the structural defence against scope amnesia. |
 | D20 | Effective hourly rate always divides by total tracked hours | There is no parameter to change it. Dividing by only the productive hours is how bug bounty starts looking like a good hourly rate. |
 | D21 | Forecasting is refused below 100h / 20 sessions / 5 submissions / 5 closed outcomes | A forecast from three data points has a confidence interval wide enough to contain any belief you brought to it. |
+| D23 | A lane may not promote past `contextual` | `RawSignal` has no field for a higher level. Once a collector can conclude, everything downstream is downstream of its optimism. |
+| D24 | Collectors reach nothing except through a granted Decision and a rooted `LaneContext` | Enforcement, not convention: a lane with a traversal bug fails loudly rather than quietly widening its own scope. |
+| D25 | The runner refuses any lane declaring network I/O | Keeps the core offline by construction; a collector wanting otherwise must move out of the package rather than argue. |
+| D26 | Absent dashboard data reports UNKNOWN, never zero | "0 out-of-scope attempts" and "nothing is being recorded" look identical on a screen and mean opposite things. |
 | D22 | Mixed currencies are never silently summed | A total that quietly adds dollars to pounds is worse than no total. |
 | D19 | Narrowing scope changes are called out separately | A widened scope is an opportunity; a narrowed one means work already done may have been against an asset that is no longer authorised. |

@@ -227,6 +227,56 @@ def cmd_programme_diff(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_dashboard(args: argparse.Namespace) -> int:
+    from pathlib import Path as _Path
+
+    from greytheory.dashboard import (
+        build_dashboard,
+        render_html,
+        render_json,
+        render_text,
+    )
+    from greytheory.evidence import EvidenceVault
+    from greytheory.ledger import Ledger
+
+    registry = ledger = vault = audit = None
+
+    if _Path(args.registry).is_dir():
+        registry = ProgrammeRegistry(args.registry)
+    if _Path(args.audit).is_file():
+        audit = AuditLog(args.audit)
+    # Absence stays absence. A missing store must read as "unknown" on the
+    # dashboard, never as a reassuring zero, so nothing is created here.
+    try:
+        ledger = Ledger(args.ledger) if args.ledger else None
+    except Exception as exc:  # noqa: BLE001 - report, do not fabricate
+        print(f"ledger unavailable: {exc}", file=sys.stderr)
+    try:
+        vault = EvidenceVault(args.evidence) if args.evidence else None
+    except Exception as exc:  # noqa: BLE001
+        print(f"evidence vault unavailable: {exc}", file=sys.stderr)
+
+    dashboard = build_dashboard(
+        registry=registry,
+        audit=audit,
+        vault=vault,
+        ledger=ledger,
+        posture_ceiling=AuthorityLevel.parse(args.posture),
+        currency=args.currency,
+    )
+
+    if args.html:
+        _Path(args.html).parent.mkdir(parents=True, exist_ok=True)
+        _Path(args.html).write_text(render_html(dashboard), encoding="utf-8")
+        print(f"written: {args.html}")
+        return 0
+    if args.json:
+        print(render_json(dashboard))
+        return 0
+    print(render_text(dashboard))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="greytheory",
@@ -262,6 +312,16 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("audit-verify", help="verify the audit hash chain")
     p.set_defaults(func=cmd_audit_verify)
+
+    p = sub.add_parser("dashboard", help="operator dashboard")
+    p.add_argument("--registry", default=DEFAULT_REGISTRY)
+    p.add_argument("--ledger", help="ledger root (omit to report as unknown)")
+    p.add_argument("--evidence", help="evidence root (omit to report as unknown)")
+    p.add_argument("--posture", default="LOCAL_FIXTURE")
+    p.add_argument("--currency", default="GBP")
+    p.add_argument("--html", help="write a self-contained HTML page here")
+    p.add_argument("--json", action="store_true", help="emit the read model as JSON")
+    p.set_defaults(func=cmd_dashboard)
 
     programme = sub.add_parser(
         "programme", help="the programme registry: versions, drift, what needs you"
