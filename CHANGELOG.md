@@ -21,6 +21,7 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 - `greytheory.signal` — Plane 2. `LaneSpec`/`RawSignal`/`LaneContext` define what a collector is and is forbidden to be: a signal has no field above `contextual`, and every read goes through a root-bounded context built from a granted Decision. The runner is the only path by which a lane executes -- it refuses any lane declaring network I/O, overwrites any authority reference a lane sets with what the gate actually granted, and records skipped targets rather than swallowing them.
 - `signal.lanes.agent_config` — Lane 4, the differentiated one. Static agent/MCP config review: ungated consequential tools, wildcard permissions, literal secrets (length recorded, value never), unrestricted egress, plaintext transport to non-loopback hosts, and the composite fetch-plus-ungated-action shape that no per-key scanner sees. Sends no prompts, invokes no model.
+- `signal.lanes.exposure` — Lane 2, over a local tree. Known credential formats, high-entropy assignments (placeholders and env references excluded), VCS metadata, backups and source maps. Records format, length and a short digest; never the value. Titles say "present in tree", never "exposed" — presence is not reachability, and a directory cannot know what a web root serves. Files above 2 MiB and non-text suffixes are skipped.
 - `signal.lanes.dependency_manifest` — Lane 1. Manifest versions against a local advisory file. Titles say "matches advisory", never "is vulnerable".
 - `fixtures/lab/` — a deliberately misconfigured agent fixture and a clean one, so the lane's claims are testable in both directions.
 - `greytheory.dashboard` — read model plus text, HTML and JSON renderers. Absent data reports UNKNOWN, never zero: "0 out-of-scope attempts" and "nothing is being recorded" must not look the same. The HTML is self-contained -- no scripts, no external resources. One next action, never six.
@@ -58,5 +59,5 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 - Grapevine AI integration is an interface contract only; the real implementation has not been inspected (open question O1). No `grapevine` directory was found under `Documents/Projects`.
 - ChaseOS run audits are not tamper-evident; porting the hash chain across is proposed but not decided (O9).
-- Dashboard panels not yet specified (O10). The read model should be shaped to serve them rather than retrofitted.
-- No lane is implemented. The system currently detects nothing — what works is the part that decides whether anything may run.
+- Lane 3 (web) is not implemented, and no collector performs network I/O. The three implemented lanes read local files only; anything touching a target needs the operating posture ceiling raised above `LOCAL_FIXTURE`, which is an explicit operator decision.
+- The curriculum and skill graph are not built.

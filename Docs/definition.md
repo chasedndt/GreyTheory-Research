@@ -266,6 +266,8 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D23 | A lane may not promote past `contextual` | `RawSignal` has no field for a higher level. Once a collector can conclude, everything downstream is downstream of its optimism. |
 | D24 | Collectors reach nothing except through a granted Decision and a rooted `LaneContext` | Enforcement, not convention: a lane with a traversal bug fails loudly rather than quietly widening its own scope. |
 | D25 | The runner refuses any lane declaring network I/O | Keeps the core offline by construction; a collector wanting otherwise must move out of the package rather than argue. |
+| D27 | A collector records the shape of a secret, never its value | A lane that copies credentials into the evidence trail creates the problem it was looking for, at scale, into a store that outlives the engagement. |
+| D28 | Presence is reported, never reachability | A key in a tree is present; whether it is served depends on the web root, the branch and the build, none of which a directory knows. |
 | D26 | Absent dashboard data reports UNKNOWN, never zero | "0 out-of-scope attempts" and "nothing is being recorded" look identical on a screen and mean opposite things. |
 | D22 | Mixed currencies are never silently summed | A total that quietly adds dollars to pounds is worse than no total. |
 | D19 | Narrowing scope changes are called out separately | A widened scope is an opportunity; a narrowed one means work already done may have been against an asset that is no longer authorised. |

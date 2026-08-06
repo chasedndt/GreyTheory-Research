@@ -29,6 +29,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`signal/runner.py`](../greytheory/signal/runner.py) | The only path by which a collector executes. Gate-mediated, authority-stamped, denials recorded. | Running a lane that declares network I/O. |
 | [`signal/lanes/agent_config.py`](../greytheory/signal/lanes/agent_config.py) | Lane 4. Static agent/MCP config review. | Sending prompts or invoking a model. |
 | [`signal/lanes/dependency_manifest.py`](../greytheory/signal/lanes/dependency_manifest.py) | Lane 1. Manifest versions vs a local advisory set. | Calling a version match a vulnerability. |
+| [`signal/lanes/exposure.py`](../greytheory/signal/lanes/exposure.py) | Lane 2. Credential shapes, VCS metadata, backups and source maps over a local tree. | Recording a secret's value, or claiming presence means reachability. |
 
 ### Dependency direction
 
@@ -61,12 +62,11 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module | Plane | Blocked on |
 |---|---|---|
-| Lane 2 (exposure) over local trees | 2 | Nothing. Next natural collector, still offline. |
 | Lane 3 (web) collectors | 2 | The posture ceiling being raised above `LOCAL_FIXTURE` |
 
 ## Aspirational
 
-The four Signal Plane lanes, the curriculum and skill graph, the triage and earnings ledgers, the Grapevine adapter, and any dashboard surface. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
+The curriculum and skill graph, the Grapevine adapter, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
 
 ## Constraints on every module
 

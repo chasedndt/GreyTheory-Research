@@ -1,6 +1,6 @@
 # Vulnerability Coverage Matrix
 
-**Coverage today: two static, offline collectors.** Everything else is a plan, not a capability claim.
+**Coverage today: three static, offline collectors.** Everything else is a plan, not a capability claim.
 
 The implemented lanes read local files only. Nothing here touches a target: every network-based class below needs the operating posture ceiling raised above `LOCAL_FIXTURE`, which is an explicit operator decision.
 
@@ -14,7 +14,7 @@ Read alongside the capability register in [`definition.md`](definition.md#6-capa
 | ◐ | Designed to build-ready detail |
 | ✅ | Implemented and tested |
 
-Implemented: `lane1_dependency_manifest`, `lane4_agent_config`. Both static and offline.
+Implemented: `lane1_dependency_manifest`, `lane2_exposure`, `lane4_agent_config`. All static and offline.
 
 ## Lane 1 — Known vulnerability
 
@@ -29,11 +29,11 @@ Implemented: `lane1_dependency_manifest`, `lane4_agent_config`. Both static and 
 
 | Class | Status | Deterministic check it would need | Notes |
 |---|---|---|---|
-| Exposed `.env` / config | ⬛ | Content-shape match, not just status code | 200 with an HTML error page is not an exposure |
-| Exposed `.git` directory | ⬛ | Index header signature | |
-| Open object storage | ⬛ | Listing response parse | Derived asset — needs independent scope |
-| Secrets in JavaScript bundles | ⬛ | Entropy + format match | Validation of a live secret is `INTRUSIVE`, opt-in, never automatic |
-| Exposed backups / archives | ⬛ | Magic-byte check | |
+| Exposed `.env` / config | ✅ | Assignment shape + entropy, placeholders excluded | `lane2_exposure`, over a local tree. Reports *presence*, not reachability |
+| Exposed `.git` directory | ✅ | Directory presence in the granted tree | `lane2_exposure`. Also .svn, .hg, .bzr |
+| Open object storage | ⬛ | Listing response parse | Derived asset — needs independent scope, and network |
+| Secrets in JavaScript bundles | ✅ | Known credential formats + entropy | `lane2_exposure`. Records shape and a digest, never the value. Validation of a live secret remains `INTRUSIVE`, opt-in, never automatic |
+| Exposed backups / archives | ✅ | Suffix match; the file is never opened | `lane2_exposure` |
 | Debug endpoints, stack traces | ⬛ | Response signature | Usually `informational` alone |
 
 ## Lane 3 — Web vulnerability
@@ -72,7 +72,7 @@ Low-signal classes that will not enter the hypothesis queue unless a programme e
 
 1. ~~Deterministic, static, no network~~ — **done.** `lane1_dependency_manifest`, `lane4_agent_config`.
 2. ~~Local fixture lanes~~ — **done.** `fixtures/lab/vulnerable-agent` and `clean-agent`.
-3. Secrets and exposure over local trees — still offline, still buildable now.
+3. ~~Secrets and exposure over local trees~~ — **done.** `lane2_exposure`.
 4. Binary-proof network lane — subdomain takeover.
 5. Authorization lanes — IDOR/BOLA against a controlled multi-account target.
 
