@@ -12,7 +12,7 @@ GreyTheory AI is a proof-first security research control plane. It converts auth
 Canonical: `Docs/definition.md`. It outranks `README.md` and `Docs/architecture.md`.
 
 ## Current Phase
-Security Research Product Lane incubation — local-only. Authority Plane (Plane 1) is the active build target.
+Security Research Product Lane incubation — local-only. Authority Plane and the Judgement Plane validation path are built; Signal Plane lanes are not.
 
 ## Locked Decisions
 - Three ranked planes: **Authority** (root, fail-closed) → **Signal** (four lanes as pluggable collectors) → **Judgement** (operator loop). Lower planes cannot bypass higher ones.
@@ -55,18 +55,19 @@ Prioritize:
 AI-app lane should be designed from the start but may be partially phased depending on implementation complexity.
 
 ## Open Decisions
-Tracked in `Docs/open-questions.md`. Blocking: Grapevine AI reconciliation (O1), ChaseOS approval/audit/graph reconciliation (O2), evidence storage location (O3).
+Tracked in `Docs/open-questions.md`. O2 (ChaseOS reconciliation) and O3 (evidence location) are resolved. Remaining: Grapevine AI reconciliation (O1), ChaseOS audit tamper-evidence (O9), dashboard panels (O10).
 
-Deferred until Plane 1 exists: exact tool stack per lane, crawl/recon architecture, graph/memory layer, reporting format, AI-app test isolation.
+Deferred until the Signal Plane is built: exact tool stack per lane, crawl/recon architecture, AI-app test isolation.
 
 ## Built
-Authority Plane V0 — `greytheory/` package, 87 tests, zero runtime dependencies, no network surface (CI-enforced).
-Scope compiler (fails closed), execution gate (11 denial reasons + posture ceiling + kill switch), hash-chained audit log, provenance triple, finding lifecycle, operator CLI. Proof fixtures for both a clean and a deliberately blocked programme.
+The full path from authorisation to a validated report draft. `greytheory/` package, 177 tests, zero runtime dependencies, no network surface (CI-enforced).
+
+Scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, finding lifecycle, CLI.
+
+Architecture articulated in `Docs/system-overview.md`.
 
 ## Immediate Next Step
-O2 and O3 both answered. Evidence vault is live.
-
-Next: validation gates B–F (reproducibility, impact, evidence completeness, duplicate risk, report quality) over the vault, then the report studio. Dashboard read model waits on the operator's panel specification (O10).
+Programme registry, then the dashboard read model once panels are specified (O10). Signal Plane lanes remain unbuilt and require the posture ceiling to be raised, which is a separate explicit decision.
 
 ## Do Not Do Yet
 - no exploit automation assumptions
@@ -74,7 +75,7 @@ Next: validation gates B–F (reproducibility, impact, evidence completeness, du
 - no unsafe autonomous behavior
 - no lane implementation before the Authority Plane can gate it
 - no external network calls in the core package
-- no duplicate approval/audit/graph system until O2 is answered
+- no duplicate approval/audit/graph system - ChaseOS owns these, GreyTheory adapts
 
 ## Source of Truth
 Current repo docs are the source of truth for architecture decisions.

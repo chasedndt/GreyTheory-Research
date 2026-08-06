@@ -13,6 +13,7 @@ Where to start, and which document wins when two disagree.
 
 | If you want to… | Read |
 |---|---|
+| Understand the whole system | [`system-overview.md`](system-overview.md) |
 | Understand what GreyTheory is | [`definition.md`](definition.md) |
 | See it rather than read it | [`diagrams.md`](diagrams.md) |
 | Know what actually works today | [`definition.md` §6](definition.md#6-capability-register) |
@@ -21,6 +22,7 @@ Where to start, and which document wins when two disagree.
 ## By subject
 
 ### Definition and structure
+- [`system-overview.md`](system-overview.md) — the whole architecture, and why each part is shaped as it is
 - [`definition.md`](definition.md) — three planes, six invariants, capability register, decision log
 - [`diagrams.md`](diagrams.md) — architecture, gate flow, compilation, lifecycle, provenance, authority levels, approvals, evidence
 - [`module-breakdown.md`](module-breakdown.md) — what each module owns and refuses to own

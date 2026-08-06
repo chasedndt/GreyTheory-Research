@@ -14,8 +14,8 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 
 | | |
 |---|---|
-| **Live** | Authority Plane: scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, CLI. 138 tests. Scope/authority policy and disclosure checklist. |
-| **Designed** (build-ready, not built) | Validation gates B–F; programme registry; report studio |
+| **Live** | The full path from authorisation to a validated report draft: scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, CLI. 177 tests. |
+| **Designed** (build-ready, not built) | Programme registry; dashboard read model |
 | **Aspirational** (architected, not build-ready) | All four lanes; report studio; curriculum; earnings ledger |
 | **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
 
@@ -76,6 +76,8 @@ Every one of those decisions — allows and denials alike — is in the audit lo
 Eight Mermaid diagrams — three planes, gate decision flow, contract compilation, finding lifecycle, provenance, authority levels, approvals, evidence — in [`Docs/diagrams.md`](Docs/diagrams.md).
 
 ### Documentation
+
+[`Docs/system-overview.md`](Docs/system-overview.md) explains the whole architecture and why each part is shaped as it is — start there.
 
 [`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`Docs/definition.md`](Docs/definition.md) is canonical and outranks this file.
 

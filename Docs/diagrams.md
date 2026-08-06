@@ -358,3 +358,70 @@ flowchart TD
 ```
 
 The guard is a wall rather than a convention. A `.gitignore` entry can be defeated by a `git add -f` or a tired evening, and raw evidence once committed and pushed is unrecoverable — it survives in the reflog, in forks, in caches.
+
+---
+
+## 9. Validation gates B–F
+
+Implemented in [`greytheory/validation.py`](../greytheory/validation.py), policy in [`validation-policy.md`](validation-policy.md).
+
+```mermaid
+flowchart TB
+    F[Finding + evidence + draft] --> B
+
+    subgraph ATT["Attested — require a recorded human statement"]
+        B[B · Reproducibility<br/>attestation + a 'checked' claim]
+        C[C · Impact<br/>attestation + a 'checked' claim]
+        E[E · Duplicate risk<br/>attestation, certainty claims rejected]
+    end
+
+    subgraph DET["Deterministic — re-derived from artifacts every run"]
+        D[D · Evidence<br/>rehashed from disk, all redacted, exportable]
+        FQ[F · Report quality<br/>sections present, finished, severity reasoned]
+    end
+
+    B --> R{All five pass?}
+    C --> R
+    E --> R
+    D --> R
+    FQ --> R
+
+    R -->|no| BLOCK[Blocked<br/>FAIL = someone looked, it did not hold<br/>NOT_ASSESSED = nobody looked]
+    R -->|yes| G{{Gate G — the operator}}
+    G -->|decides to send| SUB[Submitted]
+    G -->|decides not to| ARCH[Archive or<br/>keep as a lesson]
+
+    style DET fill:#1f2937,stroke:#60a5fa,color:#f9fafb
+    style ATT fill:#1f2937,stroke:#f59e0b,color:#f9fafb
+    style G fill:#065f46,stroke:#10b981,color:#fff
+    style BLOCK fill:#7f1d1d,stroke:#ef4444,color:#fff
+```
+
+Passing every gate does not submit anything and does not advance the finding. It makes the finding *eligible* for Gate G, which is the operator's and is not automatable.
+
+---
+
+## 10. The whole path
+
+```mermaid
+flowchart LR
+    A[Programme rules] --> B[Compile]
+    B --> C[Human review]
+    C --> D{{Gate}}
+    D --> E[Approval]
+    E --> F[Collector]
+    F --> G[(Evidence vault)]
+    G --> H[Gates B-F]
+    H --> I[Report draft]
+    I --> J{{Gate G · operator}}
+    J --> K[Programme]
+    K --> L[(Ledgers + lessons)]
+    D -.->|deny| L
+    H -.->|blocked| L
+
+    style D fill:#78350f,stroke:#f59e0b,color:#fff
+    style J fill:#065f46,stroke:#10b981,color:#fff
+    style L fill:#1e3a8a,stroke:#60a5fa,color:#fff
+```
+
+Every arrow is a place the system can refuse. The dotted lines matter as much as the solid ones — a denial and a blocked validation are both recorded as lessons rather than discarded.

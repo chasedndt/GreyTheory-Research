@@ -201,8 +201,8 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Lane 3 Web Vuln | 2 | **Aspirational** — no implementation |
 | Lane 4 AI-App | 2 | **Aspirational** — architected only |
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |
-| Validation gates B–F | 3 | **Designed** — next build slice |
-| Report studio | 3 | **Aspirational** |
+| Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
+| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
 | Curriculum / skill graph | 3 | **Aspirational** |
 | Earnings ledger | 3 | **Aspirational** |
 | Grapevine adapter | 1/3 | **Unreconciled** — interface defined, implementation not inspected |
@@ -256,3 +256,6 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D12 | **Standalone is first-class; ChaseOS is an adapter** | Apache-2.0 means people will run this without ChaseOS. Zero runtime dependencies, no required external system. Every integration point ships a self-sufficient default alongside it. |
 | D13 | Raw evidence lives outside every git working tree, enforced by a guard | A `.gitignore` entry is a convention; committed-and-pushed raw evidence is unrecoverable. This needed to be a wall. |
 | D14 | Export is all-or-nothing and redacted-only | Partial export is how raw evidence escapes — the operator fills the gap by hand from the wrong directory. |
+| D15 | Validation gates split deterministic / attested | Judgement cannot be machine-decided, so it demands a named human statement rather than a model's opinion dressed as a check. |
+| D16 | An unattested gate is `NOT_ASSESSED`, not `FAIL` | "Nobody looked" and "someone looked and it did not hold" call for different actions. Both block. |
+| D17 | Gate E rejects claims of duplicate certainty | Duplicate risk can be reduced and estimated, never eliminated. Believing otherwise costs more than the duplicate. |

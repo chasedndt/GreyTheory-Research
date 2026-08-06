@@ -38,6 +38,15 @@ from greytheory.evidence import (
 )
 from greytheory.findings import Finding, Taxonomy, TransitionError
 from greytheory.provenance import Claim, ProvenanceError, Tag
+from greytheory.report import ReportDraft
+from greytheory.validation import (
+    Attestation,
+    GateId,
+    GateResult,
+    GateStatus,
+    ValidationReport,
+    validate,
+)
 
 __version__ = "0.1.0"
 
@@ -46,6 +55,7 @@ __all__ = [
     "Approval",
     "ApprovalStore",
     "AssetPattern",
+    "Attestation",
     "AuditLog",
     "AuditRecord",
     "AuditVerificationError",
@@ -59,14 +69,20 @@ __all__ = [
     "EvidenceVault",
     "Finding",
     "Gate",
+    "GateId",
+    "GateResult",
+    "GateStatus",
     "LocalApprovalStore",
     "ProvenanceError",
     "Reason",
+    "ReportDraft",
     "ScopeClassification",
     "ScopeContract",
     "Tag",
     "Taxonomy",
     "TransitionError",
+    "ValidationReport",
     "VaultLocationError",
     "__version__",
+    "validate",
 ]
