@@ -16,6 +16,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/validation.py`](../greytheory/validation.py) | Gates B–F. Deterministic where possible, attested where not. | Submitting. Passing the gates makes a finding *eligible* for Gate G, nothing more. |
 | [`greytheory/report.py`](../greytheory/report.py) | Report structure, placeholder detection, markdown rendering. | Writing the report. Structure is enforced; prose is not. |
 | [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
+| [`greytheory/ledger.py`](../greytheory/ledger.py) | Sessions, triage outcomes, payouts, expenses, and honest metrics. Refuses to forecast below thresholds. | Deciding what a finding was worth, or predicting what the next one will be. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
 | [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify. | Anything that touches a network. |
 
@@ -42,6 +43,7 @@ Each one ships a self-sufficient default beside it, so nothing external is ever 
 |---|---|---|
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` reading OSRIL records |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
+| Ledger root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-ledger` |
 
 Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
 

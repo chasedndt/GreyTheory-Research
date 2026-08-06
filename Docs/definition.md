@@ -204,7 +204,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
 | Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
 | Curriculum / skill graph | 3 | **Aspirational** |
-| Earnings ledger | 3 | **Aspirational** |
+| Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
 | Grapevine adapter | 1/3 | **Unreconciled** — interface defined, implementation not inspected |
 
 Definitions: **Live** = exists and is used. **Designed** = specified to build-ready detail, not built. **Aspirational** = intended, not specified to build-ready detail. **Unreconciled** = depends on a system not yet inspected.
@@ -260,4 +260,7 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D16 | An unattested gate is `NOT_ASSESSED`, not `FAIL` | "Nobody looked" and "someone looked and it did not hold" call for different actions. Both block. |
 | D17 | Gate E rejects claims of duplicate certainty | Duplicate risk can be reduced and estimated, never eliminated. Believing otherwise costs more than the duplicate. |
 | D18 | Changed programme source invalidates the human review | Review attaches to the text a person actually read, not to the programme in the abstract. This is the structural defence against scope amnesia. |
+| D20 | Effective hourly rate always divides by total tracked hours | There is no parameter to change it. Dividing by only the productive hours is how bug bounty starts looking like a good hourly rate. |
+| D21 | Forecasting is refused below 100h / 20 sessions / 5 submissions / 5 closed outcomes | A forecast from three data points has a confidence interval wide enough to contain any belief you brought to it. |
+| D22 | Mixed currencies are never silently summed | A total that quietly adds dollars to pounds is worse than no total. |
 | D19 | Narrowing scope changes are called out separately | A widened scope is an opportunity; a narrowed one means work already done may have been against an asset that is no longer authorised. |

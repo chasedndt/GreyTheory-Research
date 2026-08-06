@@ -461,3 +461,40 @@ flowchart TD
 The rule that carries the module: **changed source invalidates the human review**, however thoroughly the previous version was verified. Review attaches to the text a person actually read, not to the programme in the abstract. Identical source carries the review forward, because re-reading unchanged text is friction with no safety value.
 
 `needs_attention()` is the registry's real output. A list of programmes is inert; a list of reasons the permissions might not hold any more is what prevents scope amnesia.
+
+---
+
+## 12. The ledger — every hour, not just the productive ones
+
+Implemented in [`greytheory/ledger.py`](../greytheory/ledger.py). Invariant I6 made structural.
+
+```mermaid
+flowchart TB
+    subgraph IN["Recorded"]
+        S[Sessions<br/>study · lab · research · hunt<br/>report · triage · retest]
+        T[Triage outcomes<br/>canonical + platform wording]
+        P[Payouts<br/>gross · fees · share · tax]
+        X[Expenses]
+    end
+
+    S --> H[Total tracked hours]
+    P --> N[Net before tax]
+    X --> N
+    H --> R[Effective hourly<br/>= net ÷ ALL hours]
+    N --> R
+
+    T --> V[valid rate · duplicate rate<br/>over closed outcomes only]
+
+    R --> F{forecast requested}
+    V --> F
+    F -->|below thresholds| REFUSE[InsufficientData<br/>names exactly what is missing<br/>'Until then, plan on zero.']
+    F -->|100h · 20 sessions ·<br/>5 submissions ·<br/>5 closed outcomes| DIST[Monthly distribution<br/>median · quartiles ·<br/>P zero-month ·<br/>income concentration]
+
+    style REFUSE fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style R fill:#78350f,stroke:#f59e0b,color:#fff
+    style DIST fill:#065f46,stroke:#10b981,color:#fff
+```
+
+Two things this shape prevents. **The rate has no other version** — there is no parameter to divide by only the hours that produced something, because that is exactly how bug bounty starts looking like a good hourly rate. And **months with no payout stay in the distribution**; dropping them is how a zero-income month becomes invisible and the median starts describing a fantasy.
+
+Income concentration is reported because when one payout dominates, the median is describing luck rather than a rate.

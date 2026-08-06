@@ -14,9 +14,9 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 
 | | |
 |---|---|
-| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, CLI. 213 tests. |
+| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, CLI. 240 tests. |
 | **Designed** (build-ready, not built) | Dashboard read model |
-| **Aspirational** (architected, not build-ready) | All four lanes; report studio; curriculum; earnings ledger |
+| **Aspirational** (architected, not build-ready) | All four lanes; curriculum and skill graph |
 | **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
 
 The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **No lane is implemented — the system currently detects nothing.** What works is the part that decides whether anything is allowed to run.
