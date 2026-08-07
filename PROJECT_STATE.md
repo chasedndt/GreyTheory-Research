@@ -61,9 +61,9 @@ Tracked in `Docs/open-questions.md`. O2 (ChaseOS reconciliation) and O3 (evidenc
 Deferred until the Signal Plane is built: exact tool stack per lane, crawl/recon architecture, AI-app test isolation.
 
 ## Built
-The full path from authorisation to a validated report draft. `greytheory/` package, 317 tests, zero runtime dependencies, no network surface (CI-enforced).
+The full path from authorisation to a validated report draft. `greytheory/` package, 347 tests, zero runtime dependencies, no network surface (CI-enforced).
 
-Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, triage and earnings ledger, finding lifecycle, operator dashboard, Signal Plane lane framework with three static offline collectors (Lanes 1, 2 and 4), CLI.
+Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, triage and earnings ledger, finding lifecycle, operator dashboard, Signal Plane lane framework with three static offline collectors (Lanes 1, 2 and 4), offline OSV advisory import, CLI.
 
 Architecture articulated in `Docs/system-overview.md`.
 

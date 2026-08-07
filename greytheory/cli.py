@@ -227,6 +227,27 @@ def cmd_programme_diff(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_advisories_import(args: argparse.Namespace) -> int:
+    from greytheory.advisories import AdvisorySet
+
+    try:
+        advisories = AdvisorySet.load(args.source)
+    except (OSError, ValueError) as exc:
+        print(f"could not read {args.source}: {exc}", file=sys.stderr)
+        return 1
+
+    if not len(advisories):
+        print(f"no usable advisories found in {args.source}", file=sys.stderr)
+        print("Records with no version range are skipped: an advisory with", file=sys.stderr)
+        print("unknown bounds would match every version.", file=sys.stderr)
+        return 1
+
+    advisories.write(args.out)
+    print(f"imported {len(advisories)} advisory range(s) -> {args.out}")
+    print(f"ecosystems: {', '.join(sorted(advisories.ecosystems()))}")
+    return 0
+
+
 def cmd_dashboard(args: argparse.Namespace) -> int:
     from pathlib import Path as _Path
 
@@ -312,6 +333,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     p = sub.add_parser("audit-verify", help="verify the audit hash chain")
     p.set_defaults(func=cmd_audit_verify)
+
+    p = sub.add_parser(
+        "advisories", help="import advisory data offline (OSV or native format)"
+    )
+    p.add_argument("source", help="a JSON file or a directory of them")
+    p.add_argument("-o", "--out", default="advisories.json")
+    p.set_defaults(func=cmd_advisories_import)
 
     p = sub.add_parser("dashboard", help="operator dashboard")
     p.add_argument("--registry", default=DEFAULT_REGISTRY)

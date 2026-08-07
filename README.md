@@ -18,7 +18,7 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 
 | | |
 |---|---|
-| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config). 317 tests. |
+| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config), offline OSV advisory import. 347 tests. |
 | **Designed** (build-ready, not built) | Dashboard read model |
 | **Aspirational** (architected, not build-ready) | Lane 3 collectors; curriculum and skill graph |
 

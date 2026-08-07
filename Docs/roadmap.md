@@ -41,7 +41,7 @@ Everything so far has been tested against fixtures I wrote, which means the comp
 
 Feeding the engine what the niche actually knows. All offline.
 
-- [ ] **Advisory sourcing.** Local advisory sets Lane 1 can match against — imported from published CVE/OSV data, versioned like everything else. Currently the operator hand-writes `advisories.json`.
+- [x] **Advisory sourcing.** `greytheory/advisories.py` imports the OSV format that GitHub, PyPI, npm and Go publish, from files already on disk. Ecosystem-aware matching and correct pre-release ordering. `greytheory advisories <file-or-dir>`.
 - [ ] **Vulnerability cards.** One per class: plain-English model, root cause, safe test pattern, what counts as evidence, the remediation, and the internal control it maps to. These feed the report studio and the curriculum both.
 - [ ] **Curriculum and skill graph.** Learning units with a state machine — not-started, reading, micro-test, lab, transfer, mastered — where mastery expires into review. Mastery means explain, recognise, test, prove, remediate, transfer. Not "watched a video".
 - [ ] **Hypothesis engine.** Ranked, scoped hypotheses instead of undirected clicking. Priority from impact potential, programme eligibility, specialism fit and test safety, divided by time cost, duplicate risk and ambiguity.

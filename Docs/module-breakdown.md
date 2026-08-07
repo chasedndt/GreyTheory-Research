@@ -17,6 +17,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/report.py`](../greytheory/report.py) | Report structure, placeholder detection, markdown rendering. | Writing the report. Structure is enforced; prose is not. |
 | [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
 | [`greytheory/ledger.py`](../greytheory/ledger.py) | Sessions, triage outcomes, payouts, expenses, and honest metrics. Refuses to forecast below thresholds. | Deciding what a finding was worth, or predicting what the next one will be. |
+| [`greytheory/advisories.py`](../greytheory/advisories.py) | OSV import, ecosystem-aware matching, version ordering. | Fetching advisory data. Input is files already on disk. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
 | [`greytheory/dashboard.py`](../greytheory/dashboard.py) | Read model over every store, plus text/HTML/JSON renderers. | Inventing data. Absent stores report unknown, never zero. |
 | [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify, programme, dashboard. | Anything that touches a network. |

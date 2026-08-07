@@ -16,6 +16,7 @@ There is no network code in this package, and none belongs here.
 # SPDX-License-Identifier: Apache-2.0
 # Copyright 2026 ChaseInTech
 
+from greytheory.advisories import Advisory, AdvisorySet, Version
 from greytheory.audit import AuditLog, AuditRecord, AuditVerificationError
 from greytheory.authority.approvals import (
     Approval,
@@ -71,6 +72,9 @@ from greytheory.validation import (
 __version__ = "0.1.0"
 
 __all__ = [
+    "Advisory",
+    "AdvisorySet",
+    "Version",
     "TriageOutcome",
     "TriageEvent",
     "SessionKind",

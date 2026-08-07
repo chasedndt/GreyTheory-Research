@@ -219,7 +219,8 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
 | Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
 | Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
-| Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, offline manifest vs advisories |
+| Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, ecosystem-aware, over imported OSV data |
+| Advisory import | 3 | **Live** — `greytheory/advisories.py`, offline OSV ingestion |
 | Lane 4 AI-App | 2 | **Live (static)** — `lane4_agent_config`, offline config review |
 | Lane 4 AI-App | 2 | **Aspirational** — architected only |
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |

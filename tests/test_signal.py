@@ -362,6 +362,21 @@ class TestDependencyManifestLane:
         assert "matches advisory" in title
         assert "vulnerable" not in title.lower()
 
+    def test_an_advisory_for_another_ecosystem_does_not_match(self, gate):
+        # The fixture holds a same-named npm advisory. A name-only matcher
+        # would report it against the PyPI dependency with total confidence.
+        run = run_lane(
+            DependencyManifestLane(),
+            targets={"lab": LAB / "vulnerable-agent"},
+            gate=gate,
+            contract=contract("lab"),
+            actor="chase",
+            clock=lambda: NOW,
+        )
+        advisories = {s.detail["advisory"] for s in run.signals}
+        assert "FIXTURE-2026-0003" not in advisories
+        assert all(s.detail["ecosystem"] == "PyPI" for s in run.signals)
+
     def test_no_advisories_means_no_signals(self, gate, tmp_path):
         (tmp_path / "requirements.txt").write_text("examplelib==1.2.3", encoding="utf-8")
         run = run_lane(
