@@ -45,8 +45,8 @@ flowchart TB
     VAULT --> GATES --> REPORT --> OP{{Operator decides}}
     OP --> LEDGER
 
-    GV[Grapevine AI<br/>information-only] --> SRC
-    GV --> HYP
+    GV[Scope Watch<br/>roadmap · information-only] -.-> SRC
+    GV -.-> HYP
     GV x--x P2
 
     style P1 fill:#1f2937,stroke:#f59e0b,stroke-width:3px,color:#f9fafb
@@ -57,7 +57,7 @@ flowchart TB
     style OP fill:#065f46,stroke:#10b981,color:#fff
 ```
 
-The crossed link from Grapevine to Plane 2 is the integration contract made visible: intelligence informs what we *look at* and what we *ask*, never what we *touch*.
+Scope Watch is dashed because it does not exist yet (`roadmap.md` Phase 5). The crossed link to Plane 2 is its boundary made visible: external intelligence informs what we *look at* and what we *ask*, never what we *touch*.
 
 ---
 

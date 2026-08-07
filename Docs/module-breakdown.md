@@ -66,7 +66,7 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 ## Aspirational
 
-The curriculum and skill graph, the Grapevine adapter, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
+The curriculum and skill graph, Scope Watch, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
 
 ## Constraints on every module
 

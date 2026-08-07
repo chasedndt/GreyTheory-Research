@@ -256,7 +256,7 @@ class TestCapabilityPanel:
     def test_unbuilt_components_are_listed_as_such(self):
         panel = build_dashboard(now=lambda: NOW).panel("capability")
         assert ["Lane 1-4 collectors", "not built"] in panel.rows
-        assert ["Grapevine adapter", "interface only"] in panel.rows
+        assert ["Scope Watch", "roadmap"] in panel.rows
 
 
 class TestNextAction:

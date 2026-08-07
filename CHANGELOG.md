@@ -52,6 +52,10 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ### Changed
 
+- **Cut Grapevine AI.** The name came from a planning document which stated its implementation "was not available in the source context used to create this file", and no implementation was found. Building an interface against a system nobody has seen is how a guess hardens into a fact. The useful capability -- noticing that a programme's source changed -- is restated as **Scope Watch** under our own name in `roadmap.md` Phase 5. Half of it already exists offline: the registry detects drift and invalidates the human review on re-registration.
+- **Purpose restated explicitly.** GreyTheory is a bug bounty and authorised security research engine; the Authority Plane governs the operator's own research. The Authority Plane's mechanisms are reusable, but that is an observation about the code, not a change of purpose -- governance offerings for other people's agents are derivative products with separate scope. `definition.md` §1 now says so, so it cannot drift again.
+- `Docs/roadmap.md` rewritten. The prior version predated all code. Nine phases through real-programme handling, advisory sourcing, curriculum, Scope Watch, the posture-ceiling decision, network collectors and first submission -- plus what is deliberately not on it.
+
 - **Reframed the system.** GreyTheory is a control plane whose root is authority; the four lanes are pluggable signal collectors, not the product.
 - `README.md` — added a capability register distinguishing live from designed from aspirational, and corrected the design constraint that authorised automatic HTTP probing while `Docs/scope-policy.md` prohibited all external interaction.
 - Lane status labels changed from "Planned V1 implementation" to "Designed, not built", which is what was true.
@@ -61,7 +65,6 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ### Known gaps
 
-- Grapevine AI integration is an interface contract only; the real implementation has not been inspected (open question O1). No `grapevine` directory was found under `Documents/Projects`.
 - ChaseOS run audits are not tamper-evident; porting the hash chain across is proposed but not decided (O9).
 - Lane 3 (web) is not implemented, and no collector performs network I/O. The three implemented lanes read local files only; anything touching a target needs the operating posture ceiling raised above `LOCAL_FIXTURE`, which is an explicit operator decision.
 - The curriculum and skill graph are not built.

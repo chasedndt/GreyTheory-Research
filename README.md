@@ -21,7 +21,6 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 | **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config). 317 tests. |
 | **Designed** (build-ready, not built) | Dashboard read model |
 | **Aspirational** (architected, not build-ready) | Lane 3 collectors; curriculum and skill graph |
-| **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
 
 The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target. Network collectors need the posture ceiling raised above `LOCAL_FIXTURE`, and the runner refuses any lane declaring network I/O until they move outside the core package.
 

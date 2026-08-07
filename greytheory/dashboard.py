@@ -476,7 +476,7 @@ def _capability_panel() -> Panel:
         ["Triage + earnings ledger", "live"],
         ["Lane 1-4 collectors", "not built"],
         ["Curriculum / skill graph", "not built"],
-        ["Grapevine adapter", "interface only"],
+        ["Scope Watch", "roadmap"],
     ]
     return panel
 

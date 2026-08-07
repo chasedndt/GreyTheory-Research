@@ -156,7 +156,7 @@ Stated plainly, because the failure mode of an architecture document is implying
 - **No lane is implemented.** The system currently detects nothing. What works is the part that decides whether anything may run.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
 - **No programme registry, curriculum, skill graph, earnings ledger, or dashboard.**
-- **Grapevine AI is an interface contract**, not an inspected implementation.
+- **Scope Watch does not exist.** Nothing notices a programme edit until you re-register it.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 
 The capability register in [`definition.md`](definition.md#6-capability-register) governs every public claim.
