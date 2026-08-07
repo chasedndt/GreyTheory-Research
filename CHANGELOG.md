@@ -45,6 +45,7 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 - `Docs/definition.md` — canonical definition. Three planes, six invariants, capability register, decision log.
 - `Docs/system-overview.md` — the whole architecture in one document, written at the point the path runs end to end.
+- `Docs/full-brief.md` — a complete self-contained project brief for handing to another AI or person: definition, glossary, architecture, every module, the current truth, worked examples, roadmap, all thirty decisions, choices to avoid (architectural, operational and linguistic), open questions, and a ready-made prompt with constraints that prevent a fresh session drifting the design.
 - `Docs/evidence-policy.md` — answers O3. Root resolution order, the repository guard, the rules the vault enforces, and retention.
 - `Docs/chaseos-reconciliation.md` — answers O2. ChaseOS owns approvals, audit and graph; GreyTheory imports rather than duplicates. Records one divergence worth acting on: ChaseOS run audits are not tamper-evident.
 - `Docs/diagrams.md` — ten diagrams: architecture, gate flow, compilation, finding lifecycle, provenance, authority levels, approvals, approval sources, evidence, evidence root resolution, validation gates, and the whole path.

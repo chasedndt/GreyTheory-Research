@@ -13,6 +13,7 @@ Where to start, and which document wins when two disagree.
 
 | If you want to… | Read |
 |---|---|
+| Hand the whole project to another AI or person | [`full-brief.md`](full-brief.md) |
 | Understand the whole system | [`system-overview.md`](system-overview.md) |
 | Understand what GreyTheory is | [`definition.md`](definition.md) |
 | See it rather than read it | [`diagrams.md`](diagrams.md) |
@@ -22,6 +23,7 @@ Where to start, and which document wins when two disagree.
 ## By subject
 
 ### Definition and structure
+- [`full-brief.md`](full-brief.md) — complete self-contained brief: definition, architecture, current truth, roadmap, decisions, choices to avoid, glossary
 - [`system-overview.md`](system-overview.md) — the whole architecture, and why each part is shaped as it is
 - [`definition.md`](definition.md) — three planes, six invariants, capability register, decision log
 - [`diagrams.md`](diagrams.md) — architecture, gate flow, compilation, lifecycle, provenance, authority levels, approvals, evidence
