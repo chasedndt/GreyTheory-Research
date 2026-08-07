@@ -32,6 +32,10 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - `greytheory.report` — report drafts with enforced structure, placeholder detection, absolute-claim warnings, and markdown rendering.
 - `greytheory.evidence` — the evidence vault. Raw/redacted split, SHA-256 on both, write-once raw, manifests per finding, integrity verification, and redacted-only all-or-nothing export. Refuses to initialise inside a git working tree.
 
+### Added — brand
+
+- `assets/` — mark, mono mark, app icon, wordmark, favicon, GitHub social preview and README banner, plus `render.py` so the raster files are drawn from the same geometry as the SVGs and cannot drift. The mark is the gate: three paths approach, two stop, one passes. Amber is authority and appears nowhere else in the mark.
+
 ### Added — licensing
 
 - Apache-2.0. `LICENSE`, `NOTICE`, PEP 639 metadata, SPDX headers on all source files.

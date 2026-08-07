@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"
+     role="img" aria-label="GreyTheory mark: three paths approach a gate, one passes">
+  <title>GreyTheory</title>
+  <g fill="none" stroke-linecap="round" stroke-width="2.6">
+    <!-- Denied paths. They stop short of the gate. -->
+    <path d="M4 10 H13" stroke="currentColor" opacity="0.38"/>
+    <path d="M4 22 H13" stroke="currentColor" opacity="0.38"/>
+    <!-- The one path that passes through. -->
+    <path d="M4 16 H28" stroke="currentColor"/>
+    <!-- The gate. -->
+    <path d="M19 5 V27" stroke="#F59E0B"/>
+  </g>
+</svg>

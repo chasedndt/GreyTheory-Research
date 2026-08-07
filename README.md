@@ -1,4 +1,8 @@
-﻿# GreyTheory AI
+﻿<p align="center">
+  <img src="assets/social/banner.png" alt="GreyTheory AI - proof-first security research control plane" width="100%">
+</p>
+
+# GreyTheory AI
 ## Proof-First Security Research
 ### GreyTheory AI × ChaseOS — Security Research Product Lane
 
@@ -92,6 +96,10 @@ Every integration point ships a self-sufficient default beside it: `LocalApprova
 ### Evidence
 
 Raw evidence and redacted evidence are separate artifacts, and only redacted ones can leave. The vault **refuses to initialise inside a git working tree** — a `.gitignore` entry is a convention, and committed raw evidence is unrecoverable. A redacted copy byte-identical to the raw capture is rejected as "nothing was redacted", and export is all-or-nothing so a partial package can't tempt anyone into filling the gap by hand. See [`Docs/evidence-policy.md`](Docs/evidence-policy.md).
+
+### Brand
+
+Mark, wordmark, icons and social preview are in [`assets/`](assets/README.md), with the reasoning behind the mark and the colour code that runs through the diagrams and the dashboard.
 
 ### Licence
 

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 40" width="260" height="40"
+     role="img" aria-label="GreyTheory AI">
+  <title>GreyTheory AI</title>
+  <g transform="translate(0,4)" fill="none" stroke-linecap="round" stroke-width="2.6">
+    <path d="M4 10 H13" stroke="currentColor" opacity="0.38"/>
+    <path d="M4 22 H13" stroke="currentColor" opacity="0.38"/>
+    <path d="M4 16 H28" stroke="currentColor"/>
+    <path d="M19 5 V27" stroke="#F59E0B"/>
+  </g>
+  <text x="42" y="26"
+        font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
+        font-size="19" font-weight="640" letter-spacing="0.4" fill="currentColor">GreyTheory</text>
+  <text x="176" y="26"
+        font-family="ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif"
+        font-size="19" font-weight="400" letter-spacing="0.4" fill="currentColor" opacity="0.55">AI</text>
+</svg>
