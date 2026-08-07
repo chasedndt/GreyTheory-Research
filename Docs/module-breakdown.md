@@ -2,7 +2,7 @@
 
 What exists, what each module is responsible for, and what it is deliberately *not* responsible for.
 
-## Implemented — Plane 1 (Authority)
+## Implemented — Plane 1 (Authority) and Plane 3 (Judgement)
 
 | Module | Responsibility | Explicitly not its job |
 |---|---|---|
@@ -12,9 +12,24 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/authority/compiler.py`](../greytheory/authority/compiler.py) | Programme source → contract. Fails closed on ambiguity. Hashes the source. | Fetching programme pages. Input arrives as a local record. |
 | [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py) | Binding, expiry and single-use enforcement over whatever store is in play. | Storing approvals when a platform already owns them. Deciding *whether* to approve — that is the operator's. |
 | [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, approval threshold, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
+| [`greytheory/registry.py`](../greytheory/registry.py) | Versioned programme records, source snapshots, scope drift detection, the attention queue. | Fetching programme pages. Deciding a contract is trustworthy — that is the gate's. |
+| [`greytheory/validation.py`](../greytheory/validation.py) | Gates B–F. Deterministic where possible, attested where not. | Submitting. Passing the gates makes a finding *eligible* for Gate G, nothing more. |
+| [`greytheory/report.py`](../greytheory/report.py) | Report structure, placeholder detection, markdown rendering. | Writing the report. Structure is enforced; prose is not. |
 | [`greytheory/evidence.py`](../greytheory/evidence.py) | Raw/redacted split, hashing, manifests, integrity, export gating, repository guard. | Redacting. Only the operator knows which bytes are sensitive; a regex that thinks it does is worse than nothing. |
+| [`greytheory/ledger.py`](../greytheory/ledger.py) | Sessions, triage outcomes, payouts, expenses, and honest metrics. Refuses to forecast below thresholds. | Deciding what a finding was worth, or predicting what the next one will be. |
 | [`greytheory/findings.py`](../greytheory/findings.py) | One finding entity, one lifecycle, internal/external seam. | Assessing severity, or deciding a finding is valid. |
-| [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify. | Anything that touches a network. |
+| [`greytheory/dashboard.py`](../greytheory/dashboard.py) | Read model over every store, plus text/HTML/JSON renderers. | Inventing data. Absent stores report unknown, never zero. |
+| [`greytheory/cli.py`](../greytheory/cli.py) | Operator surface: compile, review, check, audit-verify, programme, dashboard. | Anything that touches a network. |
+
+## Implemented — Plane 2 (Signal)
+
+| Module | Responsibility | Explicitly not its job |
+|---|---|---|
+| [`signal/contract.py`](../greytheory/signal/contract.py) | What a lane is: `LaneSpec`, `RawSignal`, the rooted `LaneContext`. | Letting a collector conclude. There is no field above `contextual`. |
+| [`signal/runner.py`](../greytheory/signal/runner.py) | The only path by which a collector executes. Gate-mediated, authority-stamped, denials recorded. | Running a lane that declares network I/O. |
+| [`signal/lanes/agent_config.py`](../greytheory/signal/lanes/agent_config.py) | Lane 4. Static agent/MCP config review. | Sending prompts or invoking a model. |
+| [`signal/lanes/dependency_manifest.py`](../greytheory/signal/lanes/dependency_manifest.py) | Lane 1. Manifest versions vs a local advisory set. | Calling a version match a vulnerability. |
+| [`signal/lanes/exposure.py`](../greytheory/signal/lanes/exposure.py) | Lane 2. Credential shapes, VCS metadata, backups and source maps over a local tree. | Recording a secret's value, or claiming presence means reachability. |
 
 ### Dependency direction
 
@@ -22,9 +37,11 @@ What exists, what each module is responsible for, and what it is deliberately *n
 cli ──▶ authority.gate ──▶ authority.scope
  │           │         └──▶ authority.approvals
  │           └──▶ audit
- ├──▶ authority.compiler ──▶ authority.scope
+ ├──▶ registry ──▶ authority.compiler ──▶ authority.scope
+ │        └──▶ evidence (repository guard only)
  ├──▶ evidence ──▶ audit
- └──▶ findings ──▶ provenance
+ └──▶ validation ──▶ evidence, findings, report
+              └──▶ findings ──▶ provenance
 ```
 
 Nothing in `authority/` imports `findings` or `evidence`. The gate does not know what a finding is, and does not need to.
@@ -37,6 +54,7 @@ Each one ships a self-sufficient default beside it, so nothing external is ever 
 |---|---|---|
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` reading OSRIL records |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
+| Ledger root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-ledger` |
 
 Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
 
@@ -44,14 +62,11 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module | Plane | Blocked on |
 |---|---|---|
-| Validation gates B–F | 3 | Nothing. Next build slice, over the evidence vault. |
-| Report studio | 3 | Validation gates |
-| Programme registry | 1 | Nothing |
-| Dashboard read model | 1/3 | Open question O10 — operator's panel specification |
+| Lane 3 (web) collectors | 2 | The posture ceiling being raised above `LOCAL_FIXTURE` |
 
 ## Aspirational
 
-The four Signal Plane lanes, the curriculum and skill graph, the triage and earnings ledgers, the Grapevine adapter, and any dashboard surface. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
+The curriculum and skill graph, Scope Watch, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
 
 ## Constraints on every module
 

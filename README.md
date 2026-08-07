@@ -1,4 +1,8 @@
-﻿# GreyTheory AI
+﻿<p align="center">
+  <img src="assets/social/banner.png" alt="GreyTheory AI - proof-first security research control plane" width="100%">
+</p>
+
+# GreyTheory AI
 ## Proof-First Security Research
 ### GreyTheory AI × ChaseOS — Security Research Product Lane
 
@@ -14,12 +18,11 @@ The canonical definition of this system lives in [`Docs/definition.md`](Docs/def
 
 | | |
 |---|---|
-| **Live** | Authority Plane: scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, CLI. 138 tests. Scope/authority policy and disclosure checklist. |
-| **Designed** (build-ready, not built) | Validation gates B–F; programme registry; report studio |
-| **Aspirational** (architected, not build-ready) | All four lanes; report studio; curriculum; earnings ledger |
-| **Unreconciled** | Grapevine AI adapter — interface defined, implementation not inspected |
+| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config). 317 tests. |
+| **Designed** (build-ready, not built) | Dashboard read model |
+| **Aspirational** (architected, not build-ready) | Lane 3 collectors; curriculum and skill graph |
 
-The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **No lane is implemented — the system currently detects nothing.** What works is the part that decides whether anything is allowed to run.
+The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target. Network collectors need the posture ceiling raised above `LOCAL_FIXTURE`, and the runner refuses any lane declaring network I/O until they move outside the core package.
 
 ### Quickstart
 
@@ -77,6 +80,8 @@ Eight Mermaid diagrams — three planes, gate decision flow, contract compilatio
 
 ### Documentation
 
+[`Docs/system-overview.md`](Docs/system-overview.md) explains the whole architecture and why each part is shaped as it is — start there.
+
 [`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`Docs/definition.md`](Docs/definition.md) is canonical and outranks this file.
 
 ### Standalone, with optional integration
@@ -90,6 +95,10 @@ Every integration point ships a self-sufficient default beside it: `LocalApprova
 ### Evidence
 
 Raw evidence and redacted evidence are separate artifacts, and only redacted ones can leave. The vault **refuses to initialise inside a git working tree** — a `.gitignore` entry is a convention, and committed raw evidence is unrecoverable. A redacted copy byte-identical to the raw capture is rejected as "nothing was redacted", and export is all-or-nothing so a partial package can't tempt anyone into filling the gap by hand. See [`Docs/evidence-policy.md`](Docs/evidence-policy.md).
+
+### Brand
+
+Mark, wordmark, icons and social preview are in [`assets/`](assets/README.md), with the reasoning behind the mark and the colour code that runs through the diagrams and the dashboard.
 
 ### Licence
 

@@ -38,14 +38,56 @@ from greytheory.evidence import (
 )
 from greytheory.findings import Finding, Taxonomy, TransitionError
 from greytheory.provenance import Claim, ProvenanceError, Tag
+from greytheory.ledger import (
+    Expense,
+    Forecast,
+    InsufficientData,
+    Ledger,
+    LedgerError,
+    Metrics,
+    Payout,
+    Session,
+    SessionKind,
+    TriageEvent,
+    TriageOutcome,
+)
+from greytheory.registry import (
+    Attention,
+    ContractVersion,
+    ProgrammeRegistry,
+    RegistryError,
+    ScopeDiff,
+)
+from greytheory.report import ReportDraft
+from greytheory.validation import (
+    Attestation,
+    GateId,
+    GateResult,
+    GateStatus,
+    ValidationReport,
+    validate,
+)
 
 __version__ = "0.1.0"
 
 __all__ = [
+    "TriageOutcome",
+    "TriageEvent",
+    "SessionKind",
+    "Session",
+    "Payout",
+    "Metrics",
+    "LedgerError",
+    "Ledger",
+    "InsufficientData",
+    "Forecast",
+    "Expense",
     "AccessRequest",
     "Approval",
     "ApprovalStore",
     "AssetPattern",
+    "Attestation",
+    "Attention",
     "AuditLog",
     "AuditRecord",
     "AuditVerificationError",
@@ -53,20 +95,30 @@ __all__ = [
     "ChaseOSApprovalStore",
     "Claim",
     "ContractStatus",
+    "ContractVersion",
     "Decision",
     "EvidenceArtifact",
     "EvidenceError",
     "EvidenceVault",
     "Finding",
     "Gate",
+    "GateId",
+    "GateResult",
+    "GateStatus",
     "LocalApprovalStore",
+    "ProgrammeRegistry",
     "ProvenanceError",
     "Reason",
+    "RegistryError",
+    "ReportDraft",
     "ScopeClassification",
     "ScopeContract",
+    "ScopeDiff",
     "Tag",
     "Taxonomy",
     "TransitionError",
+    "ValidationReport",
     "VaultLocationError",
     "__version__",
+    "validate",
 ]

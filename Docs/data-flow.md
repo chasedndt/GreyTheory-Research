@@ -63,7 +63,7 @@ Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of w
 
 **No lane-to-target path that bypasses the gate.** There is no code path in `greytheory/` that opens a socket, and CI fails the build if a network import appears there. When lanes are built they will live outside this package and will take a `Decision` as a required argument.
 
-**No Grapevine-to-Plane-2 path.** Intelligence flows into the programme record and the hypothesis queue. It cannot reach a collector, cannot influence a gate decision, and cannot be promoted to canonical scope without human review.
+**No intelligence-to-Plane-2 path.** When Scope Watch is built (`roadmap.md` Phase 5) it will flow into the programme record and the hypothesis queue only. It will not reach a collector, will not influence a gate decision, and will not be promoted to canonical scope without human review.
 
 ## Data retention
 

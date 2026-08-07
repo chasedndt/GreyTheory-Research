@@ -13,13 +13,14 @@ Tracked unknowns. Each has an owner and a resolution condition. Nothing here may
 | R5 | README vs scope-policy contradiction on automatic probing | `scope-policy.md` wins; README corrected. |
 | R6 (was O2) | Does ChaseOS already own approval / audit / graph layers? | **Yes, all three.** GreyTheory reads ChaseOS approvals where present and builds no graph. Full table in `chaseos-reconciliation.md`. |
 | R7 (was O3) | Where does raw evidence live? | Outside every git working tree, enforced by a hard guard. Standalone default is the platform user-data directory; `CHASEOS_VAULT_ROOT` is an optional integration. See `evidence-policy.md`. |
+| R9 (was O1) | What is Grapevine AI? | **Cut.** It came from a planning document that stated it had never seen the implementation, and none was found. The useful capability is restated as Scope Watch in `roadmap.md` Phase 5. |
+| R10 | Is GreyTheory a governance product or a research engine? | **A research engine.** It governs the operator's own research. Governance offerings for other people's agents are derivative and separate. `definition.md` §1. |
 | R8 | Is GreyTheory standalone or ChaseOS-dependent? | **Standalone, first-class.** Apache-2.0, zero runtime dependencies, fully functional with no ChaseOS present. ChaseOS integration is an adapter, never a requirement. |
 
 ## Open — blocking
 
 | # | Question | Why it blocks | Resolution condition |
 |---|---|---|---|
-| O1 | What does Grapevine AI actually implement today? | The adapter contract in `definition.md` §5 is an interface, not a description. Building against it risks duplicating or contradicting a real system. | Inspect the real Grapevine AI repo/docs and produce a LIVE / PARTIAL / PLANNED / ABSENT / CONFLICTING table. |
 | O9 | Should ChaseOS's run audit be made tamper-evident? | Not blocking GreyTheory, but `runtime/operator_surface/audit.py` writes editable per-run JSON. For a system that must prove authority after the fact, that is the weak link. | Operator decision on whether to port GreyTheory's hash chain into ChaseOS. ~40 lines, no schema change. |
 | O10 | Dashboard panels and tabs | Operator will define these. The read model should be shaped to serve them rather than retrofitted. | Operator specification of panels; then a query layer over audit, contracts, evidence manifests and findings. |
 

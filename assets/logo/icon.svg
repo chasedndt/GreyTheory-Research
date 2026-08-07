@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64"
+     role="img" aria-label="GreyTheory icon">
+  <title>GreyTheory</title>
+  <rect width="64" height="64" rx="14" fill="#0B0F19"/>
+  <g fill="none" stroke-linecap="round" stroke-width="4.2">
+    <path d="M14 22 H32" stroke="#E5E7EB" opacity="0.35"/>
+    <path d="M14 42 H32" stroke="#E5E7EB" opacity="0.35"/>
+    <path d="M14 32 H50" stroke="#E5E7EB"/>
+    <path d="M40 15 V49" stroke="#F59E0B"/>
+  </g>
+</svg>

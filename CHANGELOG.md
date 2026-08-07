@@ -19,7 +19,22 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - `greytheory.authority.approvals` — operator approvals **read from ChaseOS**, never stored here. `ChaseOSApprovalStore` reads OSRIL responses; `LocalApprovalStore` covers standalone use. Adds binding (one action, one target), expiry (8h default), and single-use enforcement via the audit log.
 - Gate integration: six new denial reasons for approvals, and an `approval_required_above` threshold independent of both the contract grant and the posture ceiling.
 
+- `greytheory.signal` — Plane 2. `LaneSpec`/`RawSignal`/`LaneContext` define what a collector is and is forbidden to be: a signal has no field above `contextual`, and every read goes through a root-bounded context built from a granted Decision. The runner is the only path by which a lane executes -- it refuses any lane declaring network I/O, overwrites any authority reference a lane sets with what the gate actually granted, and records skipped targets rather than swallowing them.
+- `signal.lanes.agent_config` — Lane 4, the differentiated one. Static agent/MCP config review: ungated consequential tools, wildcard permissions, literal secrets (length recorded, value never), unrestricted egress, plaintext transport to non-loopback hosts, and the composite fetch-plus-ungated-action shape that no per-key scanner sees. Sends no prompts, invokes no model.
+- `signal.lanes.exposure` — Lane 2, over a local tree. Known credential formats, high-entropy assignments (placeholders and env references excluded), VCS metadata, backups and source maps. Records format, length and a short digest; never the value. Titles say "present in tree", never "exposed" — presence is not reachability, and a directory cannot know what a web root serves. Files above 2 MiB and non-text suffixes are skipped.
+- `signal.lanes.dependency_manifest` — Lane 1. Manifest versions against a local advisory file. Titles say "matches advisory", never "is vulnerable".
+- `fixtures/lab/` — a deliberately misconfigured agent fixture and a clean one, so the lane's claims are testable in both directions.
+- `greytheory.dashboard` — read model plus text, HTML and JSON renderers. Absent data reports UNKNOWN, never zero: "0 out-of-scope attempts" and "nothing is being recorded" must not look the same. The HTML is self-contained -- no scripts, no external resources. One next action, never six.
+- `greytheory.ledger` — triage and earnings. Sessions of every kind, triage outcomes keeping the platform's own wording alongside the canonical one, payouts and expenses in `Decimal`. Effective hourly rate always divides by total tracked hours; `forecast()` raises below 100h / 20 sessions / 5 submissions / 5 closed outcomes and names what is missing; mixed currencies are excluded and reported, never summed. Months with no payout stay in the distribution. Refuses to sit inside a git working tree.
+- `greytheory.registry` — the programme registry. Versioned contracts, verbatim source snapshots, scope diffing, and an attention queue (blocked / awaiting review / stale). Changed source invalidates the human review; identical source carries it forward. Narrowing changes — removed assets, new exclusions, new prohibitions, reduced authority — are called out separately from widening ones. Refuses to store a programme marked `confidential` inside a git working tree.
+- `greytheory.cli` — `programme register | review | status | diff`.
+- `greytheory.validation` — gates B–F. Deterministic gates (evidence, report quality) re-derive from artifacts every run; attested gates (reproducibility, impact, duplicate risk) require a recorded human statement. An unattested gate is `NOT_ASSESSED`, not `FAIL`. Gate E rejects claims that duplicate risk is eliminated.
+- `greytheory.report` — report drafts with enforced structure, placeholder detection, absolute-claim warnings, and markdown rendering.
 - `greytheory.evidence` — the evidence vault. Raw/redacted split, SHA-256 on both, write-once raw, manifests per finding, integrity verification, and redacted-only all-or-nothing export. Refuses to initialise inside a git working tree.
+
+### Added — brand
+
+- `assets/` — mark, mono mark, app icon, wordmark, favicon, GitHub social preview and README banner, plus `render.py` so the raster files are drawn from the same geometry as the SVGs and cannot drift. The mark is the gate: three paths approach, two stop, one passes. Amber is authority and appears nowhere else in the mark.
 
 ### Added — licensing
 
@@ -28,13 +43,18 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 ### Added — documentation
 
 - `Docs/definition.md` — canonical definition. Three planes, six invariants, capability register, decision log.
+- `Docs/system-overview.md` — the whole architecture in one document, written at the point the path runs end to end.
 - `Docs/evidence-policy.md` — answers O3. Root resolution order, the repository guard, the rules the vault enforces, and retention.
 - `Docs/chaseos-reconciliation.md` — answers O2. ChaseOS owns approvals, audit and graph; GreyTheory imports rather than duplicates. Records one divergence worth acting on: ChaseOS run audits are not tamper-evident.
-- `Docs/diagrams.md` — architecture, gate flow, compilation sequence, finding lifecycle, provenance, authority levels.
+- `Docs/diagrams.md` — ten diagrams: architecture, gate flow, compilation, finding lifecycle, provenance, authority levels, approvals, approval sources, evidence, evidence root resolution, validation gates, and the whole path.
 - `Docs/README.md` — documentation map, including the authority order between documents.
 - `SECURITY.md`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, issue and pull request templates, this changelog, CI workflow.
 
 ### Changed
+
+- **Cut Grapevine AI.** The name came from a planning document which stated its implementation "was not available in the source context used to create this file", and no implementation was found. Building an interface against a system nobody has seen is how a guess hardens into a fact. The useful capability -- noticing that a programme's source changed -- is restated as **Scope Watch** under our own name in `roadmap.md` Phase 5. Half of it already exists offline: the registry detects drift and invalidates the human review on re-registration.
+- **Purpose restated explicitly.** GreyTheory is a bug bounty and authorised security research engine; the Authority Plane governs the operator's own research. The Authority Plane's mechanisms are reusable, but that is an observation about the code, not a change of purpose -- governance offerings for other people's agents are derivative products with separate scope. `definition.md` §1 now says so, so it cannot drift again.
+- `Docs/roadmap.md` rewritten. The prior version predated all code. Nine phases through real-programme handling, advisory sourcing, curriculum, Scope Watch, the posture-ceiling decision, network collectors and first submission -- plus what is deliberately not on it.
 
 - **Reframed the system.** GreyTheory is a control plane whose root is authority; the four lanes are pluggable signal collectors, not the product.
 - `README.md` — added a capability register distinguishing live from designed from aspirational, and corrected the design constraint that authorised automatic HTTP probing while `Docs/scope-policy.md` prohibited all external interaction.
@@ -45,7 +65,6 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ### Known gaps
 
-- Grapevine AI integration is an interface contract only; the real implementation has not been inspected (open question O1). No `grapevine` directory was found under `Documents/Projects`.
 - ChaseOS run audits are not tamper-evident; porting the hash chain across is proposed but not decided (O9).
-- Dashboard panels not yet specified (O10). The read model should be shaped to serve them rather than retrofitted.
-- No lane is implemented. The system currently detects nothing — what works is the part that decides whether anything may run.
+- Lane 3 (web) is not implemented, and no collector performs network I/O. The three implemented lanes read local files only; anything touching a target needs the operating posture ceiling raised above `LOCAL_FIXTURE`, which is an explicit operator decision.
+- The curriculum and skill graph are not built.

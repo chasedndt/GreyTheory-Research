@@ -49,5 +49,5 @@ This is logged as an internal trust-engineering transfer, exactly the Mission B 
 
 ## Still open
 
-- **O1** — Grapevine AI implementation not yet inspected. No `grapevine` directory was found under `Documents/Projects`; it may live elsewhere or not exist as code.
+- ~~O1 — Grapevine AI~~ **Cut.** No implementation was found and the source document admitted it had never seen one. Restated as Scope Watch in `roadmap.md` Phase 5.
 - **O3** — evidence storage location. ChaseOS uses `07_LOGS/` and a vault-root convention (`CHASEOS_VAULT_ROOT`, or the nearest ancestor containing `CLAUDE.md`). GreyTheory should probably follow the same convention for raw evidence rather than inventing a path.

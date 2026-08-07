@@ -27,6 +27,24 @@ GreyTheory AI takes a written authorisation, compiles it into a machine-checkabl
 - Not an autonomous exploitation engine.
 - Not a system that decides what is legal, in scope, valid, or rewarded. Those are decisions made by humans and by programmes.
 - Not a source of income projections. Economics are measured, never forecast from other people's numbers.
+- **Not a governance product for other people's systems.** See below.
+
+### What it is for, and what it governs
+
+**GreyTheory is a bug bounty and authorised security research engine.** That is the purpose. It is not a secondary reading and it does not drift.
+
+The question "a control plane governing *what*?" has one answer: **it governs the operator's own research activity.** What may be tested, under whose authorisation, at what authority level, with what evidence, and whether the result may leave. The Authority Plane is not a general-purpose permission system that happens to be pointed at bug bounty — it is the part of a research engine that stops the research becoming an incident.
+
+This needs stating because the repository contained an ambiguity before any code was written. `product-boundary-map.md` lists product surfaces — an Agent Authority Audit, a Runtime Safety Pack — that would govern *someone else's* agents. Those are **derivative offerings**: things that could later be built from the same parts, sold separately, under their own scope. They are downstream of this system, not a description of it.
+
+The distinction matters practically:
+
+| | Governs | Status |
+|---|---|---|
+| **GreyTheory** | The operator's own research | This system. Built. |
+| Agent Authority Audit, Runtime Safety Pack | A client's agent deployment | Derivative products. Not built, not specified, not this. |
+
+The mechanisms here — expiring scope contracts, bound single-use approvals, tamper-evident audit, an evidence vault that gates export — are reusable, and that reusability is worth something later. But *reusable* is an observation about the code. It is not a change of purpose, and it must not be allowed to become one. A component being general-purpose is not a reason to redefine the system around it.
 
 ---
 
@@ -68,7 +86,9 @@ Rules:
 - **Derived assets are not inherited.** An asset discovered *through* an in-scope asset is out of scope until independently satisfied.
 - Every action below records an authority reference. An action with no authority reference is a defect, not a warning.
 
-Plane 1 requires no network access to build, test, or demonstrate. It is also the commercial surface — the Agent Authority Audit, the Disclosure Kit and the Runtime Safety Pack in `Docs/product-boundary-map.md` are all Plane 1 artifacts.
+Plane 1 requires no network access to build, test, or demonstrate — which is why it was built first, and why it works today under a local-only posture.
+
+Its mechanisms would also underpin the derivative products in `Docs/product-boundary-map.md`. That is a note about reuse, not about what this plane is for: here it governs the operator's own research, and nothing else.
 
 ### Plane 2 — Signal (pluggable)
 
@@ -90,7 +110,7 @@ Consequences of this framing:
 
 - Lanes are replaceable. Swapping `nuclei` for something else changes a plugin, not the system.
 - A lane cannot promote its own output past `contextual` in the taxonomy. Promotion is Plane 3's job, under Plane 1's authority.
-- Lane 4 (AI-App) is the differentiated lane. It is the only one where agent-harness and governance experience is an advantage rather than table stakes, and it maps directly onto the internal ChaseOS hardening work.
+- Lane 4 (AI-App) is the differentiated lane. It is the only one where agent-harness experience is an advantage rather than table stakes, and it maps directly onto the internal ChaseOS hardening work.
 
 ### Plane 3 — Judgement (the operator loop)
 
@@ -161,21 +181,23 @@ Gate conditions between `candidate` and `report_ready` are the handover's Gates 
 
 ---
 
-## 5. Grapevine AI boundary
+## 5. Scope Watch — external intelligence, when it is built
 
-Grapevine AI attaches to **Plane 1 and Plane 3 only**.
+*Formerly specified as an integration with a system called "Grapevine AI". That name came from a planning document which admitted, in its own words, that the system's implementation "was not available in the source context used to create this file". No such implementation was found. Building an interface against a system nobody has seen is how a guess hardens into a fact, so the name is retired and the capability is restated here on our own terms. See `roadmap.md` Phase 5.*
+
+**Scope Watch** is a future component that watches programme sources for change. It is defined now so its boundary is fixed before anything is built against it.
 
 | Permitted | Prohibited |
 |---|---|
-| Programme discovery and change detection | Any connection to Plane 2 |
-| Vulnerability-class and technology trend signal | Launching or influencing tests |
-| Source and write-up collection | Holding or using credentials |
-| Freshness monitoring on scope sources | Submitting, disclosing, or contacting anyone |
-| Ranking opportunities | Promoting a signal to canonical without human review |
+| Fetching programme pages the operator has registered | Any connection to Plane 2 |
+| Detecting that source text has changed since the last snapshot | Launching or influencing tests |
+| Collecting published advisories and authorised write-ups | Holding or using credentials |
+| Flagging a contract as due for re-verification | Submitting, disclosing, or contacting anyone |
+| Ranking opportunities for the operator's attention | Promoting anything to canonical without human review |
 
-Every Grapevine output is `authority_status: INFORMATION_ONLY` and `canonical_promotion: REQUIRES_REVIEW`. A Grapevine signal may *trigger* a scope recompile; it may never *be* the scope.
+Every Scope Watch output is information-only and requires review before it changes anything. It may *trigger* a recompile; it may never *be* the scope.
 
-**Unreconciled:** the real Grapevine AI implementation has not been inspected from this repo. This section is an interface contract, not a description of existing behaviour. Reconciliation is tracked in `Docs/open-questions.md`.
+Half of this already exists without any network access: the registry detects drift the moment a programme is re-registered, and invalidates the human review when the source text differs. What Scope Watch adds is only the fetching — noticing without being told. That is a small component under a clear name, not an integration with an unknown system.
 
 ---
 
@@ -195,17 +217,18 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Finding schema + lifecycle | 1/3 | **Live** — `greytheory/findings.py`, I5 enforced at the internal/external seam |
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
-| Programme registry | 1 | **Designed** |
-| Lane 1 Known-Vuln | 2 | **Aspirational** — no implementation |
-| Lane 2 Exposure | 2 | **Aspirational** — no implementation |
-| Lane 3 Web Vuln | 2 | **Aspirational** — no implementation |
+| Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
+| Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
+| Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, offline manifest vs advisories |
+| Lane 4 AI-App | 2 | **Live (static)** — `lane4_agent_config`, offline config review |
 | Lane 4 AI-App | 2 | **Aspirational** — architected only |
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |
-| Validation gates B–F | 3 | **Designed** — next build slice |
-| Report studio | 3 | **Aspirational** |
+| Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
+| Dashboard | 1/3 | **Live** — `greytheory/dashboard.py`, absent data reports unknown, never zero |
+| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
 | Curriculum / skill graph | 3 | **Aspirational** |
-| Earnings ledger | 3 | **Aspirational** |
-| Grapevine adapter | 1/3 | **Unreconciled** — interface defined, implementation not inspected |
+| Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
+| Scope Watch | 1/3 | **Roadmap** — Phase 5, needs the posture ceiling raised |
 
 Definitions: **Live** = exists and is used. **Designed** = specified to build-ready detail, not built. **Aspirational** = intended, not specified to build-ready detail. **Unreconciled** = depends on a system not yet inspected.
 
@@ -245,7 +268,7 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D1 | Authority Plane is the product; lanes are plugins | Detection is commodity; authority, provenance and judgement are the defensible layer, and the only one buildable with zero external interaction |
 | D2 | One finding entity, one lifecycle | The two prior schemas described the same object; a translation layer would have been pure defect surface |
 | D3 | Provenance triple is mandatory everywhere | Makes LLM use safe by construction rather than by convention |
-| D4 | Grapevine is Plane 1/3 only, information-only | Prevents an intelligence feed from becoming an unaudited authority source |
+| D4 | External intelligence is Plane 1/3 only, information-only | Prevents a feed from becoming an unaudited authority source. Applies to Scope Watch when built. |
 | D5 | Local-only until Plane 1 exists | Building the guardrails after operating without them inverts the entire thesis |
 | D6 | Python, local-first, tested | Fastest path to demonstrable proof with no network surface |
 | D7 | `Docs/architecture.md` superseded, retained | Historical design value; removing it would lose the lane detail |
@@ -256,3 +279,19 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D12 | **Standalone is first-class; ChaseOS is an adapter** | Apache-2.0 means people will run this without ChaseOS. Zero runtime dependencies, no required external system. Every integration point ships a self-sufficient default alongside it. |
 | D13 | Raw evidence lives outside every git working tree, enforced by a guard | A `.gitignore` entry is a convention; committed-and-pushed raw evidence is unrecoverable. This needed to be a wall. |
 | D14 | Export is all-or-nothing and redacted-only | Partial export is how raw evidence escapes — the operator fills the gap by hand from the wrong directory. |
+| D15 | Validation gates split deterministic / attested | Judgement cannot be machine-decided, so it demands a named human statement rather than a model's opinion dressed as a check. |
+| D16 | An unattested gate is `NOT_ASSESSED`, not `FAIL` | "Nobody looked" and "someone looked and it did not hold" call for different actions. Both block. |
+| D17 | Gate E rejects claims of duplicate certainty | Duplicate risk can be reduced and estimated, never eliminated. Believing otherwise costs more than the duplicate. |
+| D18 | Changed programme source invalidates the human review | Review attaches to the text a person actually read, not to the programme in the abstract. This is the structural defence against scope amnesia. |
+| D20 | Effective hourly rate always divides by total tracked hours | There is no parameter to change it. Dividing by only the productive hours is how bug bounty starts looking like a good hourly rate. |
+| D21 | Forecasting is refused below 100h / 20 sessions / 5 submissions / 5 closed outcomes | A forecast from three data points has a confidence interval wide enough to contain any belief you brought to it. |
+| D23 | A lane may not promote past `contextual` | `RawSignal` has no field for a higher level. Once a collector can conclude, everything downstream is downstream of its optimism. |
+| D24 | Collectors reach nothing except through a granted Decision and a rooted `LaneContext` | Enforcement, not convention: a lane with a traversal bug fails loudly rather than quietly widening its own scope. |
+| D25 | The runner refuses any lane declaring network I/O | Keeps the core offline by construction; a collector wanting otherwise must move out of the package rather than argue. |
+| D29 | **Purpose is bug bounty and authorised research. It governs the operator's own work.** | Corrects a drift: the Authority Plane's mechanisms are reusable, which is an observation about code, not a change of purpose. Governance products for other people's agents are derivative, downstream and separate. |
+| D30 | Grapevine cut; the capability restated as Scope Watch | The name came from a planning document that admitted it had never seen the implementation. Building an interface against an unseen system is how a guess hardens into a fact. |
+| D27 | A collector records the shape of a secret, never its value | A lane that copies credentials into the evidence trail creates the problem it was looking for, at scale, into a store that outlives the engagement. |
+| D28 | Presence is reported, never reachability | A key in a tree is present; whether it is served depends on the web root, the branch and the build, none of which a directory knows. |
+| D26 | Absent dashboard data reports UNKNOWN, never zero | "0 out-of-scope attempts" and "nothing is being recorded" look identical on a screen and mean opposite things. |
+| D22 | Mixed currencies are never silently summed | A total that quietly adds dollars to pounds is worse than no total. |
+| D19 | Narrowing scope changes are called out separately | A widened scope is an opportunity; a narrowed one means work already done may have been against an asset that is no longer authorised. |
