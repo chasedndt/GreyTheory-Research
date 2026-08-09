@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "id": "direct-mcp-python-sdk-2026-08-09",
+  "programme_id": "direct-mcp-python-sdk-public",
+  "retrieved_at": "2026-08-09T12:06:21Z",
+  "programme_record": "programme.json",
+  "sources": [
+    {
+      "id": "mcp-python-sdk-security-policy",
+      "kind": "programme_policy",
+      "capture_mode": "verbatim",
+      "url": "https://github.com/modelcontextprotocol/python-sdk/blob/d82ed88eb558e80079c32b45a83a774cf1b3db7b/SECURITY.md",
+      "retrieved_at": "2026-08-09T12:06:21Z",
+      "last_modified_at": "2026-07-29T13:54:45Z",
+      "path": "sources/SECURITY.md",
+      "sha256": "sha256:c0e53bd713720169a6ec499e1e4f1df21656eb8a1b260e67fda11ba3e4f90ad6"
+    }
+  ],
+  "precedence": [
+    "mcp-python-sdk-security-policy"
+  ],
+  "field_sources": {
+    "in_scope": ["mcp-python-sdk-security-policy"],
+    "out_of_scope": ["mcp-python-sdk-security-policy"],
+    "prohibited_techniques": ["mcp-python-sdk-security-policy"],
+    "max_authority": ["mcp-python-sdk-security-policy"],
+    "policy_summary": ["mcp-python-sdk-security-policy"]
+  },
+  "derivations": [
+    {
+      "id": "mcp-python-sdk-supported-versions",
+      "kind": "markdown_supported_versions_v1",
+      "source_id": "mcp-python-sdk-security-policy",
+      "target_fields": ["in_scope", "out_of_scope"]
+    }
+  ],
+  "human_resolutions": []
+}

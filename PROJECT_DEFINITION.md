@@ -114,7 +114,8 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 - one real public HackerOne/GitLab source bundle compiles cleanly to `PENDING_REVIEW` from three saved sources and the official 44-row scope export;
 - one real public Bugcrowd/YNAB source bundle derives all rendered target-group rows but compiles to `BLOCKED` because two policy conflicts remain explicitly human-owned;
-- Milestone 2 still requires one direct-VDP bundle before the programme compiler is proven across all three source shapes;
+- one real independently maintained `modelcontextprotocol/python-sdk` security policy compiles from an immutable verbatim source, deriving two supported release lines and one unsupported class exactly before reaching `PENDING_REVIEW`;
+- Milestone 2's three-source implementation proof is complete; individual bundle review and conflict states remain authoritative and unchanged;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
 - deterministic claim promotion still accepts a caller-supplied falsifiability Boolean;
 - the dashboard is a read model, not the planned standalone workbench.
@@ -132,7 +133,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestone 1 — Canonical project foundation — is complete. Milestone 2 — compiling three real public programme source bundles without contacting targets — is current. The first research-domain implementation follows in Milestone 3 and culminates in a local two-account authorisation vertical slice in Milestone 4.
+Milestones 1 and 2 are complete at their documented implementation/evidence exit conditions. Milestone 3 — the structured research domain — is current and culminates in a local two-account authorisation vertical slice in Milestone 4.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

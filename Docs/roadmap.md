@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 2 — Real programme compiler
+> **Current milestone:** 3 — Research domain
 >
-> **Next milestone:** 3 — Research domain
+> **Next milestone:** 4 — First end-to-end local vertical slice
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,8 +14,8 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 386 tests passed after the second real programme-source bundle slice.
-- Two saved bundles compile offline: HackerOne/GitLab reaches `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions. The direct-VDP proof remains.
+- 397 tests passed after the third real programme-source bundle slice.
+- Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
 ## Milestone 1 — Canonical project foundation *(COMPLETE 2026-08-09)*
@@ -28,13 +28,13 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 **Exit:** nobody can confuse LIVE, PARTIAL, DESIGNED, PLANNED, or HISTORICAL capability, or describe GreyTheory as an autonomous submitter.
 
-## Milestone 2 — Real programme compiler *(current)*
+## Milestone 2 — Real programme compiler *(COMPLETE 2026-08-09)*
 
 Register saved public sources for:
 
 - [x] one HackerOne programme — GitLab, captured 2026-08-09;
 - [x] one Bugcrowd programme — YNAB, captured 2026-08-09; target groups derive exactly and policy conflicts block;
-- [ ] one direct VDP or independently hosted policy.
+- [x] one direct VDP or independently hosted policy — `modelcontextprotocol/python-sdk` `SECURITY.md` at immutable commit `d82ed88e`, captured 2026-08-09.
 
 Implement `ProgrammeSourceBundle` from observed needs: platform defaults, programme rules, scope tables, attachments/linked policies, retrieval times, source hashes, precedence, and human conflict resolutions.
 
@@ -45,17 +45,18 @@ Implemented from the first bundle:
 - [x] high-to-low precedence and per-authority-field source citations;
 - [x] executable derivation check proving the 44 HackerOne CSV rows match the 19/25 normalised scope record;
 - [x] executable derivation check proving the 3/5 Bugcrowd target-group rows match the normalised scope record;
+- [x] executable derivation check proving the direct policy's Markdown table matches the 2/1 supported-version record;
 - [x] accepted/pending/rejected human-resolution records, with unresolved or unattributed decisions blocking compilation;
 - [x] whole-bundle semantic snapshot/hash and registry review invalidation when any source or governing metadata changes;
 - [x] offline CLI registration and audit evidence;
 - [x] prove operator-extracted Bugcrowd target groups and real policy conflicts without granting guessed scope;
-- [ ] prove the schema against a direct-VDP source shape.
+- [x] prove the schema against a direct-policy source shape without inventing platform precedence.
 
 **No target contact.** Compilation is offline.
 
 **Exit:** all three compile without guessed authority; conflicts are explicit; verification records the entire reviewed bundle; any source change invalidates review; ambiguity never grants permission.
 
-## Milestone 3 — Research domain
+## Milestone 3 — Research domain *(current)*
 
 Implement `ResearchWorkspace`, `ResearchSession`, `TargetAsset`, `AssetRelationship`, `ResearchIdentity`, `Hypothesis`, `ExperimentPlan`, `ActionRequest`, `ActionReceipt`, and `Lesson`.
 

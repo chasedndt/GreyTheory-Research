@@ -39,6 +39,13 @@ BUGCROWD_BUNDLE = (
     / "public"
     / "bugcrowd-ynab-2026-08-09"
 )
+DIRECT_VDP_BUNDLE = (
+    Path(__file__).resolve().parent.parent
+    / "fixtures"
+    / "programmes"
+    / "public"
+    / "direct-mcp-python-sdk-2026-08-09"
+)
 NOW = datetime(2026, 8, 9, 10, 30, tzinfo=timezone.utc)
 
 
@@ -129,7 +136,9 @@ class TestRealPublicBundle:
             is ScopeClassification.OUT_OF_SCOPE
         )
 
-    @pytest.mark.parametrize("bundle_path", [REAL_BUNDLE, BUGCROWD_BUNDLE])
+    @pytest.mark.parametrize(
+        "bundle_path", [REAL_BUNDLE, BUGCROWD_BUNDLE, DIRECT_VDP_BUNDLE]
+    )
     def test_compilation_performs_no_network_io(self, monkeypatch, bundle_path):
         def forbidden(*_args, **_kwargs):
             raise AssertionError("programme bundle compilation attempted network I/O")
@@ -280,6 +289,170 @@ class TestRealBugcrowdBundle:
         assert len(snapshot["human_resolutions"]) == 2
         assert audit.records()[-1].detail["bundle_id"] == (
             "bugcrowd-ynab-2026-08-09"
+        )
+        audit.verify()
+
+
+class TestRealDirectVDPBundle:
+    def test_preserves_the_verbatim_commit_policy_and_derivation(self):
+        bundle = ProgrammeSourceBundle.load(DIRECT_VDP_BUNDLE)
+
+        assert bundle.id == "direct-mcp-python-sdk-2026-08-09"
+        assert len(bundle.sources) == 1
+        assert bundle.sources[0].kind is SourceKind.PROGRAMME_POLICY
+        assert bundle.sources[0].capture_mode is CaptureMode.VERBATIM
+        assert bundle.sources[0].intact
+        assert bundle.sources[0].actual_hash == (
+            "sha256:c0e53bd713720169a6ec499e1e4f1df21656eb8a1b260e67fda11ba3e4f90ad6"
+        )
+        assert bundle.derivations[0].kind is (
+            DerivationKind.MARKDOWN_SUPPORTED_VERSIONS_V1
+        )
+        assert bundle.human_resolutions == ()
+
+    def test_compiles_clean_but_never_self_verifies(self):
+        result = compile_source_bundle(DIRECT_VDP_BUNDLE, now=NOW)
+        contract = result.contract
+
+        assert not result.blocked
+        assert result.ambiguities == []
+        assert contract.status is ContractStatus.PENDING_REVIEW
+        assert not contract.human_reviewed
+        assert contract.max_authority == "LOCAL_FIXTURE"
+        assert len(contract.assets_in_scope) == 2
+        assert len(contract.assets_out_of_scope) == 1
+        assert (
+            contract.classify("2.x (newest release)")
+            is ScopeClassification.IN_SCOPE
+        )
+        assert (
+            contract.classify("1.x newest release (`v1.x` branch)")
+            is ScopeClassification.IN_SCOPE
+        )
+        assert (
+            contract.classify("older 1.x releases, and all pre-releases")
+            is ScopeClassification.OUT_OF_SCOPE
+        )
+        assert contract.classify("0.x") is ScopeClassification.UNRESOLVED
+
+    def test_supported_version_rows_are_executable_derivation_evidence(
+        self, tmp_path
+    ):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        programme_path = bundle / "programme.json"
+        programme = json.loads(programme_path.read_text(encoding="utf-8"))
+        programme["in_scope"] = programme["in_scope"][1:]
+        programme_path.write_text(
+            json.dumps(programme, indent=2) + "\n", encoding="utf-8"
+        )
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("record omits in_scope" in item for item in result.ambiguities)
+
+    def test_recaptured_policy_requires_record_update(self, tmp_path):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        source = bundle / "sources" / "SECURITY.md"
+        text = source.read_text(encoding="utf-8")
+        marker = (
+            "| older 1.x releases, and all pre-releases | unsupported             "
+            "| upgrade to the newest 1.x release or to 2.x |"
+        )
+        source.write_text(
+            text.replace(
+                marker,
+                marker
+                + "\n| 3.x (preview support)                    | preview                 "
+                "| security fixes only                         |",
+            ),
+            encoding="utf-8",
+        )
+        update_source_hash(bundle, "mcp-python-sdk-security-policy")
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("record omits in_scope" in item for item in result.ambiguities)
+
+    def test_unclassified_support_semantics_fail_closed(self, tmp_path):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        source = bundle / "sources" / "SECURITY.md"
+        source.write_text(
+            source.read_text(encoding="utf-8").replace(
+                "critical bug fixes and security fixes",
+                "maintenance only",
+            ),
+            encoding="utf-8",
+        )
+        update_source_hash(bundle, "mcp-python-sdk-security-policy")
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any(
+            "unclassified support semantics" in item for item in result.ambiguities
+        )
+
+    def test_malformed_supported_versions_header_fails_closed(self, tmp_path):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        source = bundle / "sources" / "SECURITY.md"
+        source.write_text(
+            source.read_text(encoding="utf-8").replace(
+                "| Version                                  | Line",
+                "| Release                                  | Line",
+            ),
+            encoding="utf-8",
+        )
+        update_source_hash(bundle, "mcp-python-sdk-security-policy")
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("Version, Line, Support" in item for item in result.ambiguities)
+
+    def test_derivation_requires_a_programme_policy_source(self, tmp_path):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        manifest = read_manifest(bundle)
+        manifest["sources"][0]["kind"] = "scope_table"
+        write_manifest(bundle, manifest)
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any(
+            "source must have kind programme_policy" in item
+            for item in result.ambiguities
+        )
+
+    def test_derivation_requires_a_verbatim_source(self, tmp_path):
+        bundle = copy_bundle(tmp_path, DIRECT_VDP_BUNDLE)
+        manifest = read_manifest(bundle)
+        manifest["sources"][0]["capture_mode"] = "operator_extract"
+        write_manifest(bundle, manifest)
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any(
+            "source must have capture_mode verbatim" in item
+            for item in result.ambiguities
+        )
+
+    def test_registry_retains_the_direct_policy_and_audit(self, tmp_path):
+        audit = AuditLog(tmp_path / "audit.jsonl")
+        registry = ProgrammeRegistry(
+            tmp_path / "contracts", audit=audit, clock=lambda: NOW
+        )
+
+        result = registry.register_bundle(DIRECT_VDP_BUNDLE)
+        snapshot = json.loads(registry.source("direct-mcp-python-sdk-public", 1))
+
+        assert result.version.contract.status is ContractStatus.PENDING_REVIEW
+        assert len(snapshot["sources"]) == 1
+        assert snapshot["sources"][0]["content"].startswith("# Security Policy")
+        assert audit.records()[-1].detail["bundle_id"] == (
+            "direct-mcp-python-sdk-2026-08-09"
         )
         audit.verify()
 
@@ -561,3 +734,23 @@ def test_cli_registers_bugcrowd_bundle_as_blocked_evidence(tmp_path, capsys):
     assert "2 ambiguity/ies" in output
     assert "owned-host-wildcard-vs-listed-targets" in output
     assert "production-api-vs-production-exclusion" in output
+
+
+def test_cli_registers_direct_vdp_bundle_offline(tmp_path, capsys):
+    exit_code = main(
+        [
+            "--audit",
+            str(tmp_path / "audit.jsonl"),
+            "programme",
+            "--registry",
+            str(tmp_path / "contracts"),
+            "register-bundle",
+            str(DIRECT_VDP_BUNDLE),
+        ]
+    )
+
+    assert exit_code == 0
+    output = capsys.readouterr().out
+    assert "direct-mcp-python-sdk-public" in output
+    assert "PENDING_REVIEW" in output
+    assert "LOCAL_FIXTURE" in output

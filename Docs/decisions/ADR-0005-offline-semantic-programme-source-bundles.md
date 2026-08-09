@@ -31,4 +31,5 @@ GreyTheory represents one reviewed authority input as an offline `ProgrammeSourc
 - Whitespace-only changes to manifest JSON do not invalidate review, while semantic changes do.
 - Public source snapshots can live in the repository; confidential programme sources remain protected by the existing registry guard.
 - The Bugcrowd/YNAB proof preserves two rendered target groups as an operator extract, derives all 3/5 rows, and blocks on two real programme-prose conflicts instead of choosing authority for the human.
-- The schema remains PARTIAL until one direct-VDP bundle proves it against an independently hosted source shape.
+- The direct-policy/MCP Python SDK proof preserves an immutable verbatim `SECURITY.md`, derives its two supported rows and one unsupported row from the embedded Markdown table, and requires no invented platform precedence.
+- The three-source implementation proof is complete. Each saved bundle still requires its own human review, and the unresolved YNAB conflicts remain blocking.

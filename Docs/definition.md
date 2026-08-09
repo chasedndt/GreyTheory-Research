@@ -219,7 +219,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
 | Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
-| Programme source bundles | 1 | **Partial** — `greytheory/authority/sources.py`; HackerOne/GitLab and blocked Bugcrowd/YNAB proofs live, direct-VDP proof remains |
+| Programme source bundles | 1 | **Live (offline)** — `greytheory/authority/sources.py`; HackerOne/GitLab, blocked Bugcrowd/YNAB, and direct-policy/MCP Python SDK source shapes verified |
 | Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
 | Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, ecosystem-aware, over imported OSV data |
 | Lane 2 Exposure | 2 | **Live (static)** — local-tree inspection; presence, never reachability |

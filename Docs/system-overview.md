@@ -163,7 +163,7 @@ Stated plainly, because the failure mode of an architecture document is implying
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
 - **No research workspace/domain implementation.** Workspaces, sessions, typed assets, controlled identities, hypotheses, experiments, and receipts are designed but not built.
 - **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
-- **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. HackerOne/GitLab and Bugcrowd/YNAB bundles exist; the latter is blocked on human policy decisions and the direct-VDP proof remains.
+- **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. All three Milestone 2 source shapes exist offline: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB remains blocked on human policy decisions.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 
 The capability truth in [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md#current-capability-truth) governs every public claim.

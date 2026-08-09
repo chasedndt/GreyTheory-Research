@@ -14,13 +14,13 @@ Tracked unknowns. No item is resolved by discussion alone; each names a resoluti
 | R6 | Where does raw evidence live? | Outside every repository, enforced by the evidence-vault guard. |
 | R7 | Dashboard state? | The dashboard read model and renderers are LIVE; the structured local workbench is PLANNED. |
 | R8 | Approval ownership? | Exactly one provider per deployment; local is default, ChaseOS optional. Migration is planned. |
+| R9 | Which direct-policy source completes Milestone 2? | The official `modelcontextprotocol/python-sdk` `SECURITY.md` at immutable commit `d82ed88e`; it is independently maintained and contains the observed scope table. |
+| R10 | Does the source model survive a direct policy with no platform target table? | Yes. One verbatim programme-policy source, one-item precedence, exact field citations, and a strict Markdown supported-version derivation compile cleanly to `PENDING_REVIEW`. |
 
 ## Open — current milestone
 
 | # | Question | Why it matters | Resolution condition |
 |---|---|---|---|
-| O1 | Which direct-VDP programme completes Milestone 2? GitLab and YNAB are the HackerOne and Bugcrowd proofs. | Real source shapes determine the compiler, not imagined fixtures. | One direct VDP selected from public sources. |
-| O2 | Does the implemented precedence/citation/resolution model survive a direct policy with no platform target table? | Bugcrowd proves the model can preserve operator-extracted groups and block genuine prose conflicts; a direct VDP may distribute authority differently. | A direct-VDP bundle compiles without guessed precedence or scope. |
 | O3 | Where should the domain package live? | It should not inflate the trust kernel or fragment the repo prematurely. | Five-object implementation spike reviewed against package boundaries. |
 
 ## Open — later milestones

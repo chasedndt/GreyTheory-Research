@@ -71,6 +71,7 @@ class ResolutionStatus(str, Enum):
 class DerivationKind(str, Enum):
     HACKERONE_SCOPE_CSV_V1 = "hackerone_scope_csv_v1"
     BUGCROWD_TARGET_GROUPS_JSON_V1 = "bugcrowd_target_groups_json_v1"
+    MARKDOWN_SUPPORTED_VERSIONS_V1 = "markdown_supported_versions_v1"
 
 
 def _parse_datetime(value: Any, *, label: str) -> datetime:
@@ -411,6 +412,131 @@ def _check_bugcrowd_target_groups_json(
     return issues
 
 
+def _check_markdown_supported_versions(
+    source: ProgrammeSource,
+    programme: dict[str, Any],
+    *,
+    derivation_id: str,
+) -> list[str]:
+    """Verify scope against an observed Markdown Supported Versions table."""
+
+    lines = source.content.splitlines()
+    heading_index = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if line.strip().casefold() == "## supported versions"
+        ),
+        None,
+    )
+    if heading_index is None:
+        return [f"derivation {derivation_id!r} has no Supported Versions heading"]
+
+    table_start = heading_index + 1
+    while table_start < len(lines) and not lines[table_start].strip():
+        table_start += 1
+    if table_start + 1 >= len(lines):
+        return [f"derivation {derivation_id!r} has no supported-version table"]
+
+    def cells(line: str) -> list[str]:
+        stripped = line.strip()
+        if not stripped.startswith("|") or not stripped.endswith("|"):
+            return []
+        return [cell.strip() for cell in stripped[1:-1].split("|")]
+
+    header = cells(lines[table_start])
+    if [cell.casefold() for cell in header] != ["version", "line", "support"]:
+        return [
+            f"derivation {derivation_id!r} table must have Version, Line, "
+            "Support columns"
+        ]
+    separator = cells(lines[table_start + 1])
+    if len(separator) != 3 or not all(
+        re.fullmatch(r":?-{3,}:?", cell.replace(" ", "")) for cell in separator
+    ):
+        return [f"derivation {derivation_id!r} has a malformed table separator"]
+
+    derived_in: set[tuple[str, str]] = set()
+    derived_out: set[tuple[str, str]] = set()
+    issues: list[str] = []
+    row_index = table_start + 2
+    row_number = 0
+    while row_index < len(lines) and lines[row_index].strip().startswith("|"):
+        row_number += 1
+        row = cells(lines[row_index])
+        row_index += 1
+        if len(row) != 3:
+            issues.append(
+                f"derivation {derivation_id!r} row {row_number} must have three cells"
+            )
+            continue
+        version, line_status, support = row
+        if not version or not line_status or not support:
+            issues.append(
+                f"derivation {derivation_id!r} row {row_number} has an empty cell"
+            )
+            continue
+
+        unsupported = line_status.casefold() == "unsupported"
+        security_supported = "security fix" in support.casefold()
+        if unsupported and security_supported:
+            issues.append(
+                f"derivation {derivation_id!r} row {row_number} conflicts on support"
+            )
+            continue
+        if unsupported:
+            destination = derived_out
+        elif security_supported:
+            destination = derived_in
+        else:
+            issues.append(
+                f"derivation {derivation_id!r} row {row_number} has unclassified "
+                "support semantics"
+            )
+            continue
+
+        pattern = ("exact", version)
+        if pattern in destination:
+            issues.append(
+                f"derivation {derivation_id!r} repeats target "
+                f"{pattern[0]}:{pattern[1]} in one scope class"
+            )
+        destination.add(pattern)
+
+    if row_number == 0:
+        issues.append(f"derivation {derivation_id!r} table contains no rows")
+    overlap = derived_in & derived_out
+    if overlap:
+        issues.append(
+            f"derivation {derivation_id!r} support rows disagree on scope: "
+            f"{_format_patterns(overlap)}"
+        )
+    if not derived_in:
+        issues.append(f"derivation {derivation_id!r} table has no supported versions")
+    if not derived_out:
+        issues.append(f"derivation {derivation_id!r} table has no unsupported versions")
+
+    actual_in = _programme_patterns(programme, "in_scope")
+    actual_out = _programme_patterns(programme, "out_of_scope")
+    for label, expected, actual in (
+        ("in_scope", derived_in, actual_in),
+        ("out_of_scope", derived_out, actual_out),
+    ):
+        missing = expected - actual
+        extra = actual - expected
+        if missing:
+            issues.append(
+                f"derivation {derivation_id!r} record omits {label}: "
+                f"{_format_patterns(missing)}"
+            )
+        if extra:
+            issues.append(
+                f"derivation {derivation_id!r} record adds uncited {label}: "
+                f"{_format_patterns(extra)}"
+            )
+    return issues
+
+
 @dataclass(frozen=True)
 class ProgrammeSourceBundle:
     id: str
@@ -615,10 +741,35 @@ class ProgrammeSourceBundle:
             derivations.append(derivation)
             if source_id in sources_by_id:
                 derivation_source = sources_by_id[source_id]
-                if derivation_source.kind is not SourceKind.SCOPE_TABLE:
+                expected_source_kind = {
+                    DerivationKind.HACKERONE_SCOPE_CSV_V1: SourceKind.SCOPE_TABLE,
+                    DerivationKind.BUGCROWD_TARGET_GROUPS_JSON_V1: (
+                        SourceKind.SCOPE_TABLE
+                    ),
+                    DerivationKind.MARKDOWN_SUPPORTED_VERSIONS_V1: (
+                        SourceKind.PROGRAMME_POLICY
+                    ),
+                }[kind]
+                expected_capture_mode = {
+                    DerivationKind.HACKERONE_SCOPE_CSV_V1: (
+                        CaptureMode.STRUCTURED_EXPORT
+                    ),
+                    DerivationKind.BUGCROWD_TARGET_GROUPS_JSON_V1: (
+                        CaptureMode.OPERATOR_EXTRACT
+                    ),
+                    DerivationKind.MARKDOWN_SUPPORTED_VERSIONS_V1: (
+                        CaptureMode.VERBATIM
+                    ),
+                }[kind]
+                if derivation_source.kind is not expected_source_kind:
                     ambiguities.append(
                         f"derivation {derivation_id!r} source must have kind "
-                        "scope_table"
+                        f"{expected_source_kind.value}"
+                    )
+                if derivation_source.capture_mode is not expected_capture_mode:
+                    ambiguities.append(
+                        f"derivation {derivation_id!r} source must have capture_mode "
+                        f"{expected_capture_mode.value}"
                     )
                 if set(target_fields) != {"in_scope", "out_of_scope"}:
                     ambiguities.append(
@@ -636,6 +787,14 @@ class ProgrammeSourceBundle:
                 elif kind is DerivationKind.BUGCROWD_TARGET_GROUPS_JSON_V1:
                     ambiguities.extend(
                         _check_bugcrowd_target_groups_json(
+                            derivation_source,
+                            programme,
+                            derivation_id=derivation_id,
+                        )
+                    )
+                elif kind is DerivationKind.MARKDOWN_SUPPORTED_VERSIONS_V1:
+                    ambiguities.extend(
+                        _check_markdown_supported_versions(
                             derivation_source,
                             programme,
                             derivation_id=derivation_id,

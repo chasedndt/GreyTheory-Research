@@ -66,7 +66,7 @@ The smallest safe procedure capable of supporting or refuting a hypothesis. Cont
 
 ## Following objects
 
-- `ProgrammeSourceBundle` (**PARTIAL / IMPLEMENTED**): all saved policy sources, capture modes, hashes, retrieval times, precedence, field citations, and human conflict resolutions compiled as one authority input. HackerOne/GitLab compiles cleanly; Bugcrowd/YNAB proves operator-extracted target groups and fail-closed human conflicts; the direct-VDP proof remains.
+- `ProgrammeSourceBundle` (**IMPLEMENTED / VERIFIED OFFLINE**): all saved policy sources, capture modes, hashes, retrieval times, precedence, field citations, and human conflict resolutions compiled as one authority input. HackerOne/GitLab proves a structured export, Bugcrowd/YNAB proves operator-extracted target groups and fail-closed human conflicts, and the MCP Python SDK proves an immutable verbatim policy with an embedded Markdown support table.
 - `ResearchIdentity`: a controlled role/identity handle with ownership attestation and credential reference, not a credential container.
 - `AssetRelationship`: a typed edge such as `calls`, `trusts`, `owns`, `may_access`, `invokes`, or `sends_data_to`.
 - `ActionRequest`: a structured request for one exact action.

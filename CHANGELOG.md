@@ -4,6 +4,13 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — direct-policy programme-source proof
+
+- Added an independently maintained `modelcontextprotocol/python-sdk` bundle from the immutable public `SECURITY.md` at commit `d82ed88e`, captured byte-for-byte as a verbatim programme-policy source.
+- Added `markdown_supported_versions_v1` derivation validation. The observed Version/Line/Support table must derive exactly two supported release lines and one unsupported class; malformed tables, unclassified support semantics, duplicates, or record drift fail closed.
+- Made each observed derivation enforce its source kind and capture mode: HackerOne requires a structured scope export, Bugcrowd an operator-extracted scope table, and the direct policy a verbatim programme-policy source.
+- Completed Milestone 2's three-source implementation proof without target contact. The direct bundle reaches `PENDING_REVIEW` under `LOCAL_FIXTURE`; existing HackerOne and Bugcrowd review/block states remain unchanged.
+
 ### Added — Bugcrowd programme-source proof
 
 - Added a public Bugcrowd/YNAB bundle with an operator-structured extract of two rendered target groups, a bounded programme-policy extract, and Bugcrowd's linked platform-default extract.

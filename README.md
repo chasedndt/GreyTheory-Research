@@ -23,9 +23,9 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (two of three real public bundle proofs; the Bugcrowd proof is correctly blocked on human decisions), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
 | **DESIGNED, NOT BUILT** | Research workspaces/sessions/assets/identities, hypotheses/experiments, action/check receipts, learning system, governed model gateway. |
-| **PLANNED** | Remaining cross-platform programme-bundle proof, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
+| **PLANNED** | Research domain, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
@@ -84,6 +84,19 @@ python -m greytheory.cli --audit build/audit.jsonl programme \
 This command intentionally exits blocked. The saved target rows derive exactly,
 but broad-owned-host and production-API wording conflict with narrower target and
 production exclusions. Only a human can record those decisions.
+
+The third proof captures the MCP Python SDK's independently maintained security policy:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09
+```
+
+Its immutable verbatim `SECURITY.md` derives two supported release lines and one
+unsupported class from the observed Markdown table. It finishes at
+`PENDING_REVIEW`, carries a `LOCAL_FIXTURE` ceiling, and grants no authority to
+test the SDK or any deployed service.
 
 Scope is not inherited, and the operating posture caps what any contract can grant:
 

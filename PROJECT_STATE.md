@@ -16,10 +16,10 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestone:** Milestone 1 — Canonical project foundation.
-- **Current research milestone:** Milestone 2 — compile three real public programme source bundles without contacting targets.
+- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler.
+- **Current research milestone:** Milestone 3 — structured research domain.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 386 tests passing after the second real programme-source bundle slice on 2026-08-09.
+- **Verified baseline:** 397 tests passing after the third real programme-source bundle slice on 2026-08-09.
 
 ## What is built
 
@@ -29,6 +29,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - public-source provenance with capture modes, retrieval times, per-source hashes, field citations, structured-export/operator-extract derivation checks, precedence, and human-resolution gates;
 - one real saved HackerOne/GitLab bundle containing the official 44-row scope export plus bounded programme/platform policy extracts;
 - one real saved Bugcrowd/YNAB bundle whose 3/5 target-group rows derive exactly and whose two prose conflicts correctly block pending human decisions;
+- one real saved direct-policy bundle for `modelcontextprotocol/python-sdk`; its immutable verbatim `SECURITY.md` derives the exact 2/1 supported-version split and reaches `PENDING_REVIEW`;
 - execution gate with seventeen denial reasons, posture ceiling, and kill switch;
 - bound, expiring, single-use approvals;
 - hash-chained audit and provenance triple;
@@ -38,7 +39,6 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## What is not built
 
-- the remaining direct-VDP bundle required for the three-programme proof;
 - human resolution of the two recorded YNAB policy conflicts;
 - research workspaces, sessions, typed assets/relationships, and controlled identities;
 - hypothesis and experiment engine;
@@ -67,7 +67,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Add the direct-VDP public programme bundle. Reuse the implemented bundle schema where the source shapes fit; extend it only for observed direct-policy evidence. Do not contact a target. The separate YNAB conflict-resolution gate remains human-owned.
+Begin Milestone 3 by implementing the structured research domain: workspaces, sessions, typed assets and relationships, controlled identities, hypotheses, experiment plans, action requests/receipts, and lessons. Keep every object authority-bound and local-only. The separate YNAB conflict-resolution gate remains human-owned.
 
 ## Do not build next
 
