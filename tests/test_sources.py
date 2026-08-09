@@ -32,12 +32,19 @@ REAL_BUNDLE = (
     / "public"
     / "hackerone-gitlab-2026-08-09"
 )
+BUGCROWD_BUNDLE = (
+    Path(__file__).resolve().parent.parent
+    / "fixtures"
+    / "programmes"
+    / "public"
+    / "bugcrowd-ynab-2026-08-09"
+)
 NOW = datetime(2026, 8, 9, 10, 30, tzinfo=timezone.utc)
 
 
-def copy_bundle(tmp_path: Path) -> Path:
+def copy_bundle(tmp_path: Path, source: Path = REAL_BUNDLE) -> Path:
     target = tmp_path / "bundle"
-    shutil.copytree(REAL_BUNDLE, target)
+    shutil.copytree(source, target)
     return target
 
 
@@ -122,12 +129,159 @@ class TestRealPublicBundle:
             is ScopeClassification.OUT_OF_SCOPE
         )
 
-    def test_compilation_performs_no_network_io(self, monkeypatch):
+    @pytest.mark.parametrize("bundle_path", [REAL_BUNDLE, BUGCROWD_BUNDLE])
+    def test_compilation_performs_no_network_io(self, monkeypatch, bundle_path):
         def forbidden(*_args, **_kwargs):
             raise AssertionError("programme bundle compilation attempted network I/O")
 
         monkeypatch.setattr(socket, "create_connection", forbidden)
-        assert not compile_source_bundle(REAL_BUNDLE, now=NOW).blocked
+        compile_source_bundle(bundle_path, now=NOW)
+
+
+class TestRealBugcrowdBundle:
+    def test_preserves_operator_extract_and_human_resolution_truth(self):
+        bundle = ProgrammeSourceBundle.load(BUGCROWD_BUNDLE)
+
+        assert bundle.id == "bugcrowd-ynab-2026-08-09"
+        assert [source.kind for source in bundle.sources] == [
+            SourceKind.SCOPE_TABLE,
+            SourceKind.PROGRAMME_POLICY,
+            SourceKind.PLATFORM_DEFAULT,
+        ]
+        assert all(
+            source.capture_mode is CaptureMode.OPERATOR_EXTRACT
+            for source in bundle.sources
+        )
+        assert all(source.intact for source in bundle.sources)
+        assert bundle.derivations[0].kind is (
+            DerivationKind.BUGCROWD_TARGET_GROUPS_JSON_V1
+        )
+        assert [resolution.status.value for resolution in bundle.human_resolutions] == [
+            "pending",
+            "pending",
+        ]
+
+    def test_real_conflicts_block_without_expanding_executable_scope(self):
+        result = compile_source_bundle(BUGCROWD_BUNDLE, now=NOW)
+        contract = result.contract
+
+        assert result.blocked
+        assert contract.status is ContractStatus.BLOCKED
+        assert contract.max_authority == "LOCAL_FIXTURE"
+        assert not contract.human_reviewed
+        assert len(contract.assets_in_scope) == 3
+        assert len(contract.assets_out_of_scope) == 5
+        assert contract.classify("staging-app.bany.dev") is ScopeClassification.IN_SCOPE
+        assert contract.classify("www.ynab.com") is ScopeClassification.IN_SCOPE
+        assert contract.classify("api.ynab.com") is ScopeClassification.UNRESOLVED
+        assert contract.classify("other.ynab.com") is ScopeClassification.UNRESOLVED
+        assert (
+            contract.classify("https://app.ynab.com/")
+            is ScopeClassification.OUT_OF_SCOPE
+        )
+        assert result.ambiguities == [
+            "human resolution 'owned-host-wildcard-vs-listed-targets' remains pending",
+            "human resolution 'production-api-vs-production-exclusion' remains pending",
+        ]
+
+    def test_target_group_rows_are_executable_derivation_evidence(self, tmp_path):
+        bundle = copy_bundle(tmp_path, BUGCROWD_BUNDLE)
+        programme_path = bundle / "programme.json"
+        programme = json.loads(programme_path.read_text(encoding="utf-8"))
+        programme["out_of_scope"] = programme["out_of_scope"][1:]
+        programme_path.write_text(
+            json.dumps(programme, indent=2) + "\n", encoding="utf-8"
+        )
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("record omits out_of_scope" in item for item in result.ambiguities)
+
+    def test_recaptured_target_group_requires_record_update(self, tmp_path):
+        bundle = copy_bundle(tmp_path, BUGCROWD_BUNDLE)
+        target_path = bundle / "sources" / "ynab-target-groups.json"
+        targets = json.loads(target_path.read_text(encoding="utf-8"))
+        targets["groups"][0]["targets"].append(
+            {
+                "name": "new-staging.bany.dev",
+                "location": None,
+                "visible_tags": [],
+                "hidden_tag_count": 0,
+            }
+        )
+        target_path.write_text(
+            json.dumps(targets, indent=2) + "\n", encoding="utf-8"
+        )
+        update_source_hash(bundle, "ynab-target-groups")
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("record omits in_scope" in item for item in result.ambiguities)
+
+    def test_malformed_target_group_fails_closed(self, tmp_path):
+        bundle = copy_bundle(tmp_path, BUGCROWD_BUNDLE)
+        target_path = bundle / "sources" / "ynab-target-groups.json"
+        targets = json.loads(target_path.read_text(encoding="utf-8"))
+        targets["groups"][0]["in_scope"] = "yes"
+        target_path.write_text(
+            json.dumps(targets, indent=2) + "\n", encoding="utf-8"
+        )
+        update_source_hash(bundle, "ynab-target-groups")
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("has no boolean in_scope value" in item for item in result.ambiguities)
+
+    def test_derivation_requires_a_scope_table_source(self, tmp_path):
+        bundle = copy_bundle(tmp_path, BUGCROWD_BUNDLE)
+        manifest = read_manifest(bundle)
+        manifest["sources"][0]["kind"] = "programme_policy"
+        write_manifest(bundle, manifest)
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert result.blocked
+        assert any("source must have kind scope_table" in item for item in result.ambiguities)
+
+    def test_fixture_human_decisions_clear_only_the_recorded_conflicts(self, tmp_path):
+        bundle = copy_bundle(tmp_path, BUGCROWD_BUNDLE)
+        manifest = read_manifest(bundle)
+        for resolution in manifest["human_resolutions"]:
+            resolution.update(
+                {
+                    "status": "accepted",
+                    "decision": "Use only the explicit target-group rows in this fixture.",
+                    "decided_by": "fixture-reviewer",
+                    "decided_at": "2026-08-09T11:30:16Z",
+                }
+            )
+        write_manifest(bundle, manifest)
+
+        result = compile_source_bundle(bundle, now=NOW)
+
+        assert not result.blocked
+        assert result.contract.status is ContractStatus.PENDING_REVIEW
+        assert not result.contract.human_reviewed
+
+    def test_registry_retains_blocked_bundle_and_conflicts(self, tmp_path):
+        audit = AuditLog(tmp_path / "audit.jsonl")
+        registry = ProgrammeRegistry(
+            tmp_path / "contracts", audit=audit, clock=lambda: NOW
+        )
+
+        result = registry.register_bundle(BUGCROWD_BUNDLE)
+        snapshot = json.loads(registry.source("bugcrowd-ynab-public", 1))
+
+        assert result.blocked
+        assert result.version.contract.status is ContractStatus.BLOCKED
+        assert len(snapshot["human_resolutions"]) == 2
+        assert audit.records()[-1].detail["bundle_id"] == (
+            "bugcrowd-ynab-2026-08-09"
+        )
+        audit.verify()
 
 
 class TestBundleIntegrity:
@@ -385,3 +539,25 @@ def test_cli_registers_the_bundle_offline(tmp_path, capsys):
     assert "hackerone-gitlab-public" in output
     assert "PENDING_REVIEW" in output
     assert "LOCAL_FIXTURE" in output
+
+
+def test_cli_registers_bugcrowd_bundle_as_blocked_evidence(tmp_path, capsys):
+    exit_code = main(
+        [
+            "--audit",
+            str(tmp_path / "audit.jsonl"),
+            "programme",
+            "--registry",
+            str(tmp_path / "contracts"),
+            "register-bundle",
+            str(BUGCROWD_BUNDLE),
+        ]
+    )
+
+    assert exit_code == 1
+    output = capsys.readouterr().out
+    assert "bugcrowd-ynab-public" in output
+    assert "BLOCKED" in output
+    assert "2 ambiguity/ies" in output
+    assert "owned-host-wildcard-vs-listed-targets" in output
+    assert "production-api-vs-production-exclusion" in output

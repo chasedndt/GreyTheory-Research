@@ -64,7 +64,7 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module / package | Layer | Blocked on |
 |---|---|---|
-| Programme source bundles | 1 | **PARTIAL** — HackerOne/GitLab implemented; Bugcrowd and direct-VDP proofs remain |
+| Programme source bundles | 1 | **PARTIAL** — HackerOne/GitLab and blocked Bugcrowd/YNAB proofs implemented; direct-VDP proof remains |
 | Research workspace and session domain | 2 | Milestone 3 implementation |
 | Typed target/asset graph | 3 | Domain object contracts |
 | Hypothesis and experiment engine | 5 | Workspace/session domain |

@@ -19,8 +19,8 @@ Tracked unknowns. No item is resolved by discussion alone; each names a resoluti
 
 | # | Question | Why it matters | Resolution condition |
 |---|---|---|---|
-| O1 | Which Bugcrowd and direct-VDP programmes complete Milestone 2? GitLab is the HackerOne proof. | Real source shapes determine the compiler, not imagined fixtures. | One Bugcrowd and one direct VDP selected from public sources. |
-| O2 | Does the implemented high-to-low precedence list plus field citations and human-resolution records survive the other platforms? | The GitLab bundle proves the shape once, not across platforms. | Bugcrowd and direct-VDP bundles compile without adding a contradictory precedence model. |
+| O1 | Which direct-VDP programme completes Milestone 2? GitLab and YNAB are the HackerOne and Bugcrowd proofs. | Real source shapes determine the compiler, not imagined fixtures. | One direct VDP selected from public sources. |
+| O2 | Does the implemented precedence/citation/resolution model survive a direct policy with no platform target table? | Bugcrowd proves the model can preserve operator-extracted groups and block genuine prose conflicts; a direct VDP may distribute authority differently. | A direct-VDP bundle compiles without guessed precedence or scope. |
 | O3 | Where should the domain package live? | It should not inflate the trust kernel or fragment the repo prematurely. | Five-object implementation spike reviewed against package boundaries. |
 
 ## Open — later milestones

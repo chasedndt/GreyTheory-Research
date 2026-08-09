@@ -4,6 +4,13 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — Bugcrowd programme-source proof
+
+- Added a public Bugcrowd/YNAB bundle with an operator-structured extract of two rendered target groups, a bounded programme-policy extract, and Bugcrowd's linked platform-default extract.
+- Added `bugcrowd_target_groups_json_v1` derivation validation. The 3 in-scope and 5 out-of-scope target rows must match the normalized record exactly; malformed groups, duplicates, cross-group conflicts, or record drift fail closed.
+- Preserved two real policy conflicts as pending human resolutions. The bundle intentionally compiles to `BLOCKED` under `LOCAL_FIXTURE`; broad owned-host and production-API wording never become executable scope.
+- Added LF-only Git attributes for hashed public programme evidence so source hashes remain reproducible across Windows and Linux checkouts.
+
 ### Added — first real programme-source bundle
 
 - `greytheory.authority.sources` implements offline `ProgrammeSourceBundle` loading and compilation with explicit source kinds/capture modes, safe local paths, public provenance URLs, retrieval/update times, per-source hashes, high-to-low precedence, per-field citations, structured-export derivation checks, human-resolution gates, and a semantic whole-bundle snapshot/hash.

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "programme": "YNAB",
+  "source_url": "https://bugcrowd.com/engagements/ynab",
+  "last_updated_at": "2026-03-05T21:41:59Z",
+  "captured_at": "2026-08-09T11:30:16Z",
+  "capture_note": "Operator-structured extract of the two target tables rendered on the public brief; not an official Bugcrowd export.",
+  "groups": [
+    {
+      "name": "In Scope",
+      "in_scope": true,
+      "targets": [
+        {
+          "name": "staging-app.bany.dev",
+          "location": null,
+          "visible_tags": ["Ruby on Rails", "jQuery", "Heroku"],
+          "hidden_tag_count": 2
+        },
+        {
+          "name": "staging-api.bany.dev",
+          "location": "https://staging-api.bany.dev/",
+          "visible_tags": ["API Testing"],
+          "hidden_tag_count": 0
+        },
+        {
+          "name": "www.ynab.com",
+          "location": "https://www.ynab.com/",
+          "visible_tags": [],
+          "hidden_tag_count": 0
+        }
+      ]
+    },
+    {
+      "name": "Out of Scope",
+      "in_scope": false,
+      "targets": [
+        {
+          "name": "https://app.ynab.com/",
+          "location": null,
+          "visible_tags": ["jQuery", "Website Testing"],
+          "hidden_tag_count": 0
+        },
+        {
+          "name": "Any previous version of the desktop apps: YNAB 4, YNAB 3, YNAB Pro, YNAB Basic (Spreadsheet)",
+          "location": null,
+          "visible_tags": [],
+          "hidden_tag_count": 0
+        },
+        {
+          "name": "https://support.ynab.com",
+          "location": null,
+          "visible_tags": ["Website Testing"],
+          "hidden_tag_count": 0
+        },
+        {
+          "name": "https://develop-app.ynab.com",
+          "location": null,
+          "visible_tags": ["Website Testing"],
+          "hidden_tag_count": 0
+        },
+        {
+          "name": "https://learn.ynab.com/",
+          "location": null,
+          "visible_tags": ["Website Testing"],
+          "hidden_tag_count": 0
+        }
+      ]
+    }
+  ]
+}

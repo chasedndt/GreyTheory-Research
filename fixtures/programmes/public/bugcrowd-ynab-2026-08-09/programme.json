@@ -1,0 +1,32 @@
+{
+  "id": "bugcrowd-ynab-public",
+  "contract_id": "scope_bugcrowd_ynab_public_2026_08_09",
+  "name": "YNAB public Bugcrowd programme",
+  "confidential": false,
+  "verified_at": "2026-08-09T11:30:16+00:00",
+  "max_authority": "LOCAL_FIXTURE",
+  "in_scope": [
+    { "type": "exact", "value": "staging-app.bany.dev", "note": "Bugcrowd In Scope target group" },
+    { "type": "exact", "value": "staging-api.bany.dev", "note": "Bugcrowd In Scope target group" },
+    { "type": "exact", "value": "www.ynab.com", "note": "Bugcrowd In Scope target group" }
+  ],
+  "out_of_scope": [
+    { "type": "exact", "value": "https://app.ynab.com/", "note": "Bugcrowd Out of Scope target group; source identifier retained exactly" },
+    { "type": "exact", "value": "Any previous version of the desktop apps: YNAB 4, YNAB 3, YNAB Pro, YNAB Basic (Spreadsheet)", "note": "non-network conceptual target from Bugcrowd table" },
+    { "type": "exact", "value": "https://support.ynab.com", "note": "Bugcrowd Out of Scope target group; third-party support site" },
+    { "type": "exact", "value": "https://develop-app.ynab.com", "note": "Bugcrowd Out of Scope target group" },
+    { "type": "exact", "value": "https://learn.ynab.com/", "note": "Bugcrowd Out of Scope target group; third-party learning site" }
+  ],
+  "prohibited_techniques": [
+    "denial_of_service",
+    "social_engineering",
+    "phishing",
+    "physical_security_testing",
+    "aggressive_automated_scanning",
+    "testing_other_users_accounts_or_data",
+    "testing_beyond_listed_targets",
+    "public_disclosure_without_permission"
+  ],
+  "policy_summary": "Public Bugcrowd sources compiled for offline authority modelling only; two source conflicts require human decisions.",
+  "notes": "No live target authority is compiled. The target-group rows are normalized exactly, but the bundle remains blocked pending human resolution of conflicting programme prose."
+}

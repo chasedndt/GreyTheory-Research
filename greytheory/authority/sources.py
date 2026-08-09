@@ -70,6 +70,7 @@ class ResolutionStatus(str, Enum):
 
 class DerivationKind(str, Enum):
     HACKERONE_SCOPE_CSV_V1 = "hackerone_scope_csv_v1"
+    BUGCROWD_TARGET_GROUPS_JSON_V1 = "bugcrowd_target_groups_json_v1"
 
 
 def _parse_datetime(value: Any, *, label: str) -> datetime:
@@ -314,6 +315,102 @@ def _check_hackerone_scope_csv(
     return issues
 
 
+def _check_bugcrowd_target_groups_json(
+    source: ProgrammeSource,
+    programme: dict[str, Any],
+    *,
+    derivation_id: str,
+) -> list[str]:
+    """Verify a normalised record against a saved Bugcrowd target-group extract."""
+
+    try:
+        document = json.loads(source.content)
+    except json.JSONDecodeError as exc:
+        return [f"derivation {derivation_id!r} source is not valid JSON: {exc}"]
+    if not isinstance(document, dict) or document.get("schema_version") != 1:
+        return [
+            f"derivation {derivation_id!r} source must be a schema_version 1 object"
+        ]
+
+    groups = document.get("groups")
+    if not isinstance(groups, list) or not groups:
+        return [f"derivation {derivation_id!r} source has no target groups"]
+
+    derived_in: set[tuple[str, str]] = set()
+    derived_out: set[tuple[str, str]] = set()
+    issues: list[str] = []
+    for group_index, group in enumerate(groups):
+        if not isinstance(group, dict):
+            issues.append(
+                f"derivation {derivation_id!r} group {group_index} is not an object"
+            )
+            continue
+        in_scope = group.get("in_scope")
+        if not isinstance(in_scope, bool):
+            issues.append(
+                f"derivation {derivation_id!r} group {group_index} has no boolean "
+                "in_scope value"
+            )
+            continue
+        targets = group.get("targets")
+        if not isinstance(targets, list):
+            issues.append(
+                f"derivation {derivation_id!r} group {group_index} targets is not a list"
+            )
+            continue
+        destination = derived_in if in_scope else derived_out
+        for target_index, target in enumerate(targets):
+            if not isinstance(target, dict):
+                issues.append(
+                    f"derivation {derivation_id!r} group {group_index} target "
+                    f"{target_index} is not an object"
+                )
+                continue
+            name = str(target.get("name") or "").strip()
+            if not name:
+                issues.append(
+                    f"derivation {derivation_id!r} group {group_index} target "
+                    f"{target_index} has no name"
+                )
+                continue
+            pattern = ("wildcard" if name.startswith("*.") else "exact", name)
+            if pattern in destination:
+                issues.append(
+                    f"derivation {derivation_id!r} repeats target "
+                    f"{pattern[0]}:{pattern[1]} in one scope class"
+                )
+            destination.add(pattern)
+
+    overlap = derived_in & derived_out
+    if overlap:
+        issues.append(
+            f"derivation {derivation_id!r} target groups disagree on scope: "
+            f"{_format_patterns(overlap)}"
+        )
+    if not derived_in and not derived_out:
+        issues.append(f"derivation {derivation_id!r} source contains no targets")
+
+    actual_in = _programme_patterns(programme, "in_scope")
+    actual_out = _programme_patterns(programme, "out_of_scope")
+    for label, expected, actual in (
+        ("in_scope", derived_in, actual_in),
+        ("out_of_scope", derived_out, actual_out),
+    ):
+        missing = expected - actual
+        extra = actual - expected
+        if missing:
+            issues.append(
+                f"derivation {derivation_id!r} record omits {label}: "
+                f"{_format_patterns(missing)}"
+            )
+        if extra:
+            issues.append(
+                f"derivation {derivation_id!r} record adds uncited {label}: "
+                f"{_format_patterns(extra)}"
+            )
+    return issues
+
+
 @dataclass(frozen=True)
 class ProgrammeSourceBundle:
     id: str
@@ -517,15 +614,29 @@ class ProgrammeSourceBundle:
             )
             derivations.append(derivation)
             if source_id in sources_by_id:
+                derivation_source = sources_by_id[source_id]
+                if derivation_source.kind is not SourceKind.SCOPE_TABLE:
+                    ambiguities.append(
+                        f"derivation {derivation_id!r} source must have kind "
+                        "scope_table"
+                    )
+                if set(target_fields) != {"in_scope", "out_of_scope"}:
+                    ambiguities.append(
+                        f"derivation {derivation_id!r} must target in_scope and "
+                        "out_of_scope"
+                    )
                 if kind is DerivationKind.HACKERONE_SCOPE_CSV_V1:
-                    if set(target_fields) != {"in_scope", "out_of_scope"}:
-                        ambiguities.append(
-                            f"derivation {derivation_id!r} must target in_scope and "
-                            "out_of_scope"
-                        )
                     ambiguities.extend(
                         _check_hackerone_scope_csv(
-                            sources_by_id[source_id],
+                            derivation_source,
+                            programme,
+                            derivation_id=derivation_id,
+                        )
+                    )
+                elif kind is DerivationKind.BUGCROWD_TARGET_GROUPS_JSON_V1:
+                    ambiguities.extend(
+                        _check_bugcrowd_target_groups_json(
+                            derivation_source,
                             programme,
                             derivation_id=derivation_id,
                         )

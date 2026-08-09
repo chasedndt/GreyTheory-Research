@@ -18,6 +18,7 @@ GreyTheory represents one reviewed authority input as an offline `ProgrammeSourc
 - precedence is one high-to-low list containing the complete source set;
 - every compiled authority field cites one or more source IDs;
 - structured exports may declare a deterministic derivation check, so the normalised contract cannot silently omit or add scope rows;
+- an operator-structured target-group extract may also declare a format-specific derivation check, but its capture mode must remain `operator_extract` rather than masquerading as a platform export;
 - human conflict resolutions are first-class records; pending, rejected, unattributed, or undated decisions block compilation;
 - compilation hashes each source plus one canonical semantic snapshot containing the record, source metadata/content, precedence, citations, and resolutions;
 - registry review attaches to that complete semantic snapshot, so any substantive source or governing-metadata change invalidates review;
@@ -29,4 +30,5 @@ GreyTheory represents one reviewed authority input as an offline `ProgrammeSourc
 - Extracts can be useful without masquerading as complete page archives.
 - Whitespace-only changes to manifest JSON do not invalidate review, while semantic changes do.
 - Public source snapshots can live in the repository; confidential programme sources remain protected by the existing registry guard.
-- The schema remains PARTIAL until one Bugcrowd and one direct-VDP bundle prove it across different source shapes.
+- The Bugcrowd/YNAB proof preserves two rendered target groups as an operator extract, derives all 3/5 rows, and blocks on two real programme-prose conflicts instead of choosing authority for the human.
+- The schema remains PARTIAL until one direct-VDP bundle proves it against an independently hosted source shape.

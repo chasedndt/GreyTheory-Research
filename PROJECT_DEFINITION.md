@@ -99,7 +99,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 ### LIVE / VERIFIED BY THE CURRENT TEST SUITE
 
 - programme registry plus single-source and multi-source bundle compilation;
-- offline `ProgrammeSourceBundle` integrity, source capture modes, retrieval metadata, field citations, structured-export derivation checks, precedence, and human-resolution gates;
+- offline `ProgrammeSourceBundle` integrity, source capture modes, retrieval metadata, field citations, structured-export/operator-extract derivation checks, precedence, and human-resolution gates;
 - fail-closed execution gate with seventeen denial reasons, posture ceiling, and kill switch;
 - bound, expiring, single-use approval enforcement;
 - hash-chained audit log;
@@ -113,7 +113,8 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
 - one real public HackerOne/GitLab source bundle compiles cleanly to `PENDING_REVIEW` from three saved sources and the official 44-row scope export;
-- Milestone 2 still requires one Bugcrowd and one direct-VDP bundle before the programme compiler is proven across platforms;
+- one real public Bugcrowd/YNAB source bundle derives all rendered target-group rows but compiles to `BLOCKED` because two policy conflicts remain explicitly human-owned;
+- Milestone 2 still requires one direct-VDP bundle before the programme compiler is proven across all three source shapes;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
 - deterministic claim promotion still accepts a caller-supplied falsifiability Boolean;
 - the dashboard is a read model, not the planned standalone workbench.

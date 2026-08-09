@@ -23,7 +23,7 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (one of three real public bundle proofs), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
+| **PARTIAL** | Programme authority intelligence (two of three real public bundle proofs; the Bugcrowd proof is correctly blocked on human decisions), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
 | **DESIGNED, NOT BUILT** | Research workspaces/sessions/assets/identities, hypotheses/experiments, action/check receipts, learning system, governed model gateway. |
 | **PLANNED** | Remaining cross-platform programme-bundle proof, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
@@ -72,6 +72,18 @@ python -m greytheory.cli --audit build/audit.jsonl programme \
 This records the HackerOne platform exclusions, GitLab programme-policy extract,
 and official 44-row scope CSV as one semantic source set. It finishes at
 `PENDING_REVIEW`, carries a `LOCAL_FIXTURE` ceiling, and performs no network I/O.
+
+The second proof captures YNAB's public Bugcrowd target groups and policy extracts:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/bugcrowd-ynab-2026-08-09
+```
+
+This command intentionally exits blocked. The saved target rows derive exactly,
+but broad-owned-host and production-API wording conflict with narrower target and
+production exclusions. Only a human can record those decisions.
 
 Scope is not inherited, and the operating posture caps what any contract can grant:
 
