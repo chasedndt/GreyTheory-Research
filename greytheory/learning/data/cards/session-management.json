@@ -1,0 +1,54 @@
+{
+  "id": "session-management",
+  "version": "1.0.0",
+  "name": "Session-management weakness",
+  "aliases": ["session lifecycle weakness", "session invalidation failure"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-613", "url": "https://cwe.mitre.org/data/definitions/613.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-SESS", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/06-Session_Management_Testing/README"}
+  ],
+  "mental_model": "A session handle remains valid, reusable, predictable, or insufficiently bound after the state that justified it has changed.",
+  "security_property": "Session handles must be unguessable, narrowly scoped, rotated at trust changes, and invalidated when the session ends.",
+  "root_causes": ["Missing server-side invalidation", "No rotation after authentication or privilege change", "Overbroad lifetime or binding"],
+  "application_shapes": ["Cookie and token sessions", "Single sign-on callbacks", "Remember-me and refresh-token flows"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["Authentication state machines", "Cookie and token lifecycles", "Logout and rotation semantics"],
+  "signals": ["An old handle remains accepted after logout", "Privilege change does not rotate the session", "Concurrent or expired handles behave inconsistently"],
+  "hypothesis_templates": [
+    {
+      "id": "session-lifecycle-boundary",
+      "statement": "After {trust_change}, the prior controlled session {session_handle} may remain valid for {action}, contrary to {expected_invalidation}.",
+      "variables": ["trust_change", "session_handle", "action", "expected_invalidation"],
+      "preconditions": ["The identity and session are controlled", "The action is a harmless synthetic read"],
+      "expected_safe_behaviour": "The prior handle is rejected and a current handle behaves according to policy.",
+      "expected_vulnerable_behaviour": "The prior handle remains accepted after the declared invalidation event.",
+      "falsifier": "The prior handle is rejected consistently after the trust change.",
+      "stop_conditions": ["The handle belongs to another person", "Testing would expose a credential value", "The action changes non-synthetic state"]
+    }
+  ],
+  "safe_test_pattern": "Use opaque handles for one controlled identity, perform one harmless read before and after a synthetic logout or rotation, and never store the handle value in ordinary evidence.",
+  "positive_controls": ["The current handle works before the invalidation event"],
+  "negative_controls": ["The prior handle is rejected after logout or rotation"],
+  "falsifiers": ["Server-side state invalidates the old handle", "The apparent reuse is a new handle or cached client view"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Opaque handle references and before/after acceptance states without token values.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "The exact logout, rotation, expiry, or trust-change rule under test.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Current-handle positive control and old-handle rejection control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Fresh controlled session repeated without persisting credential material.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated session lifecycle and harmless action.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["Cached content after server rejection", "A newly issued handle mistaken for the old one", "Client logout without a documented server invalidation promise"],
+  "impact_boundaries": ["Long lifetime alone does not prove unauthorized access", "One harmless read does not prove account takeover or persistence"],
+  "minimum_impact_rules": ["Use opaque references, never token values", "Use only a controlled identity and harmless synthetic action", "Invalidate all test sessions at closeout"],
+  "remediation": ["Invalidate sessions server-side", "Rotate handles at authentication and privilege changes", "Apply bounded idle and absolute lifetimes"],
+  "programme_policy_considerations": ["Credential values require special handling", "Use researcher-owned accounts only", "Do not test another user's session"],
+  "local_fixture": {"id": "fixture-session-management", "relative_path": "labs/session-management.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial session-lifecycle card with opaque-handle invalidation fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-613", "OWASP-WSTG:WSTG-SESS"]}
+  ]
+}

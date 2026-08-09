@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-09 - Vulnerability cards and skill graph](2026-08-09_vulnerability-skill-graph.md) - COMPLETE and VERIFIED locally; Milestone 5 COMPLETE
+
 - [2026-08-09 - Local two-account vertical slice](2026-08-09_local-two-account-slice.md) - COMPLETE and VERIFIED locally; Milestone 4 COMPLETE
 
 - [2026-08-09 - Structured research domain](2026-08-09_research-domain.md) - COMPLETE and VERIFIED locally; Milestone 3 COMPLETE

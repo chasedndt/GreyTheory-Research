@@ -503,3 +503,43 @@ flowchart TB
 Two things this shape prevents. **The rate has no other version** — there is no parameter to divide by only the hours that produced something, because that is exactly how bug bounty starts looking like a good hourly rate. And **months with no payout stay in the distribution**; dropping them is how a zero-income month becomes invisible and the median starts describing a fantasy.
 
 Income concentration is reported because when one payout dominates, the median is describing luck rather than a rate.
+
+---
+
+## 13. Vulnerability cards and the skill graph
+
+Implemented in [`greytheory/learning/`](../greytheory/learning/). Reference
+knowledge ships with the package; personal mastery state does not.
+
+```mermaid
+flowchart LR
+    CAT[(12-card catalogue<br/>versioned reference data)]
+    CARD[VulnerabilityCard<br/>hypothesis template<br/>minimum evidence<br/>review + revisions]
+    FIX[LocalTrainingFixture<br/>positive · vulnerable · negative]
+    RECEIPT[FixtureRunReceipt<br/>fixture + runner digests]
+    GRAPH[SkillGraph<br/>acyclic prerequisites]
+    DIMS[Six independent dimensions<br/>explain · recognise · test<br/>prove · remediate · transfer]
+    HUMAN[Explicit human assessment<br/>evidence · rationale · review date]
+    TEST[Test-fixture assessment]
+    STORE[(Private MasteryStore<br/>integrity + catalogue digest)]
+    NONE[No real-vulnerability proof<br/>No automatic mastery]
+
+    CAT --> CARD
+    CARD --> FIX
+    CARD --> GRAPH
+    FIX --> RECEIPT
+    RECEIPT --> NONE
+    GRAPH --> DIMS
+    HUMAN --> STORE
+    TEST -->|visible, non-crediting| STORE
+    STORE --> DIMS
+
+    style NONE fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style HUMAN fill:#065f46,stroke:#10b981,color:#fff
+    style STORE fill:#1e3a8a,stroke:#60a5fa,color:#fff
+```
+
+This shape prevents three silent promotions: a taxonomy mapping becoming
+evidence, a synthetic lab becoming a real finding, and task completion becoming
+mastery. Only a named, evidence-bound human assessment credits one dimension;
+the other five remain unchanged.

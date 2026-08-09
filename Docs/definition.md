@@ -13,7 +13,7 @@
 
 Long form:
 
-GreyTheory takes written authorisation, compiles it into a machine-checkable scope contract, admits only work that contract permits, records every action against it, and produces artifacts that carry their own proof. The existing code is the constitutional and evidentiary kernel. Research workspaces, hypotheses, experiments, learning, workers, models, and the workbench are product layers being built around it.
+GreyTheory takes written authorisation, compiles it into a machine-checkable scope contract, admits only work that contract permits, records every action against it, and produces artifacts that carry their own proof. The existing code is the constitutional and evidentiary kernel. Research workspaces, hypotheses, experiments, and the first governed learning catalogue are live offline; ranking, training orchestration, workers, models, and the workbench remain later product layers.
 
 ### What it is
 
@@ -233,7 +233,8 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, claim/evidence matrix, markdown rendering |
 | Research workspace/domain objects | 1/3 | **Live (offline)** — all ten Milestone 3 records plus integrity-checked `ResearchStore` |
 | Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
-| Curriculum / skill graph | 3 | **Designed, not built** |
+| Vulnerability cards / skill graph | 3 | **Live (offline)** — 12 versioned cards, 12 synthetic fixtures, acyclic prerequisites, and six evidence-bound mastery dimensions |
+| Training modes / adaptive curriculum | 3 | **Partial / designed** — card content and review dates exist; guided, assisted, assessment, transfer, and scheduling orchestration do not |
 | Model gateway | cross-cutting | **Designed, not built** |
 | Standalone graphical workbench | 1/3 | **Planned** — CLI and dashboard read model are live |
 | Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
@@ -251,7 +252,7 @@ Definitions: **Live** = exists and passes current tests. **Partial** = a useful 
 
 ### chasintech.com
 
-> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, and complete in-memory two-account training slice are live; the learning system, models, network workers, and standalone workbench are being built around them.
+> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, complete in-memory two-account slice, and first governed 12-card learning catalogue are live; transparent ranking, training orchestration, models, network workers, and the standalone workbench remain in development.
 
 ### The line that does the work
 

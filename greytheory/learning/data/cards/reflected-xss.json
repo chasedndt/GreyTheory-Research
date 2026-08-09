@@ -1,0 +1,54 @@
+{
+  "id": "reflected-xss",
+  "version": "1.0.0",
+  "name": "Reflected cross-site scripting",
+  "aliases": ["reflected XSS", "non-persistent XSS"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-79", "url": "https://cwe.mitre.org/data/definitions/79.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-INPV-01", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/01-Testing_for_Reflected_Cross_Site_Scripting"}
+  ],
+  "mental_model": "Untrusted request data is returned into a browser context that interprets data as executable content.",
+  "security_property": "Request-controlled data must remain data in every output context unless explicitly trusted by design.",
+  "root_causes": ["Context-inappropriate output encoding", "Unsafe interpolation into executable browser contexts"],
+  "application_shapes": ["Search and error pages", "Redirect and status messages", "Server-rendered templates"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["HTTP request and response flow", "HTML output contexts", "Browser execution boundaries"],
+  "signals": ["A unique inert marker is reflected", "The reflection reaches an HTML, attribute, URL, style, or script context", "The response applies no context-appropriate encoding"],
+  "hypothesis_templates": [
+    {
+      "id": "reflected-output-boundary",
+      "statement": "When {actor} supplies {marker} through {input}, {application} may place it into {sink} without context-appropriate encoding, causing controlled executable interpretation.",
+      "variables": ["actor", "marker", "input", "application", "sink"],
+      "preconditions": ["The tested input and output surface are explicitly in scope", "The marker is inert and researcher-controlled"],
+      "expected_safe_behaviour": "The marker is encoded or placed in a non-executable context.",
+      "expected_vulnerable_behaviour": "The marker crosses into an executable output context without the required encoding.",
+      "falsifier": "The marker is absent, safely encoded, or cannot reach an executable context under the same controlled conditions.",
+      "stop_conditions": ["Any third-party content appears", "The test would require a harmful or persistent effect", "Scope or browser-impact rules are ambiguous"]
+    }
+  ],
+  "safe_test_pattern": "Use a unique inert marker, record the exact reflection context, compare encoded and unencoded local controls, and stop before any data or session access.",
+  "positive_controls": ["A trusted local value renders in the intended location"],
+  "negative_controls": ["The same untrusted marker remains inert after context-appropriate encoding"],
+  "falsifiers": ["The reflection is text-only in the exercised context", "A browser parser cannot interpret the marker as executable content"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact controlled input and resulting output-context observation.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Why the supplied data was untrusted and should remain non-executable.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "A context-encoded negative control plus intended-render positive control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "A clean-session repeat using only the controlled marker.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated browser context and controlled effect.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["Reflection into a text-only context", "Encoding that looks unusual but remains parser-safe", "A content-security control assumed to replace output encoding"],
+  "impact_boundaries": ["Reflection alone does not prove script execution", "Controlled execution does not prove session theft or account takeover"],
+  "minimum_impact_rules": ["Use an inert marker or benign local signal", "Do not read tokens, personal data, or third-party content", "Do not persist the marker"],
+  "remediation": ["Apply context-appropriate output encoding at the sink", "Prefer safe templating and text APIs", "Use content security policy only as defence in depth"],
+  "programme_policy_considerations": ["Respect rules for browser execution and social interaction", "Do not involve another user", "Preserve only the minimum response evidence"],
+  "local_fixture": {"id": "fixture-reflected-xss", "relative_path": "labs/reflected-xss.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial bounded reflected-output card and synthetic control fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-79", "OWASP-WSTG:WSTG-INPV-01"]}
+  ]
+}

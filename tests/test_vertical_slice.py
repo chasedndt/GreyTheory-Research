@@ -14,6 +14,7 @@ import pytest
 from greytheory.checks import CheckError, CheckReceipt, ValidatorRegistry
 from greytheory.cli import main
 from greytheory.lab import ExecutionDenied, OwnershipValidator, TwoAccountFixture
+from greytheory.learning import CardUpdateProposal, load_builtin_catalogue
 from greytheory.provenance import Claim, Tag
 from greytheory.vertical_slice import (
     OperatorStatements,
@@ -77,7 +78,13 @@ def test_complete_two_account_slice_satisfies_every_exit_condition(tmp_path):
 
     card = json.loads((root / "vulnerability-card-update.json").read_text())
     assert card["status"] == "proposed"
+    assert card["card_id"] == "idor-bola"
+    assert card["source_kind"] == "test_fixture"
     assert card["checked_claim_ref"] == result.check_receipt_id
+    applied = load_builtin_catalogue().applied_revision(
+        CardUpdateProposal.from_dict(card)
+    )
+    assert applied.version == "1.0.0"
     assert (root / "postmortem.json").is_file()
     assert (root / "result.json").is_file()
 

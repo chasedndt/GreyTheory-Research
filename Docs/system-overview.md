@@ -149,6 +149,7 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` (OSRIL records) |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` |
 | Research root | Platform user-data directory | `GREYTHEORY_RESEARCH_ROOT` or `CHASEOS_VAULT_ROOT` |
+| Mastery root | Platform user-data directory | `GREYTHEORY_LEARNING_ROOT` |
 
 So an upstream refactor breaks a test here, not the runtime.
 
@@ -166,8 +167,8 @@ Stated plainly, because the failure mode of an architecture document is implying
 
 - **No live-target lane is implemented.** Three static collectors read local dependency manifests, local trees, and agent/MCP configuration. They do not establish reachability or touch a target.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
-- **The only complete execution vertical slice is local and synthetic.** The deliberately vulnerable in-memory two-account fixture connects structured research records to an audited gate allow, one action/receipt, observation, validator-issued proof, evidence, validation, reporting, postmortem, and a proposed card update. It is not a network broker or live research proof.
-- **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
+- **The only complete research execution vertical slice is local and synthetic.** The deliberately vulnerable in-memory two-account fixture connects structured research records to an audited gate allow, one action/receipt, observation, validator-issued proof, evidence, validation, reporting, postmortem, and a card proposal. Its BOLA learning pattern is now represented by a labelled `test_fixture` card revision. It is not a network broker or live research proof.
+- **The first knowledge/skill core is live offline.** Twelve versioned cards, twelve synthetic fixtures, an acyclic skill graph, and evidence-bound six-dimensional mastery records exist. Fixture completion awards no mastery. Guided/assisted/assessment/transfer orchestration, the model gateway, network broker, and graphical workbench do not exist.
 - **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. All three Milestone 2 source shapes exist offline: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB remains blocked on human policy decisions.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 

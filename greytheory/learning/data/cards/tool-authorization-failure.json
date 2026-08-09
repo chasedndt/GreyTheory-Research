@@ -1,0 +1,55 @@
+{
+  "id": "tool-authorization-failure",
+  "version": "1.0.0",
+  "name": "Tool-authorization failure",
+  "aliases": ["unauthorised tool use", "excessive agent tool authority"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-862", "url": "https://cwe.mitre.org/data/definitions/862.html"},
+    {"framework": "OWASP Agentic Top 10", "reference": "ASI02:2026 Tool Misuse", "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"},
+    {"framework": "OWASP Agentic Top 10", "reference": "ASI03:2026 Identity and Privilege Abuse", "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"}
+  ],
+  "mental_model": "A tool accepts model intent as authority instead of requiring a separate, exact, bounded decision for the actor, action, target, and effects.",
+  "security_property": "Every tool effect must consume a valid, exact, current, one-use authorization bound to actor, action, target, posture, and budget.",
+  "root_causes": ["Direct model-to-tool execution", "Approval not bound to exact arguments or effects", "Reusable, stale, or overbroad tool capability"],
+  "application_shapes": ["Agent tool and function calling", "MCP and plugin execution", "Browser, shell, messaging, and data connectors"],
+  "prerequisite_card_ids": ["indirect-prompt-injection"],
+  "prerequisite_skills": ["Capability and approval models", "Least privilege", "Action receipts and replay resistance"],
+  "signals": ["A tool runs without a decision reference", "Approval survives changed arguments or target", "One capability can be replayed or exceeds its effect budget"],
+  "hypothesis_templates": [
+    {
+      "id": "tool-ticket-boundary",
+      "statement": "When {actor} requests {tool_action} against {target}, {tool} may execute without an exact one-use decision bound to {effect_budget}.",
+      "variables": ["actor", "tool_action", "target", "tool", "effect_budget"],
+      "preconditions": ["The tool and effect are simulated locally", "No external process, browser, network, or credential is involved"],
+      "expected_safe_behaviour": "The tool denies missing, stale, replayed, or mismatched tickets before any effect.",
+      "expected_vulnerable_behaviour": "The simulated effect occurs without a matching one-use ticket.",
+      "falsifier": "Every attempted mismatch is denied and every permitted effect maps one-to-one to a receipt.",
+      "stop_conditions": ["A real tool or credential would be invoked", "The effect is not synthetic and reversible", "Approval semantics are ambiguous"]
+    }
+  ],
+  "safe_test_pattern": "Use a simulated tool and synthetic target; compare one exact ticketed action with missing, mismatched, expired, and replayed-ticket denials, recording one receipt per permitted effect.",
+  "positive_controls": ["One exact current ticket permits one matching synthetic effect and one receipt"],
+  "negative_controls": ["Missing or mismatched ticket causes a denial with no effect"],
+  "falsifiers": ["The tool has no direct execution path and rejects every ticket mismatch", "A permitted effect cannot be replayed"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact simulated action, decision reference, effect count, and action receipt.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Actor-action-target-posture-budget binding for the capability.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Exact-ticket positive control and missing or mismatched-ticket denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Fresh one-use ticket repeat plus explicit replay denial.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated synthetic effect and authority gap.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["A model proposes an action that the broker denies", "A read-only preview is mistaken for execution", "The decision is stored separately but binds the exact action correctly"],
+  "impact_boundaries": ["Unsafe intent does not prove execution", "A simulated effect does not prove external access, privilege, or data exposure"],
+  "minimum_impact_rules": ["Use only simulated tools and targets", "Create no process, network, credential, or communication effect", "Stop after one controlled effect and its denial pair"],
+  "remediation": ["Mediate every tool through a deterministic authorization broker", "Bind one-use tickets to exact arguments and budgets", "Persist decisions and receipts and deny replay"],
+  "programme_policy_considerations": ["Test agent tools only when the AI asset and method are explicitly in scope", "Do not interpret model output as permission", "Prevent target content from changing approvals"],
+  "local_fixture": {"id": "fixture-tool-authorization-failure", "relative_path": "labs/tool-authorization-failure.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial exact tool-ticket card and no-effect simulated tool fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-862", "OWASP:ASI02-2026", "OWASP:ASI03-2026"]}
+  ]
+}

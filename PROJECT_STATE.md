@@ -16,10 +16,10 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice.
-- **Current research milestone:** Milestone 5 — vulnerability cards and skill graph.
+- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice; Milestone 5 — vulnerability cards and skill graph.
+- **Current research milestone:** Milestone 6 — transparent hypothesis ranking and research queue.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 420 repository tests passing, including 8 focused Milestone 4 acceptance tests, on 2026-08-09.
+- **Verified baseline:** 430 repository tests passing, including 10 focused Milestone 5 and 8 Milestone 4 acceptance tests, on 2026-08-09.
 
 ## What is built
 
@@ -42,11 +42,18 @@ The complete offline path from supplied authorisation to a validated report draf
 - one complete deliberately vulnerable local two-account slice connecting saved training rules, an explicit labelled test-fixture review/attestation record, ownership graph, hypothesis/experiment, gate-bound action execution, observation, validator-issued `CheckReceipt`, raw/redacted evidence, claim-provenance report, postmortem, and proposed vulnerability-card update;
 - a one-use check-receipt registry that hashes exact input artifacts and validator code and refuses forged, modified, refuted, mismatched, or already-consumed receipts;
 - a CLI demonstration that stops at `report_ready`, records one action receipt for one executed local action, and exposes no submission or network path.
+- twelve versioned first-class vulnerability cards covering reflected/stored/DOM XSS, SQL injection, CSRF, SSRF, IDOR/BOLA, BFLA, session management, business-logic authorisation, indirect prompt injection, and tool-authorisation failure;
+- one distinct synthetic, network-free local fixture per card, each executed through positive, vulnerable, and negative-control paths and producing a runner/fixture-digested receipt that explicitly proves no real vulnerability and awards no mastery;
+- an acyclic card-prerequisite skill graph with separate `explain`, `recognise`, `test`, `prove`, `remediate`, and `transfer` dimensions;
+- an integrity-checked private `MasteryStore` that refuses repository storage, requires explicit evidence and review dates, credits only human assessments, and keeps labelled test-fixture assessments non-crediting;
+- offline CLI catalogue, fixture-verification, mastery-status, and evidence-bound assessment commands;
+- the Milestone 4 BOLA proposal applied to `idor-bola` v1.0.0 as an explicitly `test_fixture`-sourced revision, without inventing a real session or human mastery record.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
-- vulnerability cards, curriculum, and skill graph;
+- transparent hypothesis ranking and research-queue decision support;
+- guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
 - governed model gateway;
 - standalone graphical workbench;
 - Scope Watch, network broker/workers, and live collectors;
@@ -62,6 +69,9 @@ The complete offline path from supplied authorisation to a validated report draf
 - Every claim is `observed`, `checked`, or `inferred`; no silent promotion.
 - An existing observed or inferred claim is promoted to `checked` only by consuming a successful, matching `CheckReceipt` issued by the registry; caller-asserted falsifiability has been removed.
 - Legacy static collectors still originate deterministic `checked` claims directly; migrating those origins to persisted receipts is a separate open loop and no model output may use that helper.
+- Framework mappings classify a card; they never prove a vulnerability, impact, severity, or mastery.
+- Synthetic fixture receipts prove only the shipped local scenario and its controls. They cannot become real-session evidence or mastery credit.
+- Mastery is six separate evidence-bound human assessments; completing a lab or receiving model output awards nothing automatically.
 - Every action and artifact carries authority. Asset discovery never widens scope.
 - Programme outcomes are recorded from external evidence, never self-awarded.
 - Raw evidence remains outside repositories; only redacted evidence is exportable.
@@ -71,7 +81,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Build Milestone 5's first vulnerability-card contracts and skill graph, starting with the IDOR/BOLA card update proposed by the verified local slice. Keep that proposal non-canonical until the card schema, evidence rules, and six-dimensional mastery tracking are implemented and tested. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
+Build Milestone 6 as transparent decision support over existing hypotheses. Rank without executing or calling anything a vulnerability, explain every factor, and keep missing or ambiguous scope confidence fail-closed. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
 
 ## Do not build next
 

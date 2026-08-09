@@ -24,6 +24,7 @@ from greytheory.evidence import EvidenceVault
 from greytheory.execution import LocalActionExecutor
 from greytheory.findings import Taxonomy
 from greytheory.lab.two_account import OwnershipValidator, TwoAccountFixture
+from greytheory.learning import CardUpdateProposal
 from greytheory.provenance import Claim, Tag
 from greytheory.report import ReportClaim, ReportDraft
 from greytheory.research import (
@@ -94,24 +95,10 @@ class OperatorStatements:
         )
 
 
-@dataclass(frozen=True)
-class VulnerabilityCardUpdate:
-    id: str
-    card_id: str
-    status: str
-    change: str
-    checked_claim_ref: str
-    evidence_refs: tuple[str, ...]
-
-    def to_dict(self) -> dict[str, Any]:
-        return {
-            "id": self.id,
-            "card_id": self.card_id,
-            "status": self.status,
-            "change": self.change,
-            "checked_claim_ref": self.checked_claim_ref,
-            "evidence_refs": list(self.evidence_refs),
-        }
+# Compatibility name for the Milestone 4 public surface.  The contract now
+# lives in the learning system, where proposals can be validated against card
+# revision provenance but cannot mutate the catalogue.
+VulnerabilityCardUpdate = CardUpdateProposal
 
 
 @dataclass(frozen=True)
@@ -559,13 +546,14 @@ def run_local_two_account_slice(
         actor=operator,
         finding_ref=finding_id,
     )
-    card_update = VulnerabilityCardUpdate(
+    card_update = CardUpdateProposal(
         id="card-update-local-bola-v1",
-        card_id="bola-object-ownership",
+        card_id="idor-bola",
         status="proposed",
         change="Add the two-account ownership oracle, safe 403 control, and receipt-backed evidence pattern.",
         checked_claim_ref=check_receipt.id,
         evidence_refs=(response_artifact.id, manifest_artifact.id, check_artifact.id),
+        source_kind="test_fixture",
     )
     lesson = Lesson(
         id="postmortem-local-two-account",

@@ -1,0 +1,54 @@
+{
+  "id": "dom-xss",
+  "version": "1.0.0",
+  "name": "DOM-based cross-site scripting",
+  "aliases": ["DOM XSS", "client-side XSS"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-79", "url": "https://cwe.mitre.org/data/definitions/79.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-CLNT-01", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/11-Client-side_Testing/01-Testing_for_DOM-Based_Cross_Site_Scripting"}
+  ],
+  "mental_model": "Browser-side code moves attacker-influenced data from a source into an executable DOM sink without a safe transformation.",
+  "security_property": "Untrusted client-side data must not reach an executable browser sink unless transformed for that exact sink.",
+  "root_causes": ["Unsafe DOM sink selection", "Missing source-to-sink validation or context-aware encoding"],
+  "application_shapes": ["Single-page applications", "Client-side routing and fragments", "Dynamic preview and rendering components"],
+  "prerequisite_card_ids": ["reflected-xss"],
+  "prerequisite_skills": ["Browser DOM data flow", "Client-side source and sink analysis", "Output-context analysis"],
+  "signals": ["A URL, storage, or messaging source reaches a DOM write", "The sink interprets HTML or code", "The server response does not contain the marker"],
+  "hypothesis_templates": [
+    {
+      "id": "dom-source-sink-boundary",
+      "statement": "Data controlled through {source} may flow through {client_path} into {sink} without a safe transformation, causing {controlled_effect}.",
+      "variables": ["source", "client_path", "sink", "controlled_effect"],
+      "preconditions": ["The client application is explicitly in scope", "The source and sink can be exercised with an inert marker"],
+      "expected_safe_behaviour": "The client uses a text-only sink or applies the exact required transformation.",
+      "expected_vulnerable_behaviour": "Untrusted data reaches an executable sink and produces the controlled effect.",
+      "falsifier": "The path terminates before the sink or the sink keeps the marker inert.",
+      "stop_conditions": ["Testing needs third-party content", "The effect would read browser secrets", "The data flow crosses an unapproved origin"]
+    }
+  ],
+  "safe_test_pattern": "Trace one inert local marker from a controlled client-side source to the exact sink and compare executable and text-only local controls.",
+  "positive_controls": ["Trusted data updates the intended DOM element"],
+  "negative_controls": ["The same untrusted marker reaches a text-only sink and remains inert"],
+  "falsifiers": ["No complete source-to-sink path exists", "A sanitizer or safe sink is effective in the exercised context"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Recorded source-to-sink trace and controlled client-side outcome.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Why the source is untrusted and the sink is expected to remain non-executable.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Equivalent text-only sink negative control and trusted-update positive control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Clean client-state repeat proving the same source-to-sink path.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated same-origin controlled effect.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["String presence without an executable sink", "A source controlled only by trusted application state", "A sanitizer effective for the exact sink"],
+  "impact_boundaries": ["A dangerous API call alone is not a vulnerability", "A local effect does not prove access to tokens or another user's data"],
+  "minimum_impact_rules": ["Use an inert marker", "Do not access storage, cookies, or external origins", "Keep the proof inside the controlled local fixture"],
+  "remediation": ["Prefer text-only DOM APIs", "Validate and transform data for the exact sink", "Remove unnecessary executable sinks"],
+  "programme_policy_considerations": ["Confirm browser-side testing is allowed", "Avoid cross-origin or third-party effects", "Do not infer server-side impact"],
+  "local_fixture": {"id": "fixture-dom-xss", "relative_path": "labs/dom-xss.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial client-side source-to-sink card and browser-free fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-79", "OWASP-WSTG:WSTG-CLNT-01"]}
+  ]
+}

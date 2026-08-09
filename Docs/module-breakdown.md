@@ -58,6 +58,7 @@ Each one ships a self-sufficient default beside it, so nothing external is ever 
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
 | Ledger root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-ledger` |
 | Research root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-research` |
+| Mastery root | Platform user-data directory | `GREYTHEORY_LEARNING_ROOT`; personal assessment state is refused inside Git |
 
 Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
 
@@ -71,11 +72,22 @@ complete the Milestone 4 in-memory path through the gate, observation,
 deterministic check, evidence, validation, report, and postmortem. They expose
 no network client or submission path.
 
+## Implemented knowledge and skill system
+
+`greytheory/learning/` owns the 12 versioned vulnerability cards, their
+falsifiable hypothesis templates and minimum-evidence contracts, 12 distinct
+synthetic local fixtures, fixture/runner-digested receipts, the acyclic card
+prerequisite graph, and six-dimensional mastery state. `MasteryStore` keeps
+personal evidence-bound assessments outside repositories and binds them to the
+catalogue digest. Only explicit human assessments credit mastery; card
+completion, model output, and test-fixture records do not. The CLI exposes
+catalogue, fixture verification, status, and explicit assessment commands.
+
 ## Designed, not built
 
 | Module / package | Layer | Blocked on |
 |---|---|---|
-| Vulnerability cards and skill graph | 4 | Domain and local-fixture contracts |
+| Guided/assisted/assessment/transfer training orchestration | 4 | Stable learning events and review-scheduling policy |
 | Model gateway | cross-cutting | Research objects and evaluation harness |
 | Scope Watch | 1/3 | Network worker and Milestone 8 posture gate |
 | Lane 3 and live collectors | 7 | Broker/worker controls and later posture milestones |

@@ -1,0 +1,54 @@
+{
+  "id": "indirect-prompt-injection",
+  "version": "1.0.0",
+  "name": "Indirect prompt injection",
+  "aliases": ["indirect instruction injection", "retrieved-content goal hijack"],
+  "framework_references": [
+    {"framework": "OWASP LLM Top 10", "reference": "LLM01:2025", "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"},
+    {"framework": "OWASP Agentic Top 10", "reference": "ASI01:2026 Agent Goal Hijack", "url": "https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/"}
+  ],
+  "mental_model": "Content retrieved as data contains instructions that alter an agent's goal, decision, or tool plan because trust labels are lost.",
+  "security_property": "Untrusted content must remain data and must never create authority, change system goals, or directly cause tool execution.",
+  "root_causes": ["Instruction and data channels are concatenated without trust labels", "Model output can directly activate tools", "No policy re-evaluation after untrusted context"],
+  "application_shapes": ["Retrieval-augmented assistants", "Email, document, and webpage agents", "Multi-agent handoffs containing target-controlled text"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["Model context and trust boundaries", "Taint propagation", "Deterministic tool mediation"],
+  "signals": ["Retrieved text changes the declared task", "A model treats target content as a higher-trust instruction", "Tool intent appears only after untrusted content enters context"],
+  "hypothesis_templates": [
+    {
+      "id": "instruction-data-boundary",
+      "statement": "When {agent} processes untrusted {content_source}, embedded text may change {declared_goal} into {unauthorised_intent} without a trusted policy decision.",
+      "variables": ["agent", "content_source", "declared_goal", "unauthorised_intent"],
+      "preconditions": ["Only a deterministic simulated agent is used", "The content contains a neutral instruction marker, not a real tool request"],
+      "expected_safe_behaviour": "The content remains tainted data and cannot alter the declared goal or cause an action.",
+      "expected_vulnerable_behaviour": "The simulated decision changes because untrusted data is treated as instruction.",
+      "falsifier": "Trust labels and deterministic mediation preserve the declared goal for every controlled content variant.",
+      "stop_conditions": ["A real model or external content is required", "Any tool or network action could occur", "Sensitive context would enter the test"]
+    }
+  ],
+  "safe_test_pattern": "Use a deterministic local agent simulator, a neutral tainted marker, and a no-tool decision surface; compare trusted instruction, vulnerable concatenation, and data-labelled control paths.",
+  "positive_controls": ["A trusted local instruction changes the simulated plan as declared"],
+  "negative_controls": ["The same marker in untrusted content remains data and causes no action"],
+  "falsifiers": ["The goal remains unchanged after untrusted content", "A proposed action is independently denied before execution"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact declared goal, taint label, and simulated decision difference.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Trusted-instruction and untrusted-content sources plus their precedence rule.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Trusted-instruction positive control and data-labelled no-action control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Deterministic repeat with the same simulated context and no model call.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement bounded to the simulated goal change; no real-world effect is claimed.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["The model discusses an instruction but does not adopt it", "A low-trust suggestion is denied by policy", "Output wording changes without goal or tool-state change"],
+  "impact_boundaries": ["Prompt influence alone does not prove tool misuse", "A simulated goal change does not prove data access or external effect"],
+  "minimum_impact_rules": ["Use neutral markers and synthetic context only", "Invoke no model, tool, network, or external content", "Do not include secrets or target data"],
+  "remediation": ["Preserve trust labels through context assembly", "Separate instruction and data channels", "Require deterministic policy and approval before any tool action"],
+  "programme_policy_considerations": ["Only test AI behaviour explicitly included by programme rules", "Treat all target content as hostile data", "Do not use third-party content or effects"],
+  "local_fixture": {"id": "fixture-indirect-prompt-injection", "relative_path": "labs/indirect-prompt-injection.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial instruction-data boundary card and model-free simulated agent fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "OWASP:LLM01-2025", "OWASP:ASI01-2026"]}
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "id": "ssrf",
+  "version": "1.0.0",
+  "name": "Server-side request forgery",
+  "aliases": ["SSRF"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-918", "url": "https://cwe.mitre.org/data/definitions/918.html"},
+    {"framework": "OWASP API Security", "reference": "API7:2023", "url": "https://owasp.org/API-Security/editions/2023/en/0xa7-server-side-request-forgery"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-INPV-19", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/19-Testing_for_Server-Side_Request_Forgery"}
+  ],
+  "mental_model": "Untrusted input influences where a server-side fetcher connects, allowing the server's network position to cross a destination boundary.",
+  "security_property": "Server-side requests must be restricted to canonical, revalidated destinations allowed for the exact feature and action.",
+  "root_causes": ["User-controlled destination without a strict allowlist", "Validation before redirects or resolution changes", "Access to internal or metadata address classes"],
+  "application_shapes": ["URL previews and imports", "Webhooks and callbacks", "Image, document, and feed fetchers"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["URL canonicalization", "DNS and redirect boundaries", "Server-side egress modelling"],
+  "signals": ["A server fetches a user-supplied destination", "Destination checks differ before and after canonicalization", "Internal-only response characteristics appear in a controlled simulation"],
+  "hypothesis_templates": [
+    {
+      "id": "server-destination-boundary",
+      "statement": "When {actor} supplies {destination} to {fetch_feature}, the server may reach {controlled_resource} outside the permitted destination class.",
+      "variables": ["actor", "destination", "fetch_feature", "controlled_resource"],
+      "preconditions": ["Only a dictionary-backed local fetcher is used", "No DNS, socket, redirect, or real destination is contacted"],
+      "expected_safe_behaviour": "Canonical destination policy rejects the controlled internal-only resource.",
+      "expected_vulnerable_behaviour": "The synthetic server retrieves the controlled internal-only resource.",
+      "falsifier": "Every canonicalization, redirect, and resolution state remains within the declared destination policy.",
+      "stop_conditions": ["Any network access is required", "The destination is not synthetic", "Credentials or metadata would be involved"]
+    }
+  ],
+  "safe_test_pattern": "Exercise only a dictionary-backed local fetcher with named public and internal resource classes; no URL is resolved and no socket is opened.",
+  "positive_controls": ["An allowlisted synthetic public resource is retrieved"],
+  "negative_controls": ["The controlled internal-only resource is denied by destination policy"],
+  "falsifiers": ["The feature never performs server-side retrieval", "Canonical destination policy denies every controlled internal class"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Synthetic requested destination and exact dictionary-backed retrieval result.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Declared public and internal-only destination classes for the fixture.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Allowlisted-resource positive control and internal-resource denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Deterministic repeat with the same local resource map.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the controlled destination-class violation.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["Client-side retrieval", "A reflected URL with no server fetch", "A response generated locally without crossing a destination policy"],
+  "impact_boundaries": ["A fetch signal does not prove access to cloud metadata or internal services", "Destination control does not prove credential exposure"],
+  "minimum_impact_rules": ["No network, DNS, redirects, or real URLs in the fixture", "Use only synthetic resource labels", "Never request metadata, credentials, or third-party systems"],
+  "remediation": ["Use explicit destination allowlists", "Canonicalize and revalidate every redirect and resolution", "Deny private, loopback, link-local, and metadata classes at the broker"],
+  "programme_policy_considerations": ["Treat live SSRF testing as a separate posture decision", "Do not use collaboration or third-party interaction services by default", "Stop at controlled destination proof"],
+  "local_fixture": {"id": "fixture-ssrf", "relative_path": "labs/ssrf.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial destination-policy card and socket-free synthetic fetch fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-918", "OWASP-API:API7-2023", "OWASP-WSTG:WSTG-INPV-19"]}
+  ]
+}

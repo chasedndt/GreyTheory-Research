@@ -66,6 +66,26 @@ from greytheory.ledger import (
     TriageEvent,
     TriageOutcome,
 )
+from greytheory.learning import (
+    AssessorKind,
+    CardUpdateProposal,
+    EvidenceRequirement,
+    FixtureRunReceipt,
+    HypothesisTemplate,
+    LearningError,
+    LearningStoreError,
+    LocalTrainingFixture,
+    MasteryAssessment,
+    MasteryDimension,
+    MasteryLevel,
+    MasteryState,
+    MasteryStore,
+    SkillGraph,
+    TrainingFixtureRunner,
+    VulnerabilityCard,
+    VulnerabilityCatalogue,
+    load_builtin_catalogue,
+)
 from greytheory.registry import (
     Attention,
     ContractVersion,
@@ -198,5 +218,28 @@ __all__.extend(
         "TargetAsset",
         "WorkspaceSnapshot",
         "WorkspaceStatus",
+    ]
+)
+
+__all__.extend(
+    [
+        "AssessorKind",
+        "CardUpdateProposal",
+        "EvidenceRequirement",
+        "FixtureRunReceipt",
+        "HypothesisTemplate",
+        "LearningError",
+        "LearningStoreError",
+        "LocalTrainingFixture",
+        "MasteryAssessment",
+        "MasteryDimension",
+        "MasteryLevel",
+        "MasteryState",
+        "MasteryStore",
+        "SkillGraph",
+        "TrainingFixtureRunner",
+        "VulnerabilityCard",
+        "VulnerabilityCatalogue",
+        "load_builtin_catalogue",
     ]
 )

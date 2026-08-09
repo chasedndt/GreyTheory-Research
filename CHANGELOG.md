@@ -4,6 +4,26 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — vulnerability cards and skill graph
+
+- Added exactly 12 versioned first-class vulnerability cards with framework
+  classifications, falsifiable hypothesis templates, explicit controls,
+  minimum-evidence roles, impact boundaries, safe-test rules, remediation,
+  policy constraints, review dates, and revision provenance.
+- Added 12 distinct synthetic, network-free property fixtures. Their
+  fixture/runner-digested receipts prove both controls and the deliberately
+  vulnerable local path while explicitly proving no real vulnerability and
+  awarding no mastery.
+- Added an acyclic card-prerequisite graph and independent `explain`,
+  `recognise`, `test`, `prove`, `remediate`, and `transfer` dimensions.
+- Added an integrity-checked private mastery store. Only explicit,
+  evidence-bound human assessments credit mastery; labelled test-fixture
+  assessments remain visible but non-crediting.
+- Applied the Milestone 4 BOLA proposal to `idor-bola` v1.0.0 with explicit
+  `test_fixture` revision provenance and no real-session or human-mastery claim.
+- Added offline CLI commands for catalogue inspection, fixture verification,
+  mastery status, and explicit assessments.
+
 ### Added — direct-policy programme-source proof
 
 - Added an independently maintained `modelcontextprotocol/python-sdk` bundle from the immutable public `SECURITY.md` at commit `d82ed88e`, captured byte-for-byte as a verbatim programme-policy source.

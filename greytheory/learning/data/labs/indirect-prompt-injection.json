@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-indirect-prompt-injection",
+  "card_id": "indirect-prompt-injection",
+  "title": "Instruction-versus-data boundary",
+  "description": "A deterministic simulated agent distinguishes trusted local instructions from untrusted retrieved text and invokes no model.",
+  "mechanism": "instruction_data_separation",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "trusted-local-instruction", "role": "positive_control", "expected_property_held": true},
+    {"id": "untrusted-text-changes-decision", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "untrusted-text-remains-data", "role": "negative_control", "expected_property_held": true}
+  ]
+}

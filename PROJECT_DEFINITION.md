@@ -4,7 +4,7 @@
 >
 > **Effective:** 2026-08-09
 >
-> **Current maturity:** Working offline trust kernel; research operating system partially productised; no live-target capability.
+> **Current maturity:** Working offline trust and research kernel with the first governed learning catalogue; no live-target capability.
 
 ## Identity
 
@@ -84,12 +84,12 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 1 | Programme and Authority Intelligence | PARTIAL |
 | 2 | Research Workspace | LIVE offline; structured store and sessions verified |
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
-| 4 | Knowledge and Skill System | PLANNED |
+| 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, and evidence-bound mastery; training modes remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles and budgets |
 | 6 | Execution and Tool Broker | LIVE for one bounded in-memory `LOCAL_FIXTURE` action; network broker/workers not built |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
-| 9 | Outcomes, Economics and Learning | PARTIAL; ledger live, learning loop planned |
+| 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
 | 10 | Workbench and Integrations | PARTIAL; CLI live, workbench planned |
 
 Planes define trust boundaries. Layers define the capabilities a researcher uses. A layer may never weaken a plane.
@@ -114,6 +114,11 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - one complete deliberately vulnerable two-account `LOCAL_FIXTURE` slice from saved rules through a `report_ready` finding, postmortem, and proposed card update;
 - registry-issued, single-use `CheckReceipt` promotion with exact input hashes, validator/version, possible and actual outcomes, runner digest, time, and authority reference;
 - report claim matrices that bind every represented assertion to provenance and evidence references.
+- twelve built-in versioned vulnerability cards, each with a falsifiable hypothesis template, explicit minimum-evidence roles, policy/minimum-impact boundaries, and a distinct synthetic local fixture;
+- a network-free fixture runner whose receipts bind the fixture and runner digests, prove both controls plus the deliberately vulnerable case, and explicitly award neither real-vulnerability status nor mastery;
+- an acyclic prerequisite graph and six-dimensional mastery model (`explain`, `recognise`, `test`, `prove`, `remediate`, `transfer`) backed by an integrity-checked private store;
+- explicit mastery governance: only evidence-bound human assessments credit mastery; labelled test-fixture assessments remain visible but non-crediting;
+- the Milestone 4 `card-update-local-bola-v1` proposal applied to canonical `idor-bola` v1.0.0 with `test_fixture` revision provenance and no real-session claim.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -125,10 +130,12 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - promotion of existing observed/inferred claims uses registry-issued receipts, while legacy static collectors still originate their own deterministic `checked` claims pending persisted receipt artifacts;
 - the dashboard is a read model, not the planned standalone workbench;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
+- the knowledge/skill layer has its reference catalogue, fixture verification, graph, and mastery records, but not guided/assisted/assessment/transfer orchestration, adaptive review scheduling, or a broader curriculum pack.
 
 ### PLANNED / NOT BUILT
 
-- vulnerability cards, curriculum, and skill graph;
+- transparent hypothesis-ranking and research-queue decision support;
+- training-mode orchestration, adaptive review scheduling, and broader curriculum packs;
 - governed model gateway and evaluation harness;
 - Scope Watch, network broker, network workers, and live collectors;
 - standalone graphical workbench;
@@ -136,7 +143,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 through 4 are complete at their documented implementation/evidence exit conditions. Milestone 5 — vulnerability cards and the skill graph — is current. The Milestone 4 run produced a proposed IDOR/BOLA card update, but it remains non-canonical until the card system exists and validates it.
+Milestones 1 through 5 are complete at their documented implementation/evidence exit conditions. Milestone 6 — transparent hypothesis ranking and the research queue — is current. The Milestone 4 IDOR/BOLA proposal is now represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

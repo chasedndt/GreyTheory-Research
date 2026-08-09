@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-reflected-xss",
+  "card_id": "reflected-xss",
+  "title": "Reflected output-context boundary",
+  "description": "A synthetic marker is reflected through vulnerable and encoded render paths without a browser or payload.",
+  "mechanism": "reflected_output_encoding",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "trusted-render", "role": "positive_control", "expected_property_held": true},
+    {"id": "untrusted-raw-render", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "untrusted-encoded-render", "role": "negative_control", "expected_property_held": true}
+  ]
+}

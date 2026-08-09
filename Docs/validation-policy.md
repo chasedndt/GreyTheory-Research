@@ -14,7 +14,7 @@ A finding that passes stage 1 and fails stage 2 is a lesson. A finding that pass
 
 ## Gates
 
-Adapted from the handover's Gates A–G. A–B are partially implemented; C–G are designed.
+Adapted from the handover's Gates A–G. Gate A and Gates B–F are implemented offline; Gate G remains operator-only by definition.
 
 | Gate | Question | Kind | Status |
 |---|---|---|---|
@@ -69,6 +69,21 @@ Not qualifying:
 - A client-side observation with no server-side confirmation.
 - A check whose assertion cannot fail given the inputs.
 - Absence of evidence. Not finding a control is not proof there isn't one.
+
+## Learning-fixture receipts are not finding proof
+
+Milestone 5 `FixtureRunReceipt` records prove only that one shipped synthetic
+scenario exercised its positive, deliberately vulnerable, and negative-control
+paths under the declared fixture and runner digests. They do not satisfy a
+finding's `CheckReceipt` requirement, prove a real application vulnerable, or
+credit mastery. Framework mappings are classifications and carry the same
+non-proof status.
+
+Mastery uses a separate record: an explicit assessment of one card and one of
+six dimensions with named evidence, rationale, assessor, time, and review date.
+Only a human assessment credits mastery. A labelled `test_fixture` assessment
+may exercise storage and display paths, but the credited state remains
+`not_assessed`.
 
 ## Confidence and demotion
 

@@ -20,9 +20,9 @@ flowchart TD
     I -->|DENY + reason| K[Postmortem<br/>lesson recorded]
     I -->|ALLOW + authority_ref| L[Lane collector]
     L --> M[RawSignal<br/>tagged 'observed']
-    M --> N[Deterministic check]
-    N -->|could have failed,<br/>and passed| O[Claim tagged 'checked']
-    N -->|no failure path| P[Refused<br/>ProvenanceError]
+    M --> N[Registered deterministic validator]
+    N -->|declared failure path<br/>+ successful CheckReceipt| O[Claim tagged 'checked']
+    N -->|refuted, mismatched,<br/>forged, or replayed| P[Refused]
     O --> Q[(Evidence vault<br/>raw + redacted)]
     Q --> R[Validation gates B-F]
     R -->|fail| K
@@ -32,6 +32,12 @@ flowchart TD
     U --> V[Triage outcome<br/>recorded, never asserted]
     V --> W[(Ledgers + lessons)]
     K --> W
+    W --> Y[Card update proposal]
+    Y -->|explicit revision provenance| Z[(Vulnerability catalogue)]
+    Z --> AA[Skill graph<br/>six dimensions]
+    W --> AB{Human mastery<br/>assessment?}
+    AB -->|evidence + rationale<br/>+ review date| AC[(Private MasteryStore)]
+    AB -->|fixture/model/completion only| AD[No mastery credit]
 
     I -.-> X[(audit.jsonl)]
     C -.-> X
@@ -42,6 +48,7 @@ flowchart TD
     style I fill:#78350f,stroke:#f59e0b,color:#fff
     style T fill:#065f46,stroke:#10b981,color:#fff
     style X fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style AD fill:#7f1d1d,stroke:#ef4444,color:#fff
 ```
 
 Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of what happened — including every denial, which is the part most systems throw away.
@@ -58,6 +65,8 @@ Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of w
 | Vault → report | Redacted evidence, `checked` claims, provenance summary | Raw artifacts, third-party data, secrets |
 | Report → programme | What the operator approved, verbatim | Anything the operator has not personally read |
 | Programme → ledger | The outcome the programme actually stated | Our own opinion of what it should have been |
+| Lesson → card proposal | Evidence references, checked-claim reference, explicit source kind | Automatic catalogue mutation or a real-session claim |
+| Human assessment → mastery store | One card, one dimension, named evidence, rationale, time, review date | Lab-completion credit, model judgement, credentials, or raw evidence |
 
 ## Two flows that do not exist
 
@@ -73,4 +82,6 @@ Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of w
 | Audit log | Local, gitignored | Indefinite. Never edited, never rotated silently |
 | Raw evidence | Private, outside the repository (O3 unresolved) | Minimum necessary; deleted after disclosure closes |
 | Redacted evidence | Separate from raw | As long as the finding is open |
+| Vulnerability catalogue | Package reference data | Versioned with source and revision provenance |
+| Personal mastery assessments | Private learning root outside Git | Retained until operator policy changes; review dates make staleness visible |
 | Third-party data | Never retained | Stop condition, not a retention policy |

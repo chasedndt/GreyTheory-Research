@@ -1,0 +1,54 @@
+{
+  "id": "stored-xss",
+  "version": "1.0.0",
+  "name": "Stored cross-site scripting",
+  "aliases": ["stored XSS", "persistent XSS"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-79", "url": "https://cwe.mitre.org/data/definitions/79.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-INPV-02", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/02-Testing_for_Stored_Cross_Site_Scripting"}
+  ],
+  "mental_model": "Untrusted content survives a storage boundary and is later interpreted as executable content for a viewer.",
+  "security_property": "Persisted untrusted content must remain data whenever it is rendered, regardless of who views it.",
+  "root_causes": ["Encoding on input instead of at the eventual output context", "Unsafe rendering of stored user-controlled content"],
+  "application_shapes": ["Profiles and comments", "Support and messaging views", "Administrative review surfaces"],
+  "prerequisite_card_ids": ["reflected-xss"],
+  "prerequisite_skills": ["Persistent data flow", "Output-context analysis", "Controlled multi-user testing"],
+  "signals": ["A controlled marker persists across requests", "Stored content is rendered to another controlled view", "The render path uses an executable context"],
+  "hypothesis_templates": [
+    {
+      "id": "stored-output-boundary",
+      "statement": "When {actor} stores {marker} through {storage_surface}, {viewer} may later receive it in {sink} without context-appropriate encoding.",
+      "variables": ["actor", "marker", "storage_surface", "viewer", "sink"],
+      "preconditions": ["Both producer and viewer identities are controlled", "Storage and render surfaces are explicitly in scope"],
+      "expected_safe_behaviour": "Stored content is encoded for the viewer's output context.",
+      "expected_vulnerable_behaviour": "Stored untrusted content reaches an executable viewer context.",
+      "falsifier": "The value is rejected, normalised safely, or encoded at every reachable render path.",
+      "stop_conditions": ["The marker becomes visible to an uncontrolled user", "Cleanup cannot be guaranteed", "The path reaches messaging or notification systems"]
+    }
+  ],
+  "safe_test_pattern": "Store one inert marker in a synthetic record, view it only through a second controlled identity, record both controls, then remove the record.",
+  "positive_controls": ["Trusted stored content renders normally to the controlled viewer"],
+  "negative_controls": ["The untrusted stored marker renders inert after output encoding"],
+  "falsifiers": ["The value is not persisted", "All reachable render contexts keep the marker inert"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Storage receipt and controlled viewer render observation for the same marker.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Ownership and viewer records proving only controlled identities were involved.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Encoded render negative control and trusted-content positive control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Clean synthetic record repeated and removed under the same render path.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement bounded to the controlled viewer and demonstrated render context.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["The marker is stored but escaped at render time", "Only a privileged self-view is affected", "A preview differs from the persisted viewer path"],
+  "impact_boundaries": ["Persistence does not prove another user's exposure", "Controlled rendering does not prove credential or account compromise"],
+  "minimum_impact_rules": ["Use only synthetic records and owned identities", "Delete the marker after the test", "Do not trigger email, notification, or third-party review surfaces"],
+  "remediation": ["Encode at each output sink", "Constrain rich-content allowlists", "Review every downstream render path for the stored field"],
+  "programme_policy_considerations": ["Confirm stored-content testing is allowed", "Avoid support, moderation, and other staff-facing surfaces", "Record cleanup evidence"],
+  "local_fixture": {"id": "fixture-stored-xss", "relative_path": "labs/stored-xss.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial persistent-render card with controlled two-viewer fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-79", "OWASP-WSTG:WSTG-INPV-02"]}
+  ]
+}

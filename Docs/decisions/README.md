@@ -7,3 +7,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0003 — Exactly one approval provider](ADR-0003-one-approval-provider.md)
 - [ADR-0004 — Validator-issued check receipts](ADR-0004-validator-issued-check-receipts.md)
 - [ADR-0005 — Offline semantic programme-source bundles](ADR-0005-offline-semantic-programme-source-bundles.md)
+- [ADR-0006 — Evidence-bound mastery and synthetic fixture separation](ADR-0006-evidence-bound-mastery.md)

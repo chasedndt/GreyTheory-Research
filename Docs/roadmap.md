@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 5 — Vulnerability cards and skill graph
+> **Current milestone:** 6 — Transparent hypothesis ranking and research queue
 >
-> **Next milestone:** 6 — Hypothesis engine
+> **Next milestone:** 7 — Model gateway and evaluation harness
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,7 +14,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 420 repository tests pass, including 8 focused Milestone 4 acceptance tests.
+- 430 repository tests pass, including 10 focused Milestone 5 and 8 focused Milestone 4 acceptance tests.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -90,15 +90,28 @@ the prohibited-technique path executes no action and produces neither receipt
 nor evidence. A registered ownership validator issues the only promotable
 `CheckReceipt`, report claims carry provenance/evidence links, all Gates B-F
 pass, and the session produces checked evidence plus a postmortem. The card
-update is a proposal for Milestone 5, not canonical knowledge.
+update entered Milestone 5 as a proposal and is now recorded only as a labelled
+`test_fixture` revision of the IDOR/BOLA card, not as a real-session claim.
 
-## Milestone 5 — Vulnerability cards and skill graph *(current)*
+## Milestone 5 — Vulnerability cards and skill graph *(COMPLETE 2026-08-09)*
 
 Build the first 12 cards: reflected/stored/DOM XSS, SQL injection, CSRF, SSRF, IDOR/BOLA, BFLA, session management, business-logic authorisation, indirect prompt injection, and tool-authorisation failure.
 
 **Exit:** each has a local fixture, falsifiable hypothesis template, minimum evidence, and six-dimensional mastery tracking: explain, recognise, test, prove, remediate, transfer.
 
-## Milestone 6 — Hypothesis engine
+Verified with exactly 12 versioned built-in cards and 12 distinct synthetic,
+network-free fixture mechanisms. Each fixture exercises positive, deliberately
+vulnerable, and negative-control paths and issues a fixture/runner-digested
+receipt that explicitly proves no real vulnerability and awards no mastery.
+The acyclic skill graph exposes all 72 card/dimension states. The private,
+integrity-checked mastery store credits only explicit evidence-bound human
+assessments; test-fixture assessments remain visible but non-crediting. The
+Milestone 4 BOLA proposal maps to exactly one `idor-bola` v1.0.0 revision with
+`test_fixture` provenance. Focused acceptance passes 10 tests; the full suite
+passes 430. Broader training-mode orchestration and adaptive curriculum remain
+PARTIAL and are not part of this exit claim.
+
+## Milestone 6 — Hypothesis engine *(current)*
 
 Rank theories using transparent scope confidence, existing evidence, likelihood, impact, cost, side-effect risk, duplicate risk, skill value, and target-specific novelty.
 

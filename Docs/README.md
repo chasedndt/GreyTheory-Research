@@ -20,6 +20,7 @@ Where to start, and which document wins when two disagree.
 | Current implementation stage | [`PROJECT_STATE.md`](../PROJECT_STATE.md) |
 | Build order | [`roadmap.md`](roadmap.md) |
 | Research objects | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md) |
+| Vulnerability cards, local labs, and mastery graph | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md#milestone-5-exit-condition) · [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) |
 | Human/AI/execution boundaries | [`AUTONOMY_MODEL.md`](../AUTONOMY_MODEL.md) |
 | Threats before networking | [`THREAT_MODEL.md`](../THREAT_MODEL.md) |
 | Data handling | [`DATA_POLICY.md`](../DATA_POLICY.md) |
@@ -41,7 +42,7 @@ Where to start, and which document wins when two disagree.
 ## Planning and research policy
 
 - [`open-questions.md`](open-questions.md) — unresolved choices with resolution conditions.
-- [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) — designed signal surface; current coverage is three static offline collectors.
+- [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) — designed signal surface; current detection coverage is three static offline collectors and learning coverage is twelve synthetic local fixtures.
 - [`safe-local-demo-proof-plan.md`](safe-local-demo-proof-plan.md) — local demonstrations with no target contact.
 - [`disclosure-authority-checklist.md`](disclosure-authority-checklist.md) — gate before any external action.
 - [`product-boundary-map.md`](product-boundary-map.md) — allowed now versus blocked.

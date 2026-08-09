@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-tool-authorization-failure",
+  "card_id": "tool-authorization-failure",
+  "title": "One-use tool-ticket boundary",
+  "description": "A simulated tool compares an exact one-use action ticket with missing and mismatched authorization; it creates no external effect.",
+  "mechanism": "tool_ticket_binding",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "exact-ticket-action", "role": "positive_control", "expected_property_held": true},
+    {"id": "missing-ticket-action", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "missing-ticket-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

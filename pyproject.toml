@@ -32,5 +32,8 @@ greytheory = "greytheory.cli:main"
 [tool.setuptools.packages.find]
 include = ["greytheory*"]
 
+[tool.setuptools.package-data]
+"greytheory.learning" = ["data/cards/*.json", "data/labs/*.json"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,6 +1,6 @@
 # GreyTheory Domain Model
 
-> **Status:** IMPLEMENTED / VERIFIED OFFLINE through the Milestone 4 local two-account vertical slice; later graph nodes retain their explicit status below.
+> **Status:** IMPLEMENTED / VERIFIED OFFLINE through the Milestone 5 vulnerability-card and skill-graph layer; later graph nodes retain their explicit status below.
 >
 > **Effective:** 2026-08-09
 
@@ -38,6 +38,21 @@ Programme
                             └── LedgerEntry
 ```
 
+The learning graph is reference knowledge plus private operator state, not a
+child of one programme workspace:
+
+```text
+VulnerabilityCatalogue
+├── VulnerabilityCard
+│   ├── HypothesisTemplate
+│   ├── EvidenceRequirement
+│   ├── LocalTrainingFixture
+│   └── CardRevision
+└── SkillGraph
+    ├── prerequisite edges
+    └── MasteryAssessment × six independent dimensions
+```
+
 ## Existing objects
 
 `ProgrammeSourceBundle` (IMPLEMENTED: three source-shape proofs), `ScopeContract`, gate decisions, approvals, observations (`RawSignal`), claims, evidence artifacts, findings, reports, programme outcomes, and ledger entries already exist in narrower forms. Their current implementations remain source truth until migrated deliberately.
@@ -73,6 +88,9 @@ The smallest safe procedure capable of supporting or refuting a hypothesis. Cont
 - `ActionReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): what actually happened, bound to an allowed audited decision, worker, exact target/action/identity, budgets, outputs, and stop state.
 - `CheckReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): a registry-issued, single-use record of validator/version, exact input artifact hashes, assertion, possible and actual outcomes, issue time, validator runner digest, and authority reference. Only a successful matching receipt can promote its assertion to `checked`.
 - `Lesson` (**IMPLEMENTED / VERIFIED OFFLINE**): a structured no-finding/postmortem record and reusable change to research behaviour, card, hypothesis pattern, or target score.
+- `VulnerabilityCard` (**IMPLEMENTED / VERIFIED OFFLINE**): versioned reference knowledge with framework classifications, mental/security models, root causes, signals, falsifiable templates, both controls, minimum evidence, false-positive/impact boundaries, minimum-impact rules, remediation, programme-policy constraints, one local fixture, review date, lessons, and revision provenance.
+- `LocalTrainingFixture` / `FixtureRunReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): distinct synthetic boundary simulations for all 12 cards. Receipts bind fixture and runner digests and prove only the shipped local scenario; they are explicitly not real-vulnerability evidence and do not credit mastery.
+- `SkillGraph` / `MasteryAssessment` (**IMPLEMENTED / VERIFIED OFFLINE**): acyclic card prerequisites and separately measured `explain`, `recognise`, `test`, `prove`, `remediate`, and `transfer` state. Only explicit evidence-bound human assessments credit mastery; test-fixture records are non-crediting.
 
 ## Invariants
 
@@ -86,10 +104,13 @@ The smallest safe procedure capable of supporting or refuting a hypothesis. Cont
 8. Checked claims require validator evidence.
 9. Programme outcomes are recorded from external evidence, never self-awarded.
 10. A session that finds nothing still records time and a lesson or explicit inconclusive result.
+11. Framework mappings classify knowledge and never prove validity, impact, severity, or mastery.
+12. Completing or verifying a fixture does not award mastery.
+13. Personal mastery state stays outside repositories by default and is integrity-bound to one catalogue revision.
 
 ## Initial storage direction
 
-The ten objects live in `greytheory/research/domain.py`. `ResearchStore` persists one integrity-digested JSON snapshot per workspace with atomic replacement, repository-storage refusal by default, referential checks, and optional hash-chained audit writeback. Add SQLite indexes only when the object contracts and query patterns stabilise. Continue using content-addressed files for evidence and source snapshots. A graph database is not required.
+The ten research objects live in `greytheory/research/domain.py`. `ResearchStore` persists one integrity-digested JSON snapshot per workspace with atomic replacement, repository-storage refusal by default, referential checks, and optional hash-chained audit writeback. Versioned learning reference data ships under `greytheory/learning/data/`; `MasteryStore` persists personal assessment records outside Git with an integrity envelope and catalogue digest. Add SQLite indexes only when the object contracts and query patterns stabilise. Continue using content-addressed files for evidence and source snapshots. A graph database is not required.
 
 ## Milestone 3 exit condition
 
@@ -97,4 +118,8 @@ The ten objects live in `greytheory/research/domain.py`. `ResearchStore` persist
 
 ## Milestone 4 exit condition
 
-**VERIFIED 2026-08-09.** `tests/test_vertical_slice.py` and the `greytheory demo local-two-account` command connect saved training rules and an explicit review/attestation record to a `LOCAL_FIXTURE` contract, workspace, two controlled identities, explicit ownership edges, BOLA hypothesis/experiment, audited gate allow, exactly one in-memory action and action receipt, observation, validator-issued check receipt, raw/redacted evidence, a provenance-linked `report_ready` draft, postmortem, and proposed vulnerability-card update. Acceptance uses statements labelled `test_fixture`, not a claim that a human made those judgements. The denial proof produces no receipt or evidence, forged/refuted receipts cannot promote claims, and the slice imports no network clients. The focused suite passes 8 tests and the full repository passes 420. No submission occurs and the posture does not change.
+**VERIFIED 2026-08-09.** `tests/test_vertical_slice.py` and the `greytheory demo local-two-account` command connect saved training rules and an explicit review/attestation record to a `LOCAL_FIXTURE` contract, workspace, two controlled identities, explicit ownership edges, BOLA hypothesis/experiment, audited gate allow, exactly one in-memory action and action receipt, observation, validator-issued check receipt, raw/redacted evidence, a provenance-linked `report_ready` draft, postmortem, and proposed vulnerability-card update. Acceptance uses statements labelled `test_fixture`, not a claim that a human made those judgements. The denial proof produces no receipt or evidence, forged/refuted receipts cannot promote claims, and the slice imports no network clients. The focused suite passes 8 tests; the repository passed 420 at the Milestone 4 exit and now passes 430 after Milestone 5. The proposal is now represented by a labelled test-fixture revision of the IDOR/BOLA card. No submission occurs and the posture does not change.
+
+## Milestone 5 exit condition
+
+**VERIFIED 2026-08-09.** `tests/test_learning.py` loads exactly 12 versioned cards, validates their falsifiable templates and minimum-evidence roles, executes one distinct positive/vulnerable/negative-control local fixture per card, verifies an acyclic prerequisite graph, and tracks all 72 card/dimension states. Human evidence updates only the selected dimension; fixture completion and labelled test-fixture assessments award no mastery. The BOLA proposal resolves to exactly one `test_fixture`-sourced canonical revision. The focused Milestone 5 suite passes 10 tests and the complete repository passes 430. No model, network, process, credential, target, or submission path is present.

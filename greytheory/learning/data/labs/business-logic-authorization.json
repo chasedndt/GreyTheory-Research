@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-business-logic-authorization",
+  "card_id": "business-logic-authorization",
+  "title": "Workflow-transition authorization boundary",
+  "description": "A synthetic workflow compares a permitted transition, a precondition bypass, and a fail-closed denial.",
+  "mechanism": "workflow_authorization",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "permitted-transition", "role": "positive_control", "expected_property_held": true},
+    {"id": "precondition-bypass", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "invalid-transition-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

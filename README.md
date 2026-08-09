@@ -22,9 +22,9 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 | | |
 |---|---|
-| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (one in-memory local fixture only; no network worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (ledger, lessons, and one proposed card update without the learning system), workbench surface (CLI/read model only). |
-| **DESIGNED, NOT BUILT** | Vulnerability cards/skill graph, learning system, governed model gateway. |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (one in-memory local fixture only; no network worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, lessons, ledger, and mastery records are live; training-mode orchestration and adaptive review scheduling are not), workbench surface (CLI/read model only). |
+| **DESIGNED, NOT BUILT** | Governed model gateway; guided/assisted/assessment/transfer training orchestration. |
 | **PLANNED** | Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
@@ -135,9 +135,27 @@ and proposed card update. It performs no network I/O and does not submit.
 The shipped `test-attestations.json` is labelled `test_fixture`; it exercises
 the contract but is not evidence that a human made those judgements.
 
+Inspect and verify the Milestone 5 learning catalogue entirely offline:
+
+```bash
+python -m greytheory.cli learning catalogue
+python -m greytheory.cli learning verify
+python -m greytheory.cli learning status --root <private-directory-outside-git>
+```
+
+The catalogue contains reflected/stored/DOM XSS, SQL injection, CSRF, SSRF,
+IDOR/BOLA, BFLA, session-management, business-logic authorisation, indirect
+prompt-injection, and tool-authorisation cards. Every card has a falsifiable
+hypothesis template, minimum evidence roles, and a distinct synthetic fixture
+with positive and negative controls. Fixture receipts explicitly prove no real
+vulnerability and award no mastery. Mastery changes only through an explicit,
+evidence-bound human assessment across `explain`, `recognise`, `test`, `prove`,
+`remediate`, and `transfer`; personal mastery state is refused inside Git by
+default.
+
 ### Diagrams
 
-Eight Mermaid diagrams — three planes, gate decision flow, contract compilation, finding lifecycle, provenance, authority levels, approvals, evidence — in [`Docs/diagrams.md`](Docs/diagrams.md).
+Thirteen Mermaid diagrams — the trust-kernel flows plus the vulnerability-card and skill-graph learning boundary — in [`Docs/diagrams.md`](Docs/diagrams.md).
 
 ### Documentation
 

@@ -35,6 +35,12 @@ Name tests for the behaviour, not the method: `test_out_of_scope_beats_in_scope_
 
 The fixtures in `fixtures/programmes/` use the reserved `.test` TLD (RFC 6761) and the `192.0.2.0/24` documentation range (RFC 5737). Keep it that way — no fixture may name a host that could resolve.
 
+The built-in card labs under `greytheory/learning/data/labs/` are synthetic
+security-property simulations, not exploit examples. Keep them payload-free,
+credential-free, model-free, browser-free, process-free, and network-free. A
+fixture receipt must continue to say that it proves no real vulnerability and
+awards no mastery.
+
 ## Comments
 
 Comment the *why*, not the *what*. The codebase leans on this: a

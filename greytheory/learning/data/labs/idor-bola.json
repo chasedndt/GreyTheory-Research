@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-idor-bola",
+  "card_id": "idor-bola",
+  "title": "Two-account object-ownership boundary",
+  "description": "The Milestone 4 controlled ownership scenario compares an own-object read, a cross-owner read, and a safe denial.",
+  "mechanism": "object_ownership",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "own-object-read", "role": "positive_control", "expected_property_held": true},
+    {"id": "cross-owner-read", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "cross-owner-read-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

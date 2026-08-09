@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-sql-injection",
+  "card_id": "sql-injection",
+  "title": "Query-structure boundary",
+  "description": "An in-memory synthetic query model compares structural concatenation with parameter binding and uses no database service.",
+  "mechanism": "query_parameterization",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "named-row-lookup", "role": "positive_control", "expected_property_held": true},
+    {"id": "untrusted-structure-change", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "bound-value-lookup", "role": "negative_control", "expected_property_held": true}
+  ]
+}
