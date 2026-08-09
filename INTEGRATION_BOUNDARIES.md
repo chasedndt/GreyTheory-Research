@@ -34,7 +34,7 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 ## Package boundary
 
 - `greytheory/`: minimal, dependency-light trust kernel and current offline capabilities.
-- future domain package: workspaces, sessions, assets, identities, hypotheses, experiments, learning.
+- `greytheory/research/`: current structured local workspaces, sessions, assets, identity handles, hypotheses, experiments, action records, and lessons; the broader learning system remains future work.
 - future workers: lower-trust local/network/browser/DNS execution behind tickets.
 - future model package: provider gateway, roles, policies, prompts, and evaluations.
 - future workbench: local API and UI over structured objects.

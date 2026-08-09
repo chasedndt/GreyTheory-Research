@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-09 - Structured research domain](2026-08-09_research-domain.md) - COMPLETE and VERIFIED locally; Milestone 3 COMPLETE
+
 - [2026-08-09 - Direct-policy/MCP Python SDK source proof](2026-08-09_direct-vdp-source-bundle.md) - VERIFIED locally; Milestone 2 implementation/evidence proof COMPLETE
 
 - [2026-08-09 - Bugcrowd/YNAB programme-source proof](2026-08-09_bugcrowd-source-bundle.md) - VERIFIED evidence; bundle BLOCKED; Milestone 2 PARTIAL

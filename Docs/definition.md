@@ -230,8 +230,8 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
 | Dashboard | 1/3 | **Live** — `greytheory/dashboard.py`, absent data reports unknown, never zero |
 | Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
-| Research workspace/domain objects | 1/3 | **Designed, not built** — `DOMAIN_MODEL.md` |
-| Hypothesis / experiment engine | 3 | **Designed, not built** |
+| Research workspace/domain objects | 1/3 | **Live (offline)** — all ten Milestone 3 records plus integrity-checked `ResearchStore` |
+| Hypothesis / experiment engine | 3 | **Live (offline domain)** — explicit lifecycles and budgets; runner/evidence integration is Milestone 4 |
 | Curriculum / skill graph | 3 | **Designed, not built** |
 | Model gateway | cross-cutting | **Designed, not built** |
 | Standalone graphical workbench | 1/3 | **Planned** — CLI and dashboard read model are live |
@@ -250,7 +250,7 @@ Definitions: **Live** = exists and passes current tests. **Partial** = a useful 
 
 ### chasintech.com
 
-> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel is live; research workspaces, hypotheses, experiments, learning, models, workers, and a standalone workbench are being built around it.
+> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel and structured local research domain are live; the integrated fixture, learning system, models, workers, and standalone workbench are being built around them.
 
 ### The line that does the work
 

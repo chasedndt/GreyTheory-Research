@@ -74,6 +74,29 @@ from greytheory.registry import (
     ScopeDiff,
 )
 from greytheory.report import ReportDraft
+from greytheory.research import (
+    ActionReceipt,
+    ActionRequest,
+    AssetKind,
+    AssetRelationship,
+    EffectBudget,
+    ExperimentPlan,
+    ExperimentStatus,
+    Hypothesis,
+    HypothesisStatus,
+    Lesson,
+    RelationshipKind,
+    ResearchDomainError,
+    ResearchIdentity,
+    ResearchSession,
+    ResearchStore,
+    ResearchStoreError,
+    ResearchWorkspace,
+    SessionStatus,
+    TargetAsset,
+    WorkspaceSnapshot,
+    WorkspaceStatus,
+)
 from greytheory.validation import (
     Attestation,
     GateId,
@@ -151,3 +174,29 @@ __all__ = [
     "compile_source_bundle",
     "validate",
 ]
+
+__all__.extend(
+    [
+        "ActionReceipt",
+        "ActionRequest",
+        "AssetKind",
+        "AssetRelationship",
+        "EffectBudget",
+        "ExperimentPlan",
+        "ExperimentStatus",
+        "Hypothesis",
+        "HypothesisStatus",
+        "Lesson",
+        "RelationshipKind",
+        "ResearchDomainError",
+        "ResearchIdentity",
+        "ResearchSession",
+        "ResearchStore",
+        "ResearchStoreError",
+        "ResearchWorkspace",
+        "SessionStatus",
+        "TargetAsset",
+        "WorkspaceSnapshot",
+        "WorkspaceStatus",
+    ]
+)

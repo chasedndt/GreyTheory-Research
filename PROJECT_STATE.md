@@ -16,10 +16,10 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler.
-- **Current research milestone:** Milestone 3 — structured research domain.
+- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain.
+- **Current research milestone:** Milestone 4 — first end-to-end local vertical slice.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 397 tests passing after the third real programme-source bundle slice on 2026-08-09.
+- **Verified baseline:** 411 tests passing after the complete structured research-domain slice on 2026-08-09.
 
 ## What is built
 
@@ -35,14 +35,16 @@ The complete offline path from supplied authorisation to a validated report draf
 - hash-chained audit and provenance triple;
 - local-only lane runner with three static collectors (dependency, local-tree exposure, agent/MCP configuration);
 - offline OSV advisory import;
-- raw/redacted evidence vault, validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI.
+- raw/redacted evidence vault, validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI;
+- all ten Milestone 3 research records: workspace, session, typed asset/relationship, controlled identity, hypothesis, experiment plan, action request/receipt, and lesson;
+- integrity-checked, atomically persisted local research workspaces with referential validation, repository-storage refusal, explicit lifecycles, contract-bound scope classification, request/time/effect budgets, and optional audit writeback;
+- one complete structured-session acceptance proof covering all ten records, gate binding, persistence/reopen, a refuted hypothesis, and a reusable lesson.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
-- research workspaces, sessions, typed assets/relationships, and controlled identities;
-- hypothesis and experiment engine;
-- action and validator-issued check receipts;
+- the integrated deliberately vulnerable two-account fixture connecting the research domain to runner, observation, deterministic checks, evidence, validation, and report generation;
+- validator-issued `CheckReceipt` promotion;
 - vulnerability cards, curriculum, and skill graph;
 - governed model gateway;
 - standalone graphical workbench;
@@ -67,7 +69,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Begin Milestone 3 by implementing the structured research domain: workspaces, sessions, typed assets and relationships, controlled identities, hypotheses, experiment plans, action requests/receipts, and lessons. Keep every object authority-bound and local-only. The separate YNAB conflict-resolution gate remains human-owned.
+Build Milestone 4's deliberately vulnerable local two-account authorisation fixture and connect the verified research objects to the gate, runner, observation/check path, evidence vault, validation, report studio, and structured postmortem. Keep the posture at `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
 
 ## Do not build next
 

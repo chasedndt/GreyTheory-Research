@@ -22,10 +22,10 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 | | |
 |---|---|
-| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
-| **DESIGNED, NOT BUILT** | Research workspaces/sessions/assets/identities, hypotheses/experiments, action/check receipts, learning system, governed model gateway. |
-| **PLANNED** | Research domain, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research workspaces/sessions/assets/identities/hypotheses/experiments/action receipts/lessons; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (structured requests/receipts and local runner are not yet one vertical slice), outcomes/learning (ledger and lessons without the learning system), workbench surface (CLI/read model only). |
+| **DESIGNED, NOT BUILT** | Validator-issued check receipts, vulnerability cards/skill graph, learning system, governed model gateway. |
+| **PLANNED** | First integrated local two-account research slice, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 

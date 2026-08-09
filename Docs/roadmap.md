@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 3 — Research domain
+> **Current milestone:** 4 — First end-to-end local vertical slice
 >
-> **Next milestone:** 4 — First end-to-end local vertical slice
+> **Next milestone:** 5 — Vulnerability cards and skill graph
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,7 +14,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 397 tests passed after the third real programme-source bundle slice.
+- 411 tests pass after the complete structured research-domain slice.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -56,13 +56,17 @@ Implemented from the first bundle:
 
 **Exit:** all three compile without guessed authority; conflicts are explicit; verification records the entire reviewed bundle; any source change invalidates review; ambiguity never grants permission.
 
-## Milestone 3 — Research domain *(current)*
+## Milestone 3 — Research domain *(COMPLETE 2026-08-09)*
 
-Implement `ResearchWorkspace`, `ResearchSession`, `TargetAsset`, `AssetRelationship`, `ResearchIdentity`, `Hypothesis`, `ExperimentPlan`, `ActionRequest`, `ActionReceipt`, and `Lesson`.
+- [x] Implement `ResearchWorkspace`, `ResearchSession`, `TargetAsset`, `AssetRelationship`, `ResearchIdentity`, `Hypothesis`, `ExperimentPlan`, `ActionRequest`, `ActionReceipt`, and `Lesson`.
+- [x] Bind every record to one workspace and contract fingerprint; keep identities reference-only and graph edges scope-neutral.
+- [x] Persist complete local workspaces atomically with integrity and referential checks plus optional hash-chained audit events.
+- [x] Enforce explicit hypothesis/experiment/session lifecycles and request/time/effect budgets.
+- [x] Prove all ten records in one complete persisted local session without unstructured notes or network/process execution.
 
 **Exit:** one full local session can be managed through structured objects without unstructured notes.
 
-## Milestone 4 — First end-to-end local vertical slice
+## Milestone 4 — First end-to-end local vertical slice *(current)*
 
 Use a deliberately vulnerable local two-account authorisation fixture:
 

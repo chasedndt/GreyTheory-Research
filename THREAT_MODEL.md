@@ -37,9 +37,9 @@
 | Approval replay | Consent reused for a new action | Bound, expiring, single-use approvals | LIVE |
 | Scope drift | Work continues after policy changes | Source fingerprinting, review invalidation, final recheck | PARTIAL |
 | Evidence tampering | Artifacts or history altered | Content hashes and audit hash chain | LIVE; trusted anchor planned |
-| Cross-workspace leakage | One programme's data enters another | Workspace isolation and authority references | PLANNED |
+| Cross-workspace leakage | One programme's data enters another | Workspace isolation and authority references | LIVE for the local domain store; worker isolation planned |
 | Cloud-model exfiltration | Sensitive data leaves device | Data classes and remote-model policy | PLANNED |
-| Operator mistake | Wrong identity, target, or technique | Structured plans, previews, and stop conditions | PLANNED |
+| Operator mistake | Wrong identity, target, or technique | Structured plans, exact action/identity/target binding, and stop conditions | PARTIAL; domain enforced, execution preview planned |
 | Runaway automation | Excess requests or effects | Budgets, token buckets, kill switch | PARTIAL |
 | False AI certainty | Inference is presented as proof | Provenance triple and claim-evidence matrix | PARTIAL |
 | Whole-chain rewrite | Attacker recomputes the audit chain | Signed periodic checkpoints | PLANNED |

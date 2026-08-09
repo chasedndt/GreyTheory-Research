@@ -57,16 +57,18 @@ Each one ships a self-sufficient default beside it, so nothing external is ever 
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` reading OSRIL records |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
 | Ledger root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-ledger` |
+| Research root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-research` |
 
 Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
+
+## Implemented research domain
+
+`greytheory/research/` contains the ten Milestone 3 records, typed asset graph, hypothesis/experiment lifecycle, action request/receipt binding, structured lessons, and the integrity-checked local store. Milestone 4 will integrate these records with the existing runner, observation/check, evidence, validation, and reporting modules.
 
 ## Designed, not built
 
 | Module / package | Layer | Blocked on |
 |---|---|---|
-| Research workspace and session domain | 2 | Milestone 3 implementation |
-| Typed target/asset graph | 3 | Domain object contracts |
-| Hypothesis and experiment engine | 5 | Workspace/session domain |
 | Validator-issued `CheckReceipt` | 8 | Safe migration of current promotion callers |
 | Vulnerability cards and skill graph | 4 | Domain and local-fixture contracts |
 | Model gateway | cross-cutting | Research objects and evaluation harness |

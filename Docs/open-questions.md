@@ -16,12 +16,7 @@ Tracked unknowns. No item is resolved by discussion alone; each names a resoluti
 | R8 | Approval ownership? | Exactly one provider per deployment; local is default, ChaseOS optional. Migration is planned. |
 | R9 | Which direct-policy source completes Milestone 2? | The official `modelcontextprotocol/python-sdk` `SECURITY.md` at immutable commit `d82ed88e`; it is independently maintained and contains the observed scope table. |
 | R10 | Does the source model survive a direct policy with no platform target table? | Yes. One verbatim programme-policy source, one-item precedence, exact field citations, and a strict Markdown supported-version derivation compile cleanly to `PENDING_REVIEW`. |
-
-## Open — current milestone
-
-| # | Question | Why it matters | Resolution condition |
-|---|---|---|---|
-| O3 | Where should the domain package live? | It should not inflate the trust kernel or fragment the repo prematurely. | Five-object implementation spike reviewed against package boundaries. |
+| R11 | Where should the domain package live? | `greytheory/research/` keeps the product-facing records and local store coherent without inflating `greytheory/authority/`; 14 focused and 411 full tests verify the boundary. |
 
 ## Open — later milestones
 

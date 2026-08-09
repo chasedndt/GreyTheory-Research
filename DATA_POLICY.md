@@ -17,10 +17,10 @@ Model inputs must use credential handles, identity handles, hashes, and redacted
 
 ## Storage
 
-- SQLite is the planned index for programme metadata, workspaces, sessions, hypotheses, experiment state, findings, learning, ledger entries, and read models.
+- Integrity-digested JSON snapshots are the current store for structured research workspaces and sessions; SQLite remains the planned index once object contracts and query patterns stabilise.
 - Content-addressed files remain the store for evidence, programme source snapshots, report versions, and tool outputs.
 - The append-only audit chain records authority-relevant events.
-- Raw evidence must remain outside every Git working tree.
+- Raw evidence and research workspace data must remain outside every Git working tree; both stores refuse repository paths by default.
 - Only redacted evidence is exportable, and export remains all-or-nothing.
 
 ## Evidence deletion

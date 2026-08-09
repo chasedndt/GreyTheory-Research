@@ -82,11 +82,11 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 |---|---|---|
 | 0 | Trust Kernel | LIVE |
 | 1 | Programme and Authority Intelligence | PARTIAL |
-| 2 | Research Workspace | PLANNED |
-| 3 | Target and Asset Graph | PLANNED |
+| 2 | Research Workspace | LIVE offline; structured store and sessions verified |
+| 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | PLANNED |
-| 5 | Hypothesis and Experiment Engine | PLANNED |
-| 6 | Execution and Tool Broker | PLANNED; local-only runner exists |
+| 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles and budgets |
+| 6 | Execution and Tool Broker | PARTIAL; structured requests/receipts and local-only runner are not yet integrated |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; claim-evidence matrix planned |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger live, learning loop planned |
@@ -108,7 +108,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - static dependency, local-tree exposure, and agent/MCP configuration collectors;
 - offline OSV import;
 - evidence vault with raw/redacted separation and repository guard;
-- validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI.
+- validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI;
+- authority-bound workspaces, sessions, typed assets/relationships, controlled identity handles, hypotheses, experiment plans, action requests/receipts, and structured lessons;
+- a private local research store with atomic integrity-digested snapshots, referential validation, explicit lifecycle/budget rules, and optional audit writeback.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -118,12 +120,12 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - Milestone 2's three-source implementation proof is complete; individual bundle review and conflict states remain authoritative and unchanged;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
 - deterministic claim promotion still accepts a caller-supplied falsifiability Boolean;
-- the dashboard is a read model, not the planned standalone workbench.
+- the dashboard is a read model, not the planned standalone workbench;
+- the Milestone 3 domain is verified as a structured local session, but is not yet connected end-to-end to runner, observation/check, evidence, validation, and report generation.
 
 ### PLANNED / NOT BUILT
 
-- research workspaces, sessions, typed assets, relationships, and controlled identities;
-- hypotheses, experiment plans, action receipts, and lessons;
+- the deliberately vulnerable two-account local vertical slice joining the research domain to existing execution/evidence/reporting components;
 - validator-issued `CheckReceipt` promotion;
 - vulnerability cards, curriculum, and skill graph;
 - governed model gateway and evaluation harness;
@@ -133,7 +135,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 and 2 are complete at their documented implementation/evidence exit conditions. Milestone 3 — the structured research domain — is current and culminates in a local two-account authorisation vertical slice in Milestone 4.
+Milestones 1, 2, and 3 are complete at their documented implementation/evidence exit conditions. Milestone 4 — the first end-to-end local vertical slice — is current and will connect the structured research domain to the existing trust-kernel components through a deliberately vulnerable two-account authorisation fixture.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

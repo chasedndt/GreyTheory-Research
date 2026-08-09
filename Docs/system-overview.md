@@ -144,6 +144,7 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 |---|---|---|
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` (OSRIL records) |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` |
+| Research root | Platform user-data directory | `GREYTHEORY_RESEARCH_ROOT` or `CHASEOS_VAULT_ROOT` |
 
 So an upstream refactor breaks a test here, not the runtime.
 
@@ -161,7 +162,7 @@ Stated plainly, because the failure mode of an architecture document is implying
 
 - **No live-target lane is implemented.** Three static collectors read local dependency manifests, local trees, and agent/MCP configuration. They do not establish reachability or touch a target.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
-- **No research workspace/domain implementation.** Workspaces, sessions, typed assets, controlled identities, hypotheses, experiments, and receipts are designed but not built.
+- **The structured research domain is local and not yet an execution vertical slice.** Workspaces, sessions, typed assets/relationships, controlled identity handles, hypotheses, experiments, action requests/receipts, and lessons are implemented and persistence-tested. Milestone 4 still has to connect them to the runner, deterministic checks, evidence, validation, and reporting through the deliberately vulnerable fixture.
 - **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
 - **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. All three Milestone 2 source shapes exist offline: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB remains blocked on human policy decisions.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
