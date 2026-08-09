@@ -1,6 +1,6 @@
 # GreyTheory Domain Model
 
-> **Status:** DESIGNED; implementation is PLANNED unless a type is explicitly marked LIVE.
+> **Status:** DESIGNED; implementation is PLANNED unless a type is explicitly marked LIVE or PARTIAL.
 >
 > **Effective:** 2026-08-09
 
@@ -40,7 +40,7 @@ Programme
 
 ## Existing objects
 
-`ScopeContract`, gate decisions, approvals, observations (`RawSignal`), claims, evidence artifacts, findings, reports, programme outcomes, and ledger entries already exist in narrower forms. Their current implementations remain source truth until migrated deliberately.
+`ProgrammeSourceBundle` (PARTIAL: one of three real programme proofs), `ScopeContract`, gate decisions, approvals, observations (`RawSignal`), claims, evidence artifacts, findings, reports, programme outcomes, and ledger entries already exist in narrower forms. Their current implementations remain source truth until migrated deliberately.
 
 ## Next five domain objects
 
@@ -66,7 +66,7 @@ The smallest safe procedure capable of supporting or refuting a hypothesis. Cont
 
 ## Following objects
 
-- `ProgrammeSourceBundle`: all policy sources, hashes, retrieval times, precedence, and human conflict resolutions compiled as one authority input.
+- `ProgrammeSourceBundle` (**PARTIAL / IMPLEMENTED**): all saved policy sources, capture modes, hashes, retrieval times, precedence, field citations, and human conflict resolutions compiled as one authority input. The HackerOne/GitLab bundle is live; Bugcrowd and direct-VDP proofs remain.
 - `ResearchIdentity`: a controlled role/identity handle with ownership attestation and credential reference, not a credential container.
 - `AssetRelationship`: a typed edge such as `calls`, `trusts`, `owns`, `may_access`, `invokes`, or `sends_data_to`.
 - `ActionRequest`: a structured request for one exact action.

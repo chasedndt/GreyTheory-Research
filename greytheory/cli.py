@@ -1,8 +1,8 @@
-"""Command line surface for the Authority Plane.
+"""Command line surface for the GreyTheory trust kernel.
 
-Deliberately small. It exposes the four things an operator needs to do without
-writing Python: compile a programme, review a clean contract, ask the gate a
-question, and verify the audit chain.
+Deliberately small. It exposes programme compilation and review, source-bundle
+registration, gate checks, audit verification, and offline read models without
+turning the command line into an execution bypass.
 
     greytheory compile fixtures/programmes/mock-verified.json -o build/contract.json
     greytheory review build/contract.json --reviewer chase
@@ -24,7 +24,7 @@ from greytheory.audit import AuditLog, AuditVerificationError
 from greytheory.authority.compiler import compile_contract, mark_reviewed
 from greytheory.authority.gate import AccessRequest, AuthorityLevel, Gate
 from greytheory.authority.scope import ScopeContract
-from greytheory.registry import ProgrammeRegistry, RegistryError
+from greytheory.registry import ProgrammeRegistry, RegistrationResult, RegistryError
 
 DEFAULT_AUDIT = "audit.jsonl"
 DEFAULT_REGISTRY = "contracts"
@@ -145,6 +145,20 @@ def cmd_programme_register(args: argparse.Namespace) -> int:
         print(f"refused: {exc}", file=sys.stderr)
         return 1
 
+    return _print_registration(result)
+
+
+def cmd_programme_register_bundle(args: argparse.Namespace) -> int:
+    registry = ProgrammeRegistry(args.registry, audit=AuditLog(args.audit))
+    try:
+        result = registry.register_bundle(args.bundle)
+    except RegistryError as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    return _print_registration(result)
+
+
+def _print_registration(result: RegistrationResult) -> int:
     contract = result.version.contract
     print(f"programme:   {contract.programme_id}")
     print(f"version:     v{result.version.version}")
@@ -301,7 +315,10 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="greytheory",
-        description="GreyTheory AI - Authority Plane. No authorisation, no execution.",
+        description=(
+            "GreyTheory - local-first Security Research Operating System. "
+            "No authorisation, no execution."
+        ),
     )
     parser.add_argument("--audit", default=DEFAULT_AUDIT, help="audit log path")
     parser.add_argument("--actor", default="operator", help="who is acting")
@@ -362,6 +379,13 @@ def build_parser() -> argparse.ArgumentParser:
     q = psub.add_parser("register", help="register or re-register a programme")
     q.add_argument("programme")
     q.set_defaults(func=cmd_programme_register)
+
+    q = psub.add_parser(
+        "register-bundle",
+        help="register a saved multi-source programme bundle offline",
+    )
+    q.add_argument("bundle", help="bundle directory or manifest.json path")
+    q.set_defaults(func=cmd_programme_register_bundle)
 
     q = psub.add_parser("review", help="human-review the latest version")
     q.add_argument("programme_id")

@@ -1,0 +1,45 @@
+identifier,asset_type,instruction,eligible_for_bounty,eligible_for_submission,availability_requirement,confidentiality_requirement,integrity_requirement,max_severity,system_tags,created_at,updated_at
+customers.gitlab.com,URL,Server-side Denial of Service is out of scope as per our Policy.,true,true,,,,critical,"Rails, Google Cloud Platform, Ruby",2018-12-12 15:28:03 UTC,2023-01-31 08:42:15 UTC
+registry.gitlab.com,URL,"",true,true,,,,critical,,2018-12-12 15:29:00 UTC,2018-12-12 15:29:00 UTC
+gitlab.com,URL,"",true,true,,,,critical,"Rails, PostgresSQL, Google Cloud Platform, Ruby",2018-12-12 15:29:16 UTC,2023-07-13 09:09:02 UTC
+dashboards.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:30:15 UTC,2018-12-12 15:30:15 UTC
+alerts.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:30:42 UTC,2018-12-12 15:30:42 UTC
+support.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:31:03 UTC,2018-12-12 15:31:03 UTC
+shop.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:31:21 UTC,2018-12-12 15:31:21 UTC
+forum.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:31:49 UTC,2018-12-12 15:31:50 UTC
+status.gitlab.com,URL,"",false,false,,,,critical,,2018-12-12 15:32:37 UTC,2018-12-12 15:32:38 UTC
+Your Own GitLab Instance,OTHER,"",true,true,,,,critical,"PostgresSQL, Ruby, Rails",2019-10-22 16:26:49 UTC,2020-04-20 20:20:26 UTC
+partners.gitlab.com,URL,"",false,false,,,,critical,,2020-06-22 15:49:19 UTC,2020-06-22 15:49:19 UTC
+aptly.gitlab.com,URL,"",false,false,,,,critical,,2020-07-29 16:33:29 UTC,2020-07-29 16:33:29 UTC
+translate.gitlab.com,URL,"",false,false,,,,critical,,2020-08-18 20:42:07 UTC,2020-08-18 20:42:08 UTC
+https://gitlab.com/gitlab-org/gitlab,SOURCE_CODE,"",true,true,,,,critical,"PostgresSQL, JavaScript, Rails, Ruby, VUE",2020-10-05 18:36:31 UTC,2020-10-05 18:36:31 UTC
+https://gitlab.com/gitlab-org/gitlab-runner,SOURCE_CODE,"",true,true,,,,critical,Go,2020-10-05 18:38:28 UTC,2020-10-05 18:38:28 UTC
+https://gitlab.com/gitlab-org/gitaly,SOURCE_CODE,"",true,true,,,,critical,"Go, Ruby",2020-10-05 18:39:31 UTC,2020-10-05 18:39:31 UTC
+https://gitlab.com/gitlab-org/gitlab-pages,SOURCE_CODE,"",true,true,,,,critical,Go,2020-10-05 18:40:59 UTC,2020-10-05 18:40:59 UTC
+https://gitlab.com/gitlab-org/gitlab-shell,SOURCE_CODE,"",true,true,,,,critical,"Go, Ruby",2020-10-05 18:41:33 UTC,2020-10-05 18:41:33 UTC
+https://gitlab.com/gitlab-org/gitlab-vscode-extension,SOURCE_CODE,"",true,true,,,,critical,"JavaScript, Node.js, TypeScript",2021-01-21 19:38:54 UTC,2022-07-21 16:12:28 UTC
+federal-support.gitlab.com,URL,"",false,false,,,,critical,,2021-06-14 15:22:59 UTC,2021-06-14 15:22:59 UTC
+us-federal-gitlab.com,URL,"",false,false,,,,critical,,2021-06-14 15:23:36 UTC,2021-06-14 15:23:36 UTC
+ir.gitlab.com,URL,"",false,false,,,,critical,,2022-06-10 16:18:45 UTC,2022-06-10 16:18:45 UTC
+Other non-production infrastructure,OTHER,Hosts owned and operated by GitLab other than gitlab.com itself and our static websites.,true,true,low,low,low,medium,,2022-07-21 15:50:53 UTC,2022-07-21 15:59:15 UTC
+*.gitlab.net,WILDCARD,Hosts owned and operated by GitLab.,true,true,low,low,low,medium,,2022-07-21 15:55:46 UTC,2023-05-15 16:39:02 UTC
+*.gitlab.org,WILDCARD,Hosts owned and operated by GitLab.,true,true,low,low,low,medium,,2022-07-21 15:56:55 UTC,2023-05-15 16:39:02 UTC
+*.gitlap.com,WILDCARD,Hosts owned and operated by GitLab. gitla**p** with a p!,true,true,low,low,low,medium,,2022-07-21 15:58:45 UTC,2023-05-15 16:39:02 UTC
+about.gitlab.com,URL,"There is no user data therefore no confidentiality impact is possible, however we want to know if you can modify the content or make it unavailable.",true,true,low,none,low,medium,,2022-07-21 16:00:22 UTC,2022-07-21 16:00:22 UTC
+docs.gitlab.com,URL,"There is no user data therefore no confidentiality impact is possible, however we want to know if you can modify the content or make it unavailable.",true,true,low,none,low,medium,,2022-07-21 16:01:08 UTC,2022-07-21 16:01:08 UTC
+design.gitlab.com,URL,"There is no user data therefore no confidentiality impact is possible, however we want to know if you can modify the content or make it unavailable.",true,true,low,none,low,medium,,2022-07-21 16:01:46 UTC,2022-07-21 16:01:46 UTC
+levelup.gitlab.com,URL,"",false,false,,,,critical,,2022-07-21 16:05:12 UTC,2022-07-21 16:05:12 UTC
+advisories.gitlab.com,URL,"There is no user data therefore no confidentiality impact is possible, however we want to know if you can modify the content or make it unavailable.",true,true,low,none,low,medium,,2022-07-21 16:05:59 UTC,2022-07-21 16:05:59 UTC
+gitlab.biterg.io,URL,This is a third-party website that aggregates public data from GitLab.com. It is out of scope and the data hosted there is not meant to be confidential. https://contributors.gitlab.com/ redirects to this website.,false,false,,,,critical,,2022-09-21 15:08:57 UTC,2022-09-21 22:04:47 UTC
+https://gitlab.com/gitlab-org/cli/,SOURCE_CODE,This is a community project that is [now officially maintained by GitLab](https://about.gitlab.com/blog/2022/12/07/introducing-the-gitlab-cli/). It will be in scope at a later time but it is not ready yet.,false,false,,,,critical,,2022-12-23 23:51:52 UTC,2022-12-23 23:51:52 UTC
+https://gitlab.com/gitlab-org/opstrace/opstrace-ui,SOURCE_CODE,,false,false,,,,critical,,2023-06-04 20:58:13 UTC,2023-06-04 20:58:13 UTC
+https://gitlab.com/gitlab-org/opstrace/opstrace,SOURCE_CODE,,false,false,,,,critical,,2023-06-04 21:03:57 UTC,2026-05-27 15:34:12 UTC
+*.gitlab.cn,WILDCARD,"`gitlab.cn` and the JiHu-specific GitLab distribution which are property of GitLab Information Technology (Hubei) Co., Ltd. (JiHu), security issues in those products should be reported to `security@gitlab.cn`",false,false,,,,critical,,2023-06-13 14:08:43 UTC,2023-06-13 14:12:45 UTC
+gitlabsandbox.net,URL,,false,false,none,none,none,none,,2023-08-16 09:01:47 UTC,2023-08-16 09:01:47 UTC
+gitlabdemo.cloud,URL,,false,false,none,none,none,none,,2023-08-16 09:01:47 UTC,2023-08-16 09:01:47 UTC
+gitlabtraining.cloud,URL,,false,false,none,none,none,none,,2023-08-16 09:01:47 UTC,2023-08-16 09:01:47 UTC
+*.service-now.com,WILDCARD,"",false,false,not_defined,not_defined,not_defined,none,,2023-11-30 18:43:26 UTC,2023-11-30 18:43:26 UTC
+GitLab for Jira Cloud,OTHER,"",true,true,,,,medium,,2023-12-07 13:39:30 UTC,2023-12-07 13:39:30 UTC
+*.runway.gitlab.net,WILDCARD,"",false,false,,,,critical,,2024-01-02 18:27:49 UTC,2024-01-02 18:27:49 UTC
+packages.gitlab.com,URL,,false,false,,,,none,,2024-02-06 23:02:13 UTC,2024-02-06 23:02:13 UTC
+*.gitlab-private.org,WILDCARD,Dangling DNS for *.gitlab-private.org is out of scope,false,false,,,,critical,,2025-05-07 17:56:29 UTC,2025-05-07 17:56:49 UTC

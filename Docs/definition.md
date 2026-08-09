@@ -219,6 +219,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
 | Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
+| Programme source bundles | 1 | **Partial** — `greytheory/authority/sources.py`; HackerOne/GitLab proof live, two platform proofs remain |
 | Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
 | Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, ecosystem-aware, over imported OSV data |
 | Lane 2 Exposure | 2 | **Live (static)** — local-tree inspection; presence, never reachability |
@@ -301,6 +302,7 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D32 | Trust planes and product layers coexist | Planes define trust; layers define capability. No layer may weaken a plane. ADR-0002. |
 | D33 | Exactly one approval provider is active | Standalone and ChaseOS-backed deployments share a protocol without mirroring authority. ADR-0003. |
 | D34 | Checked promotion migrates to validator-issued receipts | Caller-declared falsifiability is too easy to misuse; migration must preserve current behaviour until callers move. ADR-0004. |
+| D35 | A programme review attaches to one offline semantic source bundle | Platform defaults, programme policy, scope exports, precedence, field citations, and human resolutions are reviewed together; any substantive change invalidates review. ADR-0005. |
 | D27 | A collector records the shape of a secret, never its value | A lane that copies credentials into the evidence trail creates the problem it was looking for, at scale, into a store that outlives the engagement. |
 | D28 | Presence is reported, never reachability | A key in a tree is present; whether it is served depends on the web root, the branch and the build, none of which a directory knows. |
 | D26 | Absent dashboard data reports UNKNOWN, never zero | "0 out-of-scope attempts" and "nothing is being recorded" look identical on a screen and mean opposite things. |

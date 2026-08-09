@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "greytheory"
 version = "0.1.0"
-description = "GreyTheory AI — Authority Plane. Converts authorisation into evidence."
+description = "GreyTheory — a local-first, human-governed Security Research Operating System."
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]

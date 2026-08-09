@@ -14,8 +14,8 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 347 tests passed at the 2026-08-09 preflight.
-- Programme compilation has only been proven against in-house fixtures.
+- 376 tests passed after the first real programme-source bundle slice.
+- One saved HackerOne/GitLab bundle compiles offline from three hashed sources; cross-platform proof remains incomplete.
 - No network capability or live research outcome exists.
 
 ## Milestone 1 — Canonical project foundation *(COMPLETE 2026-08-09)*
@@ -32,11 +32,22 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 Register saved public sources for:
 
-- [ ] one HackerOne programme;
+- [x] one HackerOne programme — GitLab, captured 2026-08-09;
 - [ ] one Bugcrowd programme;
 - [ ] one direct VDP or independently hosted policy.
 
 Implement `ProgrammeSourceBundle` from observed needs: platform defaults, programme rules, scope tables, attachments/linked policies, retrieval times, source hashes, precedence, and human conflict resolutions.
+
+Implemented from the first bundle:
+
+- [x] source kind and capture-mode truth (`structured_export`, `verbatim`, or `operator_extract`);
+- [x] safe local paths, public HTTPS provenance, retrieval/source-update times, and per-source integrity hashes;
+- [x] high-to-low precedence and per-authority-field source citations;
+- [x] executable derivation check proving the 44 HackerOne CSV rows match the 19/25 normalised scope record;
+- [x] accepted/pending/rejected human-resolution records, with unresolved or unattributed decisions blocking compilation;
+- [x] whole-bundle semantic snapshot/hash and registry review invalidation when any source or governing metadata changes;
+- [x] offline CLI registration and audit evidence;
+- [ ] prove the same schema against Bugcrowd and direct-VDP source shapes.
 
 **No target contact.** Compilation is offline.
 

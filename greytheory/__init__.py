@@ -1,7 +1,8 @@
-"""GreyTheory AI — a proof-first security research control plane.
+"""GreyTheory — a local-first Security Research Operating System.
 
-This package implements **Plane 1, the Authority Plane**: the root of the system.
-Nothing in the Signal or Judgement planes may execute except through it.
+This package implements the offline trust kernel. The Authority Plane remains
+the root: nothing in the Signal or Judgement planes may execute except through
+it.
 
 The invariants enforced here are defined in `Docs/definition.md` section 3:
 
@@ -30,6 +31,19 @@ from greytheory.authority.scope import (
     ContractStatus,
     ScopeClassification,
     ScopeContract,
+)
+from greytheory.authority.sources import (
+    BundleCompilationResult,
+    BundleError,
+    CaptureMode,
+    DerivationKind,
+    HumanResolution,
+    ProgrammeSource,
+    ProgrammeSourceBundle,
+    ResolutionStatus,
+    SourceDerivation,
+    SourceKind,
+    compile_source_bundle,
 )
 from greytheory.evidence import (
     EvidenceArtifact,
@@ -96,6 +110,10 @@ __all__ = [
     "AuditRecord",
     "AuditVerificationError",
     "AuthorityLevel",
+    "BundleCompilationResult",
+    "BundleError",
+    "CaptureMode",
+    "DerivationKind",
     "ChaseOSApprovalStore",
     "Claim",
     "ContractStatus",
@@ -109,20 +127,27 @@ __all__ = [
     "GateId",
     "GateResult",
     "GateStatus",
+    "HumanResolution",
     "LocalApprovalStore",
     "ProgrammeRegistry",
+    "ProgrammeSource",
+    "ProgrammeSourceBundle",
     "ProvenanceError",
     "Reason",
     "RegistryError",
     "ReportDraft",
+    "ResolutionStatus",
     "ScopeClassification",
     "ScopeContract",
     "ScopeDiff",
+    "SourceKind",
+    "SourceDerivation",
     "Tag",
     "Taxonomy",
     "TransitionError",
     "ValidationReport",
     "VaultLocationError",
     "__version__",
+    "compile_source_bundle",
     "validate",
 ]

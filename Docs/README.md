@@ -26,6 +26,7 @@ Where to start, and which document wins when two disagree.
 | Standalone/ChaseOS/worker boundaries | [`INTEGRATION_BOUNDARIES.md`](../INTEGRATION_BOUNDARIES.md) |
 | What is allowed right now | [`scope-policy.md`](scope-policy.md) |
 | Architecture decisions | [`decisions/`](decisions/README.md) |
+| Real public programme-source evidence | [`../fixtures/programmes/public/hackerone-gitlab-2026-08-09/`](../fixtures/programmes/public/hackerone-gitlab-2026-08-09/) |
 
 ## Trust kernel and current implementation
 

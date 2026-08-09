@@ -19,13 +19,15 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Completed productisation milestone:** Milestone 1 — Canonical project foundation.
 - **Current research milestone:** Milestone 2 — compile three real public programme source bundles without contacting targets.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 347 tests passing at the 2026-08-09 foundation preflight.
+- **Verified baseline:** 376 tests passing after the first real programme-source bundle slice on 2026-08-09.
 
 ## What is built
 
 The complete offline path from supplied authorisation to a validated report draft:
 
-- programme registry and single-source scope compiler;
+- programme registry plus single-source and multi-source bundle compilation;
+- public-source provenance with capture modes, retrieval times, per-source hashes, field citations, structured-export derivation checks, precedence, and human-resolution gates;
+- one real saved HackerOne/GitLab bundle containing the official 44-row scope export plus bounded programme/platform policy extracts;
 - execution gate with seventeen denial reasons, posture ceiling, and kill switch;
 - bound, expiring, single-use approvals;
 - hash-chained audit and provenance triple;
@@ -35,7 +37,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## What is not built
 
-- real `ProgrammeSourceBundle` ingestion and three-programme proof;
+- the remaining Bugcrowd and direct-VDP bundles required for the three-programme proof;
 - research workspaces, sessions, typed assets/relationships, and controlled identities;
 - hypothesis and experiment engine;
 - action and validator-issued check receipts;
@@ -63,7 +65,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Begin Milestone 2 with one saved public programme source bundle. Record compiler blocks and human resolutions; add only the policy shapes real sources prove are necessary. Do not contact a target.
+Add the Bugcrowd public programme bundle. Reuse the implemented bundle schema where the source shapes fit; extend it only for observed Bugcrowd-specific evidence. Do not contact a target.
 
 ## Do not build next
 

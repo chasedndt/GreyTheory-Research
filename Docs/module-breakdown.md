@@ -10,6 +10,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/audit.py`](../greytheory/audit.py) | Append-only hash-chained JSONL. Detects edits, reorders and deletions. | Access control on the log file itself; that is the filesystem's job. |
 | [`greytheory/authority/scope.py`](../greytheory/authority/scope.py) | `ScopeContract`, pattern matching, staleness, fingerprinting. | DNS resolution. A hostname is not an address and will not be resolved to match a CIDR. |
 | [`greytheory/authority/compiler.py`](../greytheory/authority/compiler.py) | Programme source → contract. Fails closed on ambiguity. Hashes the source. | Fetching programme pages. Input arrives as a local record. |
+| [`greytheory/authority/sources.py`](../greytheory/authority/sources.py) | Saved `ProgrammeSourceBundle` loading, integrity, capture modes, precedence, field citations, human resolutions, semantic snapshots, and offline compilation. | Fetching sources, interpreting prose, or granting review. |
 | [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py) | Binding, expiry and single-use enforcement over whatever store is in play. | Storing approvals when a platform already owns them. Deciding *whether* to approve — that is the operator's. |
 | [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, approval threshold, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
 | [`greytheory/registry.py`](../greytheory/registry.py) | Versioned programme records, source snapshots, scope drift detection, the attention queue. | Fetching programme pages. Deciding a contract is trustworthy — that is the gate's. |
@@ -38,7 +39,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 cli ──▶ authority.gate ──▶ authority.scope
  │           │         └──▶ authority.approvals
  │           └──▶ audit
- ├──▶ registry ──▶ authority.compiler ──▶ authority.scope
+ ├──▶ registry ──▶ authority.sources ──▶ authority.compiler ──▶ authority.scope
  │        └──▶ evidence (repository guard only)
  ├──▶ evidence ──▶ audit
  └──▶ validation ──▶ evidence, findings, report
@@ -63,7 +64,7 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 | Module / package | Layer | Blocked on |
 |---|---|---|
-| Programme source bundles | 1 | Three saved real public programme sources |
+| Programme source bundles | 1 | **PARTIAL** — HackerOne/GitLab implemented; Bugcrowd and direct-VDP proofs remain |
 | Research workspace and session domain | 2 | Milestone 3 implementation |
 | Typed target/asset graph | 3 | Domain object contracts |
 | Hypothesis and experiment engine | 5 | Workspace/session domain |

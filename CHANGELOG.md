@@ -4,6 +4,13 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — first real programme-source bundle
+
+- `greytheory.authority.sources` implements offline `ProgrammeSourceBundle` loading and compilation with explicit source kinds/capture modes, safe local paths, public provenance URLs, retrieval/update times, per-source hashes, high-to-low precedence, per-field citations, structured-export derivation checks, human-resolution gates, and a semantic whole-bundle snapshot/hash.
+- `ProgrammeRegistry.register_bundle()` stores the complete bundle snapshot, audits its identity/hash/source count, carries review only across identical bundles, and invalidates review when any source or governing metadata changes.
+- CLI command `greytheory programme register-bundle` registers a saved bundle without network I/O.
+- First real proof: a 2026-08-09 HackerOne/GitLab bundle containing the official 44-row public scope CSV plus bounded programme and platform-policy extracts. It compiles to `PENDING_REVIEW` under `LOCAL_FIXTURE`; it is not human-reviewed and grants no live-target authority.
+
 ### Added — Security Research Operating System foundation
 
 - Canonical product identity, research-domain model, bounded-autonomy model, threat model, data policy, integration boundaries, and four architecture decision records.

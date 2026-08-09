@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "id": "hackerone-gitlab-2026-08-09",
+  "programme_id": "hackerone-gitlab-public",
+  "retrieved_at": "2026-08-09T10:30:00Z",
+  "programme_record": "programme.json",
+  "sources": [
+    {
+      "id": "gitlab-scope-csv",
+      "kind": "scope_table",
+      "capture_mode": "structured_export",
+      "url": "https://hackerone.com/teams/gitlab/assets/download_csv.csv",
+      "retrieved_at": "2026-08-09T10:30:00Z",
+      "last_modified_at": "2026-05-27T00:00:00Z",
+      "path": "sources/gitlab-scope.csv",
+      "sha256": "sha256:d61978dc7d199361ee52c4e06616fe3258d38b3b271497ac4ec688fc136003c3"
+    },
+    {
+      "id": "gitlab-programme-guidelines",
+      "kind": "programme_policy",
+      "capture_mode": "operator_extract",
+      "url": "https://hackerone.com/gitlab?type=team",
+      "retrieved_at": "2026-08-09T10:30:00Z",
+      "last_modified_at": "2026-07-21T00:00:00Z",
+      "path": "sources/gitlab-programme-guidelines.md",
+      "sha256": "sha256:1118f4d8c4c26e8442c1f73f55b2574e484c51673d2d65883f34299baafc5469"
+    },
+    {
+      "id": "hackerone-core-ineligible",
+      "kind": "platform_default",
+      "capture_mode": "operator_extract",
+      "url": "https://docs.hackerone.com/en/articles/8494488-core-ineligible-findings",
+      "retrieved_at": "2026-08-09T10:30:00Z",
+      "last_modified_at": "2025-05-19T00:00:00Z",
+      "path": "sources/hackerone-core-ineligible.md",
+      "sha256": "sha256:38f188bdd2465ad7e8a9695726174a989bd2c3f1fbb420085f75da2b9f6f6b18"
+    }
+  ],
+  "precedence": [
+    "gitlab-scope-csv",
+    "gitlab-programme-guidelines",
+    "hackerone-core-ineligible"
+  ],
+  "field_sources": {
+    "in_scope": ["gitlab-scope-csv"],
+    "out_of_scope": ["gitlab-scope-csv"],
+    "prohibited_techniques": [
+      "gitlab-programme-guidelines",
+      "hackerone-core-ineligible"
+    ],
+    "max_authority": ["gitlab-programme-guidelines"],
+    "policy_summary": [
+      "gitlab-programme-guidelines",
+      "hackerone-core-ineligible"
+    ]
+  },
+  "derivations": [
+    {
+      "id": "gitlab-scope-record",
+      "kind": "hackerone_scope_csv_v1",
+      "source_id": "gitlab-scope-csv",
+      "target_fields": ["in_scope", "out_of_scope"]
+    }
+  ],
+  "human_resolutions": []
+}

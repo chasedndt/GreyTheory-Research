@@ -22,10 +22,10 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 | | |
 |---|---|
-| **LIVE** | Offline authority/evidence/reporting kernel; programme registry and single-source compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (fixtures only), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (one of three real public bundle proofs), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
 | **DESIGNED, NOT BUILT** | Research workspaces/sessions/assets/identities, hypotheses/experiments, action/check receipts, learning system, governed model gateway. |
-| **PLANNED** | Programme source bundles, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
+| **PLANNED** | Remaining cross-platform programme-bundle proof, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
@@ -60,6 +60,18 @@ python -m greytheory.cli check contract.json --asset app.mock-verified.test    #
 python -m greytheory.cli review contract.json --reviewer chase
 python -m greytheory.cli check contract.json --asset app.mock-verified.test    # ALLOW
 ```
+
+Compile the first real saved public programme bundle entirely offline:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/hackerone-gitlab-2026-08-09
+```
+
+This records the HackerOne platform exclusions, GitLab programme-policy extract,
+and official 44-row scope CSV as one semantic source set. It finishes at
+`PENDING_REVIEW`, carries a `LOCAL_FIXTURE` ceiling, and performs no network I/O.
 
 Scope is not inherited, and the operating posture caps what any contract can grant:
 

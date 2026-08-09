@@ -19,8 +19,8 @@ Tracked unknowns. No item is resolved by discussion alone; each names a resoluti
 
 | # | Question | Why it matters | Resolution condition |
 |---|---|---|---|
-| O1 | Which three public programmes form Milestone 2? | Real source shapes determine the compiler, not imagined fixtures. | One HackerOne, one Bugcrowd, and one direct VDP selected from public sources. |
-| O2 | How should source precedence be represented? | Platform defaults and programme pages may conflict. | Three real bundles compile with explicit precedence and human resolutions. |
+| O1 | Which Bugcrowd and direct-VDP programmes complete Milestone 2? GitLab is the HackerOne proof. | Real source shapes determine the compiler, not imagined fixtures. | One Bugcrowd and one direct VDP selected from public sources. |
+| O2 | Does the implemented high-to-low precedence list plus field citations and human-resolution records survive the other platforms? | The GitLab bundle proves the shape once, not across platforms. | Bugcrowd and direct-VDP bundles compile without adding a contradictory precedence model. |
 | O3 | Where should the domain package live? | It should not inflate the trust kernel or fragment the repo prematurely. | Five-object implementation spike reviewed against package boundaries. |
 
 ## Open — later milestones

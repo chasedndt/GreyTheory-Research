@@ -63,8 +63,8 @@ I1 is the load-bearing one. `promote_to_checked(check_ref, could_have_failed=Tru
 ## 5. The path, end to end
 
 ```
-Programme rules (read by a human)
-  → Scope Compiler        fails closed on ambiguity; hashes the source
+Programme source bundle (saved locally; read by a human)
+  → Scope Compiler        fails closed on ambiguity; hashes every source and the bundle
   → PENDING_REVIEW        a clean compile grants nothing
   → Human review          → VERIFIED
   → Gate                  17 denial paths, 1 allow, every outcome audited
@@ -88,7 +88,7 @@ It does not try to parse programme prose intelligently. It looks for reasons to 
 
 A clean compile produces `PENDING_REVIEW`, never `VERIFIED`. **The compiler cannot grant authority — only a human can.** And review cannot rescue a blocked contract; that requires fixing the source and recompiling. Review confirms a clean compile was read. It does not resolve ambiguity.
 
-The source hash means a later re-read proves whether the rules changed, without storing the page.
+The single-source path retains its original source hash. The multi-source path records capture mode, public URL, retrieval/source-update time, an integrity hash per saved source, high-to-low precedence, per-field citations, any human conflict resolutions, and one semantic whole-bundle snapshot/hash. Registry review attaches to that complete snapshot, so changing any source or governing metadata invalidates review. Bundle loading and compilation perform no network I/O.
 
 ### The Gate — seventeen ways to say no
 
@@ -163,7 +163,7 @@ Stated plainly, because the failure mode of an architecture document is implying
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
 - **No research workspace/domain implementation.** Workspaces, sessions, typed assets, controlled identities, hypotheses, experiments, and receipts are designed but not built.
 - **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
-- **Scope Watch does not exist.** Nothing notices a programme edit until you re-register it.
+- **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. One real HackerOne/GitLab bundle exists; Bugcrowd and direct-VDP proofs remain.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 
 The capability truth in [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md#current-capability-truth) governs every public claim.
