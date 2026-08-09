@@ -16,10 +16,10 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain.
-- **Current research milestone:** Milestone 4 — first end-to-end local vertical slice.
+- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice.
+- **Current research milestone:** Milestone 5 — vulnerability cards and skill graph.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 411 tests passing after the complete structured research-domain slice on 2026-08-09.
+- **Verified baseline:** 420 repository tests passing, including 8 focused Milestone 4 acceptance tests, on 2026-08-09.
 
 ## What is built
 
@@ -39,12 +39,13 @@ The complete offline path from supplied authorisation to a validated report draf
 - all ten Milestone 3 research records: workspace, session, typed asset/relationship, controlled identity, hypothesis, experiment plan, action request/receipt, and lesson;
 - integrity-checked, atomically persisted local research workspaces with referential validation, repository-storage refusal, explicit lifecycles, contract-bound scope classification, request/time/effect budgets, and optional audit writeback;
 - one complete structured-session acceptance proof covering all ten records, gate binding, persistence/reopen, a refuted hypothesis, and a reusable lesson.
+- one complete deliberately vulnerable local two-account slice connecting saved training rules, an explicit labelled test-fixture review/attestation record, ownership graph, hypothesis/experiment, gate-bound action execution, observation, validator-issued `CheckReceipt`, raw/redacted evidence, claim-provenance report, postmortem, and proposed vulnerability-card update;
+- a one-use check-receipt registry that hashes exact input artifacts and validator code and refuses forged, modified, refuted, mismatched, or already-consumed receipts;
+- a CLI demonstration that stops at `report_ready`, records one action receipt for one executed local action, and exposes no submission or network path.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
-- the integrated deliberately vulnerable two-account fixture connecting the research domain to runner, observation, deterministic checks, evidence, validation, and report generation;
-- validator-issued `CheckReceipt` promotion;
 - vulnerability cards, curriculum, and skill graph;
 - governed model gateway;
 - standalone graphical workbench;
@@ -59,7 +60,8 @@ The complete offline path from supplied authorisation to a validated report draf
 - GreyTheory governs the operator's own authorised research. Client-agent governance is a derivative product.
 - AI reasons, plans, critiques, curates, drafts, and tutors. It does not hold authority, execute directly, create proof, submit, contact, or disclose.
 - Every claim is `observed`, `checked`, or `inferred`; no silent promotion.
-- A future `CheckReceipt` replaces caller-asserted falsifiability without weakening current callers during migration.
+- An existing observed or inferred claim is promoted to `checked` only by consuming a successful, matching `CheckReceipt` issued by the registry; caller-asserted falsifiability has been removed.
+- Legacy static collectors still originate deterministic `checked` claims directly; migrating those origins to persisted receipts is a separate open loop and no model output may use that helper.
 - Every action and artifact carries authority. Asset discovery never widens scope.
 - Programme outcomes are recorded from external evidence, never self-awarded.
 - Raw evidence remains outside repositories; only redacted evidence is exportable.
@@ -69,7 +71,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Build Milestone 4's deliberately vulnerable local two-account authorisation fixture and connect the verified research objects to the gate, runner, observation/check path, evidence vault, validation, report studio, and structured postmortem. Keep the posture at `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
+Build Milestone 5's first vulnerability-card contracts and skill graph, starting with the IDOR/BOLA card update proposed by the verified local slice. Keep that proposal non-canonical until the card schema, evidence rules, and six-dimensional mastery tracking are implemented and tested. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
 
 ## Do not build next
 

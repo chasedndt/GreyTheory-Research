@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-09 - Local two-account vertical slice](2026-08-09-ChaseOS-local-two-account-slice.md) - COMPLETE and VERIFIED locally; Milestone 4 COMPLETE
+
 - [2026-08-09 - Structured research domain](2026-08-09-ChaseOS-research-domain.md) - COMPLETE and VERIFIED locally; Milestone 3 COMPLETE
 
 - [2026-08-09 - Direct-policy/MCP Python SDK source proof](2026-08-09-ChaseOS-direct-vdp-source-bundle.md) - VERIFIED locally; Milestone 2 implementation/evidence proof COMPLETE

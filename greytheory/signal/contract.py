@@ -220,7 +220,12 @@ def observed(text: str, source: str) -> Claim:
 
 
 def checked(text: str, source: str, check_ref: str) -> Claim:
-    """A deterministic result. The caller is asserting the test could have failed."""
+    """Legacy origin path for deterministic static-collector results.
+
+    This does not promote an observed or inferred claim. New promotion paths
+    must consume a registry-issued CheckReceipt; migrate collectors to persisted
+    receipts when their artifact contract is introduced.
+    """
     return Claim(text=text, tag=Tag.CHECKED, source=source, check_ref=check_ref)
 
 

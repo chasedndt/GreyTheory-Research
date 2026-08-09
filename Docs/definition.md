@@ -215,6 +215,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Append-only audit log | 1 | **Live** — `greytheory/audit.py`, hash-chained, tamper-detecting |
 | Kill switch | 1 | **Live** — `Gate.engage_kill_switch` |
 | Provenance triple (I1) | 1 | **Live** — `greytheory/provenance.py` |
+| Validator-issued check receipts | 1/3 | **Live (offline)** — `greytheory/checks.py`, exact-input hashes and single-use promotion |
 | Finding schema + lifecycle | 1/3 | **Live** — `greytheory/findings.py`, I5 enforced at the internal/external seam |
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
@@ -229,9 +230,9 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |
 | Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
 | Dashboard | 1/3 | **Live** — `greytheory/dashboard.py`, absent data reports unknown, never zero |
-| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
+| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, claim/evidence matrix, markdown rendering |
 | Research workspace/domain objects | 1/3 | **Live (offline)** — all ten Milestone 3 records plus integrity-checked `ResearchStore` |
-| Hypothesis / experiment engine | 3 | **Live (offline domain)** — explicit lifecycles and budgets; runner/evidence integration is Milestone 4 |
+| Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
 | Curriculum / skill graph | 3 | **Designed, not built** |
 | Model gateway | cross-cutting | **Designed, not built** |
 | Standalone graphical workbench | 1/3 | **Planned** — CLI and dashboard read model are live |
@@ -250,7 +251,7 @@ Definitions: **Live** = exists and passes current tests. **Partial** = a useful 
 
 ### chasintech.com
 
-> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel and structured local research domain are live; the integrated fixture, learning system, models, workers, and standalone workbench are being built around them.
+> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, and complete in-memory two-account training slice are live; the learning system, models, network workers, and standalone workbench are being built around them.
 
 ### The line that does the work
 

@@ -48,7 +48,13 @@ Gates emit warnings that do not block: a reproduction attestation that never men
 
 ## What counts as a deterministic check
 
-A check qualifies only if it has a reachable failure path. `promote_to_checked(..., could_have_failed=True)` is an assertion by the caller that this is so, and it is the single most abusable parameter in the codebase — a check that always passes is not evidence, and asserting otherwise is how model output launders itself into proof.
+A check qualifies only if it has a reachable failure path. A registered
+validator must declare at least two possible outcomes and run on exact byte
+artifacts. `ValidatorRegistry` issues a `CheckReceipt` containing the input
+hashes, assertion, possible and actual outcomes, validator/version, runner
+digest, time, and authority reference. Only a successful, matching, unused
+receipt issued by that registry can promote a claim; the caller-supplied
+falsifiability Boolean no longer exists.
 
 Qualifying:
 

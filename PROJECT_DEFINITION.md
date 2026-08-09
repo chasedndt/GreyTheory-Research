@@ -64,7 +64,7 @@ AI may organise programme material, map assets, propose and rank hypotheses, pre
 
 AI may not verify a contract, expand scope, reinterpret a denial, execute directly, create an approval, promote its own output to `checked`, decide validity or impact, submit, contact a programme, disclose, or access third-party data to strengthen a proof.
 
-Every model output begins as `inferred`. Every executed action must be admitted by the deterministic Authority Plane. Every checked claim must eventually consume a validator-issued `CheckReceipt`; the current caller-supplied falsifiability Boolean is a known migration gap.
+Every model output begins as `inferred`. Every executed action must be admitted by the deterministic Authority Plane. Promoting existing model or human output to `checked` must consume a successful, matching `CheckReceipt` issued by a registered deterministic validator; callers cannot assert their own falsifiability. Legacy static-collector origins remain an explicit migration boundary rather than a route for model promotion.
 
 ## Architecture
 
@@ -86,9 +86,9 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | PLANNED |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles and budgets |
-| 6 | Execution and Tool Broker | PARTIAL; structured requests/receipts and local-only runner are not yet integrated |
+| 6 | Execution and Tool Broker | LIVE for one bounded in-memory `LOCAL_FIXTURE` action; network broker/workers not built |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
-| 8 | Evidence, Validation and Reporting | LIVE offline; claim-evidence matrix planned |
+| 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger live, learning loop planned |
 | 10 | Workbench and Integrations | PARTIAL; CLI live, workbench planned |
 
@@ -111,6 +111,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI;
 - authority-bound workspaces, sessions, typed assets/relationships, controlled identity handles, hypotheses, experiment plans, action requests/receipts, and structured lessons;
 - a private local research store with atomic integrity-digested snapshots, referential validation, explicit lifecycle/budget rules, and optional audit writeback.
+- one complete deliberately vulnerable two-account `LOCAL_FIXTURE` slice from saved rules through a `report_ready` finding, postmortem, and proposed card update;
+- registry-issued, single-use `CheckReceipt` promotion with exact input hashes, validator/version, possible and actual outcomes, runner digest, time, and authority reference;
+- report claim matrices that bind every represented assertion to provenance and evidence references.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -119,14 +122,12 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - one real independently maintained `modelcontextprotocol/python-sdk` security policy compiles from an immutable verbatim source, deriving two supported release lines and one unsupported class exactly before reaching `PENDING_REVIEW`;
 - Milestone 2's three-source implementation proof is complete; individual bundle review and conflict states remain authoritative and unchanged;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
-- deterministic claim promotion still accepts a caller-supplied falsifiability Boolean;
+- promotion of existing observed/inferred claims uses registry-issued receipts, while legacy static collectors still originate their own deterministic `checked` claims pending persisted receipt artifacts;
 - the dashboard is a read model, not the planned standalone workbench;
-- the Milestone 3 domain is verified as a structured local session, but is not yet connected end-to-end to runner, observation/check, evidence, validation, and report generation.
+- the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
 
 ### PLANNED / NOT BUILT
 
-- the deliberately vulnerable two-account local vertical slice joining the research domain to existing execution/evidence/reporting components;
-- validator-issued `CheckReceipt` promotion;
 - vulnerability cards, curriculum, and skill graph;
 - governed model gateway and evaluation harness;
 - Scope Watch, network broker, network workers, and live collectors;
@@ -135,7 +136,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1, 2, and 3 are complete at their documented implementation/evidence exit conditions. Milestone 4 — the first end-to-end local vertical slice — is current and will connect the structured research domain to the existing trust-kernel components through a deliberately vulnerable two-account authorisation fixture.
+Milestones 1 through 4 are complete at their documented implementation/evidence exit conditions. Milestone 5 — vulnerability cards and the skill graph — is current. The Milestone 4 run produced a proposed IDOR/BOLA card update, but it remains non-canonical until the card system exists and validates it.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

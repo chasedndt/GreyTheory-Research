@@ -312,6 +312,34 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_demo_local_two_account(args: argparse.Namespace) -> int:
+    from greytheory.vertical_slice import (
+        OperatorStatements,
+        VerticalSliceError,
+        run_local_two_account_slice,
+    )
+
+    try:
+        statements, _ = _load(args.attestations)
+        result = run_local_two_account_slice(
+            args.root,
+            statements=OperatorStatements.from_dict(statements),
+        )
+    except (OSError, ValueError, VerticalSliceError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(result.to_dict(), indent=2))
+    else:
+        print("GreyTheory local two-account slice: COMPLETE")
+        print(f"  posture:       {result.operating_posture}")
+        print(f"  finding:       {result.finding_id} ({result.finding_state})")
+        print(f"  check receipt: {result.check_receipt_id}")
+        print(f"  report:        {result.report_path}")
+        print("  submission:    not performed")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="greytheory",
@@ -367,6 +395,23 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--html", help="write a self-contained HTML page here")
     p.add_argument("--json", action="store_true", help="emit the read model as JSON")
     p.set_defaults(func=cmd_dashboard)
+
+    demo = sub.add_parser(
+        "demo", help="run bounded local demonstrations (never a network target)"
+    )
+    dsub = demo.add_subparsers(dest="demo_command", required=True)
+    q = dsub.add_parser(
+        "local-two-account",
+        help="run the complete LOCAL_FIXTURE authorization research slice",
+    )
+    q.add_argument("--root", required=True, help="new private run directory outside Git")
+    q.add_argument(
+        "--attestations",
+        required=True,
+        help="explicit operator review/attestation JSON (may be labelled test_fixture)",
+    )
+    q.add_argument("--json", action="store_true", help="emit the result as JSON")
+    q.set_defaults(func=cmd_demo_local_two_account)
 
     programme = sub.add_parser(
         "programme", help="the programme registry: versions, drift, what needs you"

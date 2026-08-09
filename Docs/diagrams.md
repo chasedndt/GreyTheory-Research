@@ -200,10 +200,12 @@ Two guards sit on that boundary:
 
 ```mermaid
 flowchart LR
-    OBS[observed<br/>a tool saw it] --> Q{Falsifiable<br/>check ran?}
-    INF[inferred<br/>a model believes it] --> Q
-    Q -->|yes, it could<br/>have failed| CHK[checked<br/>proven]
-    Q -->|no| REJ[ProvenanceError<br/>promotion refused]
+    OBS[observed<br/>a tool saw it] --> REG{Registered validator<br/>runs on exact bytes}
+    INF[inferred<br/>a model or human believes it] --> REG
+    REG -->|supported receipt<br/>matches assertion| USE{Receipt issued here<br/>and unused?}
+    REG -->|refuted or invalid| REJ[CheckError<br/>promotion refused]
+    USE -->|yes, consume once| CHK[checked<br/>proven]
+    USE -->|forged, changed,<br/>mismatched or replayed| REJ
 
     CHK --> RPT[eligible for<br/>report_ready]
     OBS -.->|never alone| RPT
@@ -213,7 +215,10 @@ flowchart LR
     style REJ fill:#7f1d1d,stroke:#ef4444,color:#fff
 ```
 
-A check that cannot fail proves nothing, so promotion demands `could_have_failed=True`. This is what stops model output from laundering itself into evidence.
+A check that cannot fail proves nothing. Promotion therefore consumes a
+successful, matching `CheckReceipt` issued by a registered validator whose
+declared outcomes include failure. Caller-created, modified, refuted,
+mismatched, and replayed receipts are refused.
 
 ---
 

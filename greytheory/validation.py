@@ -85,6 +85,9 @@ class Attestation:
     def __post_init__(self) -> None:
         if not self.actor.strip():
             raise ValueError("an attestation must name who made it")
+        actor = self.actor.strip().lower()
+        if any(marker in actor for marker in ("model", "llm", "assistant", "claude", "openai")):
+            raise ValueError("a model may draft an attestation but cannot be its attester")
         if len(self.statement.strip()) < 20:
             raise ValueError(
                 "an attestation must describe what was actually done; a few "
@@ -351,6 +354,15 @@ def gate_f_report_quality(draft: ReportDraft) -> GateResult:
 
     if not draft.authority_ref:
         reasons.append("no authority reference on the draft (I2)")
+
+    evidence_ids = set(draft.evidence_index)
+    for index, item in enumerate(draft.claim_matrix):
+        unknown = set(item.evidence_refs) - evidence_ids
+        if unknown:
+            reasons.append(
+                f"claim_matrix[{index}] cites evidence absent from the evidence index: "
+                + ", ".join(sorted(unknown))
+            )
 
     warnings: list[str] = []
     absolutes = draft.absolute_claims()

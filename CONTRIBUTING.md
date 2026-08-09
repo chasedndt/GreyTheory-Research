@@ -37,7 +37,11 @@ The fixtures in `fixtures/programmes/` use the reserved `.test` TLD (RFC 6761) a
 
 ## Comments
 
-Comment the *why*, not the *what*. The codebase leans on this: `promote_to_checked(could_have_failed=...)` is unremarkable until you know it exists to stop a model laundering inference into proof. If a rule is there to prevent a specific mistake, name the mistake.
+Comment the *why*, not the *what*. The codebase leans on this: a
+`ValidatorRegistry` receipt is single-use and assertion-bound because a caller
+must never be able to launder model inference into proof by asserting that its
+own check could have failed. If a rule prevents a specific mistake, name the
+mistake.
 
 ## Reporting a security issue
 

@@ -58,7 +58,11 @@ Everything else is an implementation detail. These are not.
 | I5 | The system records programme outcomes; it never asserts them | A tool congratulating itself on a finding nobody accepted |
 | I6 | Zero-yield hours are recorded at the same fidelity as payouts | A ledger that only counts wins, and the false hourly rate that follows |
 
-I1 is the load-bearing one. `promote_to_checked(check_ref, could_have_failed=True)` looks unremarkable until you notice that a check which cannot fail proves nothing — and that this is the exact shape of every "the model reviewed it and agreed" workflow.
+I1 is the load-bearing one. A registered validator declares real failure
+outcomes, runs on exact byte artifacts, and issues a single-use `CheckReceipt`.
+Only that registry can consume the successful receipt to promote its exact
+assertion. This blocks the exact shape of every “the model reviewed it and
+agreed” workflow.
 
 ## 5. The path, end to end
 
@@ -162,7 +166,7 @@ Stated plainly, because the failure mode of an architecture document is implying
 
 - **No live-target lane is implemented.** Three static collectors read local dependency manifests, local trees, and agent/MCP configuration. They do not establish reachability or touch a target.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
-- **The structured research domain is local and not yet an execution vertical slice.** Workspaces, sessions, typed assets/relationships, controlled identity handles, hypotheses, experiments, action requests/receipts, and lessons are implemented and persistence-tested. Milestone 4 still has to connect them to the runner, deterministic checks, evidence, validation, and reporting through the deliberately vulnerable fixture.
+- **The only complete execution vertical slice is local and synthetic.** The deliberately vulnerable in-memory two-account fixture connects structured research records to an audited gate allow, one action/receipt, observation, validator-issued proof, evidence, validation, reporting, postmortem, and a proposed card update. It is not a network broker or live research proof.
 - **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
 - **Scope Watch does not exist.** Nothing fetches or notices a programme edit until an operator saves and re-registers it. All three Milestone 2 source shapes exist offline: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB remains blocked on human policy decisions.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.

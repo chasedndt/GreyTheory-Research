@@ -1,0 +1,8 @@
+{
+  "kind": "test_fixture",
+  "operator": "fixture-human-reviewer",
+  "contract_reviewed": true,
+  "reproducibility": "In this acceptance fixture I ran the one-request demonstration from a clean, newly created local run directory.",
+  "impact": "In this acceptance fixture I confirmed only the bounded confidentiality consequence between two controlled synthetic accounts.",
+  "duplicate_risk": "In this acceptance fixture I reviewed the saved training rules and fixture changelog; residual duplicate risk is irrelevant outside the demonstration."
+}

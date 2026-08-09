@@ -31,7 +31,7 @@
 |---|---|---|---|
 | Malicious programme source | Prompt injection changes interpreted policy | Treat as data; compile; human verification | PARTIAL |
 | Malicious target response | Model is induced to act | No direct model execution; taint labels | PLANNED |
-| Compromised worker | Unauthorised requests or side effects | Out-of-process broker and action ticket | PLANNED |
+| Compromised worker | Unauthorised requests or side effects | Gate-bound one-use local ticket; out-of-process broker required before network posture | PARTIAL |
 | Redirect or DNS change | In-scope name reaches out-of-scope infrastructure | Re-evaluate every hop and resolution | PLANNED |
 | Credential leakage | Token reaches model, logs, or evidence | Identity/credential handles and redaction | PARTIAL |
 | Approval replay | Consent reused for a new action | Bound, expiring, single-use approvals | LIVE |
@@ -39,9 +39,9 @@
 | Evidence tampering | Artifacts or history altered | Content hashes and audit hash chain | LIVE; trusted anchor planned |
 | Cross-workspace leakage | One programme's data enters another | Workspace isolation and authority references | LIVE for the local domain store; worker isolation planned |
 | Cloud-model exfiltration | Sensitive data leaves device | Data classes and remote-model policy | PLANNED |
-| Operator mistake | Wrong identity, target, or technique | Structured plans, exact action/identity/target binding, and stop conditions | PARTIAL; domain enforced, execution preview planned |
+| Operator mistake | Wrong identity, target, or technique | Structured plans, exact action/identity/target binding, and stop conditions | LIVE for the local fixture; network preview planned |
 | Runaway automation | Excess requests or effects | Budgets, token buckets, kill switch | PARTIAL |
-| False AI certainty | Inference is presented as proof | Provenance triple and claim-evidence matrix | PARTIAL |
+| False AI certainty | Inference is presented as proof | Registry-issued check receipts, provenance triple, and claim-evidence matrix | LIVE offline |
 | Whole-chain rewrite | Attacker recomputes the audit chain | Signed periodic checkpoints | PLANNED |
 | Retention conflict | Third-party data cannot be removed | Audited deletion and tombstones | PLANNED |
 

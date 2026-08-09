@@ -9,4 +9,8 @@ GreyTheory is described as a standalone, local-first, human-governed **Security 
 
 ## Consequences
 
-Public copy may describe the operating-system direction, verified offline kernel, and verified structured local research domain. It must not imply that the integrated execution/evidence vertical slice, network execution, a model gateway, a graphical workbench, or live findings already exist. “Autonomous bug bounty system” is retired.
+Public copy may describe the operating-system direction, verified offline
+kernel, verified structured local research domain, and the complete in-memory
+two-account `LOCAL_FIXTURE` demonstration. It must not imply network execution,
+a model gateway, a graphical workbench, live findings, or a canonical skill
+system already exist. “Autonomous bug bounty system” is retired.

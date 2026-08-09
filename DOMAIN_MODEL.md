@@ -1,6 +1,6 @@
 # GreyTheory Domain Model
 
-> **Status:** IMPLEMENTED / VERIFIED OFFLINE for the Milestone 3 research objects and local store; later graph nodes retain their explicit status below.
+> **Status:** IMPLEMENTED / VERIFIED OFFLINE through the Milestone 4 local two-account vertical slice; later graph nodes retain their explicit status below.
 >
 > **Effective:** 2026-08-09
 
@@ -71,7 +71,7 @@ The smallest safe procedure capable of supporting or refuting a hypothesis. Cont
 - `AssetRelationship` (**IMPLEMENTED / VERIFIED OFFLINE**): a typed edge such as `calls`, `trusts`, `owns`, `may_access`, `invokes`, or `sends_data_to`; recording an edge cannot alter scope classification.
 - `ActionRequest` (**IMPLEMENTED / VERIFIED OFFLINE**): a structured request for one exact action that can be translated into the existing gate shape but cannot execute itself.
 - `ActionReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): what actually happened, bound to an allowed audited decision, worker, exact target/action/identity, budgets, outputs, and stop state.
-- `CheckReceipt` (**PLANNED**): a validator-issued record of a falsifiable assertion and its result.
+- `CheckReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): a registry-issued, single-use record of validator/version, exact input artifact hashes, assertion, possible and actual outcomes, issue time, validator runner digest, and authority reference. Only a successful matching receipt can promote its assertion to `checked`.
 - `Lesson` (**IMPLEMENTED / VERIFIED OFFLINE**): a structured no-finding/postmortem record and reusable change to research behaviour, card, hypothesis pattern, or target score.
 
 ## Invariants
@@ -93,4 +93,8 @@ The ten objects live in `greytheory/research/domain.py`. `ResearchStore` persist
 
 ## Milestone 3 exit condition
 
-**VERIFIED 2026-08-09.** `tests/test_research.py` manages and reopens a complete local session through all ten objects, an allowed gate decision, bounded receipt, refuted hypothesis, and reusable lesson without a generic notes field or network dependency. The focused suite passes 14 tests; the complete repository suite passes 411 tests. Milestone 4 remains responsible for connecting these records to the runner, observations, deterministic checks, evidence vault, validation, and report studio through a deliberately vulnerable fixture.
+**VERIFIED 2026-08-09.** `tests/test_research.py` manages and reopens a complete local session through all ten objects, an allowed gate decision, bounded receipt, refuted hypothesis, and reusable lesson without a generic notes field or network dependency.
+
+## Milestone 4 exit condition
+
+**VERIFIED 2026-08-09.** `tests/test_vertical_slice.py` and the `greytheory demo local-two-account` command connect saved training rules and an explicit review/attestation record to a `LOCAL_FIXTURE` contract, workspace, two controlled identities, explicit ownership edges, BOLA hypothesis/experiment, audited gate allow, exactly one in-memory action and action receipt, observation, validator-issued check receipt, raw/redacted evidence, a provenance-linked `report_ready` draft, postmortem, and proposed vulnerability-card update. Acceptance uses statements labelled `test_fixture`, not a claim that a human made those judgements. The denial proof produces no receipt or evidence, forged/refuted receipts cannot promote claims, and the slice imports no network clients. The focused suite passes 8 tests and the full repository passes 420. No submission occurs and the posture does not change.

@@ -23,6 +23,8 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
+from greytheory.provenance import Claim, Tag
+
 PLACEHOLDER_PATTERN = re.compile(
     r"\b(tbd|tbc|todo|fixme|xxx|lorem ipsum|fill in|placeholder)\b", re.IGNORECASE
 )
@@ -57,7 +59,34 @@ REQUIRED_TEXT_SECTIONS = (
     "remediation",
 )
 
-REQUIRED_LIST_SECTIONS = ("steps", "evidence_index")
+REQUIRED_LIST_SECTIONS = ("steps", "evidence_index", "claim_matrix")
+
+
+@dataclass(frozen=True)
+class ReportClaim:
+    """One report assertion bound to provenance and exact evidence artifacts."""
+
+    claim: Claim
+    evidence_refs: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        if not self.evidence_refs or any(not item.strip() for item in self.evidence_refs):
+            raise ValueError("every report claim requires an evidence reference")
+        if self.claim.tag is Tag.CHECKED and not self.claim.check_ref:
+            raise ValueError("a checked report claim requires its check receipt")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "claim": self.claim.to_dict(),
+            "evidence_refs": list(self.evidence_refs),
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ReportClaim:
+        return cls(
+            claim=Claim.from_dict(data["claim"]),
+            evidence_refs=tuple(data.get("evidence_refs", ())),
+        )
 
 
 @dataclass
@@ -80,6 +109,7 @@ class ReportDraft:
     actual_result: str = ""
     security_impact: str = ""
     evidence_index: list[str] = field(default_factory=list)
+    claim_matrix: list[ReportClaim] = field(default_factory=list)
     data_minimisation_statement: str = ""
     severity_proposed: str = ""
     severity_framework: str = ""
@@ -162,6 +192,14 @@ class ReportDraft:
 ## Evidence
 {bullets(self.evidence_index, "- None attached.")}
 
+## Claim provenance
+{bullets([
+    f"{item.claim.text} | provenance: {item.claim.tag.value} | "
+    f"source: {item.claim.source} | check: {item.claim.check_ref or '-'} | "
+    f"evidence: {', '.join(item.evidence_refs)}"
+    for item in self.claim_matrix
+], "- No claims linked.")}
+
 ## Data-minimisation statement
 {self.data_minimisation_statement}
 
@@ -192,6 +230,7 @@ class ReportDraft:
             "actual_result": self.actual_result,
             "security_impact": self.security_impact,
             "evidence_index": list(self.evidence_index),
+            "claim_matrix": [item.to_dict() for item in self.claim_matrix],
             "data_minimisation_statement": self.data_minimisation_statement,
             "severity_proposed": self.severity_proposed,
             "severity_framework": self.severity_framework,
@@ -204,7 +243,11 @@ class ReportDraft:
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> ReportDraft:
-        return cls(**data)
+        values = dict(data)
+        values["claim_matrix"] = [
+            ReportClaim.from_dict(item) for item in data.get("claim_matrix", [])
+        ]
+        return cls(**values)
 
 
 __all__ = [
@@ -212,5 +255,6 @@ __all__ = [
     "PLACEHOLDER_PATTERN",
     "REQUIRED_LIST_SECTIONS",
     "REQUIRED_TEXT_SECTIONS",
+    "ReportClaim",
     "ReportDraft",
 ]

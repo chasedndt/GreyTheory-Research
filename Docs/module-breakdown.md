@@ -63,13 +63,18 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 ## Implemented research domain
 
-`greytheory/research/` contains the ten Milestone 3 records, typed asset graph, hypothesis/experiment lifecycle, action request/receipt binding, structured lessons, and the integrity-checked local store. Milestone 4 will integrate these records with the existing runner, observation/check, evidence, validation, and reporting modules.
+`greytheory/research/` contains the ten Milestone 3 records, typed asset graph,
+hypothesis/experiment lifecycle, action request/receipt binding, structured
+lessons, and the integrity-checked local store. `greytheory/execution.py`,
+`greytheory/checks.py`, `greytheory/lab/`, and `greytheory/vertical_slice.py`
+complete the Milestone 4 in-memory path through the gate, observation,
+deterministic check, evidence, validation, report, and postmortem. They expose
+no network client or submission path.
 
 ## Designed, not built
 
 | Module / package | Layer | Blocked on |
 |---|---|---|
-| Validator-issued `CheckReceipt` | 8 | Safe migration of current promotion callers |
 | Vulnerability cards and skill graph | 4 | Domain and local-fixture contracts |
 | Model gateway | cross-cutting | Research objects and evaluation harness |
 | Scope Watch | 1/3 | Network worker and Milestone 8 posture gate |

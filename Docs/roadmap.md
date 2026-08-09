@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 4 — First end-to-end local vertical slice
+> **Current milestone:** 5 — Vulnerability cards and skill graph
 >
-> **Next milestone:** 5 — Vulnerability cards and skill graph
+> **Next milestone:** 6 — Hypothesis engine
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,7 +14,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 411 tests pass after the complete structured research-domain slice.
+- 420 repository tests pass, including 8 focused Milestone 4 acceptance tests.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -66,7 +66,7 @@ Implemented from the first bundle:
 
 **Exit:** one full local session can be managed through structured objects without unstructured notes.
 
-## Milestone 4 — First end-to-end local vertical slice *(current)*
+## Milestone 4 — First end-to-end local vertical slice *(COMPLETE 2026-08-09)*
 
 Use a deliberately vulnerable local two-account authorisation fixture:
 
@@ -84,7 +84,15 @@ training programme rules
 
 **Exit:** no action without a decision; every action and report claim has a receipt/provenance link; a session produces checked evidence or a reusable lesson.
 
-## Milestone 5 — Vulnerability cards and skill graph
+Verified with one deliberately vulnerable, in-memory two-account fixture. The
+allowed path executes exactly one read and persists exactly one action receipt;
+the prohibited-technique path executes no action and produces neither receipt
+nor evidence. A registered ownership validator issues the only promotable
+`CheckReceipt`, report claims carry provenance/evidence links, all Gates B-F
+pass, and the session produces checked evidence plus a postmortem. The card
+update is a proposal for Milestone 5, not canonical knowledge.
+
+## Milestone 5 — Vulnerability cards and skill graph *(current)*
 
 Build the first 12 cards: reflected/stored/DOM XSS, SQL injection, CSRF, SSRF, IDOR/BOLA, BFLA, session management, business-logic authorisation, indirect prompt injection, and tool-authorisation failure.
 
