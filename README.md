@@ -1,28 +1,33 @@
 ﻿<p align="center">
-  <img src="assets/social/banner.png" alt="GreyTheory AI - proof-first security research control plane" width="100%">
+  <img src="assets/social/banner.png" alt="GreyTheory - research under authority, evidence by construction" width="100%">
 </p>
 
-# GreyTheory AI
-## Proof-First Security Research
-### GreyTheory AI × ChaseOS — Security Research Product Lane
+# GreyTheory
+## Security Research Operating System
+### From scope to proof.
 
-> **Status:** Incubation · local-only · proof-gated  
-> **Revision:** ChaseOS Security Research Product Lane foundation  
-> **Design philosophy:** The LLM reasons, triages, and explains. Deterministic tools gather signals and validate. Humans decide before anything consequential fires.
+> **Status:** Research · offline trust kernel live · productisation in progress · local-only
+>
+> **Operating posture:** `LOCAL_FIXTURE`; no live-target capability
+>
+> **Design philosophy:** AI creates and challenges theories. Deterministic checks and human judgement create proof.
 
-> **GreyTheory AI is a proof-first security research control plane. It converts authorisation into evidence — and refuses to move without either.**
+> **GreyTheory is a standalone, local-first, human-governed security research operating system for bug bounty and authorised security testing.**
 
-The canonical definition of this system lives in [`Docs/definition.md`](Docs/definition.md). **Where this README conflicts with it, the definition wins.** The sections below describe the Signal Plane (the four lanes) in detail; they are design material, not shipped capability.
+GreyTheory compiles programme rules into enforceable research boundaries, turns observations into falsifiable hypotheses and controlled experiments, and makes every session end in evidence, a defensible report, or reusable knowledge. Its three-plane control plane is the working trust kernel, not the entire product.
+
+The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md). [`Docs/scope-policy.md`](Docs/scope-policy.md) always wins on what may happen now.
 
 ### Capability status — read this before anything else
 
 | | |
 |---|---|
-| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config), offline OSV advisory import. 347 tests. |
-| **Designed** (build-ready, not built) | Dashboard read model |
-| **Aspirational** (architected, not build-ready) | Lane 3 collectors; curriculum and skill graph |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry and single-source compiler; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (fixtures only), execution broker (local runner only), outcomes/learning (ledger without learning system), workbench surface (CLI/read model only). |
+| **DESIGNED, NOT BUILT** | Research workspaces/sessions/assets/identities, hypotheses/experiments, action/check receipts, learning system, governed model gateway. |
+| **PLANNED** | Programme source bundles, Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
 
-The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target. Network collectors need the posture ceiling raised above `LOCAL_FIXTURE`, and the runner refuses any lane declaring network I/O until they move outside the core package.
+The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
 ### Quickstart
 
@@ -80,15 +85,22 @@ Eight Mermaid diagrams — three planes, gate decision flow, contract compilatio
 
 ### Documentation
 
+- [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md) — canonical identity and capability truth
+- [`DOMAIN_MODEL.md`](DOMAIN_MODEL.md) — research workspace, session, asset, identity, hypothesis, experiment, and receipt model
+- [`AUTONOMY_MODEL.md`](AUTONOMY_MODEL.md) — bounded autonomy and AI limits
+- [`THREAT_MODEL.md`](THREAT_MODEL.md) / [`DATA_POLICY.md`](DATA_POLICY.md) — pre-network threats and data handling
+- [`INTEGRATION_BOUNDARIES.md`](INTEGRATION_BOUNDARIES.md) — standalone, ChaseOS, worker, and provider boundaries
+- [`Docs/roadmap.md`](Docs/roadmap.md) — thirteen milestones and exit conditions
+
 [`Docs/system-overview.md`](Docs/system-overview.md) explains the whole architecture and why each part is shaped as it is — start there.
 
-[`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`Docs/definition.md`](Docs/definition.md) is canonical and outranks this file.
+[`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md) is canonical for product truth, and [`Docs/scope-policy.md`](Docs/scope-policy.md) is authoritative for what may happen now.
 
 ### Standalone, with optional integration
 
 **GreyTheory runs on its own.** Zero runtime dependencies, standard library only, no external system required. `pip install` and it works.
 
-It also integrates. Where an approval system already exists, GreyTheory reads from it rather than keeping a parallel set of records — approvals recorded in one place and invisible to another are worse than either alone. `ChaseOSApprovalStore` is the first such adapter and reads ChaseOS's OSRIL records through their filesystem contract, not a Python import. Set `CHASEOS_VAULT_ROOT` and the evidence vault co-locates too.
+It also integrates. Today `ChaseOSApprovalStore` can read ChaseOS OSRIL records through their filesystem contract, while `LocalApprovalStore` supports standalone use. The accepted migration is one explicit `ApprovalProvider` protocol with exactly one active provider per deployment; approvals will not be mirrored. Set `CHASEOS_VAULT_ROOT` and the evidence vault co-locates too.
 
 Every integration point ships a self-sufficient default beside it: `LocalApprovalStore`, and a platform user-data evidence root. See [`Docs/chaseos-reconciliation.md`](Docs/chaseos-reconciliation.md).
 
@@ -137,6 +149,10 @@ See:
 - [`Docs/discord-lane-map.md`](Docs/discord-lane-map.md)
 
 ---
+
+## Historical signal-lane design appendix
+
+The material below predates the implemented trust kernel and the 2026-08-09 productisation foundation. It is retained for lane-level research detail. Where it describes planned implementations, opt-in live validation, phases, or capability status, it is **HISTORICAL**, not authority to act and not evidence of shipped capability. Current truth is defined above and in `PROJECT_DEFINITION.md`.
 
 ## TABLE OF CONTENTS
 

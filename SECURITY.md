@@ -2,7 +2,7 @@
 
 ## What this repository is
 
-GreyTheory AI is a security research control plane. It is **defensive tooling**: it decides whether research activity is authorised, records what happened, and refuses actions that fall outside a verified scope contract.
+GreyTheory is a human-governed Security Research Operating System whose trust kernel is a security research control plane. It decides whether research activity is authorised, records what happened, and refuses actions that fall outside a verified scope contract.
 
 It contains no exploit code, no scanner, and no network client. The core package has no runtime dependencies and does not open sockets — enforced in CI by the `no-network-in-core` job.
 

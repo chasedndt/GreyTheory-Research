@@ -4,6 +4,17 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — Security Research Operating System foundation
+
+- Canonical product identity, research-domain model, bounded-autonomy model, threat model, data policy, integration boundaries, and four architecture decision records.
+- Thirteen-milestone roadmap from real programme source bundles through the first operator-submitted research outcome.
+
+### Changed — product framing and truth surfaces
+
+- GreyTheory is now framed as a standalone, local-first, human-governed Security Research Operating System; the existing three-plane control plane remains its trust kernel.
+- README, project state, documentation map, system overview, capability register, public positioning, and historical handover labels now distinguish the verified offline kernel from designed product layers.
+- Corrected stale capability claims: the gate has seventeen denial reasons, Lane 2 is live offline, the dashboard read model exists, and no live-target lane exists.
+
 ### Added — Authority Plane V0 (first code in the repository)
 
 - `greytheory.provenance` — the observed/checked/inferred triple, with promotion gated on a falsifiable check.

@@ -1,0 +1,47 @@
+# GreyTheory Integration Boundaries
+
+> **Status:** CANONICAL boundary; provider and worker protocols are PLANNED migrations.
+>
+> **Effective:** 2026-08-09
+
+## Standalone rule
+
+GreyTheory must be complete without ChaseOS. Core research semantics, authority decisions, workspaces, hypotheses, evidence, findings, reports, outcomes, and local approvals belong to GreyTheory.
+
+## ChaseOS relationship
+
+ChaseOS may provide operator identity, approval presentation, scheduling, notifications, orchestration, task management, and knowledge-graph mirroring. It may request work, but it cannot bypass GreyTheory's gate or override an expired contract, out-of-scope asset, prohibited technique, posture ceiling, invalid identity, exhausted budget, or consumed approval.
+
+## Approval provider direction
+
+Exactly one approval provider is active in a deployment:
+
+```python
+class ApprovalProvider(Protocol):
+    def request(self, action: ActionRequest) -> ApprovalReference: ...
+    def resolve(self, reference: ApprovalReference) -> ApprovalRecord: ...
+    def consume(self, reference: ApprovalReference, action: ActionRequest) -> None: ...
+```
+
+Planned implementations:
+
+- `LocalApprovalProvider` — standalone default;
+- `ChaseOSApprovalProvider` — optional personal integration;
+- a future team provider.
+
+Approvals are not mirrored between providers. GreyTheory records provider identity, reference, fingerprint, and consumption receipt.
+
+## Package boundary
+
+- `greytheory/`: minimal, dependency-light trust kernel and current offline capabilities.
+- future domain package: workspaces, sessions, assets, identities, hypotheses, experiments, learning.
+- future workers: lower-trust local/network/browser/DNS execution behind tickets.
+- future model package: provider gateway, roles, policies, prompts, and evaluations.
+- future workbench: local API and UI over structured objects.
+- `packs/`: versioned research methods, fixtures, validators, and curriculum.
+
+Zero dependencies remains a trust-surface choice for the core, not a prohibition on pinned, isolated dependencies in workers, models, or the workbench.
+
+## Plugin contract
+
+Every future adapter declares its ID/version, binary digest, input/output schemas, minimum authority, network/filesystem/credential needs, side effects, data classes, determinism, maximum rate, emitted evidence, and supported stop conditions. A ticket cannot be issued when a plugin's declared capability exceeds the requested envelope.

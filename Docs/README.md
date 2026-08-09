@@ -4,59 +4,55 @@ Where to start, and which document wins when two disagree.
 
 ## Authority order
 
-1. **[`definition.md`](definition.md)** — canonical. Outranks everything else, including the root README.
-2. **[`scope-policy.md`](scope-policy.md)** — the operating posture. Outranks any capability description.
-3. Everything else.
-4. **[`architecture.md`](architecture.md)** — superseded. Historical reference for lane-level detection detail only.
+1. [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md) — canonical identity, boundaries, and capability truth.
+2. [`scope-policy.md`](scope-policy.md) — current operating authority; it wins on what may happen now.
+3. Subject canon: [`../DOMAIN_MODEL.md`](../DOMAIN_MODEL.md), [`../AUTONOMY_MODEL.md`](../AUTONOMY_MODEL.md), [`../DATA_POLICY.md`](../DATA_POLICY.md), [`../THREAT_MODEL.md`](../THREAT_MODEL.md), and [`../INTEGRATION_BOUNDARIES.md`](../INTEGRATION_BOUNDARIES.md).
+4. [`roadmap.md`](roadmap.md) — implementation order and exit conditions.
+5. [`definition.md`](definition.md) — detailed trust-kernel definition and historical decision register.
+6. Other current documentation.
+7. [`full-brief.md`](full-brief.md) and [`architecture.md`](architecture.md) — historical snapshots where marked.
 
 ## Start here
 
-| If you want to… | Read |
+| Need | Read |
 |---|---|
-| Hand the whole project to another AI or person | [`full-brief.md`](full-brief.md) |
-| Understand the whole system | [`system-overview.md`](system-overview.md) |
-| Understand what GreyTheory is | [`definition.md`](definition.md) |
-| See it rather than read it | [`diagrams.md`](diagrams.md) |
-| Know what actually works today | [`definition.md` §6](definition.md#6-capability-register) |
-| Know what it is allowed to do right now | [`scope-policy.md`](scope-policy.md) |
+| Current project identity and capability truth | [`PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md) |
+| Current implementation stage | [`PROJECT_STATE.md`](../PROJECT_STATE.md) |
+| Build order | [`roadmap.md`](roadmap.md) |
+| Research objects | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md) |
+| Human/AI/execution boundaries | [`AUTONOMY_MODEL.md`](../AUTONOMY_MODEL.md) |
+| Threats before networking | [`THREAT_MODEL.md`](../THREAT_MODEL.md) |
+| Data handling | [`DATA_POLICY.md`](../DATA_POLICY.md) |
+| Standalone/ChaseOS/worker boundaries | [`INTEGRATION_BOUNDARIES.md`](../INTEGRATION_BOUNDARIES.md) |
+| What is allowed right now | [`scope-policy.md`](scope-policy.md) |
+| Architecture decisions | [`decisions/`](decisions/README.md) |
 
-## By subject
+## Trust kernel and current implementation
 
-### Definition and structure
-- [`full-brief.md`](full-brief.md) — complete self-contained brief: definition, architecture, current truth, roadmap, decisions, choices to avoid, glossary
-- [`system-overview.md`](system-overview.md) — the whole architecture, and why each part is shaped as it is
-- [`definition.md`](definition.md) — three planes, six invariants, capability register, decision log
-- [`diagrams.md`](diagrams.md) — architecture, gate flow, compilation, lifecycle, provenance, authority levels, approvals, evidence
-- [`module-breakdown.md`](module-breakdown.md) — what each module owns and refuses to own
-- [`data-flow.md`](data-flow.md) — how authorisation becomes a defensible artifact
+- [`definition.md`](definition.md) — three planes, invariants, capability register, and earlier decisions.
+- [`system-overview.md`](system-overview.md) — implemented offline path and why it is shaped this way.
+- [`diagrams.md`](diagrams.md) — trust-kernel flows and boundaries.
+- [`module-breakdown.md`](module-breakdown.md) — current module ownership.
+- [`data-flow.md`](data-flow.md) — authorisation to defensible artifact.
+- [`validation-policy.md`](validation-policy.md) — validation gates and demotion.
+- [`evidence-policy.md`](evidence-policy.md) — evidence location, integrity, and export.
 
-### Governance
-- [`scope-policy.md`](scope-policy.md) — hard boundary and the authority checklist
-- [`disclosure-authority-checklist.md`](disclosure-authority-checklist.md) — before any action leaves local work
-- [`evidence-policy.md`](evidence-policy.md) — where evidence lives, what may leave, retention
-- [`validation-policy.md`](validation-policy.md) — gates, what counts as a deterministic check, demotion
+## Planning and research policy
 
-### Planning and state
-- [`open-questions.md`](open-questions.md) — resolved, blocking, and non-blocking unknowns
-- [`roadmap.md`](roadmap.md) — phases and graduation criteria
-- [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) — intended Signal Plane surface. Current coverage: none
-- [`safe-local-demo-proof-plan.md`](safe-local-demo-proof-plan.md) — local demos with no external target
+- [`open-questions.md`](open-questions.md) — unresolved choices with resolution conditions.
+- [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) — designed signal surface; current coverage is three static offline collectors.
+- [`safe-local-demo-proof-plan.md`](safe-local-demo-proof-plan.md) — local demonstrations with no target contact.
+- [`disclosure-authority-checklist.md`](disclosure-authority-checklist.md) — gate before any external action.
+- [`product-boundary-map.md`](product-boundary-map.md) — allowed now versus blocked.
 
-### Integration and product
-- [`chaseos-reconciliation.md`](chaseos-reconciliation.md) — what ChaseOS already owns, and what GreyTheory therefore does not build
-- [`product-boundary-map.md`](product-boundary-map.md) — allowed now vs blocked until approval
-- [`discord-lane-map.md`](discord-lane-map.md) — internal workspace wiring
+## Historical material
 
-## Repository root
+- [`full-brief.md`](full-brief.md) — complete 2026-08-07 handover snapshot; retained for history and implementation detail, superseded for identity/roadmap by the 2026-08-09 foundation.
+- [`architecture.md`](architecture.md) — superseded lane-design reference.
 
-- [`README.md`](../README.md) — landing page, quickstart, capability status
-- [`SECURITY.md`](../SECURITY.md) — reporting a vulnerability in GreyTheory itself
-- [`CONTRIBUTING.md`](../CONTRIBUTING.md) — setup and the non-negotiables
-- [`CHANGELOG.md`](../CHANGELOG.md)
-- [`LICENSE`](../LICENSE) / [`NOTICE`](../NOTICE) — Apache-2.0
+## Writing rules
 
-## Writing rules for these docs
-
-- Never describe an Aspirational component as working. The capability register governs every claim.
-- Separate observation, proof and inference — the same rule the code enforces on claims.
-- If a rule exists to prevent a specific mistake, name the mistake.
+- Use LIVE, VERIFIED, PARTIAL, DESIGNED, PLANNED, HISTORICAL, BLOCKED, or DEFERRED honestly.
+- Product direction may be described as direction; it may not be described as working capability.
+- Separate observation, deterministic proof, and inference.
+- Name the mistake a rule prevents.

@@ -1,8 +1,8 @@
 # System Overview
 
-The whole architecture in one document, written at the point where the path runs end to end: authorisation in, evidence out, with a human gate at every consequential step.
+The implemented trust kernel in one document: authorisation in, evidence out, with a human gate at every consequential step.
 
-For the canonical definition read [`definition.md`](definition.md). This explains how the parts actually fit together and *why they are shaped the way they are*.
+For canonical product identity and capability truth read [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md). This document explains how the currently implemented kernel fits together and *why it is shaped this way*.
 
 ---
 
@@ -34,6 +34,12 @@ AUTHORITY  (root, fail-closed)  — may this happen at all?
 ```
 
 Authority is the root because it is the only plane whose failure is unrecoverable. A missed vulnerability is a lost opportunity; an unauthorised request is a legal and reputational event. So the plane that can cause the worse failure sits above the ones that can cause the lesser.
+
+### Product category and layers
+
+GreyTheory is now defined as a **Security Research Operating System**. The planes remain its ranked trust architecture. Product layers — programme intelligence, research workspaces, asset graphs, knowledge, hypotheses/experiments, execution, evidence/reporting, outcomes/learning, and the workbench — describe what the researcher will use around those planes.
+
+Planes answer what may be trusted. Layers answer what the product can do. No layer may weaken a plane. See [`../DOMAIN_MODEL.md`](../DOMAIN_MODEL.md) and [`roadmap.md`](roadmap.md).
 
 **Signal is deliberately demoted.** The four lanes — known-vuln, exposure, web, AI-app — are collectors, not the product. Anyone can run a scanner. What is defensible is the authority, provenance and judgement wrapped around it. A lane observes and emits; it may not promote its own output past `contextual`.
 
@@ -153,13 +159,14 @@ This is why the provenance triple is worth its cost. With it, an LLM can touch e
 
 Stated plainly, because the failure mode of an architecture document is implying completeness:
 
-- **No lane is implemented.** The system currently detects nothing. What works is the part that decides whether anything may run.
+- **No live-target lane is implemented.** Three static collectors read local dependency manifests, local trees, and agent/MCP configuration. They do not establish reachability or touch a target.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
-- **No programme registry, curriculum, skill graph, earnings ledger, or dashboard.**
+- **No research workspace/domain implementation.** Workspaces, sessions, typed assets, controlled identities, hypotheses, experiments, and receipts are designed but not built.
+- **No curriculum, skill graph, model gateway, network broker, or graphical workbench.** The ledger, programme registry, dashboard read model, and CLI are live.
 - **Scope Watch does not exist.** Nothing notices a programme edit until you re-register it.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 
-The capability register in [`definition.md`](definition.md#6-capability-register) governs every public claim.
+The capability truth in [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md#current-capability-truth) governs every public claim.
 
 ## 10. What the shape is for
 

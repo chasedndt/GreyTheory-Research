@@ -61,13 +61,18 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 
 ## Designed, not built
 
-| Module | Plane | Blocked on |
+| Module / package | Layer | Blocked on |
 |---|---|---|
-| Lane 3 (web) collectors | 2 | The posture ceiling being raised above `LOCAL_FIXTURE` |
-
-## Aspirational
-
-The curriculum and skill graph, Scope Watch, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
+| Programme source bundles | 1 | Three saved real public programme sources |
+| Research workspace and session domain | 2 | Milestone 3 implementation |
+| Typed target/asset graph | 3 | Domain object contracts |
+| Hypothesis and experiment engine | 5 | Workspace/session domain |
+| Validator-issued `CheckReceipt` | 8 | Safe migration of current promotion callers |
+| Vulnerability cards and skill graph | 4 | Domain and local-fixture contracts |
+| Model gateway | cross-cutting | Research objects and evaluation harness |
+| Scope Watch | 1/3 | Network worker and Milestone 8 posture gate |
+| Lane 3 and live collectors | 7 | Broker/worker controls and later posture milestones |
+| Standalone graphical workbench | 10 | Stable structured domain and query layer |
 
 ## Constraints on every module
 

@@ -57,7 +57,7 @@ flowchart TB
     style OP fill:#065f46,stroke:#10b981,color:#fff
 ```
 
-Scope Watch is dashed because it does not exist yet (`roadmap.md` Phase 5). The crossed link to Plane 2 is its boundary made visible: external intelligence informs what we *look at* and what we *ask*, never what we *touch*.
+Scope Watch is dashed because it does not exist yet (roadmap Milestone 8). The crossed link to Plane 2 is its boundary made visible: external intelligence informs what we *look at* and what we *ask*, never what we *touch*.
 
 ---
 

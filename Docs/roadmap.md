@@ -1,121 +1,126 @@
-# Roadmap
+# GreyTheory Roadmap
 
-> **Purpose check.** GreyTheory is a bug bounty and authorised security research engine. Every phase below serves that. See [`definition.md` §1](definition.md#what-it-is-for-and-what-it-governs).
+> **Category:** Security Research Operating System
+>
+> **Current milestone:** 2 — Real programme compiler
+>
+> **Next milestone:** 3 — Research domain
+>
+> **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
-**Current phase:** 3 — surviving contact with real programmes.
-**Posture:** local-only. The ceiling sits at `LOCAL_FIXTURE` and no collector performs network I/O.
+The existing Authority, Signal, and Judgement planes remain the trust architecture. This roadmap adds the product and research layers required to make that kernel a complete day-to-day research environment.
 
----
+## Existing verified baseline
 
-## Done
+- Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
+- Offline OSV advisory import is implemented.
+- 347 tests passed at the 2026-08-09 preflight.
+- Programme compilation has only been proven against in-house fixtures.
+- No network capability or live research outcome exists.
 
-### Phase 0 — Definition
-Three ranked planes, six invariants, capability register. The repository's contradictions found and resolved: a README that authorised probing a policy prohibited, four docs that were 0-byte files linked as real, lane statuses that implied shipping code that did not exist.
+## Milestone 1 — Canonical project foundation *(COMPLETE 2026-08-09)*
 
-### Phase 1 — Authority Plane
-Scope compiler that fails closed. Execution gate with seventeen denial paths and one allow. Operator approvals — bound to one action on one target, expiring, single-use. Hash-chained audit log. The provenance triple.
+- [x] Define GreyTheory as a local-first, human-governed Security Research Operating System.
+- [x] Preserve the three-plane control plane as the trust kernel.
+- [x] Define the research domain, autonomy boundary, data policy, threat model, and integration boundary.
+- [x] Record productisation ADRs.
+- [x] Reconcile every current public/internal description and remove stale pre-implementation claims.
 
-### Phase 2 — Judgement Plane
-Evidence vault with the raw/redacted split and a repository guard. Validation gates B–F, deterministic where possible and attested where not. Report studio. Programme registry with drift detection. Triage and earnings ledger that counts the hours which produced nothing. Operator dashboard.
+**Exit:** nobody can confuse LIVE, PARTIAL, DESIGNED, PLANNED, or HISTORICAL capability, or describe GreyTheory as an autonomous submitter.
 
-### Phase 2.5 — Signal Plane, offline
-Lane framework: collectors reach nothing except through a granted Decision, and cannot promote past `contextual`. Three static lanes — dependency manifests (1), local-tree exposure (2), agent and MCP configuration (4).
+## Milestone 2 — Real programme compiler *(current)*
 
----
+Register saved public sources for:
 
-## Phase 3 — Real programmes *(current)*
+- [ ] one HackerOne programme;
+- [ ] one Bugcrowd programme;
+- [ ] one direct VDP or independently hosted policy.
 
-Everything so far has been tested against fixtures I wrote, which means the compiler has only ever met ambiguities someone thought to invent. Real programme rules are worse: scope in prose rather than tables, exceptions in footnotes, platform defaults that contradict the programme page, "see our policy" pointing at a fourth document.
+Implement `ProgrammeSourceBundle` from observed needs: platform defaults, programme rules, scope tables, attachments/linked policies, retrieval times, source hashes, precedence, and human conflict resolutions.
 
-**This phase costs nothing and risks nothing.** Compiling a programme involves no contact with its target.
+**No target contact.** Compilation is offline.
 
-- [ ] Register three real public programmes from pasted or saved source.
-- [ ] Record every case where the compiler blocked on something a human resolves in seconds — that list is the work.
-- [ ] Extend the compiler for the patterns that actually appear: prose scope, tiered assets, per-asset authority levels, reward tables, temporary exclusions.
-- [ ] Handle the platform-versus-programme rule conflict, where a platform default and a programme page disagree. Fail closed and say which is which.
-- [ ] Keep the fail-closed bias. A compiler that gets smart enough to guess has stopped being useful.
+**Exit:** all three compile without guessed authority; conflicts are explicit; verification records the entire reviewed bundle; any source change invalidates review; ambiguity never grants permission.
 
-**Done when** three real programmes compile to contracts the operator would actually rely on, and the blocked cases that remain are ones a human would also stop at.
+## Milestone 3 — Research domain
 
-## Phase 4 — Knowing the field
+Implement `ResearchWorkspace`, `ResearchSession`, `TargetAsset`, `AssetRelationship`, `ResearchIdentity`, `Hypothesis`, `ExperimentPlan`, `ActionRequest`, `ActionReceipt`, and `Lesson`.
 
-Feeding the engine what the niche actually knows. All offline.
+**Exit:** one full local session can be managed through structured objects without unstructured notes.
 
-- [x] **Advisory sourcing.** `greytheory/advisories.py` imports the OSV format that GitHub, PyPI, npm and Go publish, from files already on disk. Ecosystem-aware matching and correct pre-release ordering. `greytheory advisories <file-or-dir>`.
-- [ ] **Vulnerability cards.** One per class: plain-English model, root cause, safe test pattern, what counts as evidence, the remediation, and the internal control it maps to. These feed the report studio and the curriculum both.
-- [ ] **Curriculum and skill graph.** Learning units with a state machine — not-started, reading, micro-test, lab, transfer, mastered — where mastery expires into review. Mastery means explain, recognise, test, prove, remediate, transfer. Not "watched a video".
-- [ ] **Hypothesis engine.** Ranked, scoped hypotheses instead of undirected clicking. Priority from impact potential, programme eligibility, specialism fit and test safety, divided by time cost, duplicate risk and ambiguity.
-- [ ] **Postmortems that compound.** A session with no finding still produces a recorded lesson, and the lesson changes the next target score.
+## Milestone 4 — First end-to-end local vertical slice
 
-**Done when** a study session, a lab and a hunt session all produce artifacts the system can use later, and a duplicate changes the programme score rather than just disappointing someone.
+Use a deliberately vulnerable local two-account authorisation fixture:
 
-## Phase 5 — Scope Watch
+```text
+training programme rules
+→ verified LOCAL_FIXTURE contract
+→ workspace and two controlled identities
+→ asset/ownership model
+→ IDOR/BOLA hypothesis and experiment
+→ gate decision and local action receipt
+→ observation and deterministic check
+→ evidence and impact attestation
+→ report, postmortem, and vulnerability-card update
+```
 
-Noticing that a programme changed without being told. **Requires the posture ceiling raised**, since it fetches pages.
+**Exit:** no action without a decision; every action and report claim has a receipt/provenance link; a session produces checked evidence or a reusable lesson.
 
-- [ ] Fetch registered programme sources on a schedule, through the gate like everything else.
-- [ ] Diff against the stored snapshot; on change, invalidate the review and surface it in `needs_attention`.
-- [ ] Collect published advisories and authorised write-ups.
-- [ ] Information-only throughout. It may trigger a recompile; it may never *be* the scope.
+## Milestone 5 — Vulnerability cards and skill graph
 
-The registry already does the hard half — detecting drift and invalidating review. This adds only the fetching.
+Build the first 12 cards: reflected/stored/DOM XSS, SQL injection, CSRF, SSRF, IDOR/BOLA, BFLA, session management, business-logic authorisation, indirect prompt injection, and tool-authorisation failure.
 
-## Phase 6 — Raising the posture ceiling
+**Exit:** each has a local fixture, falsifiable hypothesis template, minimum evidence, and six-dimensional mastery tracking: explain, recognise, test, prove, remediate, transfer.
 
-**The decision that changes the risk category, not just a config value.**
+## Milestone 6 — Hypothesis engine
 
-Today the worst case is a wrong answer in a report. Above `LOCAL_FIXTURE`, the worst case is an unauthorised request against infrastructure that is not ours — a legal event, not a bug. Gates and approvals make that hard; hard is not impossible, and guardrails only bind if the work routes through them.
+Rank theories using transparent scope confidence, existing evidence, likelihood, impact, cost, side-effect risk, duplicate risk, skill value, and target-specific novelty.
 
-Preconditions, all of them:
+**Exit:** it produces an explained research queue without calling any item a vulnerability or executing it.
 
-- [ ] At least one real programme compiled, reviewed and verified (Phase 3).
-- [ ] Written authorisation identified, with the researcher account and any required identity headers configured.
-- [ ] Network collectors living **outside** `greytheory/`, acting only through a granted `Decision`. The runner refuses them in-package by design and that stays.
-- [ ] Rate limits enforced against the contract's declared limit, not a hopeful default.
-- [ ] Kill switch tested under load, not just in a unit test.
-- [ ] Evidence vault pointed at a real private root, verified to be outside every repository.
+## Milestone 7 — Model gateway and evaluation harness
 
-**Ceiling raised one level at a time.** `PASSIVE_HTTP` first — unauthenticated reads of in-scope hosts. `AUTHENTICATED` only after passive work has run clean for a sustained period. `INTRUSIVE` requires a per-instance approval and probably never becomes routine.
+Add provider/version records, data-class policy, prompt/context assembly, structured output, inference provenance, citations, cost accounting, injection defences, and evaluation fixtures.
 
-## Phase 7 — Network collectors
+**Exit:** evaluations measure unsupported promotion, scope errors, fabricated evidence, unsafe tool requests, prompt injection, uncertainty, and report completeness. Every output remains `inferred`.
 
-Only after Phase 6, in this order, chosen by proof model rather than by interest:
+## Milestone 8 — Scope Watch
 
-- [ ] **Subdomain takeover** (Lane 3). First because the proof is binary: a CNAME points at an unclaimed service or it does not. No judgement, no argument.
-- [ ] **Exposure over live hosts** (Lane 2). Reuses the shape logic already built; adds reachability, which is the part a local tree could never tell us.
-- [ ] **Authorization testing** (Lane 3). IDOR/BOLA across two controlled accounts. The primary specialism, and the hardest to automate honestly — a cross-account response difference is a fact, but only a human can say whether it matters.
-- [ ] **Live AI-app testing** (Lane 4). Where the static config review becomes behavioural.
+Make saved public programme-source fetching the first network-enabled component. It informs Authority/Judgement only and never grants scope.
 
-## Phase 8 — First submission
+**Exit:** changes are diffed, narrowing changes highlighted, and affected contracts invalidated without interpreting source text as permission.
 
-Not a build phase. The point of the system.
+## Milestone 9 — Passive execution pilot
 
-- [ ] A finding passes Gates A–F on its own merits.
-- [ ] The operator can explain it without reference to any generated prose.
-- [ ] Gate G — the decision to send — happens as an operator act.
-- [ ] The triage outcome is recorded with programme evidence, whatever it is.
-- [ ] The duplicate or rejection, if it comes, changes the target model.
+Raise only to `PASSIVE_HTTP`, for one verified programme and one tightly controlled action type, after every precondition in `THREAT_MODEL.md` is implemented and tested.
 
-**A rejected first submission that taught something is a success. A quota-driven submission that was accepted is not.**
+**Exit:** rate, DNS, redirects, kill switch, data policy, receipts, and sustained clean operation are verified.
 
-## Phase 9 — Proof and public surface
+## Milestone 10 — Binary-proof collectors
 
-Only from authorised material, and only after disclosure permission:
+Order: subdomain-takeover verification, reachable exposure, technology/advisory correlation, safe HTTP misconfiguration checks.
 
-- [ ] Lab write-ups and owned-app findings.
-- [ ] Sanitised methodology.
-- [ ] ChaseInTech content drawn from real work.
-- [ ] Internal ChaseOS hardening artifacts — the transfer already began: reading ChaseOS's approval layer surfaced that its run audits are editable, and the hash chain here is the fix (O9).
+## Milestone 11 — Controlled authenticated authorisation testing
 
----
+Two owned accounts, ownership records, role-object-action matrix, synthetic data, per-experiment plans, request budgets, and human review per test family.
 
-## Deliberately not on this roadmap
+## Milestone 12 — Live agentic-AI assessment
 
-- **Autonomous submission.** Gate G is an operator act by construction.
-- **Mass scanning.** The engine optimises for fewer, stronger reports.
-- **Credential validation as a default.** Testing whether a found secret is live is `INTRUSIVE`, opt-in, per-instance.
-- **Governing other people's agents.** Derivative products, separate scope, not this system.
+Test explicitly authorised AI assets through the full input → context → decision → tool → approval → execution → side-effect → audit chain.
 
-## Open decisions
+## Milestone 13 — First submission
 
-Tracked in [`open-questions.md`](open-questions.md). The two that gate everything: raising the posture ceiling (Phase 6), and whether Lane 3 or Lane 2 goes first once it is raised.
+An operator-only act after Gates A-G. The result may be acceptance, duplicate, rejection, or another outcome; the success criterion is an authorised, reproducible, defensible process that produces evidence or learning.
+
+## Deliberately excluded
+
+- autonomous submission, disclosure, or programme contact;
+- mass scanning and quota-driven reporting;
+- credential validation by default;
+- cloud-hosted raw evidence;
+- client-agent governance inside GreyTheory Core;
+- payout guarantees.
+
+## North-star metric
+
+**Research Yield:** the percentage of sessions that end in checked evidence or a reusable lesson while authority violations remain zero.
