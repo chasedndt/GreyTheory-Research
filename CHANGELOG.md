@@ -4,6 +4,18 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Changed — trust-kernel hardening
+
+- **`report_ready` now requires a claim in each of seven roles**, not a count of checked claims. The old guard was satisfiable by proving a request returned 200 -- true, checked, receipted, and silent on whether anything was wrong. Five roles are settled by validator receipts derived from artifacts already held; `impact` and `reproduction` are judgement roles requiring a stated uncertainty. One claim cannot answer two roles -- the shortcut a count invited. ADR-0008.
+- **Submission now requires a `ScopeRecheck`.** Evidence gathered Monday, scope narrowed Wednesday, report sent Friday: nothing earlier in the lifecycle would notice. A mismatch blocks rather than warns, and a recheck cannot authorise a finding it does not belong to.
+- The Milestone 4 vertical slice now proves five things instead of one, with no additional fixture interaction.
+
+### Added — claim roles
+
+- `greytheory.claims` -- seven claim roles, `RoleBinding`, and the claim-evidence matrix that reports should be generated from. A binding cannot be constructed unsoundly: checked roles reject non-checked claims, demand the receipt that promoted them, and refuse a receipt whose id does not match the claim.
+- `greytheory.validators` -- four reusable validators settling the checked roles offline: ownership boundary, synthetic target, contract currency and evidence integrity. None performs any interaction, which is what keeps the stricter guard compatible with minimum-impact proof. An empty evidence manifest is `invalid_input`, never `supported`.
+- `Docs/agent-activity.md` -- why each session deviated from the roadmap, and what the next agent should not undo.
+
 ### Added — transparent hypothesis ranking
 
 - Added a deterministic nine-factor research-queue engine over existing,

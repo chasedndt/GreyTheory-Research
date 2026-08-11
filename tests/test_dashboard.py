@@ -31,6 +31,7 @@ from greytheory.findings import Finding, Taxonomy
 from greytheory.ledger import Ledger, Payout, Session, SessionKind
 from greytheory.registry import ProgrammeRegistry
 from greytheory.provenance import Claim, Tag
+from tests.test_findings import bind_every_role
 
 NOW = datetime(2026, 8, 7, 9, 0, tzinfo=timezone.utc)
 AUTHORITY = "fingerprint_abc"
@@ -282,7 +283,7 @@ class TestNextAction:
         registry.register(PROGRAMME, raw_source="rules")
         registry.review("acme", reviewer="chase")
         finding = Finding("f1", "t", 3, "app.acme.test", AUTHORITY)
-        finding.claims.append(Claim("proved", Tag.CHECKED, "validator", "c1"))
+        bind_every_role(finding)
         for state in (
             Taxonomy.CONTEXTUAL,
             Taxonomy.CANDIDATE,

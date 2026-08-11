@@ -22,7 +22,15 @@ from greytheory.authority.gate import AuthorityLevel, Gate
 from greytheory.checks import ValidatorRegistry
 from greytheory.evidence import EvidenceVault
 from greytheory.execution import LocalActionExecutor
+from greytheory.claims import ClaimRole, RoleBinding
 from greytheory.findings import Taxonomy
+from greytheory.validators import (
+    ROLE_VALIDATORS,
+    ContractCurrencyValidator,
+    EvidenceIntegrityValidator,
+    OwnershipBoundaryValidator,
+    SyntheticTargetValidator,
+)
 from greytheory.lab.two_account import OwnershipValidator, TwoAccountFixture
 from greytheory.learning import CardUpdateProposal
 from greytheory.provenance import Claim, Tag
@@ -132,6 +140,10 @@ class VerticalSliceResult:
         }
 
 
+def _canonical_json(value: Any) -> bytes:
+    return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
+
+
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = value.to_dict() if hasattr(value, "to_dict") else value
@@ -153,6 +165,122 @@ def _redacted_manifest(raw: bytes) -> bytes:
         "object-user-b": "controlled-account-B",
     }
     return (json.dumps(value, sort_keys=True, separators=(",", ":")) + "\n").encode()
+
+
+def _bind_claim_roles(
+    *,
+    finding,
+    validators,
+    authority_ref: str,
+    contract,
+    vault,
+    finding_id: str,
+    behaviour_claim,
+    behaviour_receipt,
+    response_bytes: bytes,
+    manifest_bytes: bytes,
+    operator: str,
+    statements: "OperatorStatements",
+) -> None:
+    """Answer all seven claim roles from artifacts this run already holds.
+
+    No additional interaction with the fixture happens here. Every checked role
+    is re-derived from bytes already stored, which is what keeps the stricter
+    guard compatible with minimum-impact proof.
+    """
+    for validator_type in ROLE_VALIDATORS:
+        validators.register(validator_type())
+
+    def promoted(validator_id: str, inputs: tuple[bytes, ...], source: str):
+        receipt = validators.run(
+            validator_id, inputs=inputs, authority_ref=authority_ref
+        )
+        if not receipt.successful:
+            raise VerticalSliceError(
+                f"{validator_id} returned {receipt.actual_outcome!r}; the claim "
+                "role cannot be answered"
+            )
+        claim = validators.promote(
+            Claim(receipt.exact_assertion, Tag.INFERRED, source), receipt
+        )
+        return claim, receipt
+
+    finding.bind_role(
+        RoleBinding(
+            role=ClaimRole.BEHAVIOUR,
+            claim=behaviour_claim,
+            receipt=behaviour_receipt,
+        )
+    )
+
+    for role, validator_type, inputs in (
+        (
+            ClaimRole.BOUNDARY,
+            OwnershipBoundaryValidator,
+            (response_bytes, manifest_bytes),
+        ),
+        (
+            ClaimRole.TARGET,
+            SyntheticTargetValidator,
+            (response_bytes, manifest_bytes),
+        ),
+    ):
+        claim, receipt = promoted(
+            validator_type.validator_id, inputs, f"validator:{role.value}"
+        )
+        finding.bind_role(RoleBinding(role=role, claim=claim, receipt=receipt))
+
+    scope_inputs = (
+        _canonical_json({"authority_ref": authority_ref}),
+        _canonical_json(
+            {"authority_ref": contract.fingerprint(), "status": contract.status.value}
+        ),
+    )
+    claim, receipt = promoted(
+        ContractCurrencyValidator.validator_id, scope_inputs, "validator:scope"
+    )
+    finding.bind_role(
+        RoleBinding(role=ClaimRole.SCOPE, claim=claim, receipt=receipt)
+    )
+
+    recorded = {
+        artifact.id: artifact.raw_sha256
+        for artifact in vault.manifest(finding_id).artifacts
+    }
+    problems = vault.verify(finding_id)
+    recomputed = dict(recorded) if not problems else {}
+    integrity_inputs = (_canonical_json(recorded), _canonical_json(recomputed))
+    claim, receipt = promoted(
+        EvidenceIntegrityValidator.validator_id,
+        integrity_inputs,
+        "validator:evidence_integrity",
+    )
+    finding.bind_role(
+        RoleBinding(role=ClaimRole.EVIDENCE_INTEGRITY, claim=claim, receipt=receipt)
+    )
+
+    finding.bind_role(
+        RoleBinding(
+            role=ClaimRole.REPRODUCTION,
+            claim=Claim(
+                statements.reproducibility, Tag.OBSERVED, f"operator:{operator}"
+            ),
+            uncertainty=(
+                "Reproduced within one deterministic in-memory fixture run; "
+                "behaviour of a real deployment under concurrent state is untested."
+            ),
+        )
+    )
+    finding.bind_role(
+        RoleBinding(
+            role=ClaimRole.IMPACT,
+            claim=Claim(statements.impact, Tag.INFERRED, f"operator:{operator}"),
+            uncertainty=(
+                "Consequence is bounded to two controlled synthetic accounts; "
+                "real-world scale and data sensitivity are not established here."
+            ),
+        )
+    )
 
 
 def run_local_two_account_slice(
@@ -521,6 +649,22 @@ def run_local_two_account_slice(
     if not validation.submission_ready:
         reasons = [reason for item in validation.blocking for reason in item.reasons]
         raise VerticalSliceError("validation did not pass: " + "; ".join(reasons))
+
+    _bind_claim_roles(
+        finding=finding,
+        validators=validators,
+        authority_ref=authority_ref,
+        contract=contract,
+        vault=vault,
+        finding_id=finding_id,
+        behaviour_claim=checked,
+        behaviour_receipt=check_receipt,
+        response_bytes=response_bytes,
+        manifest_bytes=manifest_bytes,
+        operator=operator,
+        statements=statements,
+    )
+
     finding.advance(Taxonomy.REPORT_READY, actor=operator, note="Gates B-F passed", now=now)
 
     research.transition_experiment(

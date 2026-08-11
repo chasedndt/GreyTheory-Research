@@ -125,7 +125,23 @@ proof ranks three unproven local theories while producing zero action requests,
 receipts, network calls, model calls, or external targets. The focused suite
 passes 13 tests and the complete repository passes 443.
 
+## Trust-kernel hardening *(unscheduled, 2026-08-09)*
+
+Two gaps from the productisation review, closed ahead of Milestone 7 because
+both sit in the trust kernel that every later milestone assumes is correct:
+claim roles for report-readiness, and a submission-time scope recheck. See
+[ADR-0008](decisions/ADR-0008-claim-roles-and-submission-scope-recheck.md) and
+[the agent activity log](agent-activity.md).
+
+Still open from that review: `ApprovalProvider` (ADR-0003 exists, the code does
+not), signed audit checkpoints, evidence tombstones, taint labels for
+target-controlled content, and a plugin conformance suite.
+
 ## Milestone 7 — Model gateway and evaluation harness *(current)*
+
+> **Recommended reorder, not yet applied:** swap with Milestone 8. Scope Watch
+> is the safer first network component -- it fetches public policy pages rather
+> than targets -- and the model gateway gates nothing. Operator's call.
 
 Add provider/version records, data-class policy, prompt/context assembly, structured output, inference provenance, citations, cost accounting, injection defences, and evaluation fixtures.
 

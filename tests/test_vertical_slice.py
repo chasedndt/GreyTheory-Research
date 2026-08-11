@@ -70,8 +70,27 @@ def test_complete_two_account_slice_satisfies_every_exit_condition(tmp_path):
 
     finding = json.loads((root / "finding.json").read_text())
     check_claims = [claim for claim in finding["claims"] if claim["tag"] == "checked"]
-    assert len(check_claims) == 1
-    assert check_claims[0]["source"].startswith("validator:")
+    # One checked claim per role a validator can settle: behaviour, boundary,
+    # target, scope and evidence integrity. The old guard accepted a single
+    # checked claim, which a finding could satisfy while proving nothing about
+    # whether anything was wrong.
+    assert len(check_claims) == 5
+    assert all(claim["check_ref"] for claim in check_claims)
+    bound = {item["role"]: item for item in finding["role_bindings"]}
+    assert set(bound) == {
+        "behaviour",
+        "boundary",
+        "target",
+        "reproduction",
+        "impact",
+        "scope",
+        "evidence_integrity",
+    }
+    assert bound["behaviour"]["claim"]["check_ref"] == result.check_receipt_id
+    # Impact and reproduction rest on judgement and must say what is unresolved.
+    assert bound["impact"]["claim"]["tag"] == "inferred"
+    assert bound["impact"]["uncertainty"]
+    assert bound["reproduction"]["uncertainty"]
     validation = json.loads((root / "validation.json").read_text())
     assert validation["submission_ready"] is True
     assert all(item["status"] == "pass" for item in validation["results"])
