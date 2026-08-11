@@ -22,7 +22,7 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 | | |
 |---|---|
-| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
 | **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (one in-memory local fixture only; no network worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, lessons, ledger, and mastery records are live; training-mode orchestration and adaptive review scheduling are not), workbench surface (CLI/read model only). |
 | **DESIGNED, NOT BUILT** | Governed model gateway; guided/assisted/assessment/transfer training orchestration. |
 | **PLANNED** | Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
@@ -153,9 +153,35 @@ evidence-bound human assessment across `explain`, `recognise`, `test`, `prove`,
 `remediate`, and `transfer`; personal mastery state is refused inside Git by
 default.
 
+Verify the Milestone 6 ranking contract against a synthetic local workspace:
+
+```bash
+python -m greytheory.cli hypothesis verify
+```
+
+Rank an existing private workspace with its bound contract and explicit
+operator assessments:
+
+```bash
+python -m greytheory.cli hypothesis rank \
+  --root <private-research-root-outside-git> \
+  --workspace <workspace-id> \
+  --contract <verified-contract.json> \
+  --assessments <ranking-inputs.json> \
+  --out <private-queue.json>
+```
+
+The engine derives scope confidence, evidence quantity, test cost, and
+side-effect risk from stored records. Likelihood, potential impact, duplicate
+risk, skill value, and target-specific novelty require explicit
+operator/test-fixture assessments with rationale, provenance, and uncertainty.
+Every factor is explained. Scores are ordinal decision support—not
+probabilities, severity, proof, findings, or execution authority—and hypotheses
+needing scope review are partitioned behind planning candidates.
+
 ### Diagrams
 
-Thirteen Mermaid diagrams — the trust-kernel flows plus the vulnerability-card and skill-graph learning boundary — in [`Docs/diagrams.md`](Docs/diagrams.md).
+Fourteen Mermaid diagrams — the trust-kernel flows plus the learning and transparent-ranking boundaries — in [`Docs/diagrams.md`](Docs/diagrams.md).
 
 ### Documentation
 

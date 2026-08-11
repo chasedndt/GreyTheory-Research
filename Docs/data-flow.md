@@ -16,7 +16,10 @@ flowchart TD
     G -->|approved| H[(VERIFIED contract<br/>+ fingerprint)]
     H --> I{{Gate}}
 
-    J[Hypothesis] --> I
+    J[Hypothesis] --> RANK[Transparent ranking<br/>nine explained factors]
+    ASSESS[Operator/test-fixture assessments<br/>rationale + provenance + uncertainty] --> RANK
+    RANK --> QUEUE[Private research queue<br/>unproven · no authority]
+    QUEUE --> I
     I -->|DENY + reason| K[Postmortem<br/>lesson recorded]
     I -->|ALLOW + authority_ref| L[Lane collector]
     L --> M[RawSignal<br/>tagged 'observed']
@@ -67,6 +70,7 @@ Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of w
 | Programme → ledger | The outcome the programme actually stated | Our own opinion of what it should have been |
 | Lesson → card proposal | Evidence references, checked-claim reference, explicit source kind | Automatic catalogue mutation or a real-session claim |
 | Human assessment → mastery store | One card, one dimension, named evidence, rationale, time, review date | Lab-completion credit, model judgement, credentials, or raw evidence |
+| Hypothesis + ranking inputs → research queue | Contract/workspace binding, nine explained ordinal factors, unproven theory, assumptions, stops | Probability, severity, proof, finding status, action request, execution authority, or model judgement |
 
 ## Two flows that do not exist
 
@@ -84,4 +88,5 @@ Solid lines carry artifacts. Dotted lines to `audit.jsonl` carry the record of w
 | Redacted evidence | Separate from raw | As long as the finding is open |
 | Vulnerability catalogue | Package reference data | Versioned with source and revision provenance |
 | Personal mastery assessments | Private learning root outside Git | Retained until operator policy changes; review dates make staleness visible |
+| Ranked research queues | Private research root outside Git | Integrity-bound decision-support snapshots; operator-controlled retention |
 | Third-party data | Never retained | Stop condition, not a retention policy |

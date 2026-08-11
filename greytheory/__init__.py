@@ -86,6 +86,23 @@ from greytheory.learning import (
     VulnerabilityCatalogue,
     load_builtin_catalogue,
 )
+from greytheory.hypothesis import (
+    AssessmentSource,
+    FactorAssessment,
+    FactorDirection,
+    FactorExplanation,
+    FactorWeight,
+    HypothesisRanker,
+    HypothesisRankingError,
+    HypothesisRankingInput,
+    QueuePartition,
+    RankedHypothesis,
+    RankingFactor,
+    RankingPolicy,
+    ResearchQueue,
+    conservative_local_policy,
+    parse_ranking_inputs,
+)
 from greytheory.registry import (
     Attention,
     ContractVersion,
@@ -218,6 +235,26 @@ __all__.extend(
         "TargetAsset",
         "WorkspaceSnapshot",
         "WorkspaceStatus",
+    ]
+)
+
+__all__.extend(
+    [
+        "AssessmentSource",
+        "FactorAssessment",
+        "FactorDirection",
+        "FactorExplanation",
+        "FactorWeight",
+        "HypothesisRanker",
+        "HypothesisRankingError",
+        "HypothesisRankingInput",
+        "QueuePartition",
+        "RankedHypothesis",
+        "RankingFactor",
+        "RankingPolicy",
+        "ResearchQueue",
+        "conservative_local_policy",
+        "parse_ranking_inputs",
     ]
 )
 

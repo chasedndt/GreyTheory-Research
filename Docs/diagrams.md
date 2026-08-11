@@ -543,3 +543,46 @@ This shape prevents three silent promotions: a taxonomy mapping becoming
 evidence, a synthetic lab becoming a real finding, and task completion becoming
 mastery. Only a named, evidence-bound human assessment credits one dimension;
 the other five remain unchanged.
+
+---
+
+## 14. Transparent hypothesis ranking boundary
+
+Implemented in [`greytheory/hypothesis/`](../greytheory/hypothesis/). Ranking
+orders existing theories for human planning; it cannot plan or execute them.
+
+```mermaid
+flowchart LR
+    H[Existing Hypothesis<br/>draft · scoped · planned]
+    C[Verified ScopeContract<br/>current fingerprint]
+    W[ResearchWorkspace<br/>evidence + budgets + effects]
+    A[Explicit assessments<br/>likelihood · impact · duplicate risk<br/>skill value · novelty]
+    P[Versioned RankingPolicy<br/>nine factors · directions · weights]
+    E[Deterministic ranker<br/>explain every contribution]
+    SR[Scope-review partition<br/>fail closed]
+    Q[Private ResearchQueue<br/>unproven · integrity bound]
+    OP[Human selects next planning work]
+    NO[No action request<br/>No receipt · No finding<br/>No execution authority]
+
+    H --> E
+    C --> E
+    W --> E
+    A --> E
+    P --> E
+    E -->|scope basis incomplete| SR
+    E -->|scope basis current| Q
+    SR --> Q
+    Q --> OP
+    Q --> NO
+
+    style SR fill:#78350f,stroke:#f59e0b,color:#fff
+    style Q fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style NO fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style OP fill:#065f46,stroke:#10b981,color:#fff
+```
+
+The four record-derived factors are scope confidence, evidence quantity, test
+cost, and side-effect risk. The five explicit factors must identify their source
+and uncertainty. The resulting number is an ordinal queue score only: it cannot
+be reinterpreted as likelihood of a vulnerability, severity, proof, or
+permission to act.

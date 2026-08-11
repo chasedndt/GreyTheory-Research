@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 6 — Transparent hypothesis ranking and research queue
+> **Current milestone:** 7 — Model gateway and evaluation harness
 >
-> **Next milestone:** 7 — Model gateway and evaluation harness
+> **Next milestone:** 8 — Scope Watch
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,7 +14,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 430 repository tests pass, including 10 focused Milestone 5 and 8 focused Milestone 4 acceptance tests.
+- 443 repository tests pass, including 13 focused Milestone 6, 10 focused Milestone 5, and 8 focused Milestone 4 acceptance tests.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -111,13 +111,21 @@ Milestone 4 BOLA proposal maps to exactly one `idor-bola` v1.0.0 revision with
 passes 430. Broader training-mode orchestration and adaptive curriculum remain
 PARTIAL and are not part of this exit claim.
 
-## Milestone 6 — Hypothesis engine *(current)*
+## Milestone 6 — Hypothesis engine *(COMPLETE 2026-08-09)*
 
 Rank theories using transparent scope confidence, existing evidence, likelihood, impact, cost, side-effect risk, duplicate risk, skill value, and target-specific novelty.
 
 **Exit:** it produces an explained research queue without calling any item a vulnerability or executing it.
 
-## Milestone 7 — Model gateway and evaluation harness
+Verified with a versioned conservative policy covering the exact nine factors,
+four system-derived inputs and five explicit provenance-rich assessments. Every
+ordinal score contribution is explained and integrity checked; ambiguous scope
+is partitioned for review rather than offset by another factor. The synthetic
+proof ranks three unproven local theories while producing zero action requests,
+receipts, network calls, model calls, or external targets. The focused suite
+passes 13 tests and the complete repository passes 443.
+
+## Milestone 7 — Model gateway and evaluation harness *(current)*
 
 Add provider/version records, data-class policy, prompt/context assembly, structured output, inference provenance, citations, cost accounting, injection defences, and evaluation fixtures.
 

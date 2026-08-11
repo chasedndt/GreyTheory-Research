@@ -83,6 +83,17 @@ catalogue digest. Only explicit human assessments credit mastery; card
 completion, model output, and test-fixture records do not. The CLI exposes
 catalogue, fixture verification, status, and explicit assessment commands.
 
+## Implemented transparent hypothesis ranking
+
+`greytheory/hypothesis/` owns the versioned nine-factor policy, explicit
+assessment contract, deterministic ranking engine, integrity-bound queue,
+private atomic writeback, and synthetic verification fixture. It derives scope,
+evidence quantity, cost, and side-effect risk from existing records; requires
+rationale/provenance/uncertainty for the other five factors; and explains every
+score contribution. It does not execute, invoke a model, create a finding, or
+promote a claim. The CLI exposes offline verification and private-workspace
+ranking commands.
+
 ## Designed, not built
 
 | Module / package | Layer | Blocked on |

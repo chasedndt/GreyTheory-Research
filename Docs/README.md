@@ -21,6 +21,7 @@ Where to start, and which document wins when two disagree.
 | Build order | [`roadmap.md`](roadmap.md) |
 | Research objects | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md) |
 | Vulnerability cards, local labs, and mastery graph | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md#milestone-5-exit-condition) · [`vuln-coverage-matrix.md`](vuln-coverage-matrix.md) |
+| Transparent hypothesis ranking and private research queues | [`DOMAIN_MODEL.md`](../DOMAIN_MODEL.md#milestone-6-exit-condition) · [`ADR-0007`](decisions/ADR-0007-transparent-ranking-without-authority.md) |
 | Human/AI/execution boundaries | [`AUTONOMY_MODEL.md`](../AUTONOMY_MODEL.md) |
 | Threats before networking | [`THREAT_MODEL.md`](../THREAT_MODEL.md) |
 | Data handling | [`DATA_POLICY.md`](../DATA_POLICY.md) |

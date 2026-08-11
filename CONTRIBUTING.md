@@ -41,6 +41,13 @@ credential-free, model-free, browser-free, process-free, and network-free. A
 fixture receipt must continue to say that it proves no real vulnerability and
 awards no mastery.
 
+Hypothesis ranking is prioritisation, not classification. Every factor must
+remain inspectable and carry provenance, rationale, uncertainty, raw level,
+weight, and exact contribution. Do not add a hidden score, probability claim,
+severity promotion, model-only source, or route from queue order to execution.
+Missing or stale scope evidence must remain in the `scope_review_required`
+partition, and target-specific queue output must stay outside Git.
+
 ## Comments
 
 Comment the *why*, not the *what*. The codebase leans on this: a

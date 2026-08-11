@@ -4,6 +4,22 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — transparent hypothesis ranking
+
+- Added a deterministic nine-factor research-queue engine over existing,
+  contract-bound hypotheses and the 12-card catalogue.
+- Added the versioned `conservative-local` policy with exact weights,
+  direction-aware basis-point contributions, stable ordering, and fail-closed
+  scope partitioning.
+- Added provenance, rationale, uncertainty, derivation, and observed inputs for
+  every factor. Four factors are system-derived; five require an explicit
+  `operator` or `test_fixture` estimate. Model scoring remains refused.
+- Added integrity-checked private queue output and CLI `hypothesis verify` and
+  `hypothesis rank` commands. Every item remains `unproven`, decision-support
+  only, and carries no execution authority.
+- Added a three-theory synthetic proof with nine explanations per item and zero
+  action requests, receipts, model calls, network actions, or external targets.
+
 ### Added — vulnerability cards and skill graph
 
 - Added exactly 12 versioned first-class vulnerability cards with framework

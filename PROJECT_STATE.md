@@ -16,10 +16,10 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice; Milestone 5 — vulnerability cards and skill graph.
-- **Current research milestone:** Milestone 6 — transparent hypothesis ranking and research queue.
+- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice; Milestone 5 — vulnerability cards and skill graph; Milestone 6 — transparent hypothesis ranking and research queue.
+- **Current research milestone:** Milestone 7 — governed model gateway and evaluation harness.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 430 repository tests passing, including 10 focused Milestone 5 and 8 Milestone 4 acceptance tests, on 2026-08-09.
+- **Verified baseline:** 443 repository tests passing, including 13 focused Milestone 6, 10 focused Milestone 5, and 8 focused Milestone 4 acceptance tests, on 2026-08-09.
 
 ## What is built
 
@@ -48,11 +48,13 @@ The complete offline path from supplied authorisation to a validated report draf
 - an integrity-checked private `MasteryStore` that refuses repository storage, requires explicit evidence and review dates, credits only human assessments, and keeps labelled test-fixture assessments non-crediting;
 - offline CLI catalogue, fixture-verification, mastery-status, and evidence-bound assessment commands;
 - the Milestone 4 BOLA proposal applied to `idor-bola` v1.0.0 as an explicitly `test_fixture`-sourced revision, without inventing a real session or human mastery record.
+- a versioned conservative ranking policy with the exact nine Milestone 6 factors, explicit direction/weight semantics, stable tie-breaking, and self-verifying queue integrity;
+- a private research queue that derives scope confidence, evidence quantity, cost, and side-effect risk from trusted records, requires provenance-rich assessments for the other five factors, explains every contribution, partitions scope-review items, and grants no execution authority;
+- offline CLI ranking/verification commands plus a three-theory synthetic fixture proving deterministic order, explanation arithmetic, `unproven` claim state, and zero action requests, receipts, network calls, model calls, or external targets.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
-- transparent hypothesis ranking and research-queue decision support;
 - guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
 - governed model gateway;
 - standalone graphical workbench;
@@ -72,6 +74,9 @@ The complete offline path from supplied authorisation to a validated report draf
 - Framework mappings classify a card; they never prove a vulnerability, impact, severity, or mastery.
 - Synthetic fixture receipts prove only the shipped local scenario and its controls. They cannot become real-session evidence or mastery credit.
 - Mastery is six separate evidence-bound human assessments; completing a lab or receiving model output awards nothing automatically.
+- Ranking inputs are ordinal decision-support assessments, not probabilities, severity, proof, or vulnerability labels; changing a score changes ordering only.
+- Scope confidence is system-derived and any missing, stale, unverified, unresolved, or out-of-scope basis partitions the hypothesis for scope review rather than allowing it into the planning queue.
+- Ranking never executes, creates action requests/receipts, invokes a model, or changes hypothesis/finding/claim lifecycle state.
 - Every action and artifact carries authority. Asset discovery never widens scope.
 - Programme outcomes are recorded from external evidence, never self-awarded.
 - Raw evidence remains outside repositories; only redacted evidence is exportable.
@@ -81,7 +86,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Build Milestone 6 as transparent decision support over existing hypotheses. Rank without executing or calling anything a vulnerability, explain every factor, and keep missing or ambiguous scope confidence fail-closed. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
+Build Milestone 7 as a governed model gateway and evaluation harness over structured, redacted inputs. Preserve `inferred` provenance, prohibit model-held authority and execution, and measure unsupported promotion, scope errors, fabricated evidence, unsafe tool requests, prompt injection, uncertainty, and report completeness. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
 
 ## Do not build next
 

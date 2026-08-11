@@ -508,6 +508,103 @@ def cmd_learning_assess(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_hypothesis_verify(args: argparse.Namespace) -> int:
+    from greytheory.hypothesis import (
+        HypothesisRankingError,
+        run_local_ranking_fixture,
+        write_ranking_payload,
+    )
+
+    try:
+        payload = run_local_ranking_fixture()
+        output_path = write_ranking_payload(args.out, payload) if args.out else None
+    except (OSError, HypothesisRankingError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print("GreyTheory Milestone 6 hypothesis ranking: COMPLETE")
+        print(f"  ranked theories: {payload['ranked_hypotheses']}")
+        print("  factor explanations: nine per item")
+        print("  claim state: unproven")
+        print("  execution: not requested")
+        print("  network/model calls: none")
+        if output_path is not None:
+            print(f"  written: {output_path}")
+    return 0
+
+
+def cmd_hypothesis_rank(args: argparse.Namespace) -> int:
+    from greytheory.hypothesis import (
+        HypothesisRanker,
+        HypothesisRankingError,
+        parse_ranking_inputs,
+        write_research_queue,
+    )
+    from greytheory.learning import load_builtin_catalogue
+    from greytheory.research import ResearchStore, ResearchStoreError
+
+    try:
+        contract_data, _ = _load(args.contract)
+        contract = ScopeContract.from_dict(contract_data)
+        ranking_data, _ = _load(args.assessments)
+        ranking_inputs = parse_ranking_inputs(ranking_data)
+        as_of = (
+            datetime.fromisoformat(args.as_of)
+            if args.as_of
+            else datetime.now(timezone.utc)
+        )
+        store = ResearchStore(args.root)
+        snapshot = store.snapshot(args.workspace)
+        queue = HypothesisRanker(clock=lambda: as_of).rank(
+            snapshot=snapshot,
+            contract=contract,
+            ranking_inputs=ranking_inputs,
+            catalogue=load_builtin_catalogue(),
+        )
+        AuditLog(store.root / "ranking-audit.jsonl").append(
+            actor=args.actor,
+            action="hypothesis.queue.rank",
+            authority_ref=queue.contract_fingerprint,
+            detail={
+                "queue_id": queue.id,
+                "queue_digest": queue.queue_digest,
+                "workspace_id": queue.workspace_id,
+                "item_count": len(queue.items),
+                "decision_support_only": True,
+                "execution_requests_created": 0,
+                "action_receipts_created": 0,
+            },
+        )
+        output_path = write_research_queue(args.out, queue) if args.out else None
+    except (
+        OSError,
+        ValueError,
+        HypothesisRankingError,
+        ResearchStoreError,
+    ) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+
+    payload = queue.to_dict()
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"GreyTheory research queue: {len(queue.items)} unproven hypotheses")
+        print(f"  policy: {queue.policy.id} v{queue.policy.version}")
+        print(f"  digest: {queue.queue_digest}")
+        for item in queue.items:
+            print(
+                f"  {item.rank}. {item.hypothesis_id} - {item.score_bps}/10000 "
+                f"[{item.queue_partition.value}]"
+            )
+        print("  execution: not requested")
+        if output_path is not None:
+            print(f"  written: {output_path}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="greytheory",
@@ -627,6 +724,37 @@ def build_parser() -> argparse.ArgumentParser:
     q.add_argument("--review-due", required=True, help="ISO date")
     q.add_argument("--json", action="store_true", help="emit structured JSON")
     q.set_defaults(func=cmd_learning_assess)
+
+    hypothesis = sub.add_parser(
+        "hypothesis",
+        help="rank unproven research hypotheses with transparent factors",
+    )
+    hsub = hypothesis.add_subparsers(dest="hypothesis_command", required=True)
+
+    q = hsub.add_parser(
+        "verify",
+        help="run the synthetic, network-free Milestone 6 ranking proof",
+    )
+    q.add_argument("--out", help="write the private structured proof outside Git")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_hypothesis_verify)
+
+    q = hsub.add_parser(
+        "rank",
+        help="rank selected hypotheses from a private research workspace",
+    )
+    q.add_argument("--root", required=True, help="private research-store root outside Git")
+    q.add_argument("--workspace", required=True, help="workspace id")
+    q.add_argument("--contract", required=True, help="current contract JSON")
+    q.add_argument(
+        "--assessments",
+        required=True,
+        help="JSON with five explicit assessed factors per hypothesis",
+    )
+    q.add_argument("--as-of", help="timezone-aware ISO-8601 ranking time")
+    q.add_argument("--out", help="write the private ranked queue outside Git")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_hypothesis_rank)
 
     programme = sub.add_parser(
         "programme", help="the programme registry: versions, drift, what needs you"

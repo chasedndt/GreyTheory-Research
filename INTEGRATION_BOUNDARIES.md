@@ -36,6 +36,9 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 - `greytheory/`: minimal, dependency-light trust kernel and current offline capabilities.
 - `greytheory/research/`: current structured local workspaces, sessions, assets, identity handles, hypotheses, experiments, action records, and lessons.
 - `greytheory/learning/`: current versioned card catalogue, synthetic fixtures, skill graph, and private evidence-bound mastery records; training-mode orchestration remains future work.
+- `greytheory/hypothesis/`: current deterministic nine-factor ranking policy,
+  explicit estimate contracts, explainable queue engine, synthetic proof, and
+  private queue writeback. It consumes governed records and grants no authority.
 - future workers: lower-trust local/network/browser/DNS execution behind tickets.
 - future model package: provider gateway, roles, policies, prompts, and evaluations.
 - future workbench: local API and UI over structured objects.

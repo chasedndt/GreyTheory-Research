@@ -4,7 +4,7 @@
 >
 > **Effective:** 2026-08-09
 >
-> **Current maturity:** Working offline trust and research kernel with the first governed learning catalogue; no live-target capability.
+> **Current maturity:** Working offline trust and research kernel with governed learning and transparent hypothesis ranking; no live-target capability.
 
 ## Identity
 
@@ -85,7 +85,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 2 | Research Workspace | LIVE offline; structured store and sessions verified |
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, and evidence-bound mastery; training modes remain partial |
-| 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles and budgets |
+| 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
 | 6 | Execution and Tool Broker | LIVE for one bounded in-memory `LOCAL_FIXTURE` action; network broker/workers not built |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
@@ -119,6 +119,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - an acyclic prerequisite graph and six-dimensional mastery model (`explain`, `recognise`, `test`, `prove`, `remediate`, `transfer`) backed by an integrity-checked private store;
 - explicit mastery governance: only evidence-bound human assessments credit mastery; labelled test-fixture assessments remain visible but non-crediting;
 - the Milestone 4 `card-update-local-bola-v1` proposal applied to canonical `idor-bola` v1.0.0 with `test_fixture` revision provenance and no real-session claim.
+- a versioned conservative nine-factor ranking policy, deterministic engine, and integrity-checked private research queue that explains every score, partitions uncertain scope, labels every item `unproven`, and carries no execution authority.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -134,7 +135,6 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ### PLANNED / NOT BUILT
 
-- transparent hypothesis-ranking and research-queue decision support;
 - training-mode orchestration, adaptive review scheduling, and broader curriculum packs;
 - governed model gateway and evaluation harness;
 - Scope Watch, network broker, network workers, and live collectors;
@@ -143,7 +143,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 through 5 are complete at their documented implementation/evidence exit conditions. Milestone 6 — transparent hypothesis ranking and the research queue — is current. The Milestone 4 IDOR/BOLA proposal is now represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 6 are complete at their documented implementation/evidence exit conditions. Milestone 7 — the governed model gateway and evaluation harness — is current. The ranking queue is decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 
