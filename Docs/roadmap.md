@@ -2,9 +2,9 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 7 — Model gateway and evaluation harness
+> **Current milestone:** 9 — Passive execution pilot (blocked on the posture decision)
 >
-> **Next milestone:** 8 — Scope Watch
+> **Last completed:** 8 — Scope Watch, offline portion
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -137,21 +137,56 @@ Still open from that review: `ApprovalProvider` (ADR-0003 exists, the code does
 not), signed audit checkpoints, evidence tombstones, taint labels for
 target-controlled content, and a plugin conformance suite.
 
-## Milestone 7 — Model gateway and evaluation harness *(current)*
-
-> **Recommended reorder, not yet applied:** swap with Milestone 8. Scope Watch
-> is the safer first network component -- it fetches public policy pages rather
-> than targets -- and the model gateway gates nothing. Operator's call.
+## Milestone 7 — Model gateway and evaluation harness *(COMPLETE 2026-08-09)*
 
 Add provider/version records, data-class policy, prompt/context assembly, structured output, inference provenance, citations, cost accounting, injection defences, and evaluation fixtures.
 
 **Exit:** evaluations measure unsupported promotion, scope errors, fabricated evidence, unsafe tool requests, prompt injection, uncertainty, and report completeness. Every output remains `inferred`.
 
-## Milestone 8 — Scope Watch
+Verified with `greytheory.models`. No provider in the core performs network
+I/O: `ModelProvider` is a protocol and the only shipped implementation is a
+deterministic local stub, so a real provider is supplied from outside.
+
+Classification is enforced at *assembly* rather than at send, so no window
+exists in which an unclassified string can be appended to a checked prompt. A
+remote provider cannot be approved for `RAW_RESTRICTED` at all, and each of the
+nine roles carries its own ceiling below the provider's -- the tutor role sees
+public material only, whatever the provider allows.
+
+A response citing context that was never supplied is refused rather than
+flagged: a citation that does not resolve is an invented source. Every output
+enters as `inferred` with no code path to `checked`. Prompts are audited by
+digest, never by content. An exhausted budget refuses.
+
+The 8-case evaluation suite covers fabricated citations, missing citations, raw
+capture leakage, role ceilings, impact overstatement, stated uncertainty, and
+indirect prompt injection in both compliant and non-compliant forms. Two cases
+are negative fixtures asserting that the detector fires, so a clean run
+distinguishes a working harness from a well-behaved model.
+
+## Milestone 8 — Scope Watch *(COMPLETE offline 2026-08-09; network fetcher deferred)*
 
 Make saved public programme-source fetching the first network-enabled component. It informs Authority/Judgement only and never grants scope.
 
 **Exit:** changes are diffed, narrowing changes highlighted, and affected contracts invalidated without interpreting source text as permission.
+
+Verified with `greytheory.scopewatch`. All comparison, invalidation and
+reporting logic is implemented and tested offline.
+
+**What is deliberately not built: the network fetcher.** `SourceFetcher` is a
+protocol; the core ships `LocalSourceFetcher` only, and `ScopeWatch` refuses
+any fetcher declaring `network = True` unless explicitly enabled. Fetching a
+programme page is still a request to somebody's server and belongs above
+`LOCAL_FIXTURE`. When the posture is raised, an HTTP fetcher is written against
+the protocol and nothing else changes.
+
+A source that could not be re-read is `UNREACHABLE`, never `UNCHANGED` -- a
+source nobody could check has not been shown to be the same. It needs attention
+but does not by itself invalidate review, because "could not read it" is not
+"it changed" and conflating them would make every network blip look like drift.
+A changed or removed source does invalidate review. A source recorded without a
+comparable hash is skipped rather than guessed at, since watching something
+uncomparable would report every run as changed.
 
 ## Milestone 9 — Passive execution pilot
 

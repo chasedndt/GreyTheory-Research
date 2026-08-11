@@ -4,6 +4,13 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added — model gateway and Scope Watch (Milestones 7 and 8)
+
+- `greytheory.models` -- the only route by which a model is ever called. Nothing in it touches a network: `ModelProvider` is a protocol and the core ships one deterministic local stub, so a real provider is supplied from outside. Classification is enforced at assembly rather than at send, so no window exists in which an unclassified string is appended to a checked prompt. A remote provider can never be approved for `RAW_RESTRICTED`. Nine role contracts each carry a ceiling below the provider's. A response citing context that was never supplied is refused, not flagged -- an unresolvable citation is an invented source. Every output enters as `inferred`, with no code path to `checked`. Prompts are audited by digest, never by content. An exhausted budget refuses.
+- Evaluation harness: eight adversarial cases covering fabricated citations, missing citations, raw-capture leakage, role ceilings, impact overstatement, stated uncertainty, and indirect prompt injection in both compliant and non-compliant forms. Two are negative fixtures asserting the detector fires, so a clean run distinguishes a working harness from a well-behaved model.
+- `greytheory.scopewatch` -- re-reads recorded programme sources and reports what moved. A source that could not be read is `UNREACHABLE`, never `UNCHANGED`: a source nobody could check has not been shown to be the same. It needs attention but does not by itself invalidate review, because "could not read it" is not "it changed". Changed and removed sources do invalidate it. A source without a comparable hash is skipped rather than guessed at.
+- **The network fetcher is deliberately absent.** `SourceFetcher` is a protocol; the core ships `LocalSourceFetcher` only, and `ScopeWatch` refuses any fetcher declaring network I/O unless explicitly enabled. Fetching a programme page is still a request to somebody's server. ADR-0009.
+
 ### Changed — trust-kernel hardening
 
 - **`report_ready` now requires a claim in each of seven roles**, not a count of checked claims. The old guard was satisfiable by proving a request returned 200 -- true, checked, receipted, and silent on whether anything was wrong. Five roles are settled by validator receipts derived from artifacts already held; `impact` and `reproduction` are judgement roles requiring a stated uncertainty. One claim cannot answer two roles -- the shortcut a count invited. ADR-0008.

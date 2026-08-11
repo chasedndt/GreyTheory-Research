@@ -4,6 +4,57 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-09 — Claude · Model gateway and Scope Watch (Milestones 7 and 8)
+
+### What was built
+
+- `greytheory/models/` — provider policy, nine role contracts, the gateway, and an eight-case evaluation harness.
+- `greytheory/scopewatch.py` — source re-reading, change detection, review invalidation.
+- 49 new tests. Suite: 476 → 525.
+
+Full reasoning in [ADR-0009](decisions/ADR-0009-model-gateway-and-fetcher-boundaries.md).
+
+### Why the milestone order stopped mattering
+
+The previous entry recommended swapping 7 and 8 because Scope Watch is the safer first network component. Both are now built, so the ordering question dissolved — but only because **neither turned out to need the network.**
+
+That was the real finding. Both components' valuable logic sits entirely on the offline side of a protocol boundary. The model gateway takes a `ModelProvider`; Scope Watch takes a `SourceFetcher`. The core ships only offline implementations, and everything worth testing — classification, citations, provenance, budgets, change detection, invalidation — is provable without a network, a key or a bill.
+
+### What the next agent should not undo
+
+**Do not put a real provider or an HTTP fetcher inside `greytheory/`.** CI enforces it, but the reason matters more than the check: the trust kernel's value is that its guarantees hold without trusting anything it cannot see.
+
+**Do not move classification from assembly to send.** Checking at send time creates a window in which an unclassified string can be appended to an already-approved prompt.
+
+**Do not downgrade an unresolvable citation to a warning.** A model citing context that was never supplied invented a source. It is the cheapest fabrication detector available.
+
+**Do not log prompt content.** The audit records a digest. A log that re-exposes the sensitive fragment it was recording defeats the classification it just enforced.
+
+**Do not make `UNREACHABLE` collapse into `UNCHANGED`.** A source nobody could read has not been shown to be the same. Equally, do not make it invalidate review — "could not read it" is not "it changed", and conflating those makes every network blip look like scope drift.
+
+**Do not remove the negative fixtures from the eval suite.** They look like failing tests and are not: they assert the detectors fire on known-bad replies. Without them the suite cannot tell a working harness from a well-behaved model.
+
+### Still open
+
+Unchanged from the previous entry except where noted:
+
+| Gap | Note |
+|---|---|
+| `ApprovalProvider` protocol | ADR-0003 exists, the code does not. Still the clearest next trust-kernel work. |
+| Signed audit checkpoints | Needs an operator key, therefore a dependency outside the core. |
+| Evidence tombstones | Write-once raw evidence versus the duty to delete third-party data. |
+| Taint labels on stored evidence | **Partially addressed.** `TrustLabel` now exists for model context; evidence artifacts still do not carry it. |
+| Plugin conformance suite | No adapter tested against denial, rate and scope fixtures. |
+| Network fetcher for Scope Watch | Deferred to the posture decision, by design. |
+
+### Verification
+
+```
+525 tests, up from 476
+8/8 evaluation cases clean against the stub provider
+no network import in greytheory/ (CI-enforced)
+```
+
 ---
 
 ## 2026-08-09 — Claude · Claim roles and submission-time scope recheck

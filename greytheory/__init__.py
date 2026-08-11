@@ -110,7 +110,21 @@ from greytheory.registry import (
     RegistryError,
     ScopeDiff,
 )
+from greytheory.models import (
+    ContextFragment,
+    DataClass,
+    ModelGateway,
+    ModelRole,
+    ProviderPolicy,
+    TrustLabel,
+)
 from greytheory.report import ReportDraft
+from greytheory.scopewatch import (
+    LocalSourceFetcher,
+    ScopeWatch,
+    SourceState,
+    WatchedSource,
+)
 from greytheory.research import (
     ActionReceipt,
     ActionRequest,
@@ -146,6 +160,16 @@ from greytheory.validation import (
 __version__ = "0.1.0"
 
 __all__ = [
+    "WatchedSource",
+    "TrustLabel",
+    "SourceState",
+    "ScopeWatch",
+    "ProviderPolicy",
+    "ModelRole",
+    "ModelGateway",
+    "LocalSourceFetcher",
+    "DataClass",
+    "ContextFragment",
     "Advisory",
     "AdvisorySet",
     "Version",
