@@ -6,6 +6,8 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ### Added - workbench foundation and executable capability truth
 
+- Added `greytheory_app`, a separate transport-neutral application layer with a versioned workbench snapshot across programmes, research, hypotheses, learning, evidence, reports, approvals, audit readiness, and executable capability truth.
+- Added idempotent, optimistic-revision learning command handlers and explicit non-executing typed refusals for research, action, assessment, and report commands whose dedicated use cases are not implemented. The contract structurally rejects posture above `LOCAL_FIXTURE` and never represents a UI action as execution authority.
 - Added `greytheory.capabilities`, a typed register shared by the dashboard and future workbench. It separates shipped-code status from runtime health and explicitly keeps Lane 3, external Scope Watch collection, and `PASSIVE_HTTP` unavailable.
 - Corrected the dashboard's stale claim that no Signal Plane lane or learning graph existed. It now reports the three static offline lanes, the live learning core, offline model gateway, offline Scope Watch, and the still-unbuilt graphical workbench and network worker.
 - Accepted ADR-0010: the graphical workbench is a separate local application layer around the offline core, never a direct collector or execution path.

@@ -193,11 +193,19 @@ CAPABILITIES: tuple[Capability, ...] = (
         ("greytheory.dashboard",),
     ),
     Capability(
+        "workbench_application_service",
+        "Workbench application service",
+        CapabilityStatus.PARTIAL,
+        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning commands are live.",
+        "Transport and graphical shell are absent; research, action, assessment, and report commands are typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
+        ("greytheory_app", "Docs/workbench-architecture.md"),
+    ),
+    Capability(
         "graphical_workbench",
         "Graphical workbench",
         CapabilityStatus.PLANNED,
-        "Application architecture and user journeys are being defined.",
-        "No selected visual direction or interactive application is implemented yet.",
+        "Application architecture, versioned snapshot contract, and user journeys are defined.",
+        "No selected visual direction, transport, or interactive application is implemented yet.",
         ("Docs/workbench-architecture.md",),
     ),
     Capability(

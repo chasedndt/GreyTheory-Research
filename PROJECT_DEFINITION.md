@@ -2,7 +2,7 @@
 
 > **Status:** CANONICAL
 >
-> **Effective:** 2026-08-24
+> **Effective:** 2026-08-25
 >
 > **Current maturity:** Working offline trust and research kernel with governed learning, transparent hypothesis ranking, model gateway, offline Scope Watch, and a workbench foundation; no live-target capability.
 
@@ -90,7 +90,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
-| 10 | Workbench and Integrations | PARTIAL; CLI, static read model, executable capability register, and application architecture live; interactive workbench planned |
+| 10 | Workbench and Integrations | PARTIAL; CLI, static read model, executable capability register, application architecture, versioned snapshots, and bounded learning handlers live; transport and interactive workbench planned |
 
 Planes define trust boundaries. Layers define the capabilities a researcher uses. A layer may never weaken a plane.
 
@@ -124,6 +124,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - a governed offline model gateway with role/data ceilings, citation checks, budget enforcement, inferred provenance, and an eight-case adversarial evaluation harness;
 - offline Scope Watch comparison and review invalidation through the exact rooted `LocalSourceFetcher`, with no network fetcher escape hatch;
 - an executable capability register shared by dashboard and future workbench surfaces, including explicit `UNAVAILABLE` boundaries for Lane 3, governed external collection, and `PASSIVE_HTTP`.
+- a transport-neutral workbench application service with versioned fail-closed snapshots across the existing stores, stable next-action/context records, idempotent revision-bound learning handlers, and structural refusal of posture above `LOCAL_FIXTURE` or any claim of execution.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -133,7 +134,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - Milestone 2's three-source implementation proof is complete; individual bundle review and conflict states remain authoritative and unchanged;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
 - promotion of existing observed/inferred claims uses registry-issued receipts, while legacy static collectors still originate their own deterministic `checked` claims pending persisted receipt artifacts;
-- the dashboard is a static read model, not the planned standalone workbench; the application/process/storage contract is accepted but no interactive shell or local application service exists;
+- the dashboard remains a static export, not the planned standalone workbench; the separate application service can now assemble UI-neutral snapshots and operate bounded learning journeys, but no transport or interactive shell exists and research/action/report handlers remain refused;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
 - the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
 
@@ -146,7 +147,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and broker controls. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: its architecture and executable capability truth exist, while the interactive shell awaits visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and broker controls. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: architecture, executable capability truth, UI-neutral application snapshots, and bounded learning handlers exist, while transport and the interactive shell await visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

@@ -35,7 +35,10 @@ def test_learning_core_does_not_overstate_guided_or_adaptive_learning():
     assert "not built" in guided.boundary.lower()
 
 
-def test_workbench_and_passive_http_remain_unimplemented():
+def test_application_service_is_partial_while_ui_and_passive_http_remain_unimplemented():
+    application = capability("workbench_application_service")
+    assert application.status is CapabilityStatus.PARTIAL
+    assert "typed but refused" in application.boundary.lower()
     assert capability("graphical_workbench").status is CapabilityStatus.PLANNED
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     assert "passive_http remains dark" in capability("passive_http_worker").boundary.lower()

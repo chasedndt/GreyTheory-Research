@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register and architecture implemented, interactive shell awaiting visual selection.
+- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, and bounded learning command handlers implemented; transport and interactive shell await visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 546 repository tests passing on 2026-08-24, including executable capability truth, dashboard reconciliation, and deterministic guided-learning journeys.
+- **Verified baseline:** 555 repository tests passing on 2026-08-25, including executable capability truth, dashboard reconciliation, deterministic guided-learning journeys, and the versioned workbench application contract.
 
 ## What is built
 
@@ -57,13 +57,14 @@ The complete offline path from supplied authorisation to a validated report draf
 - an executable capability register consumed by the dashboard and intended for the workbench, with separate shipped-code status and runtime-health semantics;
 - an accepted workbench boundary covering the Windows operator host, local application service, offline core, private storage, guided-learning journey, and future isolated Ubuntu worker.
 - deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
+- a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded learning commands are idempotent and revision-aware, while all action commands remain non-executing.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
 - guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
 - standalone graphical workbench;
-- local workbench application service, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
+- workbench transport and graphical shell, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
 - governed external Scope Watch collector, network broker/workers, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
@@ -92,7 +93,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then implement the local shell and Today/Learn/Research journey against realistic fixture data. In parallel, specify and test the local application-service command boundary without adding network or tool execution to the core. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then implement the local transport and shell against the versioned application snapshot and the realistic fixture acceptance path. Next, add dedicated research-domain handlers before exposing their typed commands in the UI. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
 
 ## Do not build next
 

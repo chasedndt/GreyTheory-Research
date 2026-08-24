@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory workbench application contract](2026-08-25-greytheory-workbench-application-contract.md) - versioned fail-closed snapshots and bounded learning handlers; 555 tests
+
 - [2026-08-24 - GreyTheory workbench foundation](2026-08-24-greytheory-workbench-foundation.md) - executable capability truth and accepted local application boundary; 534 tests
 
 - [2026-08-24 - Portfolio security hardening](2026-08-24-portfolio-security-hardening.md) - exact local-source boundary; clean-checkout reproducibility

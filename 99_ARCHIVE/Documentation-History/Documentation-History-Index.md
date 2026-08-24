@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory workbench application contract](2026-08-25_greytheory-workbench-application-contract.md) - tested UI-neutral application boundary; graphical workbench still pending
+
 - [2026-08-24 - GreyTheory workbench foundation](2026-08-24_greytheory-workbench-foundation.md) - capability truth and application boundary reconciled; interactive workbench still pending
 
 - [2026-08-09 - Vulnerability cards and skill graph](2026-08-09_vulnerability-skill-graph.md) - COMPLETE and VERIFIED locally; Milestone 5 COMPLETE

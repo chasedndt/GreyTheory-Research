@@ -4,6 +4,29 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Workbench application contract
+
+### What was built
+
+- Added the separate `greytheory_app` layer and versioned workbench contracts.
+- Assembled fail-closed snapshots from the real programme, research, learning,
+  hypothesis, evidence, report, approval, audit, and capability sources.
+- Added bounded idempotent learning handlers with optimistic revisions. Other
+  typed commands refuse without changing domain or execution state.
+
+### What remains deliberately absent
+
+There is no HTTP/IPC transport, graphical shell, process or network broker, or
+posture above `LOCAL_FIXTURE`. Do not interpret an accepted learning-domain
+command as tool execution, and do not expose refused command shapes until their
+dedicated application handlers and tests exist.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-workbench-application-contract.md`.
+
+---
+
 ## 2026-08-24 - Codex - Workbench foundation and executable capability truth
 
 ### What was built

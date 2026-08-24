@@ -237,6 +237,12 @@ Implemented now:
 - the existing static dashboard read model and renderers;
 - the executable capability register shared by future surfaces; and
 - this application, process, storage, learning, and worker contract;
+- the transport-neutral `greytheory_app` application service with versioned
+  snapshots across programmes, learning, research, hypotheses, evidence,
+  reports, approvals, audit readiness, and capability truth;
+- idempotent, optimistic-revision learning command handlers plus typed refusal
+  for research, action, assessment, and report commands that lack a dedicated
+  use-case handler;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -244,12 +250,14 @@ Implemented now:
 Not implemented now:
 
 - the selected interactive UI;
-- the local application service;
+- a local HTTP/IPC transport and application shell;
+- dedicated research, action-intent, mastery-assessment, and report-export
+  application handlers;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;
 - any network broker, Ubuntu worker, or `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
-directions, then build the local shell and the Today/Learn/Research journey
-against realistic local fixture data without changing posture.
+directions, then bind a local-only transport and shell to this snapshot contract
+and complete the Today/Learn/Research browser journey without changing posture.
