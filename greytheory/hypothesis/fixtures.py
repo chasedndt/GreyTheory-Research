@@ -275,7 +275,10 @@ def build_local_ranking_fixture() -> LocalRankingFixture:
 
 def populate_local_ranking_store(root: str | Path) -> LocalRankingFixture:
     fixture = build_local_ranking_fixture()
-    store = ResearchStore(root)
+    # This is a synthetic historical proof fixture. Keep its store clock bound
+    # to the fixture timestamp so running the demo later does not silently turn
+    # a reproducibility check into a stale real-world authority claim.
+    store = ResearchStore(root, clock=lambda: FIXTURE_TIME)
     store.create_workspace(
         fixture.snapshot.workspace, contract=fixture.contract, actor="fixture-operator"
     )

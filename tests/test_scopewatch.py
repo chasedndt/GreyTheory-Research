@@ -50,7 +50,7 @@ class TestFetcherBoundary:
     def test_the_local_fetcher_declares_no_network(self):
         assert LocalSourceFetcher.network is False
 
-    def test_a_network_fetcher_is_refused_by_default(self, sources):
+    def test_a_network_fetcher_is_refused(self, sources):
         class HttpFetcher:
             fetcher_id = "http"
             network = True
@@ -58,20 +58,27 @@ class TestFetcherBoundary:
             def fetch(self, locator):  # pragma: no cover - must not run
                 raise AssertionError("should never be called")
 
-        with pytest.raises(WatchError, match="raise the operating posture"):
+        with pytest.raises(WatchError, match="only the exact LocalSourceFetcher"):
             ScopeWatch(HttpFetcher())
 
-    def test_a_network_fetcher_can_be_enabled_deliberately(self, sources):
-        class HttpFetcher:
-            fetcher_id = "http"
-            network = True
+    def test_a_fetcher_cannot_lie_about_being_local(self, sources):
+        class PretendLocalFetcher:
+            fetcher_id = "pretend.local"
+            network = False
 
-            def fetch(self, locator):
-                return b"fetched"
+            def fetch(self, locator):  # pragma: no cover - must not run
+                raise AssertionError("untrusted fetcher executed")
 
-        watch = ScopeWatch(HttpFetcher(), allow_network_fetcher=True, clock=lambda: NOW)
-        result = watch.check("acme", [WatchedSource("s1", "x", digest(b"fetched"))])
-        assert result.observations[0].state is SourceState.UNCHANGED
+        with pytest.raises(WatchError, match="only the exact LocalSourceFetcher"):
+            ScopeWatch(PretendLocalFetcher())
+
+    def test_a_local_fetcher_subclass_cannot_override_the_boundary(self, sources):
+        class OverriddenLocalFetcher(LocalSourceFetcher):
+            def fetch(self, locator):  # pragma: no cover - must not run
+                raise AssertionError("overridden fetcher executed")
+
+        with pytest.raises(WatchError, match="only the exact LocalSourceFetcher"):
+            ScopeWatch(OverriddenLocalFetcher(sources))
 
     def test_the_fetcher_cannot_read_outside_its_root(self, sources, tmp_path):
         (tmp_path / "secret.md").write_text("private", encoding="utf-8")
@@ -108,17 +115,16 @@ class TestDetection:
         assert result.gone[0].source_id == "policy.md"
         assert result.review_invalidated
 
-    def test_an_unreadable_source_is_unreachable_not_unchanged(self, sources):
+    def test_an_unreadable_source_is_unreachable_not_unchanged(
+        self, sources, monkeypatch
+    ):
         # The distinction that matters: a source nobody could check has not
         # been shown to be the same.
-        class BrokenFetcher:
-            fetcher_id = "broken"
-            network = False
+        def broken_fetch(self, locator):
+            raise PermissionError("locked")
 
-            def fetch(self, locator):
-                raise PermissionError("locked")
-
-        watch = ScopeWatch(BrokenFetcher(), clock=lambda: NOW)
+        monkeypatch.setattr(LocalSourceFetcher, "fetch", broken_fetch)
+        watch = watcher(sources)
         result = watch.check("acme", [WatchedSource("s1", "x", "abc")])
         observation = result.observations[0]
 
@@ -127,17 +133,16 @@ class TestDetection:
         assert observation.needs_attention
         assert "PermissionError" in observation.error
 
-    def test_an_unreachable_source_does_not_by_itself_invalidate_review(self, sources):
+    def test_an_unreachable_source_does_not_by_itself_invalidate_review(
+        self, sources, monkeypatch
+    ):
         # It needs attention, but "could not read it" is not "it changed", and
         # claiming otherwise would make every network blip look like drift.
-        class BrokenFetcher:
-            fetcher_id = "broken"
-            network = False
+        def broken_fetch(self, locator):
+            raise TimeoutError("slow")
 
-            def fetch(self, locator):
-                raise TimeoutError("slow")
-
-        result = ScopeWatch(BrokenFetcher(), clock=lambda: NOW).check(
+        monkeypatch.setattr(LocalSourceFetcher, "fetch", broken_fetch)
+        result = watcher(sources).check(
             "acme", [WatchedSource("s1", "x", "abc")]
         )
         assert not result.review_invalidated

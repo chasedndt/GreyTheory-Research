@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-24 - Portfolio security hardening](2026-08-24-portfolio-security-hardening.md) - exact local-source boundary; clean-checkout reproducibility
+
 - [2026-08-09 - Vulnerability cards and skill graph](2026-08-09-ChaseOS-vulnerability-skill-graph.md) - COMPLETE and VERIFIED locally; Milestone 5 COMPLETE
 
 - [2026-08-09 - Local two-account vertical slice](2026-08-09-ChaseOS-local-two-account-slice.md) - COMPLETE and VERIFIED locally; Milestone 4 COMPLETE

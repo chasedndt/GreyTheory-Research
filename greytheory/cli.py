@@ -316,6 +316,7 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
 
 def cmd_demo_local_two_account(args: argparse.Namespace) -> int:
     from greytheory.vertical_slice import (
+        DEFAULT_PROGRAMME,
         OperatorStatements,
         VerticalSliceError,
         run_local_two_account_slice,
@@ -323,9 +324,16 @@ def cmd_demo_local_two_account(args: argparse.Namespace) -> int:
 
     try:
         statements, _ = _load(args.attestations)
+        programme, _ = _load(DEFAULT_PROGRAMME)
+        fixture_time = datetime.fromisoformat(str(programme["verified_at"]))
         result = run_local_two_account_slice(
             args.root,
             statements=OperatorStatements.from_dict(statements),
+            # The bundled demonstration is a historical synthetic proof, not
+            # live authority. Freeze its clock to its declared fixture time so
+            # the reproducible demo remains runnable while real contracts still
+            # fail closed when stale.
+            clock=lambda: fixture_time,
         )
     except (OSError, ValueError, VerticalSliceError) as exc:
         print(f"refused: {exc}", file=sys.stderr)

@@ -21,15 +21,20 @@ offline implementation:
 | Component | Protocol | Shipped in core | Real implementation |
 |---|---|---|---|
 | Model gateway | `ModelProvider` | `EchoProvider`, deterministic | Outside `greytheory/` |
-| Scope Watch | `SourceFetcher` | `LocalSourceFetcher` | Outside, after posture raise |
+| Scope Watch | Captured-source boundary | exact `LocalSourceFetcher` | Separate governed collector materialises local evidence |
 
 Everything valuable is on this side of the boundary: classification, citation
 checking, provenance, budgets, auditing, change detection, review invalidation.
 The part that crosses the network is small, replaceable, and separately
 governed.
 
-`ScopeWatch` additionally refuses any fetcher declaring `network = True` unless
-explicitly enabled, mirroring how the lane runner refuses network lanes.
+`ScopeWatch` accepts only the exact rooted `LocalSourceFetcher`. It refuses
+arbitrary implementations even when they claim `network = False`, and refuses
+subclasses because they can override `fetch()`. A former
+`allow_network_fetcher=True` escape hatch was removed on 2026-08-24: a Boolean
+is not evidence of authority, scope, budgets or operator approval. A future
+collector must execute outside the trust kernel under its own broker, capture
+immutable source bytes, and pass that local evidence inward.
 
 ## Consequences
 

@@ -173,12 +173,13 @@ Make saved public programme-source fetching the first network-enabled component.
 Verified with `greytheory.scopewatch`. All comparison, invalidation and
 reporting logic is implemented and tested offline.
 
-**What is deliberately not built: the network fetcher.** `SourceFetcher` is a
-protocol; the core ships `LocalSourceFetcher` only, and `ScopeWatch` refuses
-any fetcher declaring `network = True` unless explicitly enabled. Fetching a
-programme page is still a request to somebody's server and belongs above
-`LOCAL_FIXTURE`. When the posture is raised, an HTTP fetcher is written against
-the protocol and nothing else changes.
+**What is deliberately not built: the network fetcher.** The core ships only
+`LocalSourceFetcher`, and `ScopeWatch` accepts that exact rooted implementation
+only. An arbitrary object cannot self-declare `network = False`, and there is
+no Boolean escape hatch. Fetching a programme page is still a request to
+somebody's server and belongs above `LOCAL_FIXTURE`. A future governed collector
+must run outside the trust kernel and materialise immutable local evidence for
+Scope Watch; it does not get injected directly into the core.
 
 A source that could not be re-read is `UNREACHABLE`, never `UNCHANGED` -- a
 source nobody could check has not been shown to be the same. It needs attention

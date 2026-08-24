@@ -203,28 +203,28 @@ class ScopeWatch:
     """Re-reads recorded sources and reports what moved.
 
     Args:
-        fetcher: How a source is re-read. The core ships only
-            :class:`LocalSourceFetcher`.
+        fetcher: The exact rooted :class:`LocalSourceFetcher` shipped by the
+            core. External adapters must capture source bytes outside the core
+            and hand the resulting local evidence inward.
         audit: Every watch run is recorded, including unreachable sources.
-        allow_network_fetcher: Whether a fetcher declaring ``network = True``
-            may be used. Off by default and gated on the operating posture,
-            because a programme page is still a request to somebody's server.
     """
 
     def __init__(
         self,
-        fetcher: SourceFetcher,
+        fetcher: LocalSourceFetcher,
         *,
         audit: AuditLog | None = None,
-        allow_network_fetcher: bool = False,
         clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
     ):
-        if getattr(fetcher, "network", False) and not allow_network_fetcher:
+        # A Boolean such as ``allow_network_fetcher=True`` is not authority.
+        # Restrict the trust kernel to the exact implementation whose rooted
+        # file behaviour is reviewed and tested. A subclass could override
+        # ``fetch`` and therefore is deliberately not accepted either.
+        if type(fetcher) is not LocalSourceFetcher:
             raise WatchError(
-                f"fetcher {fetcher.fetcher_id!r} performs network I/O. Scope "
-                "Watch reads public policy pages rather than targets, but it is "
-                "still a request to somebody's server: raise the operating "
-                "posture deliberately and pass allow_network_fetcher=True"
+                "Scope Watch core accepts only the exact LocalSourceFetcher; "
+                "capture external sources in a separately governed adapter "
+                "and pass the local evidence inward"
             )
         self.fetcher = fetcher
         self.audit = audit

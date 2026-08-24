@@ -4,6 +4,28 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-24 — Codex · Offline boundary made structural
+
+### What was built
+
+- Removed the `allow_network_fetcher=True` Scope Watch escape hatch.
+- Restricted the core to the exact rooted `LocalSourceFetcher`; arbitrary fetchers and subclasses fail closed before their code runs.
+- Made historical local demonstrations deterministic at their recorded fixture time so the full clean-checkout suite remains reproducible without changing real stale-contract rules.
+
+### Why
+
+A Boolean supplied by the same caller that supplies executable fetcher code is not an approval receipt. The earlier check trusted an adapter's self-reported `network` attribute and let the caller bypass it. The trust kernel now consumes captured local evidence only. Network collection remains a separate, unbuilt, operator-gated system.
+
+### What the next agent should not undo
+
+Do not reintroduce a generic fetcher or `allow_network` option inside `ScopeWatch`. A future collector needs its own verified authority, URL/DNS/redirect policy, budgets, receipts and kill switch, then writes a local captured-source artifact for the core.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-24-portfolio-security-hardening.md`.
+
+---
+
 ## 2026-08-09 — Claude · Model gateway and Scope Watch (Milestones 7 and 8)
 
 ### What was built
