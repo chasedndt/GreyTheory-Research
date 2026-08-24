@@ -9,3 +9,6 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0005 — Offline semantic programme-source bundles](ADR-0005-offline-semantic-programme-source-bundles.md)
 - [ADR-0006 — Evidence-bound mastery and synthetic fixture separation](ADR-0006-evidence-bound-mastery.md)
 - [ADR-0007 — Transparent ranking without authority](ADR-0007-transparent-ranking-without-authority.md)
+- [ADR-0008 - Claim roles and submission-time scope recheck](ADR-0008-claim-roles-and-submission-scope-recheck.md)
+- [ADR-0009 - Provider and fetcher boundaries keep the core offline](ADR-0009-model-gateway-and-fetcher-boundaries.md)
+- [ADR-0010 - The workbench is an application boundary](ADR-0010-workbench-is-an-application-boundary.md)

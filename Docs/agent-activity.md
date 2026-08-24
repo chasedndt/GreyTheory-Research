@@ -4,6 +4,37 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-24 - Codex - Workbench foundation and executable capability truth
+
+### What was built
+
+- Added a typed capability register shared by the dashboard and future workbench.
+- Corrected stale dashboard claims about offline signal, learning, model, and Scope Watch capability.
+- Accepted ADR-0010 and documented the Windows-first workbench, local application-service contract, private storage, guided-learning journey, and future isolated Ubuntu worker boundary.
+- Implemented deterministic learning recommendations, ordered evidence-bound journey stages, integrity-checked private persistence, optimistic revisions, and CLI operation without automatic mastery.
+
+### Why before the interactive workbench
+
+The operator requested a real research operating system, not a decorative
+dashboard. All three visual concepts need the same truthful capability source,
+command boundary, storage model, and learning-to-evidence journey. Implementing
+those direction-independent contracts first prevents the selected UI from
+becoming a second authority path or hard-coding stale status copy.
+
+### What the next agent should not undo
+
+Do not put the UI framework, local server, or network worker inside
+`greytheory/`. Do not let a screen call collectors or tools directly. Do not use
+`LIVE` as a runtime-health claim, and do not collapse `UNKNOWN` into zero. The
+visual direction is still operator-owned; build the selected concept against
+ADR-0010 rather than inventing a fourth.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-24-greytheory-workbench-foundation.md`.
+
+---
+
 ## 2026-08-24 — Codex · Offline boundary made structural
 
 ### What was built

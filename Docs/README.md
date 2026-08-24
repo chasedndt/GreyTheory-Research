@@ -28,6 +28,7 @@ Where to start, and which document wins when two disagree.
 | Standalone/ChaseOS/worker boundaries | [`INTEGRATION_BOUNDARIES.md`](../INTEGRATION_BOUNDARIES.md) |
 | What is allowed right now | [`scope-policy.md`](scope-policy.md) |
 | Architecture decisions | [`decisions/`](decisions/README.md) |
+| Workbench application, learning, storage, and worker boundary | [`workbench-architecture.md`](workbench-architecture.md) |
 | Real public programme-source evidence | [`HackerOne/GitLab`](../fixtures/programmes/public/hackerone-gitlab-2026-08-09/) · [`Bugcrowd/YNAB`](../fixtures/programmes/public/bugcrowd-ynab-2026-08-09/) · [`Direct policy/MCP Python SDK`](../fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09/) |
 
 ## Trust kernel and current implementation
@@ -39,6 +40,7 @@ Where to start, and which document wins when two disagree.
 - [`data-flow.md`](data-flow.md) — authorisation to defensible artifact.
 - [`validation-policy.md`](validation-policy.md) — validation gates and demotion.
 - [`evidence-policy.md`](evidence-policy.md) — evidence location, integrity, and export.
+- [`workbench-architecture.md`](workbench-architecture.md) - application boundary, required journeys, deployment shape, and acceptance evidence.
 
 ## Planning and research policy
 
@@ -55,7 +57,7 @@ Where to start, and which document wins when two disagree.
 
 ## Writing rules
 
-- Use LIVE, VERIFIED, PARTIAL, DESIGNED, PLANNED, HISTORICAL, BLOCKED, or DEFERRED honestly.
+- Use LIVE, VERIFIED, PARTIAL, DESIGNED, PLANNED, UNAVAILABLE, HISTORICAL, BLOCKED, or DEFERRED honestly. `UNAVAILABLE` means the action or component has no shipped path; it is stronger and clearer than a merely unconfigured runtime.
 - Product direction may be described as direction; it may not be described as working capability.
 - Separate observation, deterministic proof, and inference.
 - Name the mistake a rule prevents.

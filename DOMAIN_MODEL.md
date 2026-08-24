@@ -1,8 +1,8 @@
 # GreyTheory Domain Model
 
-> **Status:** IMPLEMENTED / VERIFIED OFFLINE through the Milestone 6 transparent-ranking layer; later graph nodes retain their explicit status below.
+> **Status:** IMPLEMENTED / VERIFIED OFFLINE through the transparent-ranking and deterministic guided-learning foundations; later graph nodes retain their explicit status below.
 >
-> **Effective:** 2026-08-09
+> **Effective:** 2026-08-24
 
 ## Purpose
 
@@ -53,7 +53,9 @@ VulnerabilityCatalogue
 │   └── CardRevision
 └── SkillGraph
     ├── prerequisite edges
-    └── MasteryAssessment × six independent dimensions
+    ├── MasteryAssessment × six independent dimensions
+    └── LearningJourney
+        └── Learn → Practise → Prove → Reflect → Assess
 ```
 
 ## Existing objects
@@ -106,6 +108,7 @@ request.
 - `VulnerabilityCard` (**IMPLEMENTED / VERIFIED OFFLINE**): versioned reference knowledge with framework classifications, mental/security models, root causes, signals, falsifiable templates, both controls, minimum evidence, false-positive/impact boundaries, minimum-impact rules, remediation, programme-policy constraints, one local fixture, review date, lessons, and revision provenance.
 - `LocalTrainingFixture` / `FixtureRunReceipt` (**IMPLEMENTED / VERIFIED OFFLINE**): distinct synthetic boundary simulations for all 12 cards. Receipts bind fixture and runner digests and prove only the shipped local scenario; they are explicitly not real-vulnerability evidence and do not credit mastery.
 - `SkillGraph` / `MasteryAssessment` (**IMPLEMENTED / VERIFIED OFFLINE**): acyclic card prerequisites and separately measured `explain`, `recognise`, `test`, `prove`, `remediate`, and `transfer` state. Only explicit evidence-bound human assessments credit mastery; test-fixture records are non-crediting.
+- `LearningRecommendation` / `LearningJourney` (**IMPLEMENTED / VERIFIED OFFLINE**): deterministic prerequisite-aware and due-review planning plus a private, integrity-checked journey through Learn, Practise, Prove, Reflect, and Assess. Practise requires a synthetic fixture receipt, Prove requires evidence references, Reflect requires operator text, and completion requires an already persisted matching human assessment. The journey never runs a fixture or awards mastery.
 - `HypothesisRankingInput` / `RankingPolicy` / `ResearchQueue` (**IMPLEMENTED / VERIFIED OFFLINE**): exact nine-factor ordinal decision support over existing hypotheses. Four factors are derived from trusted scope/workspace records, five require explicit provenance-rich assessment, and every score contribution is explained. The queue grants no execution or finding authority.
 
 ## Invariants
@@ -126,10 +129,13 @@ request.
 14. A ranking score changes queue order only; it is never probability, severity, proof, a vulnerability label, or authority.
 15. Scope uncertainty is fail-closed into a separate review partition, never compensated for by other high scores.
 16. Ranking cannot create actions, receipts, checked claims, findings, model calls, or lifecycle promotions.
+17. A learning recommendation is explainable scheduling, not a mastery or vulnerability claim.
+18. A journey cannot skip Practise, Prove, Reflect, or Assess, and completing it awards no mastery.
+19. Personal journey state stays outside repositories, is catalogue-bound, integrity-checked, and updated with optimistic revisions.
 
 ## Initial storage direction
 
-The ten research objects live in `greytheory/research/domain.py`. `ResearchStore` persists one integrity-digested JSON snapshot per workspace with atomic replacement, repository-storage refusal by default, referential checks, and optional hash-chained audit writeback. Versioned learning reference data ships under `greytheory/learning/data/`; `MasteryStore` persists personal assessment records outside Git with an integrity envelope and catalogue digest. Ranking contracts and the engine live under `greytheory/hypothesis/`; queue artifacts are integrity-digested, atomically written to private storage, and refused inside Git. Add SQLite indexes only when the object contracts and query patterns stabilise. Continue using content-addressed files for evidence and source snapshots. A graph database is not required.
+The ten research objects live in `greytheory/research/domain.py`. `ResearchStore` persists one integrity-digested JSON snapshot per workspace with atomic replacement, repository-storage refusal by default, referential checks, and optional hash-chained audit writeback. Versioned learning reference data ships under `greytheory/learning/data/`; `MasteryStore` persists personal assessment records outside Git with an integrity envelope and catalogue digest. `LearningJourneyStore` persists staged journeys beside, but separately from, mastery state with the same repository refusal plus optimistic revision checks. Ranking contracts and the engine live under `greytheory/hypothesis/`; queue artifacts are integrity-digested, atomically written to private storage, and refused inside Git. Add SQLite indexes only when the object contracts and query patterns stabilise. Continue using content-addressed files for evidence and source snapshots. A graph database is not required.
 
 ## Milestone 3 exit condition
 
@@ -146,3 +152,7 @@ The ten research objects live in `greytheory/research/domain.py`. `ResearchStore
 ## Milestone 6 exit condition
 
 **VERIFIED 2026-08-09.** `tests/test_hypothesis_engine.py` proves the exact nine-factor policy, direction and weight semantics, stable deterministic ordering, all-factor explanation arithmetic, queue integrity, contract/workspace binding, explicit assessment provenance, conservative scope partitioning, and refusal of caller-scored derived factors or model-sourced assessments. The synthetic proof ranks three unproven local theories and records zero execution requests, receipts, network calls, model calls, or external targets. The focused suite passes 13 tests and the complete repository passes 443. No item is called a vulnerability and no score grants authority.
+
+## Guided-learning foundation exit condition
+
+**VERIFIED 2026-08-24.** `tests/test_learning_journey.py` proves deterministic first-card selection, prerequisite routing, due-review priority, non-crediting fixture separation, explicit review intervals, ordered stage requirements, written reflection, persisted-human-assessment completion, abandonment, serialisation, integrity-checked private storage, optimistic concurrency, repository refusal, and CLI planning/start/status/advance. The workflow performs no network, process, model, target, or submission action, and a journey always reports `awards_mastery: false`.

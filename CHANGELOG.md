@@ -4,6 +4,16 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - workbench foundation and executable capability truth
+
+- Added `greytheory.capabilities`, a typed register shared by the dashboard and future workbench. It separates shipped-code status from runtime health and explicitly keeps Lane 3, external Scope Watch collection, and `PASSIVE_HTTP` unavailable.
+- Corrected the dashboard's stale claim that no Signal Plane lane or learning graph existed. It now reports the three static offline lanes, the live learning core, offline model gateway, offline Scope Watch, and the still-unbuilt graphical workbench and network worker.
+- Accepted ADR-0010: the graphical workbench is a separate local application layer around the offline core, never a direct collector or execution path.
+- Added the workbench architecture covering Windows-first launch, private local storage, required Today/Learn/Research/Evidence journeys, typed command boundaries, UX truth rules, and the future isolated Ubuntu worker boundary.
+- Added deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, and explainable recommendations.
+- Added ordered Learn/Practise/Prove/Reflect/Assess journeys, stage-specific evidence requirements, abandonment, serialisation, and integrity-checked private persistence with optimistic revisions.
+- Added `learning plan`, `journey-start`, `journey-status`, `journey-advance`, and `journey-abandon` CLI commands. Journey completion requires an already persisted matching human assessment and never awards mastery itself.
+
 ### Changed — portfolio security hardening
 
 - `ScopeWatch` now accepts only the exact rooted `LocalSourceFetcher`. The former `allow_network_fetcher=True` switch was a Boolean authority bypass: any caller could inject code that performed network I/O without a durable posture decision or broker receipt. Future external collection must be separately governed, capture bytes outside the core, and hand local evidence inward.

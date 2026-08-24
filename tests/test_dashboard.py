@@ -248,16 +248,28 @@ class TestEconomicsPanel:
 
 
 class TestCapabilityPanel:
-    def test_states_plainly_that_nothing_is_detected(self):
+    def test_states_plainly_that_detection_is_static_and_offline(self):
         panel = build_dashboard(now=lambda: NOW).panel("capability")
         detection = next(m for m in panel.metrics if m.label == "Detection")
-        assert detection.value == "none"
-        assert "detects nothing" in detection.detail
+        assert detection.value == "offline static"
+        assert "three local-file collectors" in detection.detail
+        assert "no web or network collector" in detection.detail
 
-    def test_unbuilt_components_are_listed_as_such(self):
+    def test_live_and_unavailable_components_are_distinguished(self):
         panel = build_dashboard(now=lambda: NOW).panel("capability")
-        assert ["Lane 1-4 collectors", "not built"] in panel.rows
-        assert ["Scope Watch", "roadmap"] in panel.rows
+        assert ["Lane 1 - dependency correlation", "live"] in panel.rows
+        assert ["Lane 2 - local-tree exposure", "live"] in panel.rows
+        assert ["Lane 3 - web observation", "unavailable"] in panel.rows
+        assert ["Lane 4 - agent configuration", "live"] in panel.rows
+        assert ["Scope Watch - offline comparison", "live"] in panel.rows
+        assert ["Scope Watch - governed collector", "unavailable"] in panel.rows
+        assert ["Graphical workbench", "planned"] in panel.rows
+        assert ["Passive HTTP worker", "unavailable"] in panel.rows
+
+    def test_capability_panel_names_status_as_code_not_runtime_health(self):
+        panel = build_dashboard(now=lambda: NOW).panel("capability")
+        assert "shipped code" in panel.note
+        assert "runtime health" in panel.note
 
 
 class TestNextAction:

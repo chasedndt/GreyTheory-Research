@@ -2,9 +2,11 @@
 
 > **Category:** Security Research Operating System
 >
-> **Current milestone:** 9 — Passive execution pilot (blocked on the posture decision)
+> **Current research milestone:** 9 - Passive execution pilot (gated on the posture decision)
 >
 > **Last completed:** 8 — Scope Watch, offline portion
+>
+> **Current product workstream:** Workbench and guided-learning foundation under `LOCAL_FIXTURE`
 >
 > **Posture:** `LOCAL_FIXTURE`; no network I/O or live-target interaction.
 
@@ -14,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 443 repository tests pass, including 13 focused Milestone 6, 10 focused Milestone 5, and 8 focused Milestone 4 acceptance tests.
+- 546 repository tests pass on 2026-08-24 with executable capability truth, dashboard reconciliation, and deterministic guided-learning journeys; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -188,6 +190,30 @@ but does not by itself invalidate review, because "could not read it" is not
 A changed or removed source does invalidate review. A source recorded without a
 comparable hash is skipped rather than guessed at, since watching something
 uncomparable would report every run as changed.
+
+## Product workstream - Workbench and guided learning *(FOUNDATION IN PROGRESS 2026-08-24)*
+
+This workstream runs under `LOCAL_FIXTURE` and does not depend on raising the
+research posture. The executable capability register and the application,
+process, storage, learning, and future-worker boundary are now implemented.
+The interactive application is not.
+
+- [x] Audit the existing desktop and 390-pixel static dashboard.
+- [x] Produce three grounded workbench directions for operator selection.
+- [x] Establish one executable capability register for dashboard and workbench truth.
+- [x] Accept the workbench-as-application-boundary decision in ADR-0010.
+- [x] Define required Today, Learn, Programmes, Research, Evidence, Reports, and Readiness journeys.
+- [x] Implement deterministic prerequisite/review planning, staged private journeys, reflection, explicit persisted-human-assessment completion, and CLI operation.
+- [ ] Select the visual direction.
+- [ ] Build the local application shell and service contract.
+- [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
+- [ ] Add adaptive scheduling plus assisted and transfer-specific learning modes beyond the deterministic foundation.
+- [ ] Prove keyboard, accessibility, desktop, and 390-pixel operation.
+- [ ] Package and accept on the Windows operator workstation.
+
+**Exit:** an operator can install and launch GreyTheory locally, resume a
+bounded session, complete a guided learning-to-proof journey, inspect authority
+and evidence, and export a report draft without any target-network capability.
 
 ## Milestone 9 — Passive execution pilot
 

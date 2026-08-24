@@ -34,7 +34,26 @@ from greytheory.learning.fixtures import (
     LocalTrainingFixture,
     TrainingFixtureRunner,
 )
-from greytheory.learning.store import LearningStoreError, MasteryStore, resolve_learning_root
+from greytheory.learning.journey import (
+    GuidedLearningPlanner,
+    JourneyStatus,
+    LearningCheckpoint,
+    LearningJourney,
+    LearningMode,
+    LearningRecommendation,
+    LearningStage,
+    ReviewPolicy,
+    StageBrief,
+    abandon_learning_journey,
+    advance_learning_journey,
+    start_learning_journey,
+)
+from greytheory.learning.store import (
+    LearningJourneyStore,
+    LearningStoreError,
+    MasteryStore,
+    resolve_learning_root,
+)
 
 __all__ = [
     "AssessorKind",
@@ -48,8 +67,15 @@ __all__ = [
     "FixtureMechanism",
     "FixtureRunReceipt",
     "FrameworkReference",
+    "GuidedLearningPlanner",
     "HypothesisTemplate",
     "LearningError",
+    "LearningCheckpoint",
+    "LearningJourney",
+    "LearningJourneyStore",
+    "LearningMode",
+    "LearningRecommendation",
+    "LearningStage",
     "LearningStoreError",
     "LocalFixtureReference",
     "LocalTrainingFixture",
@@ -59,10 +85,16 @@ __all__ = [
     "MasteryLevel",
     "MasteryState",
     "MasteryStore",
+    "JourneyStatus",
+    "ReviewPolicy",
     "SkillGraph",
+    "StageBrief",
     "TrainingFixtureRunner",
     "VulnerabilityCard",
     "VulnerabilityCatalogue",
     "load_builtin_catalogue",
     "resolve_learning_root",
+    "abandon_learning_journey",
+    "advance_learning_journey",
+    "start_learning_journey",
 ]

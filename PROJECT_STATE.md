@@ -16,10 +16,11 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 ## Current stage
 
-- **Completed productisation milestones:** Milestone 1 — Canonical project foundation; Milestone 2 — Real programme compiler; Milestone 3 — structured research domain; Milestone 4 — first end-to-end local vertical slice; Milestone 5 — vulnerability cards and skill graph; Milestone 6 — transparent hypothesis ranking and research queue.
-- **Current research milestone:** Milestone 7 — governed model gateway and evaluation harness.
+- **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
+- **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
+- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register and architecture implemented, interactive shell awaiting visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 443 repository tests passing, including 13 focused Milestone 6, 10 focused Milestone 5, and 8 focused Milestone 4 acceptance tests, on 2026-08-09.
+- **Verified baseline:** 546 repository tests passing on 2026-08-24, including executable capability truth, dashboard reconciliation, and deterministic guided-learning journeys.
 
 ## What is built
 
@@ -50,15 +51,20 @@ The complete offline path from supplied authorisation to a validated report draf
 - the Milestone 4 BOLA proposal applied to `idor-bola` v1.0.0 as an explicitly `test_fixture`-sourced revision, without inventing a real session or human mastery record.
 - a versioned conservative ranking policy with the exact nine Milestone 6 factors, explicit direction/weight semantics, stable tie-breaking, and self-verifying queue integrity;
 - a private research queue that derives scope confidence, evidence quantity, cost, and side-effect risk from trusted records, requires provenance-rich assessments for the other five factors, explains every contribution, partitions scope-review items, and grants no execution authority;
-- offline CLI ranking/verification commands plus a three-theory synthetic fixture proving deterministic order, explanation arithmetic, `unproven` claim state, and zero action requests, receipts, network calls, model calls, or external targets.
+- offline CLI ranking/verification commands plus a three-theory synthetic fixture proving deterministic order, explanation arithmetic, `unproven` claim state, and zero action requests, receipts, network calls, model calls, or external targets;
+- a governed offline model gateway with explicit role/data ceilings, resolvable citation requirements, budgets, inferred-only output, prompt-digest audit, and an eight-case adversarial evaluation harness;
+- offline Scope Watch source comparison and review invalidation through the exact rooted `LocalSourceFetcher`; arbitrary and network-capable fetchers are structurally refused;
+- an executable capability register consumed by the dashboard and intended for the workbench, with separate shipped-code status and runtime-health semantics;
+- an accepted workbench boundary covering the Windows operator host, local application service, offline core, private storage, guided-learning journey, and future isolated Ubuntu worker.
+- deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
 - guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
-- governed model gateway;
 - standalone graphical workbench;
-- Scope Watch, network broker/workers, and live collectors;
+- local workbench application service, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
+- governed external Scope Watch collector, network broker/workers, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -86,7 +92,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Build Milestone 7 as a governed model gateway and evaluation harness over structured, redacted inputs. Preserve `inferred` provenance, prohibit model-held authority and execution, and measure unsupported promotion, scope errors, fabricated evidence, unsafe tool requests, prompt injection, uncertainty, and report completeness. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate remains human-owned.
+Select one of the three audited workbench directions, then implement the local shell and Today/Learn/Research journey against realistic fixture data. In parallel, specify and test the local application-service command boundary without adding network or tool execution to the core. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
 
 ## Do not build next
 

@@ -22,10 +22,10 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 | | |
 |---|---|
-| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; bundle review states and Scope Watch remain), execution broker (one in-memory local fixture only; no network worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, lessons, ledger, and mastery records are live; training-mode orchestration and adaptive review scheduling are not), workbench surface (CLI/read model only). |
-| **DESIGNED, NOT BUILT** | Governed model gateway; guided/assisted/assessment/transfer training orchestration. |
-| **PLANNED** | Scope Watch, network workers/live collectors, standalone graphical workbench, live research proof. |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture only; no network worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided/review recommendations, staged journeys, reflection, private journey persistence, and explicit human-assessed completion are live; adaptive scheduling, assisted/transfer-specific journeys, broader packs, and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, and accepted application architecture; interactive app not built). |
+| **DESIGNED, NOT BUILT** | Adaptive, assisted, and transfer-specific learning orchestration; local workbench application service. |
+| **PLANNED** | Governed Scope Watch collector, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
@@ -141,6 +141,8 @@ Inspect and verify the Milestone 5 learning catalogue entirely offline:
 python -m greytheory.cli learning catalogue
 python -m greytheory.cli learning verify
 python -m greytheory.cli learning status --root <private-directory-outside-git>
+python -m greytheory.cli learning plan --root <private-directory-outside-git>
+python -m greytheory.cli learning journey-start --root <private-directory-outside-git> --journey-id <safe-id>
 ```
 
 The catalogue contains reflected/stored/DOM XSS, SQL injection, CSRF, SSRF,
@@ -152,6 +154,14 @@ vulnerability and award no mastery. Mastery changes only through an explicit,
 evidence-bound human assessment across `explain`, `recognise`, `test`, `prove`,
 `remediate`, and `transfer`; personal mastery state is refused inside Git by
 default.
+
+The deterministic planner now routes unmet prerequisites, prioritises due
+evidence-bound reviews, and guides one private journey through Learn, Practise,
+Prove, Reflect, and Assess. Stage progression requires a synthetic fixture
+receipt, evidence references, a written reflection, and finally an already
+persisted human `MasteryAssessment`. Journey completion itself awards no
+mastery. Use `learning journey-status`, `learning journey-advance`, and
+`learning journey-abandon` to operate the same contract without a graphical UI.
 
 Verify the Milestone 6 ranking contract against a synthetic local workspace:
 
