@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey
 
 from greytheory.audit import AuditLog
 from greytheory.authority.gate import AuthorityLevel, Gate, Reason
@@ -27,6 +28,9 @@ from greytheory_broker import (
     BrokerKillSwitch,
     BrokerLimits,
     BrokerStorageError,
+    CaptureKeyError,
+    CaptureKeyStore,
+    CaptureRecipient,
     Ed25519Signer,
     PassiveBrokerSession,
     PassiveTicketIssuer,
@@ -35,6 +39,8 @@ from greytheory_broker import (
     TargetPolicyError,
     TicketReplayLedger,
     canonical_https_url,
+    decrypt_capture,
+    encrypt_capture,
     public_addresses,
 )
 
@@ -42,6 +48,10 @@ from greytheory_broker import (
 NOW = datetime(2026, 8, 25, 8, 0, tzinfo=timezone.utc)
 TICKET_SIGNER = Ed25519Signer.from_private_bytes(bytes(range(32)))
 RECEIPT_SIGNER = Ed25519Signer.from_private_bytes(bytes(range(32, 64)))
+CAPTURE_PRIVATE_KEY = X25519PrivateKey.from_private_bytes(bytes(range(64, 96)))
+CAPTURE_RECIPIENT = CaptureRecipient.from_public_key(
+    CAPTURE_PRIVATE_KEY.public_key(), created_at=NOW
+)
 PASSIVE_CONTRACT = ScopeContract(
     id="scope-passive-fixture",
     programme_id="passive-fixture",
@@ -116,9 +126,18 @@ def ticket(tmp_path, *, suffix: str = "1", issued_at: datetime = NOW):
         decision=decision,
         audit=audit,
         contract=PASSIVE_CONTRACT,
-        evidence_key_ref="age-key-passive-fixture",
+        evidence_key_ref=CAPTURE_RECIPIENT.key_id,
         nonce=(suffix[-1] * 32 if suffix[-1] in "abcdef0123456789" else "b" * 32),
         issued_at=issued_at,
+    )
+
+
+def encrypted_capture(signed, *, size: int = 512, recipient=CAPTURE_RECIPIENT):
+    return encrypt_capture(
+        b"x" * size,
+        recipient=recipient,
+        ticket_digest=signed.digest,
+        created_at=NOW,
     )
 
 
@@ -353,12 +372,11 @@ def test_one_ticket_completes_once_with_signed_encrypted_capture_receipt(tmp_pat
     )
     assert session.authorize_resolution(("8.8.8.8",)) == ("8.8.8.8",)
     runtime_now[0] += timedelta(seconds=1)
+    capture = encrypted_capture(signed)
     receipt = session.record_response(
         status_code=200,
         content_type="text/html",
-        capture_bytes=512,
-        capture_sha256="b" * 64,
-        capture_envelope_sha256="c" * 64,
+        capture=capture,
     )
 
     receipt.verify(verifier=RECEIPT_SIGNER.verifier, ticket=signed)
@@ -369,6 +387,10 @@ def test_one_ticket_completes_once_with_signed_encrypted_capture_receipt(tmp_pat
     assert receipt.payload.request_count == 1
     assert receipt.payload.redirects == ()
     assert receipt.payload.data_class.name == "RAW_RESTRICTED"
+    assert receipt.payload.capture_bytes == capture.capture_bytes
+    assert receipt.payload.capture_sha256 == capture.capture_sha256
+    assert receipt.payload.capture_envelope_sha256 == capture.envelope_sha256
+    assert decrypt_capture(capture, private_key=CAPTURE_PRIVATE_KEY) == b"x" * 512
     reservation = ledger.get(signed.digest)
     assert reservation is not None and reservation.status == "completed"
     assert reservation.receipt_digest == receipt.digest
@@ -493,9 +515,9 @@ def test_runtime_denials_stop_and_seal_the_reserved_ticket(tmp_path, case, expec
             session.record_response(
                 status_code=302 if case == "redirect" else 200,
                 content_type="text/html",
-                capture_bytes=70_000 if case == "oversize" else 100,
-                capture_sha256="b" * 64,
-                capture_envelope_sha256="c" * 64,
+                capture=encrypted_capture(
+                    signed, size=70_000 if case == "oversize" else 100
+                ),
                 redirect_location=("https://other.example/" if case == "redirect" else None),
             )
     assert denied.value.reason is expected
@@ -514,6 +536,68 @@ def test_runtime_storage_is_refused_inside_repository():
         TicketReplayLedger(repository_root / "broker-runtime")
     with pytest.raises(BrokerStorageError, match="Git worktree"):
         BrokerKillSwitch(repository_root / "broker-runtime")
+    with pytest.raises(CaptureKeyError, match="Git worktree"):
+        CaptureKeyStore(
+            repository_root / "broker-runtime",
+            key_encryption_key=b"k" * 32,
+            audit=AuditLog(repository_root / "broker-runtime-audit.jsonl"),
+        )
+
+
+@pytest.mark.parametrize("case", ("untyped", "wrong_ticket", "wrong_key"))
+def test_response_capture_must_be_typed_and_match_ticket_and_recipient(
+    tmp_path, case
+):
+    switch, ledger = released_runtime(tmp_path)
+    signed = ticket(
+        tmp_path,
+        suffix={
+            "untyped": "6",
+            "wrong_ticket": "7",
+            "wrong_key": "8",
+        }[case],
+    )
+    session = PassiveBrokerSession.begin(
+        ticket=signed,
+        method="HEAD",
+        url="https://example.com/",
+        ticket_verifier=TICKET_SIGNER.verifier,
+        receipt_signer=RECEIPT_SIGNER,
+        ledger=ledger,
+        kill_switch=switch,
+        worker_id="ubuntu-fixture-worker",
+        worker_version="0.1.0-test",
+        clock=lambda: NOW,
+    )
+    session.authorize_resolution(("8.8.8.8",))
+    if case == "untyped":
+        capture = {"capture_sha256": "b" * 64}
+    elif case == "wrong_ticket":
+        capture = encrypt_capture(
+            b"response",
+            recipient=CAPTURE_RECIPIENT,
+            ticket_digest="f" * 64,
+            created_at=NOW,
+        )
+    else:
+        other_private = X25519PrivateKey.generate()
+        other_recipient = CaptureRecipient.from_public_key(
+            other_private.public_key(), created_at=NOW
+        )
+        capture = encrypted_capture(signed, recipient=other_recipient)
+
+    with pytest.raises(BrokerDenied) as denied:
+        session.record_response(
+            status_code=200,
+            content_type="text/html",
+            capture=capture,
+        )
+    assert denied.value.reason is BrokerDenialReason.RESPONSE_INVALID
+    assert denied.value.receipt is not None
+    denied.value.receipt.verify(
+        verifier=RECEIPT_SIGNER.verifier,
+        ticket=signed,
+    )
 
 
 def test_broker_package_contains_no_network_process_or_worker_adapter():

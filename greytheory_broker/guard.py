@@ -16,6 +16,7 @@ from greytheory_broker.contracts import (
     SignedPassiveReceipt,
     SignedPassiveTicket,
 )
+from greytheory_broker.encryption import EncryptedCapture
 from greytheory_broker.storage import (
     BrokerKillSwitch,
     BrokerStorageError,
@@ -177,9 +178,7 @@ class PassiveBrokerSession:
         *,
         status_code: int,
         content_type: str,
-        capture_bytes: int,
-        capture_sha256: str,
-        capture_envelope_sha256: str,
+        capture: EncryptedCapture,
         redirect_location: str | None = None,
     ) -> SignedPassiveReceipt:
         """Validate and seal metadata after the single admitted HEAD request."""
@@ -205,6 +204,25 @@ class PassiveBrokerSession:
                 "response status and content type must be explicit",
                 now,
             )
+        if type(capture) is not EncryptedCapture:
+            self._deny(
+                BrokerDenialReason.RESPONSE_INVALID,
+                "response requires a typed encrypted capture envelope",
+                now,
+            )
+        if capture.ticket_digest != self.ticket.digest:
+            self._deny(
+                BrokerDenialReason.RESPONSE_INVALID,
+                "capture envelope belongs to another passive ticket",
+                now,
+            )
+        if capture.key_id != self.ticket.payload.evidence_key_ref:
+            self._deny(
+                BrokerDenialReason.RESPONSE_INVALID,
+                "capture envelope recipient does not match the signed ticket",
+                now,
+            )
+        capture_bytes = capture.capture_bytes
         if capture_bytes < 0 or capture_bytes > self.ticket.payload.limits.max_capture_bytes:
             self._deny(
                 BrokerDenialReason.CAPTURE_TOO_LARGE,
@@ -225,8 +243,8 @@ class PassiveBrokerSession:
             status_code=status_code,
             content_type=str(content_type).strip().lower(),
             capture_bytes=capture_bytes,
-            capture_sha256=capture_sha256,
-            capture_envelope_sha256=capture_envelope_sha256,
+            capture_sha256=capture.capture_sha256,
+            capture_envelope_sha256=capture.envelope_sha256,
         )
         return self._seal(payload)
 

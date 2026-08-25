@@ -280,7 +280,8 @@ Implemented now:
   `greytheory-workbench` Windows-first launch command;
 - the separate, network-free `greytheory_broker` `passive-head-v1` contracts,
   policy guard, replay ledger, default-engaged kill switch, and signed receipt
-  metadata foundation;
+  metadata foundation, plus ticket-bound authenticated capture encryption and
+  an authorised external-KEK-wrapped recipient-key lifecycle;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -295,8 +296,8 @@ Not implemented now:
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;
-- any DNS/HTTP adapter, capture-encryption implementation, Ubuntu worker, or
-  `PASSIVE_HTTP` action.
+- any DNS/HTTP adapter, approved OS secret-provider binding for the root KEK,
+  Ubuntu worker, or `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind that shell to the implemented local endpoint and complete

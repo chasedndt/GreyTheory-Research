@@ -69,7 +69,12 @@ Implemented and tested offline in `greytheory_broker`:
   evidence labels;
 - hash-chain-verified Gate binding, signed short-lived tickets, exact-once
   reservation, default-engaged persistent kill switch, and signed completed or
-  stopped receipts requiring an encrypted-capture envelope digest.
+  stopped receipts derived from a typed encrypted-capture envelope;
+- X25519/HKDF/ChaCha20-Poly1305 capture encryption bound to the ticket digest,
+  recipient, size, plaintext digest, and creation time;
+- operator-side recipient private keys wrapped with AES-256-GCM under a
+  caller-supplied external KEK, a separately derived authenticated manifest,
+  authorised provision/rotation/revocation, and recovery of retained evidence.
 
 Still required before any network posture:
 
@@ -77,8 +82,8 @@ Still required before any network posture:
   re-resolution proof;
 - an HTTP adapter with streaming size/timeout enforcement and no implicit
   redirect or proxy behavior;
-- capture encryption and key provisioning/rotation, not merely an envelope
-  digest field;
+- an approved OS secret-provider binding, backup/recovery procedure, and host
+  acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker
   transport/authentication, conformance acceptance, owned canary, one reviewed
   programme, sustained clean operation, and explicit operator posture approval.

@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guided/review planning, and persisted staged journeys; adaptive and specialised modes remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live and the passive ticket/guard/replay/receipt foundation is verified offline; no DNS/HTTP adapter or worker |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live and the passive ticket/guard/replay/receipt/encrypted-capture/key-lifecycle foundation is verified offline; no DNS/HTTP adapter, OS-bound KEK provider, or worker |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
@@ -139,7 +139,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - the dashboard remains a static export, not the planned standalone workbench; the separate application service and authenticated local transport can now assemble and carry UI-neutral snapshots/commands for bounded learning, initial research planning, non-executing local-fixture intent, explicit human mastery assessment, and private redacted report export, but no interactive graphical shell exists;
 - general/passive claim-role assembly remains a later application use case; the exact local two-account fixture can assemble seven roles from stored evidence and advance one internal state only after explicit human acknowledgement, while submission and programme-owned outcomes remain unavailable;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
-- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, and signed encrypted-capture receipt metadata. It has no DNS/HTTP/process adapter, encryption implementation, provisioned keys, worker image, or live action.
+- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, ticket-bound X25519/HKDF/ChaCha20-Poly1305 envelopes, an external-KEK-wrapped operator key store with authorised provision/rotation/revocation, and signed receipt metadata. It has no DNS/HTTP/process adapter, approved OS secret-provider binding, worker image, or live action.
 - the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT

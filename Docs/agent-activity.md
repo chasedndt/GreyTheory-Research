@@ -4,6 +4,31 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Passive capture encryption and key lifecycle
+
+### What was built
+
+- Added X25519/HKDF/ChaCha20-Poly1305 capture envelopes authenticated against
+  their ticket digest, recipient, plaintext digest, size, and timestamp.
+- Added operator-side recipient provision/rotation/revocation with private keys
+  AES-256-GCM wrapped under a purpose-derived key from an external root KEK,
+  plus a separately authenticated manifest and old-evidence recovery.
+- Tightened completed receipts to accept only the typed envelope and derive
+  their byte count and digests from it.
+
+### What the next agent should not undo
+
+Do not give a worker a private recipient key or persist/default the root KEK.
+Do not treat ciphertext as lower than `RAW_RESTRICTED`. Keep the broker dark
+until OS secret-provider, DNS/HTTP, transport, worker, canary, and explicit
+posture gates are independently accepted.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-passive-capture-encryption.md`.
+
+---
+
 ## 2026-08-25 - Codex - Governed local claim lifecycle
 
 ### What was built

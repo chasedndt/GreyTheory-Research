@@ -14,3 +14,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0010 - The workbench is an application boundary](ADR-0010-workbench-is-an-application-boundary.md)
 - [ADR-0011 - Build the passive broker dark before adding a network adapter](ADR-0011-dark-passive-broker-foundation.md)
 - [ADR-0012 - Authenticate the workbench on numeric loopback](ADR-0012-authenticated-numeric-loopback-workbench.md)
+- [ADR-0013 - Encrypt passive captures before a network worker exists](ADR-0013-passive-capture-encryption-and-key-lifecycle.md)

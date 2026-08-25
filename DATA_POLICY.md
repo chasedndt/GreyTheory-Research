@@ -21,6 +21,10 @@ Model inputs must use credential handles, identity handles, hashes, and redacted
 - Content-addressed files remain the store for evidence, programme source snapshots, report versions, and tool outputs.
 - The append-only audit chain records authority-relevant events.
 - Raw evidence and research workspace data must remain outside every Git working tree; both stores refuse repository paths by default.
+- Passive capture ciphertext remains `RAW_RESTRICTED`: encryption does not
+  reclassify it. The offline key store refuses Git paths, persists only
+  authenticated KEK-wrapped X25519 private keys, and never persists its
+  caller-supplied root KEK.
 - Only redacted evidence is exportable, and export remains all-or-nothing.
 
 ## Evidence deletion

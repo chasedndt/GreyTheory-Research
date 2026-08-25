@@ -231,11 +231,12 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_broker_foundation",
         "Passive broker foundation",
         CapabilityStatus.PARTIAL,
-        "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, and signed encrypted-capture receipt metadata.",
-        "No DNS resolver, HTTP adapter, capture encryption implementation, key provisioning, worker image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
+        "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, ticket-bound X25519/ChaCha20-Poly1305 capture envelopes, audited KEK-wrapped recipient provisioning/rotation/revocation/decryption, and signed receipt metadata.",
+        "No DNS resolver, HTTP adapter, approved OS secret-provider binding for the external root KEK, worker image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_broker",
             "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
+            "Docs/decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md",
         ),
     ),
     Capability(
