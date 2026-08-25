@@ -4,6 +4,28 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Private redacted report export
+
+### What was built
+
+- Added a human-acknowledged private report-export command over server-held
+  report-ready state.
+- Rechecked report quality, authority, and complete redacted evidence before
+  atomically writing a digest-bound package outside Git.
+- Recorded that no submission occurred in both manifest and audit.
+
+### What the next agent should not undo
+
+Do not accept report prose, draft state, an evidence subset, or a filesystem
+path from the UI. Do not export an incomplete or unredacted evidence set, reuse
+an export ID, or treat a private export as programme submission or disclosure.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-private-report-export.md`.
+
+---
+
 ## 2026-08-25 - Codex - Human mastery assessment handler
 
 ### What was built

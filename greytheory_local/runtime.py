@@ -20,7 +20,7 @@ from greytheory.learning import (
 )
 from greytheory.registry import ProgrammeRegistry
 from greytheory.research import ResearchStore
-from greytheory_app import WorkbenchApplicationService
+from greytheory_app import ReportExportWriter, WorkbenchApplicationService
 
 
 class LocalRuntimeError(ValueError):
@@ -90,6 +90,9 @@ class LocalWorkbenchRuntime:
                 private_root / "learning", catalogue=catalogue, audit=audit
             ),
             evidence=EvidenceVault(private_root / "evidence", audit=audit),
+            report_export_writer=ReportExportWriter(
+                private_root / "exports", audit=audit
+            ),
             approvals=LocalApprovalStore(),
         )
         return cls(private_root, service)

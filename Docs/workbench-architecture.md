@@ -254,6 +254,9 @@ Implemented now:
 - a fresh, explicit, evidence-bound human mastery-assessment handler; assessor
   identity is derived from the configured local operator, not supplied by the
   UI, and fixtures, models, and journeys still award nothing automatically;
+- an explicit private report-export handler and atomic writer; it consumes only
+  server-held report-ready findings/drafts and verified redacted evidence,
+  writes no UI-supplied path, and records that no submission occurred;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -269,8 +272,10 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- dedicated action-intent and report-export application handlers, plus later
-  research lifecycle operations beyond initial planning;
+- a dedicated action-intent application handler, plus later research lifecycle
+  operations beyond initial planning;
+- persisted workbench finding/report-draft authoring and editing; current export
+  consumes a configured server-held source;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

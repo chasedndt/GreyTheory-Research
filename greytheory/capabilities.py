@@ -196,8 +196,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "workbench_application_service",
         "Workbench application service",
         CapabilityStatus.PARTIAL,
-        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning, revision-aware research planning, and fresh evidence-bound human mastery assessment are live.",
-        "The service remains transport-neutral; mastery assessment is non-executing and bound to the configured local operator, action and report commands are typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
+        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning, revision-aware research planning, human mastery assessment, and private redacted report export are live.",
+        "The service remains transport-neutral; assessment is bound to the configured local operator, export is bound to server-held state, both are non-executing, action commands are typed but refused, report export never submits, and posture above LOCAL_FIXTURE is structurally rejected.",
         ("greytheory_app", "Docs/workbench-architecture.md"),
     ),
     Capability(

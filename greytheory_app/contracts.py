@@ -380,6 +380,19 @@ class WorkbenchCommand:
                 raise WorkbenchContractError(
                     "mastery assessment requires explicit human acknowledgement"
                 )
+        if self.kind is CommandKind.EXPORT_REPORT:
+            if self.expected_revision != 0:
+                raise WorkbenchContractError(
+                    "exporting an immutable report requires expected revision zero"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "report export carries no execution authority"
+                )
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "report export requires explicit human acknowledgement"
+                )
 
     def field(self, name: str, default: CommandValue = None) -> CommandValue:
         for field in self.fields:

@@ -25,6 +25,12 @@ from greytheory_app.contracts import (
     WorkbenchSnapshot,
 )
 from greytheory_app.service import WorkbenchApplicationService
+from greytheory_app.export import (
+    ReportExportConflict,
+    ReportExportError,
+    ReportExportReceipt,
+    ReportExportWriter,
+)
 
 __all__ = [
     "WORKBENCH_SCHEMA_VERSION",
@@ -34,6 +40,10 @@ __all__ = [
     "CommandResult",
     "NextAction",
     "ReadinessStatus",
+    "ReportExportConflict",
+    "ReportExportError",
+    "ReportExportReceipt",
+    "ReportExportWriter",
     "WorkbenchApplicationService",
     "WorkbenchCommand",
     "WorkbenchContext",

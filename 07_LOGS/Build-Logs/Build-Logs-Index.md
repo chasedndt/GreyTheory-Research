@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory private redacted report export](2026-08-25-greytheory-private-report-export.md) - immutable server-held report package with verified redacted evidence; 582 tests
+
 - [2026-08-25 - GreyTheory human mastery assessment handler](2026-08-25-greytheory-human-mastery-handler.md) - fresh operator-bound evidence assessment through the workbench; 581 tests
 
 - [2026-08-25 - GreyTheory authenticated local transport](2026-08-25-greytheory-authenticated-local-transport.md) - private runtime, numeric-loopback API, and Windows-first launcher; 580 tests

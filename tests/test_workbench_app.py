@@ -33,6 +33,7 @@ from greytheory.research import (
     ResearchWorkspace,
     TargetAsset,
 )
+from greytheory.report import ReportDraft
 from greytheory.vertical_slice import OperatorStatements, run_local_two_account_slice
 from greytheory_app import (
     CommandDisposition,
@@ -40,6 +41,7 @@ from greytheory_app import (
     CommandKind,
     NextAction,
     ReadinessStatus,
+    ReportExportWriter,
     WorkbenchApplicationService,
     WorkbenchCommand,
     WorkbenchContractError,
@@ -257,6 +259,28 @@ def test_contract_refuses_live_posture_and_executable_display_actions():
             "mastery-with-authority",
             CommandKind.RECORD_MASTERY_ASSESSMENT,
             fields=mastery_fields(),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            acknowledged=True,
+        )
+    with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
+        command(
+            "export-without-human",
+            CommandKind.EXPORT_REPORT,
+            fields=(
+                CommandField("export_id", "export-1"),
+                CommandField("finding_id", "finding-1"),
+            ),
+            revision=0,
+        )
+    with pytest.raises(WorkbenchContractError, match="no execution authority"):
+        command(
+            "export-with-authority",
+            CommandKind.EXPORT_REPORT,
+            fields=(
+                CommandField("export_id", "export-1"),
+                CommandField("finding_id", "finding-1"),
+            ),
             revision=0,
             authority=AuthorityLevel.LOCAL_FIXTURE,
             acknowledged=True,
@@ -636,6 +660,75 @@ def test_snapshot_reads_the_complete_local_vertical_slice(tmp_path):
     assert snapshot.context.session_id == result.session_id
     assert snapshot.context.finding_id == finding.id
     assert snapshot.live_target_available is False
+
+
+def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
+    run_root = tmp_path / "run"
+    result = run_local_two_account_slice(
+        run_root, statements=fixture_statements(), clock=lambda: NOW
+    )
+    finding = Finding.from_dict(
+        json.loads((run_root / "finding.json").read_text(encoding="utf-8"))
+    )
+    draft = ReportDraft.from_dict(
+        json.loads((run_root / "report.json").read_text(encoding="utf-8"))
+    )
+    audit = AuditLog(run_root / "audit" / "audit.jsonl", clock=lambda: NOW)
+    service = WorkbenchApplicationService(
+        audit=audit,
+        evidence=EvidenceVault(run_root / "evidence", clock=lambda: NOW),
+        findings=(finding,),
+        report_drafts=(draft,),
+        report_export_writer=ReportExportWriter(run_root / "exports", audit=audit),
+        clock=lambda: NOW,
+    )
+    export_command = command(
+        "command-export-report",
+        CommandKind.EXPORT_REPORT,
+        fields=(
+            CommandField("export_id", "export-local-bola-1"),
+            CommandField("finding_id", finding.id),
+        ),
+        revision=0,
+        acknowledged=True,
+    )
+
+    accepted = service.handle(export_command)
+    repeated = service.handle(export_command)
+    destination = run_root / "exports" / "export-local-bola-1"
+    manifest = json.loads((destination / "manifest.json").read_text("utf-8"))
+
+    assert accepted.disposition is CommandDisposition.ACCEPTED
+    assert accepted.executed is False
+    assert repeated == accepted
+    assert manifest["submission_performed"] is False
+    assert manifest["operator_ref"] == "operator-local"
+    assert manifest["finding_id"] == finding.id
+    assert (destination / "report.md").is_file()
+    assert (destination / "report.json").is_file()
+    assert len(manifest["artifacts"]) == 3
+    for artifact in manifest["artifacts"]:
+        exported = destination / artifact["path"]
+        assert exported.is_file()
+        assert b"SECRET" not in exported.read_bytes()
+    assert not any(destination.rglob("raw"))
+    assert audit.records()[-1].action == "report.export"
+    assert audit.records()[-1].detail["submission_performed"] is False
+
+    duplicate = service.handle(
+        command(
+            "command-export-report-duplicate",
+            CommandKind.EXPORT_REPORT,
+            fields=(
+                CommandField("export_id", "export-local-bola-1"),
+                CommandField("finding_id", finding.id),
+            ),
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assert duplicate.disposition is CommandDisposition.CONFLICT
+    assert duplicate.code == "record_exists"
 
 
 def test_snapshot_resolves_one_exact_bound_approval_without_treating_it_as_execution(tmp_path):

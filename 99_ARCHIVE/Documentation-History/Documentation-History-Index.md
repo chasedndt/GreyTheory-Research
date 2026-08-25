@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory private redacted report export](2026-08-25_greytheory-private-report-export.md) - atomic no-submission package from server-held report and verified redacted evidence
+
 - [2026-08-25 - GreyTheory human mastery assessment handler](2026-08-25_greytheory-human-mastery-handler.md) - explicit operator-bound assessment through the local application boundary
 
 - [2026-08-25 - GreyTheory authenticated local transport](2026-08-25_greytheory-authenticated-local-transport.md) - strict numeric-loopback workbench launch boundary; graphical shell still pending

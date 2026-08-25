@@ -4,6 +4,11 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - private redacted report export
+
+- Added a human-acknowledged workbench report-export handler over server-held findings and drafts. It requires `report_ready`, re-runs Gate F quality checks, verifies that cited evidence exists in the complete redacted-only evidence package, and remains non-executing.
+- Added an immutable private export writer that atomically emits Markdown, structured JSON, copied redacted artifacts, and a digest manifest outside Git. It accepts no UI path or draft content, audits `submission_performed: false`, and performs no submission, contact, disclosure, or network action.
+
 ### Added - human-governed mastery assessment handler
 
 - Added the workbench application handler for one explicit evidence-bound human mastery assessment. It requires a fresh human-acknowledged command, derives the assessor from the configured local operator, accepts no UI-supplied assessor identity, persists to the private integrity-checked mastery store, and remains non-executing.
@@ -17,7 +22,7 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 ### Added - governed research-planning application handlers
 
 - Added workbench handlers for create-only unproven hypotheses, explicit human scope review, and atomic experiment planning. Authority and workspace fingerprints are derived from persisted state, every changed hypothesis carries an optimistic revision, and stale UI commands conflict rather than overwrite newer decisions.
-- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action and report commands remain refused.
+- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action intent remains refused, while report export was implemented by the later entry above.
 
 ### Added - dark passive broker foundation
 

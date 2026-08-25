@@ -1,9 +1,9 @@
 """Transport-neutral local workbench assembly and command routing.
 
-The service reads existing GreyTheory stores and exposes bounded learning and
-research-planning use cases. Action/report commands remain typed refusals until
-their dedicated use-case handlers exist. Nothing here calls a tool, collector,
-model provider, shell, browser, worker, or network.
+The service reads existing GreyTheory stores and exposes bounded learning,
+research-planning, human-assessment, and private report-export use cases. Action
+commands remain typed refusals until their dedicated handler exists. Nothing
+here calls a tool, collector, model provider, shell, browser, worker, or network.
 """
 
 # SPDX-License-Identifier: Apache-2.0
@@ -40,6 +40,7 @@ from greytheory.learning import (
     start_learning_journey,
 )
 from greytheory.registry import ProgrammeRegistry
+from greytheory.report import ReportDraft
 from greytheory.research import (
     EffectBudget,
     ExperimentPlan,
@@ -48,6 +49,7 @@ from greytheory.research import (
     ResearchStore,
 )
 from greytheory.research.store import WorkspaceSnapshot
+from greytheory.validation import gate_f_report_quality
 from greytheory_app.contracts import (
     CommandDisposition,
     CommandKind,
@@ -62,6 +64,7 @@ from greytheory_app.contracts import (
     WorkbenchSection,
     WorkbenchSnapshot,
 )
+from greytheory_app.export import ReportExportConflict, ReportExportWriter
 
 
 def _status_from_capability(status: CapabilityStatus) -> ReadinessStatus:
@@ -173,6 +176,8 @@ class WorkbenchApplicationService:
         journeys: LearningJourneyStore | None = None,
         evidence: EvidenceVault | None = None,
         findings: Sequence[Finding] | None = None,
+        report_drafts: Sequence[ReportDraft] | None = None,
+        report_export_writer: ReportExportWriter | None = None,
         approvals: ApprovalStore | None = None,
         operator_ref: str = "operator-local",
         clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
@@ -189,6 +194,14 @@ class WorkbenchApplicationService:
         self.journeys = journeys
         self.evidence = evidence
         self.findings = None if findings is None else tuple(findings)
+        self.report_drafts = None if report_drafts is None else tuple(report_drafts)
+        if self.report_drafts is not None:
+            ids = [draft.finding_id for draft in self.report_drafts]
+            if len(ids) != len(set(ids)):
+                raise WorkbenchContractError(
+                    "report draft finding identifiers must be unique"
+                )
+        self.report_export_writer = report_export_writer
         self.approvals = approvals
         if not str(operator_ref or "").strip():
             raise WorkbenchContractError("application operator reference is required")
@@ -1116,6 +1129,8 @@ class WorkbenchApplicationService:
                 result = self._plan_experiment(command)
             elif command.kind is CommandKind.RECORD_MASTERY_ASSESSMENT:
                 result = self._record_mastery_assessment(command)
+            elif command.kind is CommandKind.EXPORT_REPORT:
+                result = self._export_report(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1130,6 +1145,13 @@ class WorkbenchApplicationService:
                 "revision_conflict",
                 str(exc),
             )
+        except ReportExportConflict as exc:
+            result = CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                str(exc),
+            )
         except Exception as exc:
             result = CommandResult(
                 command.id,
@@ -1139,6 +1161,84 @@ class WorkbenchApplicationService:
             )
         self._idempotency[command.idempotency_key] = (digest, result)
         return result
+
+    def _export_report(self, command: WorkbenchCommand) -> CommandResult:
+        if self.findings is None or self.report_drafts is None:
+            raise WorkbenchContractError("no server-held report source is configured")
+        if self.evidence is None:
+            raise WorkbenchContractError("no private evidence vault is configured")
+        if self.report_export_writer is None:
+            raise WorkbenchContractError("no private report export writer is configured")
+        _require_command_fields(command, required={"export_id", "finding_id"})
+        now = self.clock()
+        issued = command.issued_at.astimezone(timezone.utc)
+        current = now.astimezone(timezone.utc)
+        if issued > current + timedelta(seconds=30):
+            raise WorkbenchContractError("report export command is future-dated")
+        if current - issued > timedelta(minutes=10):
+            raise WorkbenchContractError("report export command is stale")
+        finding_id = _command_text(command, "finding_id")
+        export_id = _command_text(command, "export_id")
+        assert finding_id is not None and export_id is not None
+        finding = next(
+            (item for item in self.findings if item.id == finding_id), None
+        )
+        if finding is None:
+            raise WorkbenchContractError(f"unknown report finding {finding_id!r}")
+        if finding.state is not Taxonomy.REPORT_READY:
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "finding_not_report_ready",
+                "only a report-ready finding can be exported",
+                (f"finding:{finding_id}",),
+            )
+        draft = next(
+            (item for item in self.report_drafts if item.finding_id == finding_id),
+            None,
+        )
+        if draft is None:
+            raise WorkbenchContractError(
+                f"no server-held report draft exists for {finding_id!r}"
+            )
+        if draft.authority_ref != finding.authority_ref:
+            raise WorkbenchContractError(
+                "report draft authority does not match the finding"
+            )
+        quality = gate_f_report_quality(draft)
+        if not quality.passed:
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "report_quality_blocked",
+                "; ".join(quality.reasons),
+                (f"finding:{finding_id}",),
+            )
+        package = self.evidence.export_package(finding_id)
+        available = {str(item["id"]) for item in package["artifacts"]}
+        missing = sorted(set(draft.evidence_index) - available)
+        if missing:
+            raise WorkbenchContractError(
+                f"report evidence is absent from the verified export package: {missing!r}"
+            )
+        receipt = self.report_export_writer.export(
+            export_id=export_id,
+            draft=draft,
+            evidence_package=package,
+            operator_ref=self.operator_ref,
+            exported_at=now,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "report_exported",
+            f"private redacted report export {receipt.export_id!r} was written; no submission or contact occurred",
+            (
+                f"report-export:{receipt.export_id}",
+                f"finding:{finding_id}",
+                f"manifest-sha256:{receipt.manifest_sha256}",
+            ),
+        )
 
     def _record_mastery_assessment(
         self, command: WorkbenchCommand

@@ -38,9 +38,10 @@ def test_learning_core_does_not_overstate_guided_or_adaptive_learning():
 def test_application_service_is_partial_while_ui_and_passive_http_remain_unimplemented():
     application = capability("workbench_application_service")
     assert application.status is CapabilityStatus.PARTIAL
-    assert "action and report" in application.boundary.lower()
+    assert "action commands" in application.boundary.lower()
     assert "typed but refused" in application.boundary.lower()
     assert "configured local operator" in application.boundary.lower()
+    assert "never submits" in application.boundary.lower()
     transport = capability("local_workbench_transport")
     assert transport.status is CapabilityStatus.PARTIAL
     assert "numeric-loopback" in transport.detail.lower()
