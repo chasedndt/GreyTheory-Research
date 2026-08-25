@@ -217,12 +217,27 @@ CAPABILITIES: tuple[Capability, ...] = (
         ("greytheory.vertical_slice",),
     ),
     Capability(
+        "passive_broker_foundation",
+        "Passive broker foundation",
+        CapabilityStatus.PARTIAL,
+        "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, and signed encrypted-capture receipt metadata.",
+        "No DNS resolver, HTTP adapter, capture encryption implementation, key provisioning, worker image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
+        (
+            "greytheory_broker",
+            "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
+        ),
+    ),
+    Capability(
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,
         "No network worker or passive target action is implemented.",
         "PASSIVE_HTTP remains dark until broker controls and operator posture approval are proven.",
-        ("Docs/roadmap.md", "THREAT_MODEL.md"),
+        (
+            "Docs/roadmap.md",
+            "THREAT_MODEL.md",
+            "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
+        ),
     ),
 )
 

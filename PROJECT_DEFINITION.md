@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guided/review planning, and persisted staged journeys; adaptive and specialised modes remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | LIVE for one bounded in-memory `LOCAL_FIXTURE` action; network broker/workers not built |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live and the passive ticket/guard/replay/receipt foundation is verified offline; no DNS/HTTP adapter or worker |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
@@ -136,18 +136,19 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - promotion of existing observed/inferred claims uses registry-issued receipts, while legacy static collectors still originate their own deterministic `checked` claims pending persisted receipt artifacts;
 - the dashboard remains a static export, not the planned standalone workbench; the separate application service can now assemble UI-neutral snapshots and operate bounded learning journeys, but no transport or interactive shell exists and research/action/report handlers remain refused;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
+- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, and signed encrypted-capture receipt metadata. It has no DNS/HTTP/process adapter, encryption implementation, provisioned keys, worker image, or live action.
 - the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT
 
 - adaptive review scheduling, assisted and transfer-specific orchestration, and broader curriculum packs;
-- governed external Scope Watch collector, network broker, network workers, and live collectors;
+- governed external Scope Watch collector, passive DNS/HTTP adapter, isolated network workers, and live collectors;
 - standalone graphical workbench;
 - live research proof and programme outcomes.
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and broker controls. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: architecture, executable capability truth, UI-neutral application snapshots, and bounded learning handlers exist, while transport and the interactive shell await visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol now exists only as an offline dark foundation. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: architecture, executable capability truth, UI-neutral application snapshots, and bounded learning handlers exist, while transport and the interactive shell await visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

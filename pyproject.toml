@@ -24,7 +24,8 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "cryptography>=46.0.7,<51"]
+passive-broker = ["cryptography>=46.0.7,<51"]
 
 [project.scripts]
 greytheory = "greytheory.cli:main"

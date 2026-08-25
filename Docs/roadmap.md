@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 555 repository tests pass on 2026-08-25 with executable capability truth, dashboard reconciliation, deterministic guided-learning journeys, and the versioned workbench application contract; posture remains unchanged.
+- 571 repository tests pass on 2026-08-25 with executable capability truth, the workbench application contract, rate-bound authority fingerprints, and the offline passive-broker conformance foundation; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -219,6 +219,24 @@ and evidence, and export a report draft without any target-network capability.
 ## Milestone 9 — Passive execution pilot
 
 Raise only to `PASSIVE_HTTP`, for one verified programme and one tightly controlled action type, after every precondition in `THREAT_MODEL.md` is implemented and tested.
+
+Offline broker foundation completed without enabling the posture:
+
+- [x] Define `passive-head-v1`: one canonical unauthenticated HTTPS `HEAD`, one
+  request, zero redirects, explicit programme rate, 30-second and 64-KiB ceilings.
+- [x] Bind short-lived signed tickets to the exact verified Gate audit record,
+  request, contract fingerprint, target, and `PASSIVE_HTTP` ceiling.
+- [x] Add public-address-only DNS-answer policy, default-engaged persistent kill
+  switch, SQLite exact-once reservation, and signed completed/stopped receipts.
+- [x] Require target data to remain `UNTRUSTED` / `RAW_RESTRICTED` and require
+  capture plus encrypted-envelope digests for a completed receipt.
+- [ ] Implement and isolate the DNS/HTTP adapter; prove connection to the exact
+  validated address, disabled ambient proxies, no implicit redirects, streaming
+  ceilings, and timeout cancellation.
+- [ ] Implement capture encryption and governed key provisioning/rotation.
+- [ ] Build and harden the unprivileged Ubuntu 24.04 worker image and broker transport.
+- [ ] Pass VM conformance, owned-canary, one-programme review, sustained clean
+  operation, and explicit human posture approval.
 
 **Exit:** rate, DNS, redirects, kill switch, data policy, receipts, and sustained clean operation are verified.
 

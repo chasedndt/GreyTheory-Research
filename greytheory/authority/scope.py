@@ -157,9 +157,9 @@ class ScopeContract:
     def fingerprint(self) -> str:
         """Stable identifier for this contract's substantive content.
 
-        Changes whenever scope, exclusions, prohibitions or granted authority
-        change — so a programme edit produces a visibly different contract even
-        if the id is reused.
+        Changes whenever scope, exclusions, prohibitions, granted authority, or
+        the request-rate ceiling changes, so a substantive programme edit
+        produces a visibly different contract even if the id is reused.
         """
         material = "|".join(
             [
@@ -168,6 +168,9 @@ class ScopeContract:
                 ";".join(sorted(p.value for p in self.assets_out_of_scope)),
                 ";".join(sorted(self.prohibited_techniques)),
                 self.max_authority,
+                "none"
+                if self.rate_limit_rps is None
+                else repr(float(self.rate_limit_rps)),
             ]
         )
         return hashlib.sha256(material.encode("utf-8")).hexdigest()

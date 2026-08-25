@@ -12,3 +12,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0008 - Claim roles and submission-time scope recheck](ADR-0008-claim-roles-and-submission-scope-recheck.md)
 - [ADR-0009 - Provider and fetcher boundaries keep the core offline](ADR-0009-model-gateway-and-fetcher-boundaries.md)
 - [ADR-0010 - The workbench is an application boundary](ADR-0010-workbench-is-an-application-boundary.md)
+- [ADR-0011 - Build the passive broker dark before adding a network adapter](ADR-0011-dark-passive-broker-foundation.md)

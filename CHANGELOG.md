@@ -4,6 +4,12 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - dark passive broker foundation
+
+- Added the separate `greytheory_broker` package and optional `passive-broker` crypto dependency. Its `passive-head-v1` policy binds one short-lived Ed25519 ticket to the exact hash-chain-verified Gate audit record, canonical HTTPS target, programme rate, authority fingerprint, and one unauthenticated `HEAD` request. Workers receive only the public ticket-verification key and cannot mint broker tickets.
+- Added public-address-only DNS-answer validation, zero-redirect policy, default-engaged digest-protected kill switch, atomic SQLite exact-once ticket reservation, strict time/rate/capture limits, and signed completed/stopped receipt metadata requiring capture and encrypted-envelope digests.
+- Kept the broker dark: no DNS query, HTTP client, socket, subprocess, capture encryption implementation, provisioned key, worker image, target action, or posture change exists. ADR-0011 records the remaining boundary.
+
 ### Added - workbench foundation and executable capability truth
 
 - Added `greytheory_app`, a separate transport-neutral application layer with a versioned workbench snapshot across programmes, research, hypotheses, learning, evidence, reports, approvals, audit readiness, and executable capability truth.

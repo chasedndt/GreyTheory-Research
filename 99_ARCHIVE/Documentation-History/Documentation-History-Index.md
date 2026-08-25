@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory passive broker foundation](2026-08-25_greytheory-passive-broker-foundation.md) - offline ticket/guard/rate/replay/receipt boundary; passive worker still unavailable
+
 - [2026-08-25 - GreyTheory workbench application contract](2026-08-25_greytheory-workbench-application-contract.md) - tested UI-neutral application boundary; graphical workbench still pending
 
 - [2026-08-24 - GreyTheory workbench foundation](2026-08-24_greytheory-workbench-foundation.md) - capability truth and application boundary reconciled; interactive workbench still pending

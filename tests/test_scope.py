@@ -120,6 +120,11 @@ class TestFingerprint:
     def test_fingerprint_changes_when_granted_authority_changes(self):
         assert contract(max_authority="INTRUSIVE").fingerprint() != contract().fingerprint()
 
+    def test_fingerprint_changes_when_rate_limit_changes(self):
+        assert contract(rate_limit_rps=1).fingerprint() != contract(
+            rate_limit_rps=2
+        ).fingerprint()
+
 
 class TestProhibitions:
     def test_prohibited_technique_is_matched_case_insensitively(self):

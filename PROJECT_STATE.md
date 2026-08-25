@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, and bounded learning command handlers implemented; transport and interactive shell await visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 555 repository tests passing on 2026-08-25, including executable capability truth, dashboard reconciliation, deterministic guided-learning journeys, and the versioned workbench application contract.
+- **Verified baseline:** 571 repository tests passing on 2026-08-25, including executable capability truth, the workbench application contract, rate-bound authority fingerprints, and the offline passive-broker conformance foundation.
 
 ## What is built
 
@@ -58,6 +58,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - an accepted workbench boundary covering the Windows operator host, local application service, offline core, private storage, guided-learning journey, and future isolated Ubuntu worker.
 - deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
 - a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded learning commands are idempotent and revision-aware, while all action commands remain non-executing.
+- a dark, offline `greytheory_broker` foundation for one `passive-head-v1` action: fresh hash-chain-verified Gate binding, canonical HTTPS and public-address policy, signed expiring tickets, exact-once SQLite reservation, default-engaged digest-protected kill switch, strict request/time/rate/capture ceilings, and signed completed/stopped receipt metadata that requires an encrypted-capture envelope digest.
 
 ## What is not built
 
@@ -65,7 +66,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
 - standalone graphical workbench;
 - workbench transport and graphical shell, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
-- governed external Scope Watch collector, network broker/workers, and live collectors;
+- governed external Scope Watch collector, actual DNS/HTTP adapter, capture encryption/key provisioning, isolated Ubuntu worker image/transport, VM/VPS acceptance, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -93,7 +94,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then implement the local transport and shell against the versioned application snapshot and the realistic fixture acceptance path. Next, add dedicated research-domain handlers before exposing their typed commands in the UI. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then implement the local transport and shell against the versioned application snapshot and the realistic fixture acceptance path. For Milestone 9, the next code step is capture encryption/key handling and a network-adapter conformance boundary, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
 
 ## Do not build next
 

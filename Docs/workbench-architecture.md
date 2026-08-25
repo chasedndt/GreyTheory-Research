@@ -243,6 +243,9 @@ Implemented now:
 - idempotent, optimistic-revision learning command handlers plus typed refusal
   for research, action, assessment, and report commands that lack a dedicated
   use-case handler;
+- the separate, network-free `greytheory_broker` `passive-head-v1` contracts,
+  policy guard, replay ledger, default-engaged kill switch, and signed receipt
+  metadata foundation;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -256,7 +259,8 @@ Not implemented now:
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;
-- any network broker, Ubuntu worker, or `PASSIVE_HTTP` action.
+- any DNS/HTTP adapter, capture-encryption implementation, Ubuntu worker, or
+  `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind a local-only transport and shell to this snapshot contract

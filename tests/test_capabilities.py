@@ -40,6 +40,9 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert application.status is CapabilityStatus.PARTIAL
     assert "typed but refused" in application.boundary.lower()
     assert capability("graphical_workbench").status is CapabilityStatus.PLANNED
+    broker = capability("passive_broker_foundation")
+    assert broker.status is CapabilityStatus.PARTIAL
+    assert "no dns resolver" in broker.boundary.lower()
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     assert "passive_http remains dark" in capability("passive_http_worker").boundary.lower()
 

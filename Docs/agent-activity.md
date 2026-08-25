@@ -4,6 +4,36 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Dark passive broker foundation
+
+### What was built
+
+- Added the separate offline `greytheory_broker` package and `passive-head-v1`.
+- Bound tickets to the latest exact verified Gate audit allow and made programme
+  rate a fingerprinted authority field.
+- Added canonical target/public-address policy, default-engaged kill switch,
+  atomic cross-ticket rate/replay storage, and signed encrypted-capture receipt
+  metadata.
+
+### Why it remains dark
+
+There is no resolver, HTTP adapter, encryption implementation, key provisioning,
+worker image, broker transport, or external acceptance. Tests use synthetic
+Gate posture only and contact no host. `PASSIVE_HTTP` remains unavailable.
+
+### What the next agent should not undo
+
+Do not add an HTTP client before capture encryption/key handling and adapter
+conformance exist. Do not move address or redirect checks into callback code,
+exclude rate from the authority fingerprint, accept a detached Gate decision,
+or let an absent/corrupt kill switch fail open.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-passive-broker-foundation.md`.
+
+---
+
 ## 2026-08-25 - Codex - Workbench application contract
 
 ### What was built

@@ -32,7 +32,7 @@
 | Malicious programme source | Prompt injection changes interpreted policy | Treat as data; compile; human verification | PARTIAL |
 | Malicious target response | Model is induced to act | No direct model execution; taint labels | PLANNED |
 | Compromised worker | Unauthorised requests or side effects | Gate-bound one-use local ticket; out-of-process broker required before network posture | PARTIAL |
-| Redirect or DNS change | In-scope name reaches out-of-scope infrastructure | Re-evaluate every hop and resolution | PLANNED |
+| Redirect or DNS change | In-scope name reaches out-of-scope infrastructure | Re-evaluate every hop and resolution | PARTIAL; offline v1 validates supplied answers and denies every redirect; no resolver/adapter exists |
 | Credential leakage | Token reaches model, logs, or evidence | Identity/credential handles and redaction | PARTIAL |
 | Approval replay | Consent reused for a new action | Bound, expiring, single-use approvals | LIVE |
 | Scope drift | Work continues after policy changes | Source fingerprinting, review invalidation, final recheck | PARTIAL |
@@ -56,3 +56,30 @@ External content can never change scope, activate a tool, request a credential, 
 Before `PASSIVE_HTTP`, GreyTheory requires a typed research domain, current verified source bundle, broker/worker separation, canonical URL and IDNA handling, DNS and redirect rechecks, private/metadata-network denial, rate/request/time budgets, tested kill switch, immutable receipts, data classification enforcement, worker conformance tests, and a private evidence root outside every repository.
 
 The presence of this document does not satisfy those gates. Each control needs implementation and test evidence.
+
+### Current precondition evidence - 2026-08-25
+
+Implemented and tested offline in `greytheory_broker`:
+
+- strict canonical HTTPS/IDNA representation for one exact, unauthenticated
+  `HEAD` action;
+- globally routable-address-only validation for supplied complete DNS answers;
+- redirect denial, one-request/rate/time/capture ceilings, and raw/untrusted
+  evidence labels;
+- hash-chain-verified Gate binding, signed short-lived tickets, exact-once
+  reservation, default-engaged persistent kill switch, and signed completed or
+  stopped receipts requiring an encrypted-capture envelope digest.
+
+Still required before any network posture:
+
+- an actual DNS resolver with connect-to-validated-address enforcement and
+  re-resolution proof;
+- an HTTP adapter with streaming size/timeout enforcement and no implicit
+  redirect or proxy behavior;
+- capture encryption and key provisioning/rotation, not merely an envelope
+  digest field;
+- isolated unprivileged Ubuntu worker image, OS egress constraints, broker
+  transport/authentication, conformance acceptance, owned canary, one reviewed
+  programme, sustained clean operation, and explicit operator posture approval.
+
+The foundation is therefore `PARTIAL`; `PASSIVE_HTTP` remains unavailable.
