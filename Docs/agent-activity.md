@@ -4,6 +4,29 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Persisted human-bound report validation
+
+### What was built
+
+- Added a fresh human-acknowledged application handler that reruns Gates B-F
+  from the persisted finding/draft and verified private evidence.
+- Bound all three attestations to the configured local operator and known case
+  evidence, then stored complete attestation and gate-result history under the
+  report case's optimistic revision.
+
+### What the next agent should not undo
+
+Do not accept attester identity, authority, lifecycle state, or arbitrary
+evidence references from the UI. A passing validation is Gate G eligibility
+evidence only: it must not bind claim roles, promote a finding, export, submit,
+contact a target, or change posture.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-persisted-report-validation.md`.
+
+---
+
 ## 2026-08-25 - Codex - Persistent private report authoring
 
 ### What was built

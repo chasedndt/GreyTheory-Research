@@ -18,6 +18,7 @@ from greytheory.audit import AuditLog
 from greytheory.evidence import find_repository_root
 from greytheory.findings import Finding
 from greytheory.report import ReportDraft
+from greytheory.validation import Attestation, GateId, ValidationReport
 
 
 SCHEMA_VERSION = 1
@@ -44,6 +45,48 @@ def _digest(data: Mapping[str, Any]) -> str:
 
 
 @dataclass(frozen=True)
+class ReportValidation:
+    """One immutable validation run bound to the case revision it checked."""
+
+    base_revision: int
+    attestations: tuple[Attestation, ...]
+    report: ValidationReport
+
+    def __post_init__(self) -> None:
+        if isinstance(self.base_revision, bool) or self.base_revision < 0:
+            raise ReportStoreError("validation base revision must be non-negative")
+        gates = [item.gate for item in self.attestations]
+        if len(gates) != len(set(gates)):
+            raise ReportStoreError("validation attestations contain duplicate gates")
+        if set(gates) != {
+            GateId.B_REPRODUCIBILITY,
+            GateId.C_IMPACT,
+            GateId.E_DUPLICATE_RISK,
+        }:
+            raise ReportStoreError(
+                "validation requires one attestation for each of Gates B, C, and E"
+            )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "base_revision": self.base_revision,
+            "attestations": [item.to_dict() for item in self.attestations],
+            "report": self.report.to_dict(),
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> ReportValidation:
+        return cls(
+            base_revision=int(data["base_revision"]),
+            attestations=tuple(
+                Attestation.from_dict(dict(item))
+                for item in data.get("attestations", [])
+            ),
+            report=ValidationReport.from_dict(dict(data["report"])),
+        )
+
+
+@dataclass(frozen=True)
 class ReportCase:
     """One finding and its operator-authored draft at one private revision."""
 
@@ -51,6 +94,7 @@ class ReportCase:
     draft: ReportDraft
     revision: int
     updated_at: datetime
+    validations: tuple[ReportValidation, ...] = ()
 
     def __post_init__(self) -> None:
         if self.finding.id != self.draft.finding_id:
@@ -61,10 +105,27 @@ class ReportCase:
             raise ReportStoreError("report case revision must be non-negative")
         if self.updated_at.tzinfo is None:
             raise ReportStoreError("report case update time must be timezone-aware")
+        if any(
+            item.report.finding_id != self.finding.id for item in self.validations
+        ):
+            raise ReportStoreError("validation history belongs to another finding")
+        base_revisions = [item.base_revision for item in self.validations]
+        if base_revisions != sorted(set(base_revisions)):
+            raise ReportStoreError("validation history revisions must increase")
+        if any(base_revision >= self.revision for base_revision in base_revisions):
+            raise ReportStoreError("validation history references an invalid revision")
 
     @property
     def id(self) -> str:
         return self.finding.id
+
+    @property
+    def current_validation(self) -> ReportValidation | None:
+        """Return the latest run only when no later case edit invalidated it."""
+        if not self.validations:
+            return None
+        latest = self.validations[-1]
+        return latest if latest.base_revision + 1 == self.revision else None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -72,6 +133,7 @@ class ReportCase:
             "draft": self.draft.to_dict(),
             "revision": self.revision,
             "updated_at": self.updated_at.isoformat(),
+            "validations": [item.to_dict() for item in self.validations],
         }
 
     @classmethod
@@ -81,6 +143,10 @@ class ReportCase:
             draft=ReportDraft.from_dict(dict(data["draft"])),
             revision=int(data["revision"]),
             updated_at=datetime.fromisoformat(str(data["updated_at"])),
+            validations=tuple(
+                ReportValidation.from_dict(dict(item))
+                for item in data.get("validations", [])
+            ),
         )
 
 
@@ -154,6 +220,7 @@ class ReportStore:
             draft,
             existing.revision + 1,
             self.clock(),
+            existing.validations,
         )
         current[updated.id] = updated
         self._write(current)
@@ -179,10 +246,42 @@ class ReportStore:
             existing.draft,
             existing.revision + 1,
             self.clock(),
+            existing.validations,
         )
         current[updated.id] = updated
         self._write(current)
         self._audit("report.finding.save", updated, actor)
+        return updated
+
+    def record_validation(
+        self,
+        finding_id: str,
+        *,
+        attestations: tuple[Attestation, ...],
+        report: ValidationReport,
+        expected_revision: int,
+        actor: str,
+    ) -> ReportCase:
+        existing = self.get(finding_id)
+        if existing.revision != expected_revision:
+            raise ReportRevisionConflict(
+                f"report revision conflict: expected {expected_revision}, "
+                f"current {existing.revision}"
+            )
+        if report.finding_id != finding_id:
+            raise ReportStoreError("validation report belongs to another finding")
+        validation = ReportValidation(expected_revision, attestations, report)
+        current = {case.id: case for case in self.cases()}
+        updated = ReportCase(
+            existing.finding,
+            existing.draft,
+            existing.revision + 1,
+            self.clock(),
+            (*existing.validations, validation),
+        )
+        current[updated.id] = updated
+        self._write(current)
+        self._audit("report.validation.record", updated, actor)
         return updated
 
     def verify(self) -> None:

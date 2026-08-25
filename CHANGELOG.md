@@ -4,6 +4,12 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - persisted human-bound report validation
+
+- Added a fresh human-acknowledged workbench handler that reruns Gates B–F from the persisted finding/draft, the private evidence vault, and three operator-authored attestations. Attester identity is derived locally; every cited reference must already belong to the case.
+- Added complete attestation/gate/validation-report deserialisation and append-only revision-bound validation runs inside the private report case. The report read model distinguishes `not_run`, `blocked`, and `passed`, and a later case edit invalidates current status without deleting history.
+- A passing validation records eligibility evidence only: it does not bind missing claim roles, promote the finding lifecycle, export, submit, contact, or execute anything. Stale validation commands conflict before running or auditing a second validation.
+
 ### Added - persistent private report authoring
 
 - Added an integrity-checked private `ReportStore` for complete finding/draft cases with atomic writes, Git-worktree refusal, audit records, optimistic revisions, and full claim-role/check-receipt round trips.

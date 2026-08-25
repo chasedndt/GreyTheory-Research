@@ -264,6 +264,10 @@ Implemented now:
   round trip, informational case-creation handler, revision-safe draft editing,
   and measured draft completeness in the read model; authority, programme,
   asset, finding state, and claim matrix remain server-owned;
+- fresh human-bound Gates B-F validation with server-derived attester identity,
+  known evidence references, immutable revision-bound run history, automatic
+  current-status invalidation after later case edits, optimistic revisions, and
+  explicit separation from claim/finding promotion, export, or submission;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -279,8 +283,8 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- workbench validation, claim-role binding, finding lifecycle, and later
-  research operations beyond initial planning/report authoring;
+- workbench claim-role binding, finding lifecycle, and later research operations
+  beyond initial planning/report authoring/validation;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

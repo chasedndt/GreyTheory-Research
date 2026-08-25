@@ -309,6 +309,13 @@ def test_contract_refuses_live_posture_and_executable_display_actions():
         )
     with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
         command(
+            "validation-without-human",
+            CommandKind.RUN_REPORT_VALIDATION,
+            fields=(),
+            revision=0,
+        )
+    with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
+        command(
             "export-without-human",
             CommandKind.EXPORT_REPORT,
             fields=(
@@ -845,6 +852,62 @@ def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
         report_export_writer=ReportExportWriter(run_root / "exports", audit=audit),
         clock=lambda: NOW,
     )
+    statements = fixture_statements()
+    evidence_refs = tuple(finding.evidence_refs)
+    validation_fields = (
+        CommandField("finding_id", finding.id),
+        CommandField("reproducibility_statement", statements.reproducibility),
+        CommandField("reproducibility_evidence_refs", evidence_refs),
+        CommandField("impact_statement", statements.impact),
+        CommandField("impact_evidence_refs", evidence_refs),
+        CommandField("duplicate_risk_statement", statements.duplicate_risk),
+        CommandField("duplicate_risk_evidence_refs", evidence_refs),
+    )
+    validation_result = service.handle(
+        command(
+            "command-validate-report",
+            CommandKind.RUN_REPORT_VALIDATION,
+            fields=validation_fields,
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    validated_case = report_store.get(finding.id)
+    assert validation_result.disposition is CommandDisposition.ACCEPTED
+    assert validation_result.code == "report_validation_passed"
+    assert validation_result.executed is False
+    assert validated_case.revision == 1
+    assert validated_case.finding.state.value == "report_ready"
+    assert validated_case.current_validation is not None
+    assert validated_case.current_validation.report.submission_ready is True
+    assert {item.actor for item in validated_case.current_validation.attestations} == {
+        "operator-local"
+    }
+    report_record = service.snapshot().section("reports").records[0]
+    assert dict(report_record.attributes)["latest_validation"] == "passed"
+    stale_validation = service.handle(
+        command(
+            "command-validate-report-stale",
+            CommandKind.RUN_REPORT_VALIDATION,
+            fields=validation_fields,
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assert stale_validation.disposition is CommandDisposition.CONFLICT
+    assert stale_validation.code == "revision_conflict"
+    assert len(report_store.get(finding.id).validations) == 1
+    report_store.save_draft(
+        validated_case.draft,
+        expected_revision=1,
+        actor="operator-local",
+    )
+    invalidated_record = service.snapshot().section("reports").records[0]
+    assert dict(invalidated_record.attributes)["latest_validation"] == "not_run"
+    invalidated_case = report_store.get(finding.id)
+    assert invalidated_case.current_validation is None
+    assert len(invalidated_case.validations) == 1
+
     export_command = command(
         "command-export-report",
         CommandKind.EXPORT_REPORT,

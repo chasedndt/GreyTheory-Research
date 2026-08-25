@@ -15,6 +15,14 @@ from greytheory.report_store import (
     ReportStore,
     ReportStoreError,
 )
+from greytheory.validation import (
+    Attestation,
+    GateId,
+    GateKind,
+    GateResult,
+    GateStatus,
+    ValidationReport,
+)
 
 
 NOW = datetime(2026, 8, 25, 1, 0, tzinfo=timezone.utc)
@@ -103,3 +111,80 @@ def test_report_case_refuses_mismatched_finding_and_authority(tmp_path):
             ),
             actor="operator-local",
         )
+
+
+def test_report_validation_is_complete_revisioned_and_reopenable(tmp_path):
+    store = ReportStore(tmp_path / "reports", clock=lambda: NOW)
+    store.create(finding(), draft(), actor="operator-local")
+    attestations = tuple(
+        Attestation(
+            gate,
+            "operator-local",
+            "The operator completed this bounded check against stored evidence.",
+            NOW,
+            ["evidence-1"],
+        )
+        for gate in (
+            GateId.B_REPRODUCIBILITY,
+            GateId.C_IMPACT,
+            GateId.E_DUPLICATE_RISK,
+        )
+    )
+    report = ValidationReport(
+        finding_id="finding-report-store",
+        results=[
+            GateResult(
+                gate,
+                GateStatus.PASS,
+                GateKind.ATTESTED
+                if gate in {
+                    GateId.B_REPRODUCIBILITY,
+                    GateId.C_IMPACT,
+                    GateId.E_DUPLICATE_RISK,
+                }
+                else GateKind.DETERMINISTIC,
+            )
+            for gate in GateId
+        ],
+        checked_at=NOW,
+    )
+
+    saved = store.record_validation(
+        "finding-report-store",
+        attestations=attestations,
+        report=report,
+        expected_revision=0,
+        actor="operator-local",
+    )
+    reopened = ReportStore(tmp_path / "reports", clock=lambda: NOW).get(
+        "finding-report-store"
+    )
+
+    assert saved.revision == 1
+    assert reopened.current_validation is not None
+    assert reopened.current_validation.attestations == attestations
+    assert reopened.current_validation.report == report
+    assert len(reopened.validations) == 1
+    with pytest.raises(ReportRevisionConflict, match="expected 0, current 1"):
+        store.record_validation(
+            "finding-report-store",
+            attestations=attestations,
+            report=report,
+            expected_revision=0,
+            actor="operator-local",
+        )
+    with pytest.raises(ReportStoreError, match="one attestation for each"):
+        store.record_validation(
+            "finding-report-store",
+            attestations=attestations[:-1],
+            report=report,
+            expected_revision=1,
+            actor="operator-local",
+        )
+    edited = store.save_draft(
+        draft(summary="An edit invalidates the current validation."),
+        expected_revision=1,
+        actor="operator-local",
+    )
+    assert edited.current_validation is None
+    assert len(edited.validations) == 1

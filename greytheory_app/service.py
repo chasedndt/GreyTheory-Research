@@ -56,7 +56,7 @@ from greytheory.research import (
     ResearchStore,
 )
 from greytheory.research.store import WorkspaceSnapshot
-from greytheory.validation import gate_f_report_quality
+from greytheory.validation import Attestation, GateId, gate_f_report_quality, validate
 from greytheory_app.contracts import (
     CommandDisposition,
     CommandKind,
@@ -763,8 +763,8 @@ class WorkbenchApplicationService:
         draft_by_finding = {
             draft.finding_id: draft for draft in (drafts or ())
         }
-        revision_by_finding = (
-            {case.id: case.revision for case in self.report_store.cases()}
+        case_by_finding = (
+            {case.id: case for case in self.report_store.cases()}
             if self.report_store is not None
             else {}
         )
@@ -773,6 +773,20 @@ class WorkbenchApplicationService:
             draft = draft_by_finding.get(finding.id)
             missing_sections = draft.missing_sections() if draft is not None else []
             placeholders = draft.placeholders() if draft is not None else []
+            case = case_by_finding.get(finding.id)
+            latest_validation = (
+                case.current_validation.report
+                if case is not None and case.current_validation is not None
+                else None
+            )
+            validation_status = (
+                "passed"
+                if latest_validation is not None
+                and latest_validation.submission_ready
+                else "blocked"
+                if latest_validation is not None
+                else "not_run"
+            )
             if finding.state is Taxonomy.REPORT_READY:
                 ready += 1
                 status = ReadinessStatus.ATTENTION
@@ -800,7 +814,7 @@ class WorkbenchApplicationService:
                         ("unanswered_roles", str(len(unanswered))),
                         (
                             "draft_revision",
-                            str(revision_by_finding.get(finding.id, "unknown")),
+                            str(case.revision if case is not None else "unknown"),
                         ),
                         ("draft_missing_sections", str(len(missing_sections))),
                         ("draft_placeholders", str(len(placeholders))),
@@ -813,6 +827,7 @@ class WorkbenchApplicationService:
                                 and not placeholders
                             ).lower(),
                         ),
+                        ("latest_validation", validation_status),
                         ("submission_automated", "false"),
                     ),
                 )
@@ -1203,6 +1218,8 @@ class WorkbenchApplicationService:
                 result = self._create_report_case(command)
             elif command.kind is CommandKind.SAVE_REPORT_DRAFT:
                 result = self._save_report_draft(command)
+            elif command.kind is CommandKind.RUN_REPORT_VALIDATION:
+                result = self._run_report_validation(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1397,6 +1414,115 @@ class WorkbenchApplicationService:
             code,
             message,
             (f"finding:{saved.id}", f"report-revision:{saved.revision}"),
+        )
+
+    def _run_report_validation(self, command: WorkbenchCommand) -> CommandResult:
+        if (
+            self.report_store is None
+            or self.evidence is None
+            or command.expected_revision is None
+        ):
+            raise WorkbenchContractError(
+                "report validation requires private report and evidence stores"
+            )
+        _require_command_fields(
+            command,
+            required={
+                "duplicate_risk_evidence_refs",
+                "duplicate_risk_statement",
+                "finding_id",
+                "impact_evidence_refs",
+                "impact_statement",
+                "reproducibility_evidence_refs",
+                "reproducibility_statement",
+            },
+        )
+        now = self.clock()
+        issued = command.issued_at.astimezone(timezone.utc)
+        current = now.astimezone(timezone.utc)
+        if issued > current + timedelta(seconds=30):
+            raise WorkbenchContractError("report validation command is future-dated")
+        if current - issued > timedelta(minutes=10):
+            raise WorkbenchContractError("report validation command is stale")
+        finding_id = _command_text(command, "finding_id")
+        assert finding_id is not None
+        case = self.report_store.get(finding_id)
+        if case.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {case.revision}",
+                (f"finding:{case.id}", f"report-revision:{case.revision}"),
+            )
+        available = {
+            item.id for item in self.evidence.manifest(finding_id).artifacts
+        } | set(case.finding.evidence_refs)
+        attestation_specs = (
+            (
+                GateId.B_REPRODUCIBILITY,
+                "reproducibility_statement",
+                "reproducibility_evidence_refs",
+            ),
+            (GateId.C_IMPACT, "impact_statement", "impact_evidence_refs"),
+            (
+                GateId.E_DUPLICATE_RISK,
+                "duplicate_risk_statement",
+                "duplicate_risk_evidence_refs",
+            ),
+        )
+        attestations: list[Attestation] = []
+        for gate, statement_field, refs_field in attestation_specs:
+            refs = _command_texts(command, refs_field)
+            missing = sorted(set(refs) - available)
+            if missing:
+                raise WorkbenchContractError(
+                    f"{gate.value} attestation cites unknown evidence: {missing!r}"
+                )
+            attestations.append(
+                Attestation(
+                    gate=gate,
+                    actor=self.operator_ref,
+                    statement=_command_text(command, statement_field) or "",
+                    attested_at=command.issued_at,
+                    evidence_refs=list(refs),
+                )
+            )
+        report = validate(
+            case.finding,
+            vault=self.evidence,
+            draft=case.draft,
+            attestations=attestations,
+            audit=self.audit,
+            now=now,
+        )
+        saved = self.report_store.record_validation(
+            case.id,
+            attestations=tuple(attestations),
+            report=report,
+            expected_revision=command.expected_revision,
+            actor=self.operator_ref,
+        )
+        code = (
+            "report_validation_passed"
+            if report.submission_ready
+            else "report_validation_blocked"
+        )
+        message = (
+            "Gates B-F passed and were recorded; finding lifecycle, export, and submission state did not change"
+            if report.submission_ready
+            else "Gates B-F were recorded with blocking results; finding lifecycle, export, and submission state did not change"
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            code,
+            message,
+            (
+                f"finding:{saved.id}",
+                f"report-revision:{saved.revision}",
+                f"validation:{len(saved.validations)}",
+            ),
         )
 
     def _request_action_intent(self, command: WorkbenchCommand) -> CommandResult:

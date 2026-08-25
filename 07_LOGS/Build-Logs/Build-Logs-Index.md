@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory persisted human-bound report validation](2026-08-25-greytheory-persisted-report-validation.md) - fresh Gates B-F with revisioned attestation/result history and no lifecycle promotion; 588 tests
+
 - [2026-08-25 - GreyTheory persistent private report authoring](2026-08-25-greytheory-private-report-authoring.md) - integrity-checked cases, full claim round trip, and revision-safe draft editing; 587 tests
 
 - [2026-08-25 - GreyTheory bounded local-fixture action intent](2026-08-25-greytheory-local-action-intent.md) - server-derived active experiment request with no Gate or execution; 583 tests

@@ -40,7 +40,9 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert application.status is CapabilityStatus.PARTIAL
     assert "fixture action intent" in application.detail.lower()
     assert "revisioned private report authoring" in application.detail.lower()
+    assert "persisted gates b-f validation" in application.detail.lower()
     assert "claim matrix are server-owned" in application.boundary.lower()
+    assert "validation never promotes" in application.boundary.lower()
     assert "no gate decision or receipt" in application.boundary.lower()
     assert "non-executing" in application.boundary.lower()
     assert "never submits" in application.boundary.lower()

@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory persisted human-bound report validation](2026-08-25_greytheory-persisted-report-validation.md) - restart-safe Gates B-F history without claim or finding promotion
+
 - [2026-08-25 - GreyTheory persistent private report authoring](2026-08-25_greytheory-private-report-authoring.md) - restart-safe cases and server-bound revisioned draft editing
 
 - [2026-08-25 - GreyTheory bounded local-fixture action intent](2026-08-25_greytheory-local-action-intent.md) - active server-held experiment intent with no Gate, receipt, or execution
