@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory bounded local-fixture action intent](2026-08-25_greytheory-local-action-intent.md) - active server-held experiment intent with no Gate, receipt, or execution
+
 - [2026-08-25 - GreyTheory private redacted report export](2026-08-25_greytheory-private-report-export.md) - atomic no-submission package from server-held report and verified redacted evidence
 
 - [2026-08-25 - GreyTheory human mastery assessment handler](2026-08-25_greytheory-human-mastery-handler.md) - explicit operator-bound assessment through the local application boundary

@@ -344,6 +344,18 @@ class WorkbenchCommand:
                 raise WorkbenchContractError(
                     "an action request intent requires explicit human acknowledgement"
                 )
+            if self.workspace_id is None:
+                raise WorkbenchContractError(
+                    "an action request intent requires a workspace"
+                )
+            if self.expected_revision != 0:
+                raise WorkbenchContractError(
+                    "creating an action request intent requires expected revision zero"
+                )
+            if self.requested_authority is not AuthorityLevel.LOCAL_FIXTURE:
+                raise WorkbenchContractError(
+                    "the current action-intent handler is limited to LOCAL_FIXTURE"
+                )
         if self.kind is CommandKind.CREATE_HYPOTHESIS and self.expected_revision != 0:
             raise WorkbenchContractError(
                 "creating a hypothesis requires expected revision zero"

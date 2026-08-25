@@ -26,6 +26,7 @@ from greytheory.learning import LearningJourneyStore, MasteryStore, load_builtin
 from greytheory.research import (
     AssetKind,
     EffectBudget,
+    ExperimentStatus,
     HypothesisStatus,
     ResearchSession,
     ResearchRevisionConflict,
@@ -371,7 +372,7 @@ def test_learning_commands_are_idempotent_revision_bound_and_non_crediting(tmp_p
     assert mastery.assessments() == ()
 
 
-def test_action_intent_is_typed_but_cannot_execute_or_raise_posture():
+def test_action_intent_contract_cannot_raise_posture():
     fields = (
         CommandField("action_type", "fixture.read"),
         CommandField("exact_action", "read one synthetic object"),
@@ -384,22 +385,138 @@ def test_action_intent_is_typed_but_cannot_execute_or_raise_posture():
             "action-passive",
             CommandKind.REQUEST_ACTION,
             fields=fields,
+            revision=0,
             authority=AuthorityLevel.PASSIVE_HTTP,
             acknowledged=True,
+            workspace_id="workspace-1",
         )
 
-    result = WorkbenchApplicationService().handle(
+
+def test_action_intent_records_server_bound_fixture_request_without_execution(tmp_path):
+    service, research = research_planning_service(tmp_path)
+    assert service.handle(
         command(
-            "action-fixture",
+            "command-create-hypothesis",
+            CommandKind.CREATE_HYPOTHESIS,
+            fields=create_hypothesis_fields(),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    assert service.handle(
+        command(
+            "command-review-scope",
+            CommandKind.REVIEW_HYPOTHESIS_SCOPE,
+            fields=(
+                CommandField("hypothesis_id", "hypothesis-cache-key"),
+                CommandField("review_basis", "I matched the exact local fixture contract."),
+            ),
+            revision=0,
+            acknowledged=True,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    assert service.handle(
+        command(
+            "command-plan-experiment",
+            CommandKind.PLAN_EXPERIMENT,
+            fields=experiment_fields(),
+            revision=1,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    research.start_session(
+        "workspace-workbench-local", "session-cache-local", actor="operator-local"
+    )
+    research.transition_experiment(
+        "workspace-workbench-local",
+        "experiment-cache-key",
+        ExperimentStatus.READY,
+        actor="operator-local",
+        expected_revision=0,
+    )
+    research.transition_experiment(
+        "workspace-workbench-local",
+        "experiment-cache-key",
+        ExperimentStatus.ACTIVE,
+        actor="operator-local",
+        expected_revision=1,
+    )
+    research.transition_hypothesis(
+        "workspace-workbench-local",
+        "hypothesis-cache-key",
+        HypothesisStatus.TESTING,
+        actor="operator-local",
+        expected_revision=2,
+    )
+    fields = (
+        CommandField("action_type", "fixture.cache.read"),
+        CommandField("exact_action", "Read two equivalent fixture paths"),
+        CommandField("experiment_id", "experiment-cache-key"),
+        CommandField("expected_effects", ("reads=2",)),
+        CommandField("max_requests", 2),
+        CommandField("purpose", "Test the planned cache normalization theory"),
+        CommandField("target_asset_id", "asset-cache-fixture"),
+        CommandField("technique", "cache-key-comparison"),
+    )
+    intent = command(
+        "action-fixture",
+        CommandKind.REQUEST_ACTION,
+        fields=fields,
+        revision=0,
+        authority=AuthorityLevel.LOCAL_FIXTURE,
+        acknowledged=True,
+        workspace_id="workspace-workbench-local",
+    )
+
+    accepted = service.handle(intent)
+    repeated = service.handle(intent)
+    assert accepted.disposition is CommandDisposition.ACCEPTED, accepted
+    assert accepted.executed is False
+    assert repeated == accepted
+    snapshot = research.snapshot("workspace-workbench-local")
+    request = snapshot.action_requests["action-fixture"]
+
+    assert request.authority_ref == snapshot.workspace.authority_ref
+    assert request.session_id == "session-cache-local"
+    assert request.identity_id is None
+    assert request.stop_conditions == snapshot.experiments[
+        "experiment-cache-key"
+    ].stop_conditions
+    assert snapshot.action_receipts == {}
+
+    unplanned = service.handle(
+        command(
+            "action-unplanned",
             CommandKind.REQUEST_ACTION,
-            fields=fields,
+            fields=(
+                *fields[:1],
+                CommandField("exact_action", "Invent a new fixture action"),
+                *fields[2:],
+            ),
+            revision=0,
             authority=AuthorityLevel.LOCAL_FIXTURE,
             acknowledged=True,
+            workspace_id="workspace-workbench-local",
         )
     )
-    assert result.disposition is CommandDisposition.REFUSED
-    assert result.code == "handler_not_implemented"
-    assert result.executed is False
+    non_fixture = service.handle(
+        command(
+            "action-network-shaped",
+            CommandKind.REQUEST_ACTION,
+            fields=(CommandField("action_type", "http.get"), *fields[1:]),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            acknowledged=True,
+            workspace_id="workspace-workbench-local",
+        )
+    )
+    assert unplanned.disposition is CommandDisposition.INVALID
+    assert "server-held experiment actions" in unplanned.message
+    assert non_fixture.disposition is CommandDisposition.INVALID
+    assert "fixture.*" in non_fixture.message
+    assert len(research.snapshot("workspace-workbench-local").action_requests) == 1
 
 
 def test_research_commands_create_review_and_plan_without_execution(tmp_path):

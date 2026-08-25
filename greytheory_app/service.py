@@ -22,6 +22,7 @@ from greytheory.authority.approvals import (
     ApprovalStore,
 )
 from greytheory.authority.gate import AuthorityLevel
+from greytheory.authority.scope import ScopeClassification
 from greytheory.capabilities import CAPABILITIES, CapabilityStatus
 from greytheory.evidence import EvidenceVault
 from greytheory.findings import Finding, Taxonomy
@@ -42,6 +43,7 @@ from greytheory.learning import (
 from greytheory.registry import ProgrammeRegistry
 from greytheory.report import ReportDraft
 from greytheory.research import (
+    ActionRequest,
     EffectBudget,
     ExperimentPlan,
     Hypothesis,
@@ -1131,6 +1133,8 @@ class WorkbenchApplicationService:
                 result = self._record_mastery_assessment(command)
             elif command.kind is CommandKind.EXPORT_REPORT:
                 result = self._export_report(command)
+            elif command.kind is CommandKind.REQUEST_ACTION:
+                result = self._request_action_intent(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1161,6 +1165,102 @@ class WorkbenchApplicationService:
             )
         self._idempotency[command.idempotency_key] = (digest, result)
         return result
+
+    def _request_action_intent(self, command: WorkbenchCommand) -> CommandResult:
+        if self.research is None:
+            raise WorkbenchContractError("no private research store is configured")
+        assert command.workspace_id is not None
+        _require_command_fields(
+            command,
+            required={
+                "action_type",
+                "exact_action",
+                "experiment_id",
+                "expected_effects",
+                "max_requests",
+                "purpose",
+                "target_asset_id",
+            },
+            optional={"technique"},
+        )
+        now = self.clock()
+        issued = command.issued_at.astimezone(timezone.utc)
+        current = now.astimezone(timezone.utc)
+        if issued > current + timedelta(seconds=30):
+            raise WorkbenchContractError("action intent command is future-dated")
+        if current - issued > timedelta(minutes=10):
+            raise WorkbenchContractError("action intent command is stale")
+        action_type = _command_text(command, "action_type")
+        experiment_id = _command_text(command, "experiment_id")
+        target_asset_id = _command_text(command, "target_asset_id")
+        exact_action = _command_text(command, "exact_action")
+        assert action_type and experiment_id and target_asset_id and exact_action
+        if not action_type.startswith("fixture."):
+            raise WorkbenchContractError(
+                "the current action intent accepts only fixture.* action types"
+            )
+        max_requests = _command_int(command, "max_requests")
+        if max_requests <= 0:
+            raise WorkbenchContractError("action intent max_requests must be positive")
+        snapshot = self.research.snapshot(command.workspace_id)
+        if command.id in snapshot.action_requests:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                f"action request {command.id!r} already exists",
+                (f"action-request:{command.id}",),
+            )
+        try:
+            experiment = snapshot.experiments[experiment_id]
+            hypothesis = snapshot.hypotheses[experiment.hypothesis_id]
+            asset = snapshot.assets[target_asset_id]
+        except KeyError as exc:
+            raise WorkbenchContractError(
+                f"action intent references unknown server-held state {exc.args[0]!r}"
+            ) from exc
+        if target_asset_id != hypothesis.target_asset_id:
+            raise WorkbenchContractError(
+                "action intent target does not match the experiment hypothesis"
+            )
+        if asset.scope_classification is not ScopeClassification.IN_SCOPE:
+            raise WorkbenchContractError(
+                "action intent target is not recorded as in scope"
+            )
+        if exact_action not in experiment.ordered_actions:
+            raise WorkbenchContractError(
+                "action intent is not one of the server-held experiment actions"
+            )
+        if experiment.required_authority is not AuthorityLevel.LOCAL_FIXTURE:
+            raise WorkbenchContractError(
+                "the selected experiment is not limited to LOCAL_FIXTURE"
+            )
+        request = ActionRequest(
+            id=command.id,
+            workspace_id=snapshot.workspace.id,
+            session_id=experiment.session_id,
+            experiment_id=experiment.id,
+            authority_ref=snapshot.workspace.authority_ref,
+            action_type=action_type,
+            exact_action=exact_action,
+            target_asset_id=asset.id,
+            identity_id=hypothesis.actor_identity_id,
+            required_authority=experiment.required_authority,
+            purpose=_command_text(command, "purpose") or "",
+            technique=_command_text(command, "technique", optional=True),
+            max_requests=max_requests,
+            expected_effects=_command_effects(command, "expected_effects"),
+            stop_conditions=experiment.stop_conditions,
+            created_at=command.issued_at,
+        )
+        self.research.add_action_request(request, actor=self.operator_ref)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "action_intent_recorded",
+            "the bounded LOCAL_FIXTURE action intent was recorded; no Gate decision, approval, receipt, or execution was created",
+            (f"action-request:{request.id}", f"experiment:{experiment.id}"),
+        )
 
     def _export_report(self, command: WorkbenchCommand) -> CommandResult:
         if self.findings is None or self.report_drafts is None:

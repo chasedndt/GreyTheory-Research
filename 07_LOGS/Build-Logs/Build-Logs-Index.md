@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory bounded local-fixture action intent](2026-08-25-greytheory-local-action-intent.md) - server-derived active experiment request with no Gate or execution; 583 tests
+
 - [2026-08-25 - GreyTheory private redacted report export](2026-08-25-greytheory-private-report-export.md) - immutable server-held report package with verified redacted evidence; 582 tests
 
 - [2026-08-25 - GreyTheory human mastery assessment handler](2026-08-25-greytheory-human-mastery-handler.md) - fresh operator-bound evidence assessment through the workbench; 581 tests

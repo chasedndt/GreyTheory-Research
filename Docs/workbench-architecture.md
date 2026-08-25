@@ -257,6 +257,9 @@ Implemented now:
 - an explicit private report-export handler and atomic writer; it consumes only
   server-held report-ready findings/drafts and verified redacted evidence,
   writes no UI-supplied path, and records that no submission occurred;
+- a bounded `LOCAL_FIXTURE` action-intent handler; it admits only an active
+  server-held experiment action and in-scope hypothesis target, derives
+  authority/identity/stop conditions, and creates no Gate decision or receipt;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -272,8 +275,7 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- a dedicated action-intent application handler, plus later research lifecycle
-  operations beyond initial planning;
+- later research lifecycle operations beyond initial planning;
 - persisted workbench finding/report-draft authoring and editing; current export
   consumes a configured server-held source;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical

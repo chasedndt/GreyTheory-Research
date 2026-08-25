@@ -4,6 +4,28 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Bounded local-fixture action intent
+
+### What was built
+
+- Added a non-executing action-intent handler for an active persisted
+  `LOCAL_FIXTURE` experiment.
+- Derived authority-bearing context and stop conditions from server-held state,
+  restricted the action to the planned in-scope fixture target, and retained
+  store budget checks.
+
+### What the next agent should not undo
+
+Do not let the UI supply authority fingerprints, session/identity/stop-condition
+bindings, arbitrary actions, or non-fixture action types. An accepted request is
+intent only; it must never imply Gate approval, a receipt, or execution.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-local-action-intent.md`.
+
+---
+
 ## 2026-08-25 - Codex - Private redacted report export
 
 ### What was built
