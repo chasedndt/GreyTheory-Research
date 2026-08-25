@@ -453,6 +453,70 @@ def test_hypothesis_and_experiment_lifecycles_are_explicit(tmp_path):
     assert not hasattr(experiment(bound), "execute")
 
 
+def test_scope_review_and_experiment_planning_are_revision_bound_and_atomic(tmp_path):
+    research, _, bound = store_with_workspace(tmp_path)
+    assets(research, bound)
+    research.add_identity(identity(bound), actor="researcher")
+    research.add_session(session(bound), actor="researcher")
+    research.add_hypothesis(hypothesis(bound), actor="researcher")
+
+    scoped = research.scope_hypothesis(
+        "workspace-local-authz",
+        "hypothesis-object-ownership",
+        actor="researcher",
+        review_basis="Reviewed the stored contract and controlled target classification",
+        expected_revision=0,
+    )
+    assert scoped.status is HypothesisStatus.SCOPED
+    assert scoped.revision == 1
+    with pytest.raises(ResearchStoreError, match="revision conflict"):
+        research.scope_hypothesis(
+            "workspace-local-authz",
+            "hypothesis-object-ownership",
+            actor="researcher",
+            review_basis="Stale review",
+            expected_revision=0,
+        )
+
+    mismatched = replace(
+        experiment(bound), required_authority=AuthorityLevel.NONE
+    )
+    with pytest.raises(ResearchStoreError, match="exactly match"):
+        research.plan_experiment(
+            mismatched,
+            actor="researcher",
+            expected_hypothesis_revision=1,
+        )
+    unchanged = research.snapshot("workspace-local-authz")
+    assert unchanged.hypotheses[scoped.id].status is HypothesisStatus.SCOPED
+    assert unchanged.experiments == {}
+
+    planned, persisted = research.plan_experiment(
+        experiment(bound),
+        actor="researcher",
+        expected_hypothesis_revision=1,
+    )
+    assert planned.status is HypothesisStatus.PLANNED
+    assert planned.revision == 2
+    assert persisted.revision == 0
+    ready = research.transition_experiment(
+        "workspace-local-authz",
+        persisted.id,
+        ExperimentStatus.READY,
+        actor="researcher",
+        expected_revision=0,
+    )
+    assert ready.revision == 1
+    with pytest.raises(ResearchStoreError, match="revision conflict"):
+        research.transition_experiment(
+            "workspace-local-authz",
+            persisted.id,
+            ExperimentStatus.ACTIVE,
+            actor="researcher",
+            expected_revision=0,
+        )
+
+
 def test_action_request_needs_active_session_experiment_and_testing_hypothesis(tmp_path):
     research, _, bound = store_with_workspace(tmp_path)
     assets(research, bound)

@@ -4,6 +4,30 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Governed research-planning handlers
+
+### What was built
+
+- Added create-only hypothesis, human scope-review, and atomic experiment-plan
+  handlers to the transport-neutral workbench service.
+- Added optimistic revisions to hypotheses and experiments, including a typed
+  conflict for a race detected at the store write boundary.
+- Derived authority, session, and workspace bindings from persisted state
+  instead of accepting them from the UI.
+
+### What the next agent should not undo
+
+Do not let `PLAN_EXPERIMENT` silently scope a hypothesis, trust an authority
+fingerprint supplied by the UI, or add the experiment and advance the
+hypothesis in separate writes. An accepted application result still means a
+private domain mutation only; `executed` remains false.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-research-planning-handlers.md`.
+
+---
+
 ## 2026-08-25 - Codex - Dark passive broker foundation
 
 ### What was built

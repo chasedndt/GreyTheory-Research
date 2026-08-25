@@ -4,6 +4,11 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - governed research-planning application handlers
+
+- Added workbench handlers for create-only unproven hypotheses, explicit human scope review, and atomic experiment planning. Authority and workspace fingerprints are derived from persisted state, every changed hypothesis carries an optimistic revision, and stale UI commands conflict rather than overwrite newer decisions.
+- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action, assessment, and report commands remain refused.
+
 ### Added - dark passive broker foundation
 
 - Added the separate `greytheory_broker` package and optional `passive-broker` crypto dependency. Its `passive-head-v1` policy binds one short-lived Ed25519 ticket to the exact hash-chain-verified Gate audit record, canonical HTTPS target, programme rate, authority fingerprint, and one unauthenticated `HEAD` request. Workers receive only the public ticket-verification key and cannot mint broker tickets.
@@ -13,7 +18,7 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 ### Added - workbench foundation and executable capability truth
 
 - Added `greytheory_app`, a separate transport-neutral application layer with a versioned workbench snapshot across programmes, research, hypotheses, learning, evidence, reports, approvals, audit readiness, and executable capability truth.
-- Added idempotent, optimistic-revision learning command handlers and explicit non-executing typed refusals for research, action, assessment, and report commands whose dedicated use cases are not implemented. The contract structurally rejects posture above `LOCAL_FIXTURE` and never represents a UI action as execution authority.
+- Added idempotent, optimistic-revision learning command handlers and explicit non-executing typed refusals for commands whose dedicated use cases are not implemented. The contract structurally rejects posture above `LOCAL_FIXTURE` and never represents a UI action as execution authority.
 - Added `greytheory.capabilities`, a typed register shared by the dashboard and future workbench. It separates shipped-code status from runtime health and explicitly keeps Lane 3, external Scope Watch collection, and `PASSIVE_HTTP` unavailable.
 - Corrected the dashboard's stale claim that no Signal Plane lane or learning graph existed. It now reports the three static offline lanes, the live learning core, offline model gateway, offline Scope Watch, and the still-unbuilt graphical workbench and network worker.
 - Accepted ADR-0010: the graphical workbench is a separate local application layer around the offline core, never a direct collector or execution path.

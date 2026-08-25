@@ -21,7 +21,11 @@ from typing import Any, Callable, Mapping, TypeVar
 
 from greytheory.audit import AuditLog
 from greytheory.authority.gate import AuthorityLevel, DEFAULT_MAX_CONTRACT_AGE
-from greytheory.authority.scope import ContractStatus, ScopeContract
+from greytheory.authority.scope import (
+    ContractStatus,
+    ScopeClassification,
+    ScopeContract,
+)
 from greytheory.evidence import find_repository_root
 from greytheory.research.domain import (
     EXPERIMENT_TRANSITIONS,
@@ -49,6 +53,10 @@ SCHEMA_VERSION = 1
 
 class ResearchStoreError(ResearchDomainError):
     """Raised when a workspace mutation or persisted state is unsound."""
+
+
+class ResearchRevisionConflict(ResearchStoreError):
+    """Raised when a caller attempts to mutate a stale record revision."""
 
 
 def _utcnow() -> datetime:
@@ -369,9 +377,15 @@ class ResearchStore:
         result_refs: tuple[str, ...] = (),
         finding_ref: str | None = None,
         lesson_ref: str | None = None,
+        expected_revision: int | None = None,
     ) -> Hypothesis:
         snapshot = self.snapshot(workspace_id)
         hypothesis = self._get(snapshot.hypotheses, hypothesis_id, "hypothesis")
+        if expected_revision is not None and hypothesis.revision != expected_revision:
+            raise ResearchRevisionConflict(
+                f"hypothesis revision conflict: expected {expected_revision}, "
+                f"current {hypothesis.revision}"
+            )
         if to not in HYPOTHESIS_TRANSITIONS[hypothesis.status]:
             raise ResearchStoreError(
                 f"{hypothesis.status.value} -> {to.value} is not a hypothesis transition"
@@ -392,6 +406,7 @@ class ResearchStore:
                 raise ResearchStoreError("lesson conversion requires an existing lesson")
         updated = replace(
             hypothesis,
+            revision=hypothesis.revision + 1,
             status=to,
             result_summary=result_summary or hypothesis.result_summary,
             result_refs=result_refs or hypothesis.result_refs,
@@ -409,11 +424,62 @@ class ResearchStore:
         )
         return updated
 
+    def scope_hypothesis(
+        self,
+        workspace_id: str,
+        hypothesis_id: str,
+        *,
+        actor: str,
+        review_basis: str,
+        expected_revision: int,
+    ) -> Hypothesis:
+        """Record one explicit human scope review without granting authority."""
+
+        snapshot = self.snapshot(workspace_id)
+        hypothesis = self._get(snapshot.hypotheses, hypothesis_id, "hypothesis")
+        if hypothesis.revision != expected_revision:
+            raise ResearchRevisionConflict(
+                f"hypothesis revision conflict: expected {expected_revision}, "
+                f"current {hypothesis.revision}"
+            )
+        if hypothesis.status is not HypothesisStatus.DRAFT:
+            raise ResearchStoreError("only a draft hypothesis can receive scope review")
+        asset = self._get(snapshot.assets, hypothesis.target_asset_id, "target asset")
+        if asset.scope_classification is not ScopeClassification.IN_SCOPE:
+            raise ResearchStoreError(
+                "scope review cannot accept a target that is not recorded in scope"
+            )
+        basis = str(review_basis or "").strip()
+        if not basis:
+            raise ResearchStoreError("scope review requires a human review basis")
+        updated = replace(
+            hypothesis,
+            revision=hypothesis.revision + 1,
+            status=HypothesisStatus.SCOPED,
+        )
+        hypotheses = {**snapshot.hypotheses, hypothesis_id: updated}
+        self._commit(
+            snapshot,
+            actor,
+            "research.hypothesis.scope-review",
+            hypothesis_id,
+            hypotheses=hypotheses,
+            detail={
+                "from": hypothesis.status.value,
+                "to": updated.status.value,
+                "review_basis": basis,
+                "expected_revision": expected_revision,
+            },
+        )
+        return updated
+
     def add_experiment(self, experiment: ExperimentPlan, *, actor: str) -> ExperimentPlan:
         snapshot = self.snapshot(experiment.workspace_id)
         self._check_record(snapshot, experiment)
         self._unique(snapshot.experiments, experiment.id, "experiment")
         hypothesis = self._get(snapshot.hypotheses, experiment.hypothesis_id, "hypothesis")
+        if experiment.status is not ExperimentStatus.DRAFT or experiment.revision != 0:
+            raise ResearchStoreError("a new experiment must begin at draft revision zero")
         if experiment.session_id != hypothesis.session_id:
             raise ResearchStoreError("experiment session does not match its hypothesis")
         session = snapshot.sessions[experiment.session_id]
@@ -427,6 +493,65 @@ class ResearchStore:
         )
         return experiment
 
+    def plan_experiment(
+        self,
+        experiment: ExperimentPlan,
+        *,
+        actor: str,
+        expected_hypothesis_revision: int,
+    ) -> tuple[Hypothesis, ExperimentPlan]:
+        """Atomically add a draft plan and move its scoped hypothesis to planned."""
+
+        snapshot = self.snapshot(experiment.workspace_id)
+        self._check_record(snapshot, experiment)
+        self._unique(snapshot.experiments, experiment.id, "experiment")
+        hypothesis = self._get(
+            snapshot.hypotheses, experiment.hypothesis_id, "hypothesis"
+        )
+        if hypothesis.revision != expected_hypothesis_revision:
+            raise ResearchRevisionConflict(
+                "hypothesis revision conflict: "
+                f"expected {expected_hypothesis_revision}, current {hypothesis.revision}"
+            )
+        if hypothesis.status is not HypothesisStatus.SCOPED:
+            raise ResearchStoreError(
+                "an experiment can be planned only for a scoped hypothesis"
+            )
+        if experiment.status is not ExperimentStatus.DRAFT or experiment.revision != 0:
+            raise ResearchStoreError("a new experiment must begin at draft revision zero")
+        if experiment.session_id != hypothesis.session_id:
+            raise ResearchStoreError("experiment session does not match its hypothesis")
+        session = snapshot.sessions[experiment.session_id]
+        if experiment.required_authority != hypothesis.required_authority:
+            raise ResearchStoreError(
+                "experiment authority must exactly match its hypothesis"
+            )
+        if experiment.required_authority > session.operating_posture:
+            raise ResearchStoreError("experiment authority exceeds the session posture")
+        if not session.effect_budget.allows(experiment.effect_budget):
+            raise ResearchStoreError("experiment effect budget exceeds the session budget")
+
+        planned = replace(
+            hypothesis,
+            revision=hypothesis.revision + 1,
+            status=HypothesisStatus.PLANNED,
+        )
+        self._commit(
+            snapshot,
+            actor,
+            "research.experiment.plan",
+            experiment.id,
+            hypotheses={**snapshot.hypotheses, hypothesis.id: planned},
+            experiments={**snapshot.experiments, experiment.id: experiment},
+            detail={
+                "hypothesis_id": hypothesis.id,
+                "hypothesis_from": hypothesis.status.value,
+                "hypothesis_to": planned.status.value,
+                "expected_hypothesis_revision": expected_hypothesis_revision,
+            },
+        )
+        return planned, experiment
+
     def transition_experiment(
         self,
         workspace_id: str,
@@ -436,9 +561,15 @@ class ResearchStore:
         actor: str,
         outcome_summary: str = "",
         result_refs: tuple[str, ...] = (),
+        expected_revision: int | None = None,
     ) -> ExperimentPlan:
         snapshot = self.snapshot(workspace_id)
         experiment = self._get(snapshot.experiments, experiment_id, "experiment")
+        if expected_revision is not None and experiment.revision != expected_revision:
+            raise ResearchRevisionConflict(
+                f"experiment revision conflict: expected {expected_revision}, "
+                f"current {experiment.revision}"
+            )
         if to not in EXPERIMENT_TRANSITIONS[experiment.status]:
             raise ResearchStoreError(
                 f"{experiment.status.value} -> {to.value} is not an experiment transition"
@@ -459,6 +590,7 @@ class ResearchStore:
                 )
         updated = replace(
             experiment,
+            revision=experiment.revision + 1,
             status=to,
             outcome_summary=outcome_summary or experiment.outcome_summary,
             result_refs=result_refs or experiment.result_refs,
@@ -853,6 +985,7 @@ class ResearchStore:
 __all__ = [
     "ResearchStore",
     "ResearchStoreError",
+    "ResearchRevisionConflict",
     "SCHEMA_VERSION",
     "WorkspaceSnapshot",
     "resolve_research_root",

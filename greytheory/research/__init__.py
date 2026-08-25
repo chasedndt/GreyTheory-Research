@@ -27,6 +27,7 @@ from greytheory.research.domain import (
     metadata_items,
 )
 from greytheory.research.store import (
+    ResearchRevisionConflict,
     ResearchStore,
     ResearchStoreError,
     WorkspaceSnapshot,
@@ -50,6 +51,7 @@ __all__ = [
     "ResearchDomainError",
     "ResearchIdentity",
     "ResearchSession",
+    "ResearchRevisionConflict",
     "ResearchStore",
     "ResearchStoreError",
     "ResearchWorkspace",

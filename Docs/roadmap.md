@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 571 repository tests pass on 2026-08-25 with executable capability truth, the workbench application contract, rate-bound authority fingerprints, and the offline passive-broker conformance foundation; posture remains unchanged.
+- 574 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning, rate-bound authority fingerprints, and the offline passive-broker conformance foundation; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -206,6 +206,7 @@ The interactive application is not.
 - [x] Implement deterministic prerequisite/review planning, staged private journeys, reflection, explicit persisted-human-assessment completion, and CLI operation.
 - [ ] Select the visual direction.
 - [x] Build the versioned, transport-neutral application snapshot and bounded learning command contract.
+- [x] Add create-only hypothesis, human scope-review, and atomic experiment-planning application handlers with optimistic revisions.
 - [ ] Build the local transport and graphical application shell.
 - [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
 - [ ] Add adaptive scheduling plus assisted and transfer-specific learning modes beyond the deterministic foundation.

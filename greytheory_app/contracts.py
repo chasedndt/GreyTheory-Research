@@ -36,6 +36,7 @@ class CommandKind(str, Enum):
     ADVANCE_LEARNING_JOURNEY = "advance_learning_journey"
     ABANDON_LEARNING_JOURNEY = "abandon_learning_journey"
     CREATE_HYPOTHESIS = "create_hypothesis"
+    REVIEW_HYPOTHESIS_SCOPE = "review_hypothesis_scope"
     PLAN_EXPERIMENT = "plan_experiment"
     REQUEST_ACTION = "request_action"
     RECORD_MASTERY_ASSESSMENT = "record_mastery_assessment"
@@ -294,8 +295,14 @@ class WorkbenchCommand:
             raise WorkbenchContractError("unsupported command schema version")
         if self.workspace_id is not None:
             _safe_id(self.workspace_id, "command workspace id")
-        if self.expected_revision is not None and self.expected_revision < 0:
-            raise WorkbenchContractError("expected revision cannot be negative")
+        if self.expected_revision is not None and (
+            isinstance(self.expected_revision, bool)
+            or not isinstance(self.expected_revision, int)
+            or self.expected_revision < 0
+        ):
+            raise WorkbenchContractError(
+                "expected revision must be a non-negative integer"
+            )
         if self.requested_authority > AuthorityLevel.LOCAL_FIXTURE:
             raise WorkbenchContractError(
                 "the current workbench refuses authority above LOCAL_FIXTURE"
@@ -320,6 +327,29 @@ class WorkbenchCommand:
                 raise WorkbenchContractError(
                     "an action request intent requires explicit human acknowledgement"
                 )
+        if self.kind is CommandKind.CREATE_HYPOTHESIS and self.expected_revision != 0:
+            raise WorkbenchContractError(
+                "creating a hypothesis requires expected revision zero"
+            )
+        if self.kind in {
+            CommandKind.REVIEW_HYPOTHESIS_SCOPE,
+            CommandKind.PLAN_EXPERIMENT,
+        }:
+            if self.expected_revision is None:
+                raise WorkbenchContractError(
+                    f"{self.kind.value} requires the current hypothesis revision"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "review and planning commands carry no execution authority"
+                )
+        if (
+            self.kind is CommandKind.REVIEW_HYPOTHESIS_SCOPE
+            and not self.human_acknowledged
+        ):
+            raise WorkbenchContractError(
+                "scope review requires explicit human acknowledgement"
+            )
 
     def field(self, name: str, default: CommandValue = None) -> CommandValue:
         for field in self.fields:

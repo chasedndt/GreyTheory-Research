@@ -240,9 +240,10 @@ Implemented now:
 - the transport-neutral `greytheory_app` application service with versioned
   snapshots across programmes, learning, research, hypotheses, evidence,
   reports, approvals, audit readiness, and capability truth;
-- idempotent, optimistic-revision learning command handlers plus typed refusal
-  for research, action, assessment, and report commands that lack a dedicated
-  use-case handler;
+- idempotent, optimistic-revision learning command handlers;
+- create-only unproven-hypothesis, explicit human scope-review, and atomic
+  experiment-planning handlers; authority is derived from persisted workspace
+  and hypothesis state, and all results remain non-executing;
 - the separate, network-free `greytheory_broker` `passive-head-v1` contracts,
   policy guard, replay ledger, default-engaged kill switch, and signed receipt
   metadata foundation;
@@ -254,8 +255,8 @@ Not implemented now:
 
 - the selected interactive UI;
 - a local HTTP/IPC transport and application shell;
-- dedicated research, action-intent, mastery-assessment, and report-export
-  application handlers;
+- dedicated action-intent, mastery-assessment, and report-export application
+  handlers, plus later research lifecycle operations beyond initial planning;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

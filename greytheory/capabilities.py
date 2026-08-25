@@ -196,8 +196,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "workbench_application_service",
         "Workbench application service",
         CapabilityStatus.PARTIAL,
-        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning commands are live.",
-        "Transport and graphical shell are absent; research, action, assessment, and report commands are typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
+        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning plus revision-aware hypothesis scope and experiment-planning commands are live.",
+        "Transport and graphical shell are absent; action, assessment, and report commands remain typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
         ("greytheory_app", "Docs/workbench-architecture.md"),
     ),
     Capability(

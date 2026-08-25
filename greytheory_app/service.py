@@ -1,9 +1,9 @@
 """Transport-neutral local workbench assembly and command routing.
 
-The service reads existing GreyTheory stores and can mutate only the already
-implemented learning-journey domain. Research/action/report commands are typed
-but refused until their dedicated use-case handlers exist. Nothing here calls a
-tool, collector, model provider, shell, browser, worker, or network.
+The service reads existing GreyTheory stores and exposes bounded learning and
+research-planning use cases. Action/report commands remain typed refusals until
+their dedicated use-case handlers exist. Nothing here calls a tool, collector,
+model provider, shell, browser, worker, or network.
 """
 
 # SPDX-License-Identifier: Apache-2.0
@@ -37,7 +37,13 @@ from greytheory.learning import (
     start_learning_journey,
 )
 from greytheory.registry import ProgrammeRegistry
-from greytheory.research import ResearchStore
+from greytheory.research import (
+    EffectBudget,
+    ExperimentPlan,
+    Hypothesis,
+    ResearchRevisionConflict,
+    ResearchStore,
+)
 from greytheory.research.store import WorkspaceSnapshot
 from greytheory_app.contracts import (
     CommandDisposition,
@@ -80,6 +86,58 @@ def _section_error(section_id: str, title: str, exc: Exception) -> WorkbenchSect
         ),
         note="The source failed closed; no empty or healthy state was inferred.",
     )
+
+
+def _command_text(
+    command: WorkbenchCommand, name: str, *, optional: bool = False
+) -> str | None:
+    value = command.field(name)
+    if value is None and optional:
+        return None
+    if not isinstance(value, str) or not value.strip():
+        raise WorkbenchContractError(f"{command.kind.value} requires {name}")
+    return value.strip()
+
+
+def _command_texts(
+    command: WorkbenchCommand, name: str, *, optional: bool = False
+) -> tuple[str, ...]:
+    value = command.field(name, () if optional else None)
+    if not isinstance(value, tuple) or any(not item.strip() for item in value):
+        raise WorkbenchContractError(
+            f"{command.kind.value} requires {name} as a tuple of text values"
+        )
+    if not optional and not value:
+        raise WorkbenchContractError(f"{command.kind.value} requires {name}")
+    return tuple(item.strip() for item in value)
+
+
+def _command_int(command: WorkbenchCommand, name: str) -> int:
+    value = command.field(name)
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise WorkbenchContractError(
+            f"{command.kind.value} requires {name} as an integer"
+        )
+    return value
+
+
+def _command_effects(command: WorkbenchCommand, name: str) -> EffectBudget:
+    encoded = _command_texts(command, name, optional=True)
+    values: dict[str, int] = {}
+    for item in encoded:
+        effect, separator, amount = item.partition("=")
+        effect = effect.strip()
+        if not separator or not effect or effect in values:
+            raise WorkbenchContractError(
+                f"{name} entries must be unique effect=limit pairs"
+            )
+        try:
+            values[effect] = int(amount)
+        except ValueError as exc:
+            raise WorkbenchContractError(
+                f"{name} entries must use integer limits"
+            ) from exc
+    return EffectBudget.from_mapping(values)
 
 
 class WorkbenchApplicationService:
@@ -395,6 +453,7 @@ class WorkbenchApplicationService:
                         ("target_asset_id", hypothesis.target_asset_id),
                         ("estimated_requests", str(hypothesis.estimated_request_cost)),
                         ("estimated_minutes", str(hypothesis.estimated_time_minutes)),
+                        ("revision", str(hypothesis.revision)),
                         ("finding_ref", hypothesis.finding_ref or "none"),
                         ("lesson_ref", hypothesis.lesson_ref or "none"),
                     ),
@@ -1019,6 +1078,12 @@ class WorkbenchApplicationService:
                 result = self._advance_learning(command)
             elif command.kind is CommandKind.ABANDON_LEARNING_JOURNEY:
                 result = self._abandon_learning(command)
+            elif command.kind is CommandKind.CREATE_HYPOTHESIS:
+                result = self._create_hypothesis(command)
+            elif command.kind is CommandKind.REVIEW_HYPOTHESIS_SCOPE:
+                result = self._review_hypothesis_scope(command)
+            elif command.kind is CommandKind.PLAN_EXPERIMENT:
+                result = self._plan_experiment(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1026,6 +1091,13 @@ class WorkbenchApplicationService:
                     "handler_not_implemented",
                     f"{command.kind.value} is typed but has no application handler; no domain state changed",
                 )
+        except ResearchRevisionConflict as exc:
+            result = CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                str(exc),
+            )
         except Exception as exc:
             result = CommandResult(
                 command.id,
@@ -1048,6 +1120,161 @@ class WorkbenchApplicationService:
             "workspace_selected",
             "the workspace is readable; selection is local UI context, not authority",
             (f"workspace:{command.workspace_id}",),
+        )
+
+    def _create_hypothesis(self, command: WorkbenchCommand) -> CommandResult:
+        if self.research is None:
+            raise WorkbenchContractError("no private research store is configured")
+        if command.workspace_id is None:
+            raise WorkbenchContractError("create_hypothesis requires a workspace id")
+        snapshot = self.research.snapshot(command.workspace_id)
+        hypothesis_id = _command_text(command, "hypothesis_id")
+        assert hypothesis_id is not None
+        if hypothesis_id in snapshot.hypotheses:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                f"hypothesis {hypothesis_id!r} already exists",
+                (f"hypothesis:{hypothesis_id}",),
+            )
+        hypothesis = Hypothesis(
+            id=hypothesis_id,
+            workspace_id=snapshot.workspace.id,
+            session_id=_command_text(command, "session_id") or "",
+            authority_ref=snapshot.workspace.authority_ref,
+            title=_command_text(command, "title") or "",
+            preconditions=_command_texts(command, "preconditions"),
+            actor_identity_id=_command_text(
+                command, "actor_identity_id", optional=True
+            ),
+            action=_command_text(command, "action") or "",
+            target_asset_id=_command_text(command, "target_asset_id") or "",
+            consequence=_command_text(command, "consequence") or "",
+            reasoning=_command_text(command, "reasoning") or "",
+            supporting_observation_refs=_command_texts(
+                command, "supporting_observation_refs", optional=True
+            ),
+            assumptions=_command_texts(command, "assumptions"),
+            required_authority=command.requested_authority,
+            expected_safe_behaviour=_command_text(
+                command, "expected_safe_behaviour"
+            )
+            or "",
+            expected_vulnerable_behaviour=_command_text(
+                command, "expected_vulnerable_behaviour"
+            )
+            or "",
+            falsifier=_command_text(command, "falsifier") or "",
+            evidence_needs=_command_texts(command, "evidence_needs"),
+            stop_conditions=_command_texts(command, "stop_conditions"),
+            estimated_request_cost=_command_int(command, "estimated_request_cost"),
+            estimated_time_minutes=_command_int(command, "estimated_time_minutes"),
+            estimated_effects=_command_effects(command, "estimated_effects"),
+            duplicate_risk=_command_text(command, "duplicate_risk") or "",
+            learning_value=_command_text(command, "learning_value") or "",
+        )
+        self.research.add_hypothesis(hypothesis, actor=command.operator_ref)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "hypothesis_created",
+            "the unproven hypothesis was recorded; no experiment ran and no claim was promoted",
+            (f"hypothesis:{hypothesis.id}",),
+        )
+
+    def _review_hypothesis_scope(
+        self, command: WorkbenchCommand
+    ) -> CommandResult:
+        if self.research is None:
+            raise WorkbenchContractError("no private research store is configured")
+        if command.workspace_id is None or command.expected_revision is None:
+            raise WorkbenchContractError(
+                "review_hypothesis_scope requires workspace and revision"
+            )
+        hypothesis_id = _command_text(command, "hypothesis_id")
+        assert hypothesis_id is not None
+        snapshot = self.research.snapshot(command.workspace_id)
+        current = snapshot.hypotheses.get(hypothesis_id)
+        if current is not None and current.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {current.revision}",
+                (f"hypothesis:{hypothesis_id}",),
+            )
+        reviewed = self.research.scope_hypothesis(
+            command.workspace_id,
+            hypothesis_id,
+            actor=command.operator_ref,
+            review_basis=_command_text(command, "review_basis") or "",
+            expected_revision=command.expected_revision,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "hypothesis_scope_reviewed",
+            "human scope review was recorded against the existing authority; no authority was granted",
+            (f"hypothesis:{reviewed.id}",),
+        )
+
+    def _plan_experiment(self, command: WorkbenchCommand) -> CommandResult:
+        if self.research is None:
+            raise WorkbenchContractError("no private research store is configured")
+        if command.workspace_id is None or command.expected_revision is None:
+            raise WorkbenchContractError("plan_experiment requires workspace and revision")
+        snapshot = self.research.snapshot(command.workspace_id)
+        hypothesis_id = _command_text(command, "hypothesis_id")
+        assert hypothesis_id is not None
+        hypothesis = snapshot.hypotheses.get(hypothesis_id)
+        if hypothesis is None:
+            raise WorkbenchContractError(f"no hypothesis {hypothesis_id!r}")
+        if hypothesis.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {hypothesis.revision}",
+                (f"hypothesis:{hypothesis_id}",),
+            )
+        experiment_id = _command_text(command, "experiment_id")
+        assert experiment_id is not None
+        if experiment_id in snapshot.experiments:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                f"experiment {experiment_id!r} already exists",
+                (f"experiment:{experiment_id}",),
+            )
+        experiment = ExperimentPlan(
+            id=experiment_id,
+            workspace_id=snapshot.workspace.id,
+            session_id=hypothesis.session_id,
+            hypothesis_id=hypothesis.id,
+            authority_ref=snapshot.workspace.authority_ref,
+            ordered_actions=_command_texts(command, "ordered_actions"),
+            positive_controls=_command_texts(command, "positive_controls"),
+            negative_controls=_command_texts(command, "negative_controls"),
+            expected_outcomes=_command_texts(command, "expected_outcomes"),
+            required_authority=hypothesis.required_authority,
+            effect_budget=_command_effects(command, "effect_budget"),
+            rollback_steps=_command_texts(command, "rollback_steps"),
+            stop_conditions=_command_texts(command, "stop_conditions"),
+            evidence_plan=_command_texts(command, "evidence_plan"),
+        )
+        planned, persisted = self.research.plan_experiment(
+            experiment,
+            actor=command.operator_ref,
+            expected_hypothesis_revision=command.expected_revision,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "experiment_planned",
+            "the bounded experiment plan was recorded atomically; no action ran",
+            (f"hypothesis:{planned.id}", f"experiment:{persisted.id}"),
         )
 
     def _start_learning(self, command: WorkbenchCommand) -> CommandResult:

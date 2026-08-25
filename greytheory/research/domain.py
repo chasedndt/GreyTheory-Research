@@ -523,6 +523,7 @@ class Hypothesis(SerializableRecord):
     estimated_effects: EffectBudget
     duplicate_risk: str
     learning_value: str
+    revision: int = 0
     status: HypothesisStatus = HypothesisStatus.DRAFT
     result_summary: str = ""
     result_refs: tuple[str, ...] = ()
@@ -551,6 +552,8 @@ class Hypothesis(SerializableRecord):
         _text_tuple(self.stop_conditions, "hypothesis stop conditions", allow_empty=False)
         if self.estimated_request_cost < 0 or self.estimated_time_minutes < 0:
             raise ResearchDomainError("hypothesis cost estimates cannot be negative")
+        if isinstance(self.revision, bool) or not isinstance(self.revision, int) or self.revision < 0:
+            raise ResearchDomainError("hypothesis revision must be a non-negative integer")
         _required(self.duplicate_risk, "duplicate risk")
         _required(self.learning_value, "learning value")
         _text_tuple(self.result_refs, "hypothesis result references")
@@ -596,6 +599,7 @@ class Hypothesis(SerializableRecord):
             estimated_effects=EffectBudget.from_dict(data.get("estimated_effects")),
             duplicate_risk=data["duplicate_risk"],
             learning_value=data["learning_value"],
+            revision=int(data.get("revision", 0)),
             status=HypothesisStatus(data.get("status", "draft")),
             result_summary=data.get("result_summary", ""),
             result_refs=_text_tuple(data.get("result_refs"), "result references"),
@@ -620,6 +624,7 @@ class ExperimentPlan(SerializableRecord):
     rollback_steps: tuple[str, ...]
     stop_conditions: tuple[str, ...]
     evidence_plan: tuple[str, ...]
+    revision: int = 0
     status: ExperimentStatus = ExperimentStatus.DRAFT
     outcome_summary: str = ""
     result_refs: tuple[str, ...] = ()
@@ -638,6 +643,8 @@ class ExperimentPlan(SerializableRecord):
         _text_tuple(self.stop_conditions, "experiment stop conditions", allow_empty=False)
         _text_tuple(self.evidence_plan, "evidence plan", allow_empty=False)
         _text_tuple(self.result_refs, "experiment result references")
+        if isinstance(self.revision, bool) or not isinstance(self.revision, int) or self.revision < 0:
+            raise ResearchDomainError("experiment revision must be a non-negative integer")
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> ExperimentPlan:
@@ -670,6 +677,7 @@ class ExperimentPlan(SerializableRecord):
             evidence_plan=_text_tuple(
                 data.get("evidence_plan"), "evidence plan", allow_empty=False
             ),
+            revision=int(data.get("revision", 0)),
             status=ExperimentStatus(data.get("status", "draft")),
             outcome_summary=data.get("outcome_summary", ""),
             result_refs=_text_tuple(data.get("result_refs"), "result references"),

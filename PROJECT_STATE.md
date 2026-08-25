@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, and bounded learning command handlers implemented; transport and interactive shell await visual selection.
+- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, bounded learning commands, and governed hypothesis/scope/experiment-planning handlers implemented; transport and interactive shell await visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 571 repository tests passing on 2026-08-25, including executable capability truth, the workbench application contract, rate-bound authority fingerprints, and the offline passive-broker conformance foundation.
+- **Verified baseline:** 574 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research-planning handlers, rate-bound authority fingerprints, and the offline passive-broker conformance foundation.
 
 ## What is built
 
@@ -57,7 +57,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - an executable capability register consumed by the dashboard and intended for the workbench, with separate shipped-code status and runtime-health semantics;
 - an accepted workbench boundary covering the Windows operator host, local application service, offline core, private storage, guided-learning journey, and future isolated Ubuntu worker.
 - deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
-- a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded learning commands are idempotent and revision-aware, while all action commands remain non-executing.
+- a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded learning and research-planning commands are idempotent/revision-aware, scope review is explicitly human-acknowledged, experiment planning is atomic, and all results remain non-executing.
 - a dark, offline `greytheory_broker` foundation for one `passive-head-v1` action: fresh hash-chain-verified Gate binding, canonical HTTPS and public-address policy, signed expiring tickets, exact-once SQLite reservation, default-engaged digest-protected kill switch, strict request/time/rate/capture ceilings, and signed completed/stopped receipt metadata that requires an encrypted-capture envelope digest.
 
 ## What is not built
