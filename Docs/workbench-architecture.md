@@ -251,6 +251,9 @@ Implemented now:
 - create-only unproven-hypothesis, explicit human scope-review, and atomic
   experiment-planning handlers; authority is derived from persisted workspace
   and hypothesis state, and all results remain non-executing;
+- a fresh, explicit, evidence-bound human mastery-assessment handler; assessor
+  identity is derived from the configured local operator, not supplied by the
+  UI, and fixtures, models, and journeys still award nothing automatically;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -266,8 +269,8 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- dedicated action-intent, mastery-assessment, and report-export application
-  handlers, plus later research lifecycle operations beyond initial planning;
+- dedicated action-intent and report-export application handlers, plus later
+  research lifecycle operations beyond initial planning;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

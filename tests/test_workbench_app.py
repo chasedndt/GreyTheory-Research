@@ -5,7 +5,7 @@ from __future__ import annotations
 import ast
 import json
 from dataclasses import replace
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import pytest
@@ -59,11 +59,12 @@ def command(
     authority: AuthorityLevel = AuthorityLevel.NONE,
     acknowledged: bool = False,
     workspace_id: str | None = None,
+    operator_ref: str = "operator-local",
 ) -> WorkbenchCommand:
     return WorkbenchCommand(
         id=command_id,
         kind=kind,
-        operator_ref="operator-local",
+        operator_ref=operator_ref,
         issued_at=NOW,
         idempotency_key=key or command_id,
         fields=fields,
@@ -200,6 +201,23 @@ def experiment_fields() -> tuple[CommandField, ...]:
     )
 
 
+def mastery_fields() -> tuple[CommandField, ...]:
+    return (
+        CommandField("assessment_id", "assessment-workbench-idor-test"),
+        CommandField("card_id", "idor-bola"),
+        CommandField("dimension", "test"),
+        CommandField("level", "independent"),
+        CommandField(
+            "evidence_refs", ("lab-report:controlled-two-account-review",)
+        ),
+        CommandField(
+            "rationale",
+            "I reviewed the falsifier, both controls, and the saved receipt.",
+        ),
+        CommandField("review_due", "2026-11-25"),
+    )
+
+
 def test_contract_refuses_live_posture_and_executable_display_actions():
     with pytest.raises(WorkbenchContractError, match="LOCAL_FIXTURE"):
         WorkbenchApplicationService(posture=AuthorityLevel.PASSIVE_HTTP)
@@ -226,6 +244,22 @@ def test_contract_refuses_live_posture_and_executable_display_actions():
             CommandKind.PLAN_EXPERIMENT,
             fields=(CommandField("hypothesis_id", "hypothesis-1"),),
             revision=True,
+        )
+    with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
+        command(
+            "mastery-without-human",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=mastery_fields(),
+            revision=0,
+        )
+    with pytest.raises(WorkbenchContractError, match="no execution authority"):
+        command(
+            "mastery-with-authority",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=mastery_fields(),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            acknowledged=True,
         )
 
 
@@ -480,6 +514,99 @@ def test_store_side_revision_race_is_returned_as_a_typed_conflict(tmp_path):
     assert result.disposition is CommandDisposition.CONFLICT
     assert result.code == "revision_conflict"
     assert result.executed is False
+
+
+def test_mastery_assessment_is_fresh_human_bound_and_evidence_only(tmp_path):
+    mastery, journeys = stores(tmp_path / "learning")
+    service = WorkbenchApplicationService(
+        mastery=mastery,
+        journeys=journeys,
+        operator_ref="operator-local",
+        clock=lambda: NOW,
+    )
+    assessment_command = command(
+        "command-record-mastery",
+        CommandKind.RECORD_MASTERY_ASSESSMENT,
+        fields=mastery_fields(),
+        revision=0,
+        acknowledged=True,
+    )
+
+    accepted = service.handle(assessment_command)
+    repeated = service.handle(assessment_command)
+    persisted = mastery.assessments()
+
+    assert accepted.disposition is CommandDisposition.ACCEPTED
+    assert accepted.executed is False
+    assert repeated == accepted
+    assert len(persisted) == 1
+    assert persisted[0].assessor == "operator-local"
+    assert persisted[0].assessor_kind.value == "human"
+    assert persisted[0].credits_mastery is True
+    assert persisted[0].evidence_refs == (
+        "lab-report:controlled-two-account-review",
+    )
+
+    duplicate = service.handle(
+        command(
+            "command-record-mastery-duplicate",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=mastery_fields(),
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assert duplicate.disposition is CommandDisposition.CONFLICT
+    assert duplicate.code == "record_exists"
+
+    unexpected = service.handle(
+        command(
+            "command-record-mastery-extra",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=(
+                *mastery_fields(),
+                CommandField("assessor", "GreyTheory AI"),
+            ),
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assert unexpected.disposition is CommandDisposition.INVALID
+    assert "unexpected=['assessor']" in unexpected.message
+
+    stale = replace(
+        command(
+            "command-record-mastery-stale",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=(
+                CommandField("assessment_id", "assessment-stale"),
+                *mastery_fields()[1:],
+            ),
+            revision=0,
+            acknowledged=True,
+        ),
+        issued_at=NOW - timedelta(minutes=11),
+    )
+    stale_result = service.handle(stale)
+    assert stale_result.disposition is CommandDisposition.INVALID
+    assert "stale" in stale_result.message
+
+    wrong_operator = service.handle(
+        command(
+            "command-record-mastery-wrong-operator",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=(
+                CommandField("assessment_id", "assessment-wrong-operator"),
+                *mastery_fields()[1:],
+            ),
+            revision=0,
+            acknowledged=True,
+            operator_ref="another-operator",
+        )
+    )
+    assert wrong_operator.disposition is CommandDisposition.INVALID
+    assert wrong_operator.code == "operator_mismatch"
+    assert len(mastery.assessments()) == 1
 
 
 def test_snapshot_reads_the_complete_local_vertical_slice(tmp_path):

@@ -367,6 +367,19 @@ class WorkbenchCommand:
             raise WorkbenchContractError(
                 "scope review requires explicit human acknowledgement"
             )
+        if self.kind is CommandKind.RECORD_MASTERY_ASSESSMENT:
+            if self.expected_revision != 0:
+                raise WorkbenchContractError(
+                    "recording a mastery assessment requires expected revision zero"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "a human mastery assessment carries no execution authority"
+                )
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "mastery assessment requires explicit human acknowledgement"
+                )
 
     def field(self, name: str, default: CommandValue = None) -> CommandValue:
         for field in self.fields:

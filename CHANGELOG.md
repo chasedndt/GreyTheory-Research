@@ -4,6 +4,11 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - human-governed mastery assessment handler
+
+- Added the workbench application handler for one explicit evidence-bound human mastery assessment. It requires a fresh human-acknowledged command, derives the assessor from the configured local operator, accepts no UI-supplied assessor identity, persists to the private integrity-checked mastery store, and remains non-executing.
+- Added exact field admission, duplicate-record conflict handling, operator binding, command freshness checks, and idempotent replay. Fixture completion, model output, and journey progression still cannot award mastery.
+
 ### Added - authenticated local workbench launch boundary
 
 - Added `greytheory_local` and the `greytheory-workbench` launcher. The runtime assembles real private stores outside Git and exposes versioned snapshots/commands only on numeric `127.0.0.1`; it contains no target client, file server, model, worker, subprocess, CORS surface, or posture-changing route.
@@ -12,7 +17,7 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 ### Added - governed research-planning application handlers
 
 - Added workbench handlers for create-only unproven hypotheses, explicit human scope review, and atomic experiment planning. Authority and workspace fingerprints are derived from persisted state, every changed hypothesis carries an optimistic revision, and stale UI commands conflict rather than overwrite newer decisions.
-- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action, assessment, and report commands remain refused.
+- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action and report commands remain refused.
 
 ### Added - dark passive broker foundation
 

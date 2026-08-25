@@ -4,6 +4,29 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Human mastery assessment handler
+
+### What was built
+
+- Added the explicit workbench handler that records an evidence-bound human
+  mastery assessment in the private store.
+- Required freshness and acknowledgement, bound commands to the configured
+  local operator, and derived human assessor identity inside the service.
+- Kept accepted results non-executing and reused existing mastery-domain rules.
+
+### What the next agent should not undo
+
+Do not accept an assessor identity or assessor kind from the UI, infer mastery
+from fixture/model/journey output, loosen evidence or rationale requirements, or
+turn a recorded assessment into execution authority. The graphical form must
+submit the existing command contract to the local application service.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-human-mastery-handler.md`.
+
+---
+
 ## 2026-08-25 - Codex - Authenticated local workbench transport
 
 ### What was built

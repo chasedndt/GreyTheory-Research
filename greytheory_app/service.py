@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Callable, Sequence
 
 from greytheory.audit import AuditLog
@@ -26,10 +26,13 @@ from greytheory.capabilities import CAPABILITIES, CapabilityStatus
 from greytheory.evidence import EvidenceVault
 from greytheory.findings import Finding, Taxonomy
 from greytheory.learning import (
+    AssessorKind,
     GuidedLearningPlanner,
     JourneyStatus,
     LearningJourneyStore,
+    MasteryAssessment,
     MasteryDimension,
+    MasteryLevel,
     MasteryStore,
     abandon_learning_journey,
     advance_learning_journey,
@@ -140,6 +143,22 @@ def _command_effects(command: WorkbenchCommand, name: str) -> EffectBudget:
     return EffectBudget.from_mapping(values)
 
 
+def _require_command_fields(
+    command: WorkbenchCommand,
+    *,
+    required: set[str],
+    optional: set[str] | None = None,
+) -> None:
+    names = {field.name for field in command.fields}
+    allowed = required | (optional or set())
+    if names != required and not (required <= names <= allowed):
+        raise WorkbenchContractError(
+            f"{command.kind.value} fields do not match its contract: "
+            f"missing={sorted(required - names)!r}, "
+            f"unexpected={sorted(names - allowed)!r}"
+        )
+
+
 class WorkbenchApplicationService:
     """Assemble one honest workbench snapshot and route bounded commands."""
 
@@ -155,6 +174,7 @@ class WorkbenchApplicationService:
         evidence: EvidenceVault | None = None,
         findings: Sequence[Finding] | None = None,
         approvals: ApprovalStore | None = None,
+        operator_ref: str = "operator-local",
         clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
     ) -> None:
         if posture > AuthorityLevel.LOCAL_FIXTURE:
@@ -170,6 +190,9 @@ class WorkbenchApplicationService:
         self.evidence = evidence
         self.findings = None if findings is None else tuple(findings)
         self.approvals = approvals
+        if not str(operator_ref or "").strip():
+            raise WorkbenchContractError("application operator reference is required")
+        self.operator_ref = str(operator_ref).strip()
         self.clock = clock
         self.catalogue = load_builtin_catalogue()
         self._idempotency: dict[str, tuple[str, CommandResult]] = {}
@@ -1055,6 +1078,13 @@ class WorkbenchApplicationService:
         )
 
     def handle(self, command: WorkbenchCommand) -> CommandResult:
+        if command.operator_ref != self.operator_ref:
+            return CommandResult(
+                command.id,
+                CommandDisposition.INVALID,
+                "operator_mismatch",
+                "the command operator does not match this local application session",
+            )
         canonical = json.dumps(command.to_dict(), sort_keys=True, separators=(",", ":"))
         digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
         prior = self._idempotency.get(command.idempotency_key)
@@ -1084,6 +1114,8 @@ class WorkbenchApplicationService:
                 result = self._review_hypothesis_scope(command)
             elif command.kind is CommandKind.PLAN_EXPERIMENT:
                 result = self._plan_experiment(command)
+            elif command.kind is CommandKind.RECORD_MASTERY_ASSESSMENT:
+                result = self._record_mastery_assessment(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1107,6 +1139,61 @@ class WorkbenchApplicationService:
             )
         self._idempotency[command.idempotency_key] = (digest, result)
         return result
+
+    def _record_mastery_assessment(
+        self, command: WorkbenchCommand
+    ) -> CommandResult:
+        if self.mastery is None:
+            raise WorkbenchContractError("no private mastery store is configured")
+        _require_command_fields(
+            command,
+            required={
+                "assessment_id",
+                "card_id",
+                "dimension",
+                "level",
+                "evidence_refs",
+                "rationale",
+                "review_due",
+            },
+        )
+        now = self.clock()
+        issued = command.issued_at.astimezone(timezone.utc)
+        current = now.astimezone(timezone.utc)
+        if issued > current + timedelta(seconds=30):
+            raise WorkbenchContractError("mastery assessment command is future-dated")
+        if current - issued > timedelta(minutes=10):
+            raise WorkbenchContractError("mastery assessment command is stale")
+        assessment_id = _command_text(command, "assessment_id")
+        assert assessment_id is not None
+        if any(item.id == assessment_id for item in self.mastery.assessments()):
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                f"mastery assessment {assessment_id!r} already exists",
+                (f"mastery-assessment:{assessment_id}",),
+            )
+        assessment = MasteryAssessment(
+            id=assessment_id,
+            card_id=_command_text(command, "card_id") or "",
+            dimension=MasteryDimension(_command_text(command, "dimension") or ""),
+            level=MasteryLevel.parse(_command_text(command, "level") or ""),
+            assessor=self.operator_ref,
+            assessor_kind=AssessorKind.HUMAN,
+            evidence_refs=_command_texts(command, "evidence_refs"),
+            rationale=_command_text(command, "rationale") or "",
+            assessed_at=command.issued_at,
+            review_due=date.fromisoformat(_command_text(command, "review_due") or ""),
+        )
+        self.mastery.record(assessment)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "mastery_assessment_recorded",
+            "the operator-authored evidence-bound assessment was recorded; no lab, model, or journey awarded mastery",
+            (f"mastery-assessment:{assessment.id}",),
+        )
 
     def _select_workspace(self, command: WorkbenchCommand) -> CommandResult:
         if self.research is None:
