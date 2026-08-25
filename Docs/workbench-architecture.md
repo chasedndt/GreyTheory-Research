@@ -104,10 +104,13 @@ and proves exact-address, TLS-name, full-request-digest, no-proxy,
 no-followed-redirect, zero-body, close, timeout, bounded-header, encryption,
 kill-switch, and receipt behavior without importing network/process modules.
 The separate `greytheory_worker` package now contains unlaunched resolver and
-direct TLS primitives. Their tests inject all process/socket/TLS behavior, so
-the isolated worker service/image, broker transport, OS egress constraints,
-real cancellation/streaming/CA acceptance, and canary evidence remain mandatory
-before any posture change.
+direct TLS primitives. Unit tests inject all process/socket/TLS behavior; an
+offline Ubuntu 24.04 WSL2 namespace now additionally proves production numeric
+TLS without re-resolution, explicit CA/hostname enforcement, streamed headers,
+cleanup, and real spawned-child cancellation with only loopback and no default
+route. Successful real system DNS, full adapter assembly, the isolated worker
+service/image, broker transport, durable OS egress controls, and authorised
+canary evidence remain mandatory before any posture change.
 
 ## 4. Stable application contract
 
@@ -291,7 +294,8 @@ Implemented now:
 - the network-free `greytheory_worker_contract` orchestration boundary and its
   injected resolver/direct-transport conformance suite;
 - unlaunched `greytheory_worker` owned-child resolver and numeric direct-TLS
-  primitives, verified only with injected OS doubles;
+  primitives, verified with injected OS doubles plus bounded offline Ubuntu
+  WSL2 proof for numeric TLS and spawned-child cancellation;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -307,8 +311,8 @@ Not implemented now:
   Learn surface;
 - a general local fixture process broker;
 - any assembled/accepted Ubuntu worker service or broker transport, approved OS
-  secret-provider binding for the root KEK, real host/network acceptance, or
-  `PASSIVE_HTTP` action.
+  secret-provider binding for the root KEK, successful system-DNS/full-adapter
+  acceptance, durable egress policy, or `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind that shell to the implemented local endpoint and complete

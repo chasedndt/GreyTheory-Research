@@ -103,11 +103,22 @@ by a deterministic test double during verification:
   timeouts, one bounded header block, rejection of observed body bytes, and
   deterministic close on success, timeout, TLS failure, overflow, or mismatch.
 
+Accepted on the operator's Ubuntu 24.04 WSL2 host without external contact:
+
+- an ephemeral user/network namespace exposes only loopback and no default
+  route, with a globally routable-looking address assigned locally solely to
+  exercise the unchanged public-address request contract;
+- the production direct transport proves numeric no-re-resolution, explicit
+  test-CA and hostname enforcement, refusal of a hostname mismatch, two-write
+  header streaming, zero body, and deterministic close against an owned canary;
+- a real spawned resolver child deliberately blocks past its deadline and is
+  terminated and reaped by the production resolver parent.
+
 Still required before any network posture:
 
-- Ubuntu host acceptance proving real system-resolver cancellation, numeric
-  no-re-resolution behavior, CA/hostname validation, socket-level streaming
-  limits/timeouts, deterministic cleanup, and constrained egress;
+- successful real system-resolution plus full adapter/capture/receipt acceptance
+  on the isolated host; the current blocking-child proof covers cancellation,
+  not a successful system DNS result;
 - an approved OS secret-provider binding, backup/recovery procedure, and host
   acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker

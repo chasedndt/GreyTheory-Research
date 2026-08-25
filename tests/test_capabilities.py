@@ -57,17 +57,20 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert broker.status is CapabilityStatus.PARTIAL
     assert "ticket-bound" in broker.detail.lower()
     assert "provisioning/rotation/revocation/decryption" in broker.detail.lower()
-    assert "no ubuntu-host-accepted resolver/direct transport" in broker.boundary.lower()
+    assert "ubuntu wsl2" in broker.boundary.lower()
+    assert "complete resolver/adapter acceptance" in broker.boundary.lower()
     assert "os secret-provider" in broker.boundary.lower()
     adapter = capability("passive_adapter_contract")
     assert adapter.status is CapabilityStatus.PARTIAL
     assert "full-request-digest-bound" in adapter.detail.lower()
     assert "contract itself performs no i/o" in adapter.boundary.lower()
+    assert "full adapter is not assembled" in adapter.boundary.lower()
     primitives = capability("passive_worker_primitives")
     assert primitives.status is CapabilityStatus.PARTIAL
     assert "cancellable" in primitives.detail.lower()
-    assert "injected process/socket/tls doubles" in primitives.boundary.lower()
-    assert "no ubuntu host acceptance" in primitives.boundary.lower()
+    assert "ubuntu 24.04 wsl2" in primitives.detail.lower()
+    assert "synthetic loopback canary" in primitives.boundary.lower()
+    assert "real system-resolver success" in primitives.boundary.lower()
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     assert "passive_http remains dark" in capability("passive_http_worker").boundary.lower()
 

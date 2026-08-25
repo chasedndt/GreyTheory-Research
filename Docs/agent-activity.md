@@ -4,6 +4,32 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Offline Ubuntu primitive host acceptance
+
+### What was built
+
+- Added an offline Ubuntu 24.04 WSL2 acceptance wrapper and Python harness.
+- Used an ephemeral user/network namespace with only loopback and no default
+  route, assigning a synthetic public address locally so the unchanged
+  production request contract could be exercised without target contact.
+- Proved production numeric TLS, no re-resolution, explicit CA and hostname
+  checks, mismatch refusal, split-header capture, zero body, and cleanup.
+- Proved the resolver parent's real spawn/deadline/termination path with a
+  deliberately blocking replacement child.
+
+### What the next agent should not undo
+
+Do not run the synthetic address canary outside the no-route namespace. Do not
+call the replacement-child cancellation check successful system-DNS proof, and
+do not call WSL2 primitive proof an assembled worker, unprivileged image, VPS
+acceptance, or posture approval. `PASSIVE_HTTP` remains unavailable.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-ubuntu-primitive-host-acceptance.md`.
+
+---
+
 ## 2026-08-25 - Codex - Unlaunched passive worker primitives
 
 ### What was built

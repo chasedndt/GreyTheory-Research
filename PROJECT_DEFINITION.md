@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guided/review planning, and persisted staged journeys; adaptive and specialised modes remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, and unlaunched cancellable-DNS/direct-TLS primitives are verified with injected syscalls; no Ubuntu host acceptance, OS-bound KEK provider, assembled worker, or passive action |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, and unlaunched cancellable-DNS/direct-TLS primitives are verified, with offline Ubuntu 24.04 WSL2 proof for direct TLS and spawned-child cancellation; no complete resolver/adapter host acceptance, OS-bound KEK provider, assembled worker, or passive action |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
@@ -127,6 +127,11 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - a transport-neutral workbench application service with versioned fail-closed snapshots across the existing stores, stable next-action/context records, idempotent revision-bound learning handlers, create-only hypothesis recording, human-acknowledged scope review, atomic experiment planning, server-derived bounded `LOCAL_FIXTURE` action intent with no Gate or execution, fresh evidence-bound mastery assessment derived from the configured local human operator, revisioned private report authoring, persisted human-bound Gates B-F validation, exact two-account-fixture claim assembly from stored evidence, next-state-only internal finding lifecycle, redacted receipt-chain export from server-held state, and structural refusal of posture above `LOCAL_FIXTURE` or any claim of execution.
 - an integrity-checked private report-case store that round-trips complete finding/claim-role/check-receipt state, refuses Git storage, persists atomically, audits changes, and protects draft edits with optimistic revisions;
 - a Windows-first local runtime and `greytheory-workbench` launcher with private-root enforcement, numeric `127.0.0.1` binding, strict Host/token/origin admission, no CORS, bounded versioned JSON, and no target-network route.
+- an offline Ubuntu 24.04 WSL2 primitive acceptance harness that creates a
+  no-default-route loopback-only namespace, proves production numeric direct TLS
+  without re-resolution, verifies explicit CA/hostname refusal and streamed
+  bounded-header cleanup, and reaps a deliberately blocked spawned resolver
+  child without making an external request or enabling `PASSIVE_HTTP`.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -151,9 +156,11 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   terminate/kill cleanup; direct TLS connects only to the selected numeric
   address, uses an explicit CA file and canonical SNI/hostname verification,
   disables key logging, fixes HTTP/1.1, enforces the shared deadline and header
-  ceiling, and closes on every path. Tests inject every syscall; Ubuntu host
-  behavior, service assembly, broker transport, egress, and target contact are
-  not proven.
+  ceiling, and closes on every path. Tests inject every syscall. Ubuntu 24.04
+  WSL2 now proves the production direct transport and resolver-parent
+  cancellation inside a loopback-only namespace with no default route; real
+  system-DNS success, full adapter assembly, an unprivileged image, durable
+  egress policy, broker transport, and target contact are not proven.
 - the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT
