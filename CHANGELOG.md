@@ -4,6 +4,11 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - authenticated local workbench launch boundary
+
+- Added `greytheory_local` and the `greytheory-workbench` launcher. The runtime assembles real private stores outside Git and exposes versioned snapshots/commands only on numeric `127.0.0.1`; it contains no target client, file server, model, worker, subprocess, CORS surface, or posture-changing route.
+- Added exact Host validation, an in-memory high-entropy bearer token, exact-origin POST admission, no-store defensive responses, a 64-KiB body ceiling, read timeout, duplicate-header/JSON-key refusal, strict command decoding, and no CORS permission. ADR-0012 records why a local browser boundary still requires authentication.
+
 ### Added - governed research-planning application handlers
 
 - Added workbench handlers for create-only unproven hypotheses, explicit human scope review, and atomic experiment planning. Authority and workspace fingerprints are derived from persisted state, every changed hypothesis carries an optimistic revision, and stale UI commands conflict rather than overwrite newer decisions.

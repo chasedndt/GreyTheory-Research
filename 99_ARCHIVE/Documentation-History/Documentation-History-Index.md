@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory authenticated local transport](2026-08-25_greytheory-authenticated-local-transport.md) - strict numeric-loopback workbench launch boundary; graphical shell still pending
+
 - [2026-08-25 - GreyTheory governed research-planning handlers](2026-08-25_greytheory-research-planning-handlers.md) - first non-executing hypothesis-to-plan workbench lifecycle
 
 - [2026-08-25 - GreyTheory passive broker foundation](2026-08-25_greytheory-passive-broker-foundation.md) - offline ticket/guard/rate/replay/receipt boundary; passive worker still unavailable

@@ -23,8 +23,8 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` ticket/guard/replay/receipt foundation; no DNS/HTTP adapter or worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided/review recommendations, staged journeys, reflection, private journey persistence, and explicit human-assessed completion are live; adaptive scheduling, assisted/transfer-specific journeys, broader packs, and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning commands, and governed hypothesis/scope/experiment-planning handlers; transport and interactive app not built). |
-| **DESIGNED, NOT BUILT** | Adaptive, assisted, and transfer-specific learning orchestration; workbench transport and local graphical shell. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` ticket/guard/replay/receipt foundation; no DNS/HTTP adapter or worker), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided/review recommendations, staged journeys, reflection, private journey persistence, and explicit human-assessed completion are live; adaptive scheduling, assisted/transfer-specific journeys, broader packs, and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning and research-planning commands, private runtime assembly, and authenticated numeric-loopback API; graphical app not built). |
+| **DESIGNED, NOT BUILT** | Adaptive, assisted, and transfer-specific learning orchestration; selected local graphical shell. |
 | **PLANNED** | Governed Scope Watch collector, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
@@ -34,6 +34,17 @@ The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#curr
 ```bash
 pip install -e ".[dev]" && python -m pytest -q
 ```
+
+Launch the current Windows-first local API foundation (not yet the graphical
+workbench). Its default private root is under the current user's local app-data
+directory and it binds only to `127.0.0.1`:
+
+```bash
+greytheory-workbench
+```
+
+The launcher prints a one-process session token. No target-network capability
+or graphical shell is enabled by this command.
 
 Compile a deliberately broken programme and watch it fail closed:
 

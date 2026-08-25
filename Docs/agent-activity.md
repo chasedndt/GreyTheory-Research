@@ -4,6 +4,30 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Authenticated local workbench transport
+
+### What was built
+
+- Added `greytheory_local` private-store assembly and a Windows-first launcher.
+- Added numeric-loopback-only JSON snapshots/commands with exact Host,
+  in-memory token, exact-origin writes, no CORS, strict size/framing, and
+  duplicate-key/header refusal.
+- Kept the listener separate from the transport-neutral application service
+  and added no target-network client or file-serving surface.
+
+### What the next agent should not undo
+
+Do not accept `localhost`, a configurable hostname, LAN/any-address binding,
+ambient CORS, token-in-URL authentication, unbounded bodies, duplicate critical
+headers, or UI-supplied executable state. Remote/VPS transport requires a new
+decision; ADR-0012 authorizes only numeric local loopback.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-authenticated-local-transport.md`.
+
+---
+
 ## 2026-08-25 - Codex - Governed research-planning handlers
 
 ### What was built

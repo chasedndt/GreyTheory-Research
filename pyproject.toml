@@ -29,6 +29,7 @@ passive-broker = ["cryptography>=46.0.7,<51"]
 
 [project.scripts]
 greytheory = "greytheory.cli:main"
+greytheory-workbench = "greytheory_local.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["greytheory*"]

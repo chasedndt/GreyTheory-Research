@@ -197,15 +197,26 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Workbench application service",
         CapabilityStatus.PARTIAL,
         "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning plus revision-aware hypothesis scope and experiment-planning commands are live.",
-        "Transport and graphical shell are absent; action, assessment, and report commands remain typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
+        "The service remains transport-neutral; action, assessment, and report commands are typed but refused, and posture above LOCAL_FIXTURE is structurally rejected.",
         ("greytheory_app", "Docs/workbench-architecture.md"),
+    ),
+    Capability(
+        "local_workbench_transport",
+        "Local workbench transport",
+        CapabilityStatus.PARTIAL,
+        "Private runtime assembly, strict versioned command decoding, authenticated numeric-loopback JSON snapshots/commands, and a Windows-first launch command are live.",
+        "No graphical shell, installed shortcut, Windows ACL acceptance, clean-user launch proof, or cross-origin API is shipped.",
+        (
+            "greytheory_local",
+            "Docs/decisions/ADR-0012-authenticated-numeric-loopback-workbench.md",
+        ),
     ),
     Capability(
         "graphical_workbench",
         "Graphical workbench",
         CapabilityStatus.PLANNED,
         "Application architecture, versioned snapshot contract, and user journeys are defined.",
-        "No selected visual direction, transport, or interactive application is implemented yet.",
+        "No selected visual direction or interactive graphical application is implemented yet; only the local JSON launch boundary exists.",
         ("Docs/workbench-architecture.md",),
     ),
     Capability(

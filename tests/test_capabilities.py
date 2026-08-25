@@ -40,6 +40,10 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert application.status is CapabilityStatus.PARTIAL
     assert "action, assessment, and report" in application.boundary.lower()
     assert "typed but refused" in application.boundary.lower()
+    transport = capability("local_workbench_transport")
+    assert transport.status is CapabilityStatus.PARTIAL
+    assert "numeric-loopback" in transport.detail.lower()
+    assert "no graphical shell" in transport.boundary.lower()
     assert capability("graphical_workbench").status is CapabilityStatus.PLANNED
     broker = capability("passive_broker_foundation")
     assert broker.status is CapabilityStatus.PARTIAL

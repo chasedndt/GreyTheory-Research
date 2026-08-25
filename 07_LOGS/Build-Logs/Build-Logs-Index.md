@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory authenticated local transport](2026-08-25-greytheory-authenticated-local-transport.md) - private runtime, numeric-loopback API, and Windows-first launcher; 580 tests
+
 - [2026-08-25 - GreyTheory governed research-planning handlers](2026-08-25-greytheory-research-planning-handlers.md) - revision-safe hypothesis, scope-review, and atomic experiment-planning application path; 574 tests
 
 - [2026-08-25 - GreyTheory passive broker foundation](2026-08-25-greytheory-passive-broker-foundation.md) - dark passive-head tickets, policy, kill switch, rate/replay ledger, and receipts; 571 tests

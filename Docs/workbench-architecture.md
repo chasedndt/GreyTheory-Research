@@ -30,7 +30,7 @@ ranking into a vulnerability claim.
 | Component | Initial home | Boundary |
 |---|---|---|
 | Operator workbench | Windows workstation | Local user only; selected desktop UI served or packaged locally |
-| Application service | Same Windows workstation | Loopback/local IPC only; no target-network route |
+| Application service | Same Windows workstation | Authenticated numeric `127.0.0.1` JSON only; no target-network route |
 | GreyTheory core | Python process used by the application service | Dependency-free and offline |
 | Private research data | Operator-chosen user-data root outside Git | Current-user permissions; raw evidence never enters the repository |
 | Local fixtures | Controlled local process or in-memory runner | `LOCAL_FIXTURE`; explicit reset and provenance |
@@ -83,6 +83,12 @@ Owns application sessions, typed commands, store assembly, serialisation,
 concurrency, and error translation. It provides the single path from UI intent
 to domain use case. It must bind only to loopback or equivalent local IPC in
 the pilot and reject cross-origin or oversized requests.
+
+The implemented `greytheory_local` adapter binds only to numeric
+`127.0.0.1`, validates the exact Host header, requires an in-memory bearer
+token for private reads, requires the exact same origin for writes, emits no
+CORS permission, and caps strict JSON command bodies at 64 KiB. It serves no
+files and has no target-network client. ADR-0012 records the boundary.
 
 ### Offline core
 
@@ -224,6 +230,7 @@ explanations, clock behaviour, and regression fixtures are tested.
 | Capability truth does not drift | Typed register tests plus dashboard/workbench contract tests |
 | Core stays offline | Existing import policy and full repository suite |
 | Workbench cannot execute directly | Application contract tests and architectural dependency check |
+| Local pages cannot ambiently reach private state | Numeric Host/token/origin, duplicate-header, CORS, and size-limit transport tests |
 | Missing data remains honest | Empty-store and failed-store render tests |
 | Primary journeys work | Browser tests using realistic local fixture data at desktop and 390 px |
 | Accessibility is usable | Keyboard path, focus order, labels, contrast, reduced motion checks |
@@ -244,6 +251,9 @@ Implemented now:
 - create-only unproven-hypothesis, explicit human scope-review, and atomic
   experiment-planning handlers; authority is derived from persisted workspace
   and hypothesis state, and all results remain non-executing;
+- the separate `greytheory_local` private-runtime assembly, strict versioned
+  JSON decoder, authenticated numeric-loopback snapshot/command transport, and
+  `greytheory-workbench` Windows-first launch command;
 - the separate, network-free `greytheory_broker` `passive-head-v1` contracts,
   policy guard, replay ledger, default-engaged kill switch, and signed receipt
   metadata foundation;
@@ -254,7 +264,8 @@ Implemented now:
 Not implemented now:
 
 - the selected interactive UI;
-- a local HTTP/IPC transport and application shell;
+- the graphical application shell, installed shortcut, and packaged Windows
+  host acceptance;
 - dedicated action-intent, mastery-assessment, and report-export application
   handlers, plus later research lifecycle operations beyond initial planning;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
@@ -264,5 +275,5 @@ Not implemented now:
   `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
-directions, then bind a local-only transport and shell to this snapshot contract
-and complete the Today/Learn/Research browser journey without changing posture.
+directions, then bind that shell to the implemented local endpoint and complete
+the Today/Learn/Research browser journey without changing posture.

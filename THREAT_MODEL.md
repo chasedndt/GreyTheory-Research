@@ -44,6 +44,7 @@
 | False AI certainty | Inference is presented as proof | Registry-issued check receipts, provenance triple, and claim-evidence matrix | LIVE offline |
 | Whole-chain rewrite | Attacker recomputes the audit chain | Signed periodic checkpoints | PLANNED |
 | Retention conflict | Third-party data cannot be removed | Audited deletion and tombstones | PLANNED |
+| Hostile website reaches local workbench | DNS rebinding, CSRF, or permissive CORS reads or mutates private state | Numeric-loopback-only bind, exact Host, in-memory bearer token, exact-origin POST, no CORS, strict bounded JSON | LIVE in source/tests; packaged Windows host acceptance remains open |
 
 ## Hostile-content rule
 

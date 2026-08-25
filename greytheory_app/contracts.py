@@ -9,7 +9,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any
+from typing import Any, Mapping
 
 from greytheory.authority.gate import AuthorityLevel
 
@@ -270,6 +270,23 @@ class CommandField:
     def to_dict(self) -> dict[str, Any]:
         return {self.name: list(self.value) if isinstance(self.value, tuple) else self.value}
 
+    @classmethod
+    def from_pair(cls, name: str, value: Any) -> CommandField:
+        if isinstance(value, list):
+            if any(not isinstance(item, str) for item in value):
+                raise WorkbenchContractError(
+                    "command list values may contain only strings"
+                )
+            value = tuple(value)
+        if not (
+            value is None
+            or isinstance(value, (str, int, bool, tuple))
+        ):
+            raise WorkbenchContractError(
+                f"command field {name!r} has an unsupported value type"
+            )
+        return cls(str(name), value)
+
 
 @dataclass(frozen=True)
 class WorkbenchCommand:
@@ -379,6 +396,89 @@ class WorkbenchCommand:
             },
             "executable": False,
         }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> WorkbenchCommand:
+        expected = {
+            "schema_version",
+            "id",
+            "kind",
+            "operator_ref",
+            "issued_at",
+            "idempotency_key",
+            "workspace_id",
+            "expected_revision",
+            "requested_authority",
+            "human_acknowledged",
+            "fields",
+            "executable",
+        }
+        actual = set(data)
+        if actual != expected:
+            raise WorkbenchContractError(
+                "workbench command keys do not match the versioned contract: "
+                f"missing={sorted(expected - actual)!r}, "
+                f"unexpected={sorted(actual - expected)!r}"
+            )
+        if data["executable"] is not False:
+            raise WorkbenchContractError(
+                "transport commands must explicitly declare executable false"
+            )
+        textual = (
+            "schema_version",
+            "id",
+            "kind",
+            "operator_ref",
+            "issued_at",
+            "idempotency_key",
+            "requested_authority",
+        )
+        if any(not isinstance(data[name], str) for name in textual):
+            raise WorkbenchContractError(
+                "command identity, schema, kind, time, and authority must be text"
+            )
+        fields = data["fields"]
+        if not isinstance(fields, Mapping) or any(
+            not isinstance(name, str) for name in fields
+        ):
+            raise WorkbenchContractError("command fields must be an object")
+        try:
+            issued_at = datetime.fromisoformat(data["issued_at"])
+            kind = CommandKind(data["kind"])
+            authority = AuthorityLevel.parse(data["requested_authority"])
+        except (TypeError, ValueError) as exc:
+            raise WorkbenchContractError(
+                "command kind, time, or authority is invalid"
+            ) from exc
+        workspace_id = data["workspace_id"]
+        expected_revision = data["expected_revision"]
+        human_acknowledged = data["human_acknowledged"]
+        if workspace_id is not None and not isinstance(workspace_id, str):
+            raise WorkbenchContractError("command workspace id must be text or null")
+        if expected_revision is not None and not isinstance(expected_revision, int):
+            raise WorkbenchContractError(
+                "command expected revision must be an integer or null"
+            )
+        if not isinstance(human_acknowledged, bool):
+            raise WorkbenchContractError(
+                "command human acknowledgement must be a boolean"
+            )
+        return cls(
+            id=data["id"],
+            kind=kind,
+            operator_ref=data["operator_ref"],
+            issued_at=issued_at,
+            idempotency_key=data["idempotency_key"],
+            fields=tuple(
+                CommandField.from_pair(name, value)
+                for name, value in fields.items()
+            ),
+            workspace_id=workspace_id,
+            expected_revision=expected_revision,
+            requested_authority=authority,
+            human_acknowledged=human_acknowledged,
+            schema_version=data["schema_version"],
+        )
 
 
 @dataclass(frozen=True)
