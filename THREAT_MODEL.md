@@ -76,12 +76,25 @@ Implemented and tested offline in `greytheory_broker`:
   caller-supplied external KEK, a separately derived authenticated manifest,
   authorised provision/rotation/revocation, and recovery of retained evidence.
 
+Implemented and tested without network I/O in `greytheory_worker_contract`:
+
+- a complete-answer resolver protocol and one deterministic selection of a
+  broker-validated public numeric address;
+- a full-request digest binding ticket, canonical URL/host/path, exact address,
+  TLS server name, port, proxy/redirect modes, capture ceiling, deadline, and
+  wire request;
+- typed transport evidence requiring the exact address and TLS name, no proxy,
+  no followed redirects, zero body bytes, a closed connection, consistent
+  monotonic timing, and one strict bounded response-header block;
+- fail-closed mapping of resolver, transport, parsing, redirect, size, clock,
+  encryption, kill-switch, and deadline failures into signed stop receipts.
+
 Still required before any network posture:
 
-- an actual DNS resolver with connect-to-validated-address enforcement and
-  re-resolution proof;
-- an HTTP adapter with streaming size/timeout enforcement and no implicit
-  redirect or proxy behavior;
+- an actual DNS resolver and direct TLS/HTTP transport behind the typed
+  contract, including OS-level cancellation and proof that the transport never
+  re-resolves the validated numeric address;
+- streaming socket-level header-size/timeout enforcement and host acceptance;
 - an approved OS secret-provider binding, backup/recovery procedure, and host
   acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker

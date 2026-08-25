@@ -98,10 +98,14 @@ and tests without the workbench installed.
 
 ### Broker and worker
 
-Do not exist yet. They are separate processes and packages, not plugins loaded
-into the core. Their future conformance suite must prove denial, rate, DNS,
-redirect, timeout, response-size, kill-switch, and receipt behaviour before any
-posture change.
+The network-free `greytheory_broker` and `greytheory_worker_contract` packages
+now exist. The latter accepts only injected resolver/transport implementations
+and proves exact-address, TLS-name, full-request-digest, no-proxy,
+no-followed-redirect, zero-body, close, timeout, bounded-header, encryption,
+kill-switch, and receipt behavior without importing network/process modules.
+The actual resolver, direct TLS/HTTP transport, isolated worker process/image,
+and broker transport do not exist and remain mandatory before any posture
+change.
 
 ## 4. Stable application contract
 
@@ -282,6 +286,8 @@ Implemented now:
   policy guard, replay ledger, default-engaged kill switch, and signed receipt
   metadata foundation, plus ticket-bound authenticated capture encryption and
   an authorised external-KEK-wrapped recipient-key lifecycle;
+- the network-free `greytheory_worker_contract` orchestration boundary and its
+  injected resolver/direct-transport conformance suite;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -296,8 +302,8 @@ Not implemented now:
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;
-- any DNS/HTTP adapter, approved OS secret-provider binding for the root KEK,
-  Ubuntu worker, or `PASSIVE_HTTP` action.
+- any actual DNS/TLS/HTTP implementation, approved OS secret-provider binding
+  for the root KEK, Ubuntu worker, or `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind that shell to the implemented local endpoint and complete

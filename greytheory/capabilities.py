@@ -240,6 +240,17 @@ CAPABILITIES: tuple[Capability, ...] = (
         ),
     ),
     Capability(
+        "passive_adapter_contract",
+        "Passive adapter conformance contract",
+        CapabilityStatus.PARTIAL,
+        "A network-free worker contract orchestrates one typed complete DNS result into one full-request-digest-bound direct HEAD transport result, strictly parses one bounded header block, encrypts it, and seals completed or stopped receipts.",
+        "No actual resolver, socket, TLS/HTTP transport, proxy-capable client, worker process/image, or target action is implemented; injected conformance doubles only, and PASSIVE_HTTP remains unavailable.",
+        (
+            "greytheory_worker_contract",
+            "Docs/decisions/ADR-0014-network-free-passive-adapter-contract.md",
+        ),
+    ),
+    Capability(
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,

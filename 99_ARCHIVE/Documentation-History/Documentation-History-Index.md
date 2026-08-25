@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory passive adapter contract](2026-08-25_greytheory-passive-adapter-contract.md) - network-free exact-address resolver/transport orchestration before any worker implementation
+
 - [2026-08-25 - GreyTheory passive capture encryption](2026-08-25_greytheory-passive-capture-encryption.md) - ticket-bound confidentiality and external-KEK-wrapped recipient lifecycle without a network worker
 
 - [2026-08-25 - GreyTheory governed local claim lifecycle](2026-08-25_greytheory-local-claim-lifecycle.md) - exact-fixture seven-role evidence assembly and internal-only report readiness

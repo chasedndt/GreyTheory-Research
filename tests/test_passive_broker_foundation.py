@@ -165,6 +165,7 @@ def test_url_policy_requires_one_canonical_unauthenticated_https_spelling():
         "https://example.com/#fragment",
         "https://127.0.0.1/",
         "https://example.com/a/../b",
+        "https://example.com/caf\u00e9",
         "https://example.com/%2fadmin",
         "https://EXAMPLE.com/",
         " https://example.com/",

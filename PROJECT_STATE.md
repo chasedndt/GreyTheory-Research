@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, bounded learning/research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 597 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker conformance foundation, and ticket-bound capture encryption with governed recipient-key lifecycle.
+- **Verified baseline:** 621 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, and the network-free passive adapter conformance contract.
 
 ## What is built
 
@@ -64,6 +64,11 @@ The complete offline path from supplied authorisation to a validated report draf
 - an exact two-account-fixture claim-assembly handler that reads existing private evidence, reruns five role-specific deterministic validators, derives two human judgement roles from persisted attestations, atomically updates the finding/report matrix, and performs no new target action; a next-state lifecycle handler requires fresh validation for `report_ready` and cannot submit.
 - a separate `greytheory_local` runtime and `greytheory-workbench` launcher that assemble private stores outside Git and expose only an authenticated, exact-Host, exact-origin, no-CORS, 64-KiB numeric-loopback JSON boundary; no files, target client, or execution route are served.
 - a dark, offline `greytheory_broker` foundation for one `passive-head-v1` action: fresh hash-chain-verified Gate binding, canonical HTTPS and public-address policy, signed expiring tickets, exact-once SQLite reservation, default-engaged digest-protected kill switch, strict request/time/rate/capture ceilings, ticket-bound authenticated capture encryption, authorised KEK-wrapped recipient provision/rotation/revocation, retained decryption for old evidence, and signed completed/stopped receipt metadata derived from the typed envelope.
+- a network-free `greytheory_worker_contract` adapter boundary that converts
+  injected typed DNS/transport evidence into one exact-address, no-proxy,
+  no-redirect, deadline-bound, bounded-header passive result, encrypted capture,
+  and broker-sealed receipt; it contains no resolver, socket, TLS/HTTP client,
+  process, or live action.
 
 ## What is not built
 
@@ -72,7 +77,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - standalone graphical workbench;
 - graphical workbench shell, installed/clean-user Windows acceptance, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch collector, actual DNS/HTTP adapter, approved OS secret-provider binding for the root KEK, isolated Ubuntu worker image/transport, VM/VPS acceptance, and live collectors;
+- governed external Scope Watch collector, actual DNS/TLS/HTTP implementation behind the conformance contract, approved OS secret-provider binding for the root KEK, isolated Ubuntu worker image/transport, VM/VPS acceptance, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -100,7 +105,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent work can continue with the passive network-adapter conformance boundary and approved local KEK binding, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent work can continue by implementing the actual resolver/direct TLS transport behind the now-tested contract and selecting an approved local KEK binding, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from enum import Enum
-from typing import Callable
+from typing import Callable, NoReturn
 
 from greytheory_broker.contracts import (
     BrokerContractError,
@@ -247,6 +247,37 @@ class PassiveBrokerSession:
             capture_envelope_sha256=capture.envelope_sha256,
         )
         return self._seal(payload)
+
+    def stop(
+        self,
+        reason: BrokerDenialReason,
+        detail: str,
+    ) -> NoReturn:
+        """Seal a fail-closed adapter stop without exposing receipt authorship."""
+
+        self._require_open()
+        if not isinstance(reason, BrokerDenialReason):
+            raise BrokerDenied(
+                BrokerDenialReason.SESSION_STATE,
+                "adapter stop reason is invalid",
+            )
+        message = str(detail or "").strip()
+        if not message:
+            raise BrokerDenied(
+                BrokerDenialReason.SESSION_STATE,
+                "adapter stop detail is required",
+            )
+        now = self.clock()
+        state = self.kill_switch.state()
+        if state.engaged:
+            self._deny(BrokerDenialReason.KILL_SWITCH, state.reason, now)
+        if now >= self.ticket.payload.expires_at:
+            self._deny(
+                BrokerDenialReason.INVALID_TICKET,
+                "ticket expired during the attempt",
+                now,
+            )
+        self._deny(reason, message, now)
 
     def _check_runtime(self, now: datetime) -> None:
         state = self.kill_switch.state()

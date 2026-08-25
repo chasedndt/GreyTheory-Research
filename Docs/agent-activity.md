@@ -4,6 +4,32 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Network-free passive adapter contract
+
+### What was built
+
+- Added an injected resolver/direct-transport orchestration contract with no
+  network or process imports.
+- Bound each transport result to the full ticket/request/address/TLS/deadline
+  contract, parsed one strict bounded response-header block, encrypted it, and
+  sealed completion or every denial through the passive broker.
+- Added denial proof for private/mixed DNS, wrong host/address/SNI/request,
+  proxy use, followed redirects, body bytes, open connections, malformed or
+  oversized headers, kill switch, and resolution/transport deadlines.
+
+### What the next agent should not undo
+
+Do not mistake injected conformance evidence for OS behavior. The production
+resolver and direct TLS transport must not re-resolve, consult proxy settings,
+follow redirects, receive a body, or own policy. Keep them confined to the
+future Ubuntu worker and keep `PASSIVE_HTTP` dark through host acceptance.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-passive-adapter-contract.md`.
+
+---
+
 ## 2026-08-25 - Codex - Passive capture encryption and key lifecycle
 
 ### What was built

@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory passive adapter contract](2026-08-25-greytheory-passive-adapter-contract.md) - exact-address no-proxy passive orchestration with injected conformance doubles and no network I/O; 621 tests
+
 - [2026-08-25 - GreyTheory passive capture encryption](2026-08-25-greytheory-passive-capture-encryption.md) - ticket-bound authenticated envelopes and governed wrapped recipient-key lifecycle; 597 tests
 
 - [2026-08-25 - GreyTheory governed local claim lifecycle](2026-08-25-greytheory-local-claim-lifecycle.md) - stored-evidence seven-role assembly, fresh-pass report readiness, and hard submission stop; 590 tests

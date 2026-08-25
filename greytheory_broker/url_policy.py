@@ -29,6 +29,12 @@ def canonical_https_url(value: str) -> str:
     raw = str(value or "")
     if raw != raw.strip() or not raw or CONTROL_OR_SPACE.search(raw):
         raise TargetPolicyError("target URL contains whitespace or control bytes")
+    try:
+        raw.encode("ascii")
+    except UnicodeEncodeError as exc:
+        raise TargetPolicyError(
+            "target URL must use an ASCII IDNA host and percent-encoded path"
+        ) from exc
     if "\\" in raw or AMBIGUOUS_ESCAPES.search(raw):
         raise TargetPolicyError("target URL contains an ambiguous path spelling")
     try:
