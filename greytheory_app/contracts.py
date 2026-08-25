@@ -40,6 +40,8 @@ class CommandKind(str, Enum):
     PLAN_EXPERIMENT = "plan_experiment"
     REQUEST_ACTION = "request_action"
     RECORD_MASTERY_ASSESSMENT = "record_mastery_assessment"
+    CREATE_REPORT_CASE = "create_report_case"
+    SAVE_REPORT_DRAFT = "save_report_draft"
     EXPORT_REPORT = "export_report"
 
 
@@ -404,6 +406,28 @@ class WorkbenchCommand:
             if not self.human_acknowledged:
                 raise WorkbenchContractError(
                     "report export requires explicit human acknowledgement"
+                )
+        if self.kind is CommandKind.CREATE_REPORT_CASE:
+            if self.workspace_id is None:
+                raise WorkbenchContractError(
+                    "creating a report case requires a workspace"
+                )
+            if self.expected_revision != 0:
+                raise WorkbenchContractError(
+                    "creating a report case requires expected revision zero"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "report authoring carries no execution authority"
+                )
+        if self.kind is CommandKind.SAVE_REPORT_DRAFT:
+            if self.expected_revision is None:
+                raise WorkbenchContractError(
+                    "saving a report draft requires its current revision"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "report authoring carries no execution authority"
                 )
 
     def field(self, name: str, default: CommandValue = None) -> CommandValue:

@@ -42,11 +42,16 @@ from greytheory.learning import (
 )
 from greytheory.registry import ProgrammeRegistry
 from greytheory.report import ReportDraft
+from greytheory.report_store import (
+    ReportRevisionConflict,
+    ReportStore,
+)
 from greytheory.research import (
     ActionRequest,
     EffectBudget,
     ExperimentPlan,
     Hypothesis,
+    HypothesisStatus,
     ResearchRevisionConflict,
     ResearchStore,
 )
@@ -105,6 +110,15 @@ def _command_text(
     if not isinstance(value, str) or not value.strip():
         raise WorkbenchContractError(f"{command.kind.value} requires {name}")
     return value.strip()
+
+
+def _command_string(command: WorkbenchCommand, name: str) -> str:
+    value = command.field(name)
+    if not isinstance(value, str):
+        raise WorkbenchContractError(
+            f"{command.kind.value} requires {name} as text"
+        )
+    return value
 
 
 def _command_texts(
@@ -179,6 +193,7 @@ class WorkbenchApplicationService:
         evidence: EvidenceVault | None = None,
         findings: Sequence[Finding] | None = None,
         report_drafts: Sequence[ReportDraft] | None = None,
+        report_store: ReportStore | None = None,
         report_export_writer: ReportExportWriter | None = None,
         approvals: ApprovalStore | None = None,
         operator_ref: str = "operator-local",
@@ -203,6 +218,13 @@ class WorkbenchApplicationService:
                 raise WorkbenchContractError(
                     "report draft finding identifiers must be unique"
                 )
+        if report_store is not None and (
+            self.findings is not None or self.report_drafts is not None
+        ):
+            raise WorkbenchContractError(
+                "configure either the private report store or injected report sources"
+            )
+        self.report_store = report_store
         self.report_export_writer = report_export_writer
         self.approvals = approvals
         if not str(operator_ref or "").strip():
@@ -211,6 +233,16 @@ class WorkbenchApplicationService:
         self.clock = clock
         self.catalogue = load_builtin_catalogue()
         self._idempotency: dict[str, tuple[str, CommandResult]] = {}
+
+    def _current_findings(self) -> tuple[Finding, ...] | None:
+        if self.report_store is not None:
+            return tuple(case.finding for case in self.report_store.cases())
+        return self.findings
+
+    def _current_report_drafts(self) -> tuple[ReportDraft, ...] | None:
+        if self.report_store is not None:
+            return tuple(case.draft for case in self.report_store.cases())
+        return self.report_drafts
 
     def snapshot(self, *, active_workspace_id: str | None = None) -> WorkbenchSnapshot:
         now = self.clock()
@@ -703,7 +735,9 @@ class WorkbenchApplicationService:
         )
 
     def _reports_section(self) -> WorkbenchSection:
-        if self.findings is None:
+        findings = self._current_findings()
+        drafts = self._current_report_drafts()
+        if findings is None:
             return WorkbenchSection(
                 "reports",
                 "Reports",
@@ -717,7 +751,7 @@ class WorkbenchApplicationService:
                     ),
                 ),
             )
-        if not self.findings:
+        if not findings:
             return WorkbenchSection(
                 "reports",
                 "Reports",
@@ -726,12 +760,27 @@ class WorkbenchApplicationService:
             )
         records: list[WorkbenchRecord] = []
         ready = 0
-        for finding in self.findings:
+        draft_by_finding = {
+            draft.finding_id: draft for draft in (drafts or ())
+        }
+        revision_by_finding = (
+            {case.id: case.revision for case in self.report_store.cases()}
+            if self.report_store is not None
+            else {}
+        )
+        for finding in findings:
             unanswered = finding.unanswered_roles
+            draft = draft_by_finding.get(finding.id)
+            missing_sections = draft.missing_sections() if draft is not None else []
+            placeholders = draft.placeholders() if draft is not None else []
             if finding.state is Taxonomy.REPORT_READY:
                 ready += 1
                 status = ReadinessStatus.ATTENTION
-                detail = "report-ready; export and any submission remain human-owned"
+                detail = (
+                    "report-ready; export is private and submission remains human-owned"
+                    if draft is not None and not missing_sections and not placeholders
+                    else "report-ready finding has no complete server-held draft"
+                )
             elif unanswered:
                 status = ReadinessStatus.ATTENTION
                 detail = f"missing claim roles: {', '.join(item.value for item in unanswered)}"
@@ -749,6 +798,21 @@ class WorkbenchApplicationService:
                     attributes=(
                         ("proven_claims", str(len(finding.proven_claims))),
                         ("unanswered_roles", str(len(unanswered))),
+                        (
+                            "draft_revision",
+                            str(revision_by_finding.get(finding.id, "unknown")),
+                        ),
+                        ("draft_missing_sections", str(len(missing_sections))),
+                        ("draft_placeholders", str(len(placeholders))),
+                        (
+                            "export_candidate",
+                            str(
+                                finding.state is Taxonomy.REPORT_READY
+                                and draft is not None
+                                and not missing_sections
+                                and not placeholders
+                            ).lower(),
+                        ),
                         ("submission_automated", "false"),
                     ),
                 )
@@ -995,7 +1059,7 @@ class WorkbenchApplicationService:
         report_ready = next(
             (
                 item
-                for item in (self.findings or ())
+                for item in (self._current_findings() or ())
                 if item.state is Taxonomy.REPORT_READY
             ),
             None,
@@ -1135,6 +1199,10 @@ class WorkbenchApplicationService:
                 result = self._export_report(command)
             elif command.kind is CommandKind.REQUEST_ACTION:
                 result = self._request_action_intent(command)
+            elif command.kind is CommandKind.CREATE_REPORT_CASE:
+                result = self._create_report_case(command)
+            elif command.kind is CommandKind.SAVE_REPORT_DRAFT:
+                result = self._save_report_draft(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1156,6 +1224,13 @@ class WorkbenchApplicationService:
                 "record_exists",
                 str(exc),
             )
+        except ReportRevisionConflict as exc:
+            result = CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                str(exc),
+            )
         except Exception as exc:
             result = CommandResult(
                 command.id,
@@ -1165,6 +1240,164 @@ class WorkbenchApplicationService:
             )
         self._idempotency[command.idempotency_key] = (digest, result)
         return result
+
+    def _create_report_case(self, command: WorkbenchCommand) -> CommandResult:
+        if self.report_store is None:
+            raise WorkbenchContractError("no private report store is configured")
+        if self.research is None or command.workspace_id is None:
+            raise WorkbenchContractError("no private research workspace is configured")
+        _require_command_fields(
+            command,
+            required={"finding_id", "hypothesis_id", "lane", "title"},
+        )
+        snapshot = self.research.snapshot(command.workspace_id)
+        hypothesis_id = _command_text(command, "hypothesis_id")
+        finding_id = _command_text(command, "finding_id")
+        title = _command_text(command, "title")
+        assert hypothesis_id and finding_id and title
+        hypothesis = snapshot.hypotheses.get(hypothesis_id)
+        if hypothesis is None:
+            raise WorkbenchContractError(f"unknown hypothesis {hypothesis_id!r}")
+        if hypothesis.status not in {
+            HypothesisStatus.TESTING,
+            HypothesisStatus.SUPPORTED,
+        }:
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "hypothesis_not_reportable",
+                "a report case starts only from a testing or supported hypothesis",
+                (f"hypothesis:{hypothesis.id}",),
+            )
+        asset = snapshot.assets[hypothesis.target_asset_id]
+        lane = _command_int(command, "lane")
+        if lane not in {1, 2, 3, 4}:
+            raise WorkbenchContractError("report finding lane must be 1, 2, 3, or 4")
+        if any(case.id == finding_id for case in self.report_store.cases()):
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "record_exists",
+                f"report case {finding_id!r} already exists",
+                (f"finding:{finding_id}",),
+            )
+        finding = Finding(
+            id=finding_id,
+            title=title,
+            lane=lane,
+            target=asset.canonical_identifier,
+            authority_ref=snapshot.workspace.authority_ref,
+            state=Taxonomy.INFORMATIONAL,
+        )
+        draft = ReportDraft(
+            finding_id=finding.id,
+            authority_ref=finding.authority_ref,
+            title=title,
+            programme=snapshot.workspace.programme_id,
+            asset=asset.canonical_identifier,
+        )
+        case = self.report_store.create(finding, draft, actor=self.operator_ref)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "report_case_created",
+            "an informational private report case was created; no claim was promoted and no export or submission occurred",
+            (f"finding:{case.id}", f"report-revision:{case.revision}"),
+        )
+
+    def _save_report_draft(self, command: WorkbenchCommand) -> CommandResult:
+        if self.report_store is None or command.expected_revision is None:
+            raise WorkbenchContractError("no revisioned private report store is configured")
+        required = {
+            "affected_feature",
+            "actual_result",
+            "data_minimisation_statement",
+            "evidence_index",
+            "expected_result",
+            "finding_id",
+            "preconditions",
+            "remediation",
+            "researcher_accounts",
+            "security_impact",
+            "severity_framework",
+            "severity_proposed",
+            "severity_rationale",
+            "steps",
+            "summary",
+            "tested_at",
+            "title",
+            "unresolved_uncertainty",
+        }
+        _require_command_fields(command, required=required)
+        finding_id = _command_text(command, "finding_id")
+        assert finding_id is not None
+        case = self.report_store.get(finding_id)
+        evidence_index = _command_texts(command, "evidence_index", optional=True)
+        if evidence_index:
+            if self.evidence is None:
+                raise WorkbenchContractError(
+                    "draft evidence references require the private evidence vault"
+                )
+            available = {
+                item.id for item in self.evidence.manifest(finding_id).artifacts
+            }
+            missing = sorted(set(evidence_index) - available)
+            if missing:
+                raise WorkbenchContractError(
+                    f"draft cites unknown evidence artifacts: {missing!r}"
+                )
+        existing = case.draft
+        draft = ReportDraft(
+            finding_id=case.id,
+            authority_ref=case.finding.authority_ref,
+            title=_command_text(command, "title") or "",
+            programme=existing.programme,
+            asset=existing.asset,
+            summary=_command_string(command, "summary"),
+            affected_feature=_command_string(command, "affected_feature"),
+            preconditions=list(
+                _command_texts(command, "preconditions", optional=True)
+            ),
+            steps=list(_command_texts(command, "steps", optional=True)),
+            expected_result=_command_string(command, "expected_result"),
+            actual_result=_command_string(command, "actual_result"),
+            security_impact=_command_string(command, "security_impact"),
+            evidence_index=list(evidence_index),
+            claim_matrix=list(existing.claim_matrix),
+            data_minimisation_statement=_command_string(
+                command, "data_minimisation_statement"
+            ),
+            severity_proposed=_command_string(command, "severity_proposed"),
+            severity_framework=_command_string(command, "severity_framework"),
+            severity_rationale=_command_string(command, "severity_rationale"),
+            remediation=_command_string(command, "remediation"),
+            unresolved_uncertainty=list(
+                _command_texts(command, "unresolved_uncertainty", optional=True)
+            ),
+            tested_at=_command_string(command, "tested_at"),
+            researcher_accounts=list(
+                _command_texts(command, "researcher_accounts", optional=True)
+            ),
+        )
+        saved = self.report_store.save_draft(
+            draft,
+            expected_revision=command.expected_revision,
+            actor=self.operator_ref,
+        )
+        quality = gate_f_report_quality(saved.draft)
+        code = "report_draft_saved" if quality.passed else "report_draft_incomplete"
+        message = (
+            "the private report draft was saved and passes structural Gate F; no export or submission occurred"
+            if quality.passed
+            else "the private report draft was saved as incomplete; no claim, export, or submission state changed"
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            code,
+            message,
+            (f"finding:{saved.id}", f"report-revision:{saved.revision}"),
+        )
 
     def _request_action_intent(self, command: WorkbenchCommand) -> CommandResult:
         if self.research is None:
@@ -1263,7 +1496,9 @@ class WorkbenchApplicationService:
         )
 
     def _export_report(self, command: WorkbenchCommand) -> CommandResult:
-        if self.findings is None or self.report_drafts is None:
+        findings = self._current_findings()
+        drafts = self._current_report_drafts()
+        if findings is None or drafts is None:
             raise WorkbenchContractError("no server-held report source is configured")
         if self.evidence is None:
             raise WorkbenchContractError("no private evidence vault is configured")
@@ -1281,7 +1516,7 @@ class WorkbenchApplicationService:
         export_id = _command_text(command, "export_id")
         assert finding_id is not None and export_id is not None
         finding = next(
-            (item for item in self.findings if item.id == finding_id), None
+            (item for item in findings if item.id == finding_id), None
         )
         if finding is None:
             raise WorkbenchContractError(f"unknown report finding {finding_id!r}")
@@ -1294,7 +1529,7 @@ class WorkbenchApplicationService:
                 (f"finding:{finding_id}",),
             )
         draft = next(
-            (item for item in self.report_drafts if item.finding_id == finding_id),
+            (item for item in drafts if item.finding_id == finding_id),
             None,
         )
         if draft is None:

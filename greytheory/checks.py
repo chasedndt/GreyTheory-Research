@@ -89,6 +89,27 @@ class CheckReceipt:
             "authority_ref": self.authority_ref,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, object]) -> CheckReceipt:
+        hashes = data.get("input_artifact_hashes")
+        outcomes = data.get("possible_outcomes")
+        if not isinstance(hashes, (list, tuple)) or not isinstance(
+            outcomes, (list, tuple)
+        ):
+            raise CheckError("check receipt hashes and outcomes must be lists")
+        return cls(
+            id=str(data["id"]),
+            validator_id=str(data["validator_id"]),
+            validator_version=str(data["validator_version"]),
+            input_artifact_hashes=tuple(str(item) for item in hashes),
+            exact_assertion=str(data["exact_assertion"]),
+            possible_outcomes=tuple(str(item) for item in outcomes),
+            actual_outcome=str(data["actual_outcome"]),
+            issued_at=datetime.fromisoformat(str(data["issued_at"])),
+            runner_digest=str(data["runner_digest"]),
+            authority_ref=str(data["authority_ref"]),
+        )
+
 
 def _validator_digest(validator: DeterministicValidator) -> str:
     try:

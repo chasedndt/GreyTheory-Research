@@ -4,6 +4,12 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - persistent private report authoring
+
+- Added an integrity-checked private `ReportStore` for complete finding/draft cases with atomic writes, Git-worktree refusal, audit records, optimistic revisions, and full claim-role/check-receipt round trips.
+- Added workbench handlers to create an informational report case from a persisted testing/supported hypothesis and save revisioned draft prose. Authority, programme, asset, finding state, and claim matrix remain server-owned; cited evidence must already exist in the private vault, incomplete drafts remain visibly incomplete, and saving never promotes a claim, exports, or submits.
+- Wired the report store into the default local runtime so reports now start as a measured empty state and survive restart instead of depending on an injected in-memory source.
+
 ### Added - bounded local-fixture action intent
 
 - Added the final typed workbench handler for recording a `LOCAL_FIXTURE` action intent without evaluating the Gate or executing anything. The handler requires fresh explicit acknowledgement and derives the workspace, active session/experiment, hypothesis target and identity, authority fingerprint, and stop conditions from persisted state.

@@ -333,6 +333,10 @@ class Finding:
             claims=[Claim.from_dict(c) for c in data.get("claims", [])],
             evidence_refs=list(data.get("evidence_refs", [])),
             history=list(data.get("history", [])),
+            role_bindings=[
+                RoleBinding.from_dict(item)
+                for item in data.get("role_bindings", [])
+            ],
         )
 
 

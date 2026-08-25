@@ -35,6 +35,7 @@ from greytheory.research import (
     TargetAsset,
 )
 from greytheory.report import ReportDraft
+from greytheory.report_store import ReportStore
 from greytheory.vertical_slice import OperatorStatements, run_local_two_account_slice
 from greytheory_app import (
     CommandDisposition,
@@ -221,6 +222,33 @@ def mastery_fields() -> tuple[CommandField, ...]:
     )
 
 
+def report_draft_fields() -> tuple[CommandField, ...]:
+    return (
+        CommandField("finding_id", "finding-cache-key"),
+        CommandField("title", "Cache normalization may split equivalent keys"),
+        CommandField("summary", "A draft operator summary."),
+        CommandField("affected_feature", "Synthetic cache normalization"),
+        CommandField("preconditions", ("The local cache fixture is reset",)),
+        CommandField("steps", ("Compare the two planned fixture paths",)),
+        CommandField("expected_result", "Equivalent paths share one key."),
+        CommandField("actual_result", "Not yet recorded."),
+        CommandField("security_impact", "No real-target impact is claimed."),
+        CommandField("evidence_index", ()),
+        CommandField(
+            "data_minimisation_statement", "Only synthetic local data is used."
+        ),
+        CommandField("severity_proposed", "Training finding only"),
+        CommandField("severity_framework", "GreyTheory local fixture"),
+        CommandField("severity_rationale", "No live target exists."),
+        CommandField("remediation", "Normalize paths before key generation."),
+        CommandField(
+            "unresolved_uncertainty", ("The experiment has not produced evidence",)
+        ),
+        CommandField("tested_at", ""),
+        CommandField("researcher_accounts", ()),
+    )
+
+
 def test_contract_refuses_live_posture_and_executable_display_actions():
     with pytest.raises(WorkbenchContractError, match="LOCAL_FIXTURE"):
         WorkbenchApplicationService(posture=AuthorityLevel.PASSIVE_HTTP)
@@ -263,6 +291,21 @@ def test_contract_refuses_live_posture_and_executable_display_actions():
             revision=0,
             authority=AuthorityLevel.LOCAL_FIXTURE,
             acknowledged=True,
+        )
+    with pytest.raises(WorkbenchContractError, match="no execution authority"):
+        command(
+            "report-case-with-authority",
+            CommandKind.CREATE_REPORT_CASE,
+            fields=(),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            workspace_id="workspace-1",
+        )
+    with pytest.raises(WorkbenchContractError, match="current revision"):
+        command(
+            "report-draft-without-revision",
+            CommandKind.SAVE_REPORT_DRAFT,
+            fields=(),
         )
     with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
         command(
@@ -758,6 +801,8 @@ def test_snapshot_reads_the_complete_local_vertical_slice(tmp_path):
     finding = Finding.from_dict(
         json.loads((run_root / "finding.json").read_text(encoding="utf-8"))
     )
+    assert len(finding.role_bindings) == 7
+    assert finding.unanswered_roles == []
     service = WorkbenchApplicationService(
         audit=AuditLog(run_root / "audit" / "audit.jsonl", clock=lambda: NOW),
         research=ResearchStore(run_root / "research", clock=lambda: NOW),
@@ -791,11 +836,12 @@ def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
         json.loads((run_root / "report.json").read_text(encoding="utf-8"))
     )
     audit = AuditLog(run_root / "audit" / "audit.jsonl", clock=lambda: NOW)
+    report_store = ReportStore(run_root / "reports", audit=audit, clock=lambda: NOW)
+    report_store.create(finding, draft, actor="operator-local")
     service = WorkbenchApplicationService(
         audit=audit,
         evidence=EvidenceVault(run_root / "evidence", clock=lambda: NOW),
-        findings=(finding,),
-        report_drafts=(draft,),
+        report_store=report_store,
         report_export_writer=ReportExportWriter(run_root / "exports", audit=audit),
         clock=lambda: NOW,
     )
@@ -846,6 +892,127 @@ def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
     )
     assert duplicate.disposition is CommandDisposition.CONFLICT
     assert duplicate.code == "record_exists"
+
+
+def test_report_case_and_draft_are_persisted_revisioned_and_server_bound(tmp_path):
+    planning, research = research_planning_service(tmp_path)
+    assert planning.handle(
+        command(
+            "create-hypothesis-for-report",
+            CommandKind.CREATE_HYPOTHESIS,
+            fields=create_hypothesis_fields(),
+            revision=0,
+            authority=AuthorityLevel.LOCAL_FIXTURE,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    assert planning.handle(
+        command(
+            "review-hypothesis-for-report",
+            CommandKind.REVIEW_HYPOTHESIS_SCOPE,
+            fields=(
+                CommandField("hypothesis_id", "hypothesis-cache-key"),
+                CommandField("review_basis", "Exact local fixture scope reviewed."),
+            ),
+            revision=0,
+            acknowledged=True,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    assert planning.handle(
+        command(
+            "plan-hypothesis-for-report",
+            CommandKind.PLAN_EXPERIMENT,
+            fields=experiment_fields(),
+            revision=1,
+            workspace_id="workspace-workbench-local",
+        )
+    ).disposition is CommandDisposition.ACCEPTED
+    research.transition_hypothesis(
+        "workspace-workbench-local",
+        "hypothesis-cache-key",
+        HypothesisStatus.TESTING,
+        actor="operator-local",
+        expected_revision=2,
+    )
+    reports = ReportStore(tmp_path / "reports", clock=lambda: NOW)
+    evidence = EvidenceVault(tmp_path / "evidence", clock=lambda: NOW)
+    service = WorkbenchApplicationService(
+        research=research,
+        evidence=evidence,
+        report_store=reports,
+        clock=lambda: NOW,
+    )
+
+    created = service.handle(
+        command(
+            "create-report-case",
+            CommandKind.CREATE_REPORT_CASE,
+            fields=(
+                CommandField("finding_id", "finding-cache-key"),
+                CommandField("hypothesis_id", "hypothesis-cache-key"),
+                CommandField("lane", 4),
+                CommandField(
+                    "title", "Cache normalization may split equivalent keys"
+                ),
+            ),
+            revision=0,
+            workspace_id="workspace-workbench-local",
+        )
+    )
+    saved = service.handle(
+        command(
+            "save-report-draft",
+            CommandKind.SAVE_REPORT_DRAFT,
+            fields=report_draft_fields(),
+            revision=0,
+        )
+    )
+    case = ReportStore(tmp_path / "reports", clock=lambda: NOW).get(
+        "finding-cache-key"
+    )
+
+    assert created.disposition is CommandDisposition.ACCEPTED
+    assert created.executed is False
+    assert saved.disposition is CommandDisposition.ACCEPTED
+    assert saved.code == "report_draft_incomplete"
+    assert case.revision == 1
+    assert case.finding.state.value == "informational"
+    assert case.finding.authority_ref == research.snapshot(
+        "workspace-workbench-local"
+    ).workspace.authority_ref
+    assert case.draft.programme == "programme-workbench-local"
+    assert case.draft.asset == "fixture://cache-normalization"
+    assert case.draft.summary == "A draft operator summary."
+    report_record = service.snapshot().section("reports").records[0]
+    assert report_record.id == case.id
+    assert dict(report_record.attributes)["draft_revision"] == "1"
+    assert dict(report_record.attributes)["export_candidate"] == "false"
+
+    stale = service.handle(
+        command(
+            "save-report-draft-stale",
+            CommandKind.SAVE_REPORT_DRAFT,
+            fields=report_draft_fields(),
+            revision=0,
+        )
+    )
+    injected_authority = service.handle(
+        command(
+            "save-report-draft-injected-authority",
+            CommandKind.SAVE_REPORT_DRAFT,
+            fields=(
+                *report_draft_fields(),
+                CommandField("authority_ref", "b" * 64),
+            ),
+            revision=1,
+        )
+    )
+    assert stale.disposition is CommandDisposition.CONFLICT
+    assert stale.code == "revision_conflict"
+    assert injected_authority.disposition is CommandDisposition.INVALID
+    assert "unexpected=['authority_ref']" in injected_authority.message
+    assert reports.get(case.id).revision == 1
 
 
 def test_snapshot_resolves_one_exact_bound_approval_without_treating_it_as_execution(tmp_path):

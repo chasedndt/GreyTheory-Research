@@ -151,6 +151,16 @@ class RoleBinding:
             "uncertainty": self.uncertainty,
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> RoleBinding:
+        receipt = data.get("receipt")
+        return cls(
+            role=ClaimRole(data["role"]),
+            claim=Claim.from_dict(data["claim"]),
+            receipt=CheckReceipt.from_dict(receipt) if receipt is not None else None,
+            uncertainty=str(data.get("uncertainty", "")),
+        )
+
 
 @dataclass
 class MatrixRow:

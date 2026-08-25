@@ -260,6 +260,10 @@ Implemented now:
 - a bounded `LOCAL_FIXTURE` action-intent handler; it admits only an active
   server-held experiment action and in-scope hypothesis target, derives
   authority/identity/stop conditions, and creates no Gate decision or receipt;
+- an integrity-checked private report-case store, full claim-role/check-receipt
+  round trip, informational case-creation handler, revision-safe draft editing,
+  and measured draft completeness in the read model; authority, programme,
+  asset, finding state, and claim matrix remain server-owned;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -275,9 +279,8 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- later research lifecycle operations beyond initial planning;
-- persisted workbench finding/report-draft authoring and editing; current export
-  consumes a configured server-held source;
+- workbench validation, claim-role binding, finding lifecycle, and later
+  research operations beyond initial planning/report authoring;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

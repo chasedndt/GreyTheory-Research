@@ -19,6 +19,7 @@ from greytheory.learning import (
     load_builtin_catalogue,
 )
 from greytheory.registry import ProgrammeRegistry
+from greytheory.report_store import ReportStore
 from greytheory.research import ResearchStore
 from greytheory_app import ReportExportWriter, WorkbenchApplicationService
 
@@ -90,6 +91,7 @@ class LocalWorkbenchRuntime:
                 private_root / "learning", catalogue=catalogue, audit=audit
             ),
             evidence=EvidenceVault(private_root / "evidence", audit=audit),
+            report_store=ReportStore(private_root / "reports", audit=audit),
             report_export_writer=ReportExportWriter(
                 private_root / "exports", audit=audit
             ),

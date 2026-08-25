@@ -138,6 +138,12 @@ from greytheory.models import (
     TrustLabel,
 )
 from greytheory.report import ReportDraft
+from greytheory.report_store import (
+    ReportCase,
+    ReportRevisionConflict,
+    ReportStore,
+    ReportStoreError,
+)
 from greytheory.scopewatch import (
     LocalSourceFetcher,
     ScopeWatch,
@@ -244,6 +250,10 @@ __all__ = [
     "Reason",
     "RegistryError",
     "ReportDraft",
+    "ReportCase",
+    "ReportRevisionConflict",
+    "ReportStore",
+    "ReportStoreError",
     "ResolutionStatus",
     "ScopeClassification",
     "ScopeContract",

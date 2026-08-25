@@ -4,6 +4,28 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Persistent private report authoring
+
+### What was built
+
+- Added complete finding/claim-role/check-receipt round trips and an atomic,
+  integrity-checked private report-case store.
+- Added server-derived informational case creation and revision-safe full-draft
+  saves, plus default runtime/read-model/export integration.
+
+### What the next agent should not undo
+
+Do not accept authority, programme, asset, finding state, or claim-matrix data
+from the UI. Do not let prose completeness promote a claim or finding. Keep
+authoring, validation, report-ready transition, export, and submission as
+separate governed states.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-private-report-authoring.md`.
+
+---
+
 ## 2026-08-25 - Codex - Bounded local-fixture action intent
 
 ### What was built

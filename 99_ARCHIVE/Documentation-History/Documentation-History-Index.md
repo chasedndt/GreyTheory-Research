@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory persistent private report authoring](2026-08-25_greytheory-private-report-authoring.md) - restart-safe cases and server-bound revisioned draft editing
+
 - [2026-08-25 - GreyTheory bounded local-fixture action intent](2026-08-25_greytheory-local-action-intent.md) - active server-held experiment intent with no Gate, receipt, or execution
 
 - [2026-08-25 - GreyTheory private redacted report export](2026-08-25_greytheory-private-report-export.md) - atomic no-submission package from server-held report and verified redacted evidence

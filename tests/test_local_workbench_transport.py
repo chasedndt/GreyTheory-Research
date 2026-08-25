@@ -99,6 +99,7 @@ def test_private_runtime_root_is_outside_git_and_assembles_real_stores(tmp_path)
     assert snapshot.posture is AuthorityLevel.LOCAL_FIXTURE
     assert snapshot.live_target_available is False
     assert snapshot.section("research").status.value == "empty"
+    assert snapshot.section("reports").status.value == "empty"
     assert snapshot.section("learning").records[0].id.startswith("recommendation:")
     assert (runtime.root / "evidence" / "raw").is_dir()
 

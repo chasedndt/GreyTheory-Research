@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, bounded learning/research-planning/local-fixture-intent/human-mastery/private-report-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
+- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, bounded learning/research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 583 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning, server-derived local-fixture action intent, human-bound mastery assessment, private redacted report export, authenticated local transport, rate-bound authority fingerprints, and the offline passive-broker conformance foundation.
+- **Verified baseline:** 587 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning and report authoring, server-derived local-fixture action intent, human-bound mastery assessment, private redacted report export, authenticated local transport, rate-bound authority fingerprints, and the offline passive-broker conformance foundation.
 
 ## What is built
 
@@ -59,6 +59,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
 - a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded learning/research-planning commands are idempotent/revision-aware, local-fixture action intent is derived from active persisted experiment state without Gate evaluation or execution, mastery assessment is bound to the configured local operator, and report export uses server-held drafts plus verified redacted evidence; all results remain non-executing.
 - an immutable private report-export writer that atomically emits Markdown, structured JSON, copied redacted artifacts, and a digest manifest outside Git while explicitly recording that no submission occurred.
+- an integrity-checked private report-case store with full finding/claim-role/check-receipt round trips, optimistic draft revisions, Git-worktree refusal, and audited atomic persistence; workbench commands create informational cases from testing/supported hypotheses and save drafts while authority-bearing fields remain server-owned.
 - a separate `greytheory_local` runtime and `greytheory-workbench` launcher that assemble private stores outside Git and expose only an authenticated, exact-Host, exact-origin, no-CORS, 64-KiB numeric-loopback JSON boundary; no files, target client, or execution route are served.
 - a dark, offline `greytheory_broker` foundation for one `passive-head-v1` action: fresh hash-chain-verified Gate binding, canonical HTTPS and public-address policy, signed expiring tickets, exact-once SQLite reservation, default-engaged digest-protected kill switch, strict request/time/rate/capture ceilings, and signed completed/stopped receipt metadata that requires an encrypted-capture envelope digest.
 
@@ -68,7 +69,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - guided, assisted, assessment, and transfer training orchestration, adaptive review scheduling, and broader curriculum packs beyond the first 12 cards;
 - standalone graphical workbench;
 - graphical workbench shell, installed/clean-user Windows acceptance, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
-- persisted workbench finding/report-draft authoring and editing; export currently consumes a configured server-held source;
+- workbench validation, claim-role binding, and finding-lifecycle promotion handlers beyond private draft authoring;
 - governed external Scope Watch collector, actual DNS/HTTP adapter, capture encryption/key provisioning, isolated Ubuntu worker image/transport, VM/VPS acceptance, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
@@ -97,7 +98,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent work can continue with persisted report authoring and later research lifecycle handlers. For Milestone 9, the next code step is capture encryption/key handling and a network-adapter conformance boundary, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent work can continue with validation and later finding-lifecycle handlers. For Milestone 9, the next code step is capture encryption/key handling and a network-adapter conformance boundary, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; the separate YNAB conflict-resolution gate and every posture decision remain human-owned.
 
 ## Do not build next
 
