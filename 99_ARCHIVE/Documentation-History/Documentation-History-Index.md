@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-25 - GreyTheory governed local claim lifecycle](2026-08-25_greytheory-local-claim-lifecycle.md) - exact-fixture seven-role evidence assembly and internal-only report readiness
+
 - [2026-08-25 - GreyTheory persisted human-bound report validation](2026-08-25_greytheory-persisted-report-validation.md) - restart-safe Gates B-F history without claim or finding promotion
 
 - [2026-08-25 - GreyTheory persistent private report authoring](2026-08-25_greytheory-private-report-authoring.md) - restart-safe cases and server-bound revisioned draft editing

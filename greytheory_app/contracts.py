@@ -43,6 +43,8 @@ class CommandKind(str, Enum):
     CREATE_REPORT_CASE = "create_report_case"
     SAVE_REPORT_DRAFT = "save_report_draft"
     RUN_REPORT_VALIDATION = "run_report_validation"
+    ASSEMBLE_LOCAL_FIXTURE_CLAIMS = "assemble_local_fixture_claims"
+    ADVANCE_REPORT_FINDING = "advance_report_finding"
     EXPORT_REPORT = "export_report"
 
 
@@ -442,6 +444,22 @@ class WorkbenchCommand:
             if not self.human_acknowledged:
                 raise WorkbenchContractError(
                     "report validation requires explicit human acknowledgement"
+                )
+        if self.kind in {
+            CommandKind.ASSEMBLE_LOCAL_FIXTURE_CLAIMS,
+            CommandKind.ADVANCE_REPORT_FINDING,
+        }:
+            if self.expected_revision is None:
+                raise WorkbenchContractError(
+                    f"{self.kind.value} requires the current report revision"
+                )
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "report claim and lifecycle work carries no execution authority"
+                )
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "report claim and lifecycle work requires explicit human acknowledgement"
                 )
 
     def field(self, name: str, default: CommandValue = None) -> CommandValue:

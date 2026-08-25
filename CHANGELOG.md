@@ -4,6 +4,12 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - governed local-fixture claim assembly and lifecycle
+
+- Added a human-acknowledged, revision-bound handler that assembles all seven claim roles for the exact two-account fixture by rerunning five deterministic validators over raw evidence already in the private vault and deriving two judgement roles from persisted operator attestations. It performs no new fixture or target action.
+- Added atomic finding/report-matrix persistence with strict field-change boundaries. Claim assembly invalidates the prior validation pass; `report_ready` requires a fresh passing Gates B-F run and advances exactly one internal state.
+- Added a lifecycle handler that cannot cross `report_ready` into submission or any programme-owned outcome. Private exports now include a digest-bound `finding.json` containing the claim-role and validator-receipt chain.
+
 ### Added - persisted human-bound report validation
 
 - Added a fresh human-acknowledged workbench handler that reruns Gates B–F from the persisted finding/draft, the private evidence vault, and three operator-authored attestations. Attester identity is derived locally; every cited reference must already belong to the case.

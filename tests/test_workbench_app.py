@@ -21,7 +21,7 @@ from greytheory.authority.scope import (
     ScopeContract,
 )
 from greytheory.evidence import EvidenceVault
-from greytheory.findings import Finding
+from greytheory.findings import Finding, Taxonomy
 from greytheory.learning import LearningJourneyStore, MasteryStore, load_builtin_catalogue
 from greytheory.research import (
     AssetKind,
@@ -36,6 +36,7 @@ from greytheory.research import (
 )
 from greytheory.report import ReportDraft
 from greytheory.report_store import ReportStore
+from greytheory.registry import ProgrammeRegistry
 from greytheory.vertical_slice import OperatorStatements, run_local_two_account_slice
 from greytheory_app import (
     CommandDisposition,
@@ -259,6 +260,13 @@ def test_contract_refuses_live_posture_and_executable_display_actions():
             "scope-without-human",
             CommandKind.REVIEW_HYPOTHESIS_SCOPE,
             fields=(CommandField("hypothesis_id", "hypothesis-1"),),
+            revision=0,
+        )
+    with pytest.raises(WorkbenchContractError, match="human acknowledgement"):
+        command(
+            "claims-without-human",
+            CommandKind.ASSEMBLE_LOCAL_FIXTURE_CLAIMS,
+            fields=(),
             revision=0,
         )
     with pytest.raises(WorkbenchContractError, match="no execution authority"):
@@ -932,6 +940,11 @@ def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
     assert manifest["finding_id"] == finding.id
     assert (destination / "report.md").is_file()
     assert (destination / "report.json").is_file()
+    exported_finding = json.loads(
+        (destination / "finding.json").read_text(encoding="utf-8")
+    )
+    assert len(exported_finding["role_bindings"]) == 7
+    assert manifest["finding"]["json_path"] == "finding.json"
     assert len(manifest["artifacts"]) == 3
     for artifact in manifest["artifacts"]:
         exported = destination / artifact["path"]
@@ -955,6 +968,161 @@ def test_report_export_is_private_redacted_atomic_and_never_submits(tmp_path):
     )
     assert duplicate.disposition is CommandDisposition.CONFLICT
     assert duplicate.code == "record_exists"
+
+
+def test_local_fixture_claim_assembly_and_lifecycle_are_offline_and_internal_only(
+    tmp_path,
+):
+    run_root = tmp_path / "run"
+    run_local_two_account_slice(
+        run_root, statements=fixture_statements(), clock=lambda: NOW
+    )
+    finding = Finding.from_dict(
+        json.loads((run_root / "finding.json").read_text(encoding="utf-8"))
+    )
+    finding.state = Taxonomy.VALIDATED
+    finding.history = [
+        item for item in finding.history if item.get("to") != "report_ready"
+    ]
+    finding.role_bindings = []
+    draft = ReportDraft.from_dict(
+        json.loads((run_root / "report.json").read_text(encoding="utf-8"))
+    )
+    programme_path = (
+        Path(__file__).resolve().parents[1]
+        / "fixtures"
+        / "lab"
+        / "two-account-authorization"
+        / "programme.json"
+    )
+    programme = json.loads(programme_path.read_text(encoding="utf-8"))
+    draft.programme = programme["id"]
+    audit = AuditLog(run_root / "audit" / "audit.jsonl", clock=lambda: NOW)
+    reports = ReportStore(run_root / "reports", audit=audit, clock=lambda: NOW)
+    reports.create(finding, draft, actor="operator-local")
+    registry = ProgrammeRegistry(run_root / "programmes", clock=lambda: NOW)
+    registry.register(programme, raw_source=programme_path.read_text(encoding="utf-8"))
+    registry.review(programme["id"], reviewer="operator-local")
+    evidence = EvidenceVault(run_root / "evidence", clock=lambda: NOW)
+    evidence_before = evidence.manifest(finding.id).to_dict()
+    service = WorkbenchApplicationService(
+        registry=registry,
+        audit=audit,
+        evidence=evidence,
+        report_store=reports,
+        clock=lambda: NOW,
+    )
+    statements = fixture_statements()
+    evidence_refs = tuple(finding.evidence_refs)
+    validation_fields = (
+        CommandField("finding_id", finding.id),
+        CommandField("reproducibility_statement", statements.reproducibility),
+        CommandField("reproducibility_evidence_refs", evidence_refs),
+        CommandField("impact_statement", statements.impact),
+        CommandField("impact_evidence_refs", evidence_refs),
+        CommandField("duplicate_risk_statement", statements.duplicate_risk),
+        CommandField("duplicate_risk_evidence_refs", evidence_refs),
+    )
+    first_validation = service.handle(
+        command(
+            "claim-assembly-validation",
+            CommandKind.RUN_REPORT_VALIDATION,
+            fields=validation_fields,
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assembled = service.handle(
+        command(
+            "assemble-local-claims",
+            CommandKind.ASSEMBLE_LOCAL_FIXTURE_CLAIMS,
+            fields=(
+                CommandField("finding_id", finding.id),
+                CommandField(
+                    "reproduction_uncertainty",
+                    "Only the deterministic in-memory fixture run is established.",
+                ),
+                CommandField(
+                    "impact_uncertainty",
+                    "No real deployment, user data, scale, or severity is established.",
+                ),
+            ),
+            revision=1,
+            acknowledged=True,
+        )
+    )
+    assembled_case = reports.get(finding.id)
+
+    assert first_validation.code == "report_validation_passed"
+    assert assembled.disposition is CommandDisposition.ACCEPTED
+    assert assembled.code == "local_fixture_claim_matrix_assembled"
+    assert assembled.executed is False
+    assert assembled_case.revision == 2
+    assert assembled_case.finding.state is Taxonomy.VALIDATED
+    assert assembled_case.finding.unanswered_roles == []
+    assert len(assembled_case.draft.claim_matrix) == 7
+    assert assembled_case.current_validation is None
+    assert evidence.manifest(finding.id).to_dict() == evidence_before
+    blocked = service.handle(
+        command(
+            "advance-with-stale-validation",
+            CommandKind.ADVANCE_REPORT_FINDING,
+            fields=(
+                CommandField("finding_id", finding.id),
+                CommandField("note", "Attempted report-ready transition."),
+            ),
+            revision=2,
+            acknowledged=True,
+        )
+    )
+    assert blocked.code == "current_validation_pass_required"
+
+    revalidated = service.handle(
+        command(
+            "revalidate-assembled-claims",
+            CommandKind.RUN_REPORT_VALIDATION,
+            fields=validation_fields,
+            revision=2,
+            acknowledged=True,
+        )
+    )
+    advanced = service.handle(
+        command(
+            "advance-report-ready",
+            CommandKind.ADVANCE_REPORT_FINDING,
+            fields=(
+                CommandField("finding_id", finding.id),
+                CommandField(
+                    "note", "Current Gates B-F pass and all seven roles reviewed."
+                ),
+            ),
+            revision=3,
+            acknowledged=True,
+        )
+    )
+    ready_case = reports.get(finding.id)
+    assert revalidated.code == "report_validation_passed"
+    assert advanced.disposition is CommandDisposition.ACCEPTED
+    assert advanced.executed is False
+    assert ready_case.revision == 4
+    assert ready_case.finding.state is Taxonomy.REPORT_READY
+    assert ready_case.current_validation is not None
+    assert ready_case.current_validation.report.submission_ready is True
+    refused_submission = service.handle(
+        command(
+            "advance-past-report-ready",
+            CommandKind.ADVANCE_REPORT_FINDING,
+            fields=(
+                CommandField("finding_id", finding.id),
+                CommandField("note", "This must never submit."),
+            ),
+            revision=4,
+            acknowledged=True,
+        )
+    )
+    assert refused_submission.disposition is CommandDisposition.REFUSED
+    assert refused_submission.code == "finding_lifecycle_boundary"
+    assert reports.get(finding.id).finding.state is Taxonomy.REPORT_READY
 
 
 def test_report_case_and_draft_are_persisted_revisioned_and_server_bound(tmp_path):

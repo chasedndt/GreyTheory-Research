@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 588 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning and report authoring, persisted human-bound report validation, server-derived local-fixture action intent, human-bound mastery assessment, private redacted report export, authenticated local transport, rate-bound authority fingerprints, and the offline passive-broker conformance foundation; posture remains unchanged.
+- 590 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, and the offline passive-broker conformance foundation; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -213,6 +213,8 @@ The interactive application is not.
 - [x] Add server-derived `LOCAL_FIXTURE` action intent from an active experiment without Gate evaluation, approval, receipt, or execution.
 - [x] Persist complete private finding/draft cases and add revision-safe informational case creation and draft editing with server-owned authority state.
 - [x] Persist fresh human-bound Gates B-F validation history without claim or finding promotion.
+- [x] Assemble all seven claim roles for the exact two-account fixture from stored evidence and persisted operator attestations without another target action.
+- [x] Advance exactly one internal finding state, require a current Gates B-F pass for `report_ready`, and refuse submission/programme outcomes.
 - [ ] Build the selected graphical application shell.
 - [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
 - [ ] Add adaptive scheduling plus assisted and transfer-specific learning modes beyond the deterministic foundation.

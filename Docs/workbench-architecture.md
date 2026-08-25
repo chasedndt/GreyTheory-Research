@@ -268,6 +268,13 @@ Implemented now:
   known evidence references, immutable revision-bound run history, automatic
   current-status invalidation after later case edits, optimistic revisions, and
   explicit separation from claim/finding promotion, export, or submission;
+- exact two-account-fixture claim assembly from raw evidence already held in
+  the private vault: five deterministic receipt-backed roles plus two
+  operator-attested judgement roles, persisted atomically with the report
+  matrix and no new target action;
+- next-state-only internal lifecycle progression with a current Gates B-F pass
+  required for `report_ready`, a hard stop before submission/programme
+  outcomes, and private export of the digest-bound finding/receipt chain;
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
@@ -283,8 +290,8 @@ Not implemented now:
 - the selected interactive UI;
 - the graphical application shell, installed shortcut, and packaged Windows
   host acceptance;
-- workbench claim-role binding, finding lifecycle, and later research operations
-  beyond initial planning/report authoring/validation;
+- general/passive claim-role assembly and later research operations beyond the
+  exact local fixture; external submission/programme outcomes stay unavailable;
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;

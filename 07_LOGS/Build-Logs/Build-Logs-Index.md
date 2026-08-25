@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory governed local claim lifecycle](2026-08-25-greytheory-local-claim-lifecycle.md) - stored-evidence seven-role assembly, fresh-pass report readiness, and hard submission stop; 590 tests
+
 - [2026-08-25 - GreyTheory persisted human-bound report validation](2026-08-25-greytheory-persisted-report-validation.md) - fresh Gates B-F with revisioned attestation/result history and no lifecycle promotion; 588 tests
 
 - [2026-08-25 - GreyTheory persistent private report authoring](2026-08-25-greytheory-private-report-authoring.md) - integrity-checked cases, full claim round trip, and revision-safe draft editing; 587 tests

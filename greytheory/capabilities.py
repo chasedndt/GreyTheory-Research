@@ -196,8 +196,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "workbench_application_service",
         "Workbench application service",
         CapabilityStatus.PARTIAL,
-        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning, research planning, fixture action intent, human mastery assessment, revisioned private report authoring, persisted Gates B-F validation, and redacted export are live.",
-        "The service remains transport-neutral; report authority, asset, finding state, and claim matrix are server-owned, validation never promotes lifecycle state, every handler is non-executing, action intent creates no Gate decision or receipt, export never submits, and posture above LOCAL_FIXTURE is structurally rejected.",
+        "Versioned snapshots assemble programmes, learning, research, hypotheses, evidence, reports, approvals, audit readiness, and capability truth; bounded learning, research planning, fixture action intent, human mastery assessment, revisioned private report authoring, persisted Gates B-F validation, exact-fixture claim assembly, next-state internal lifecycle, and redacted export are live.",
+        "The service remains transport-neutral; report authority, asset, finding state, claims, receipts, and claim matrix are server-owned, claim assembly is limited to the exact two-account fixture and stored evidence, lifecycle never crosses report_ready, every handler is non-executing, export never submits, and posture above LOCAL_FIXTURE is structurally rejected.",
         ("greytheory_app", "Docs/workbench-architecture.md"),
     ),
     Capability(

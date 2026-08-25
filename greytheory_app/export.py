@@ -18,6 +18,7 @@ from typing import Any, Mapping
 
 from greytheory.audit import AuditLog
 from greytheory.evidence import find_repository_root
+from greytheory.findings import Finding
 from greytheory.report import ReportDraft
 
 
@@ -65,6 +66,7 @@ class ReportExportWriter:
         self,
         *,
         export_id: str,
+        finding: Finding,
         draft: ReportDraft,
         evidence_package: Mapping[str, Any],
         operator_ref: str,
@@ -74,6 +76,10 @@ class ReportExportWriter:
             raise ReportExportError("report export id is not a safe identifier")
         if evidence_package.get("finding_id") != draft.finding_id:
             raise ReportExportError("evidence package belongs to a different finding")
+        if finding.id != draft.finding_id:
+            raise ReportExportError("finding and report draft identifiers do not match")
+        if finding.authority_ref != draft.authority_ref:
+            raise ReportExportError("finding and report draft authority do not match")
         artifacts = evidence_package.get("artifacts")
         if not isinstance(artifacts, list) or not artifacts:
             raise ReportExportError("report export requires verified redacted evidence")
@@ -119,8 +125,10 @@ class ReportExportWriter:
 
             report_markdown = draft.render().encode("utf-8")
             report_json = _encoded(draft.to_dict())
+            finding_json = _encoded(finding.to_dict())
             (temporary / "report.md").write_bytes(report_markdown)
             (temporary / "report.json").write_bytes(report_json)
+            (temporary / "finding.json").write_bytes(finding_json)
             manifest = {
                 "schema_version": 1,
                 "export_id": export_id,
@@ -134,6 +142,10 @@ class ReportExportWriter:
                     "markdown_sha256": _sha256(report_markdown),
                     "json_path": "report.json",
                     "json_sha256": _sha256(report_json),
+                },
+                "finding": {
+                    "json_path": "finding.json",
+                    "json_sha256": _sha256(finding_json),
                 },
                 "artifacts": exported_artifacts,
             }

@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 import pytest
 
 from greytheory.audit import AuditLog
-from greytheory.findings import Finding
+from greytheory.findings import Finding, Taxonomy
 from greytheory.report import ReportDraft
 from greytheory.report_store import (
     ReportRevisionConflict,
@@ -110,6 +110,20 @@ def test_report_case_refuses_mismatched_finding_and_authority(tmp_path):
                 finding_id="finding-report-store", authority_ref="b" * 64
             ),
             actor="operator-local",
+        )
+
+
+def test_report_store_refuses_external_lifecycle_states(tmp_path):
+    store = ReportStore(tmp_path / "reports", clock=lambda: NOW)
+    store.create(finding(), draft(), actor="operator-local")
+
+    with pytest.raises(ReportStoreError, match="external lifecycle state"):
+        store.advance_finding(
+            "finding-report-store",
+            Taxonomy.SUBMITTED,
+            expected_revision=0,
+            actor="operator-local",
+            note="This boundary is unavailable.",
         )
 
 

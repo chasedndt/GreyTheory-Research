@@ -24,8 +24,9 @@ from greytheory.authority.approvals import (
 from greytheory.authority.gate import AuthorityLevel
 from greytheory.authority.scope import ScopeClassification
 from greytheory.capabilities import CAPABILITIES, CapabilityStatus
+from greytheory.claim_assembly import assemble_two_account_fixture_claims
 from greytheory.evidence import EvidenceVault
-from greytheory.findings import Finding, Taxonomy
+from greytheory.findings import Finding, INTERNAL_STATES, Taxonomy
 from greytheory.learning import (
     AssessorKind,
     GuidedLearningPlanner,
@@ -1220,6 +1221,10 @@ class WorkbenchApplicationService:
                 result = self._save_report_draft(command)
             elif command.kind is CommandKind.RUN_REPORT_VALIDATION:
                 result = self._run_report_validation(command)
+            elif command.kind is CommandKind.ASSEMBLE_LOCAL_FIXTURE_CLAIMS:
+                result = self._assemble_local_fixture_claims(command)
+            elif command.kind is CommandKind.ADVANCE_REPORT_FINDING:
+                result = self._advance_report_finding(command)
             else:
                 result = CommandResult(
                     command.id,
@@ -1525,6 +1530,160 @@ class WorkbenchApplicationService:
             ),
         )
 
+    def _assemble_local_fixture_claims(
+        self, command: WorkbenchCommand
+    ) -> CommandResult:
+        if (
+            self.report_store is None
+            or self.evidence is None
+            or self.registry is None
+            or command.expected_revision is None
+        ):
+            raise WorkbenchContractError(
+                "local fixture claim assembly requires report, evidence, and programme stores"
+            )
+        if self.posture is not AuthorityLevel.LOCAL_FIXTURE:
+            raise WorkbenchContractError(
+                "claim assembly is limited to the LOCAL_FIXTURE posture"
+            )
+        _require_command_fields(
+            command,
+            required={
+                "finding_id",
+                "impact_uncertainty",
+                "reproduction_uncertainty",
+            },
+        )
+        finding_id = _command_text(command, "finding_id")
+        assert finding_id is not None
+        case = self.report_store.get(finding_id)
+        if case.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {case.revision}",
+                (f"finding:{case.id}", f"report-revision:{case.revision}"),
+            )
+        validation = case.current_validation
+        if validation is None:
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "current_validation_required",
+                "claim assembly requires current operator attestations from a validation run",
+                (f"finding:{case.id}",),
+            )
+        if any(item.actor != self.operator_ref for item in validation.attestations):
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "current_operator_attestation_required",
+                "claim assembly requires attestations made by the configured local operator",
+                (f"finding:{case.id}",),
+            )
+        contract = self.registry.current_contract(case.draft.programme)
+        if contract is None:
+            raise WorkbenchContractError(
+                f"no current programme contract for {case.draft.programme!r}"
+            )
+        finding, draft = assemble_two_account_fixture_claims(
+            case.finding,
+            case.draft,
+            vault=self.evidence,
+            contract=contract,
+            attestations=validation.attestations,
+            operator=self.operator_ref,
+            reproduction_uncertainty=(
+                _command_text(command, "reproduction_uncertainty") or ""
+            ),
+            impact_uncertainty=_command_text(command, "impact_uncertainty") or "",
+            clock=self.clock,
+        )
+        saved = self.report_store.save_claim_matrix(
+            finding,
+            draft,
+            expected_revision=command.expected_revision,
+            actor=self.operator_ref,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "local_fixture_claim_matrix_assembled",
+            "seven server-derived claim roles were persisted from stored local "
+            "evidence; validation is now stale and no action or lifecycle "
+            "transition occurred",
+            (
+                f"finding:{saved.id}",
+                f"report-revision:{saved.revision}",
+                "claim-roles:7",
+            ),
+        )
+
+    def _advance_report_finding(self, command: WorkbenchCommand) -> CommandResult:
+        if self.report_store is None or command.expected_revision is None:
+            raise WorkbenchContractError(
+                "finding lifecycle requires the revisioned private report store"
+            )
+        _require_command_fields(command, required={"finding_id", "note"})
+        finding_id = _command_text(command, "finding_id")
+        note = _command_text(command, "note")
+        assert finding_id is not None and note is not None
+        case = self.report_store.get(finding_id)
+        if case.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {case.revision}",
+                (f"finding:{case.id}", f"report-revision:{case.revision}"),
+            )
+        progression = {
+            Taxonomy.INFORMATIONAL: Taxonomy.CONTEXTUAL,
+            Taxonomy.CONTEXTUAL: Taxonomy.CANDIDATE,
+            Taxonomy.CANDIDATE: Taxonomy.VALIDATED,
+            Taxonomy.VALIDATED: Taxonomy.REPORT_READY,
+        }
+        if case.finding.state not in INTERNAL_STATES or case.finding.state not in progression:
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "finding_lifecycle_boundary",
+                "the workbench advances only one internal state and never submits or records programme outcomes",
+                (f"finding:{case.id}", f"state:{case.finding.state.value}"),
+            )
+        target = progression[case.finding.state]
+        if target is Taxonomy.REPORT_READY and (
+            case.current_validation is None
+            or not case.current_validation.report.submission_ready
+        ):
+            return CommandResult(
+                command.id,
+                CommandDisposition.REFUSED,
+                "current_validation_pass_required",
+                "report_ready requires a current passing Gates B-F run",
+                (f"finding:{case.id}", f"state:{case.finding.state.value}"),
+            )
+        saved = self.report_store.advance_finding(
+            case.id,
+            target,
+            expected_revision=command.expected_revision,
+            actor=self.operator_ref,
+            note=note,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "finding_advanced",
+            f"finding advanced one internal state to {target.value}; no export, "
+            "submission, programme outcome, or execution occurred",
+            (
+                f"finding:{saved.id}",
+                f"report-revision:{saved.revision}",
+                f"state:{target.value}",
+            ),
+        )
+
     def _request_action_intent(self, command: WorkbenchCommand) -> CommandResult:
         if self.research is None:
             raise WorkbenchContractError("no private research store is configured")
@@ -1684,6 +1843,7 @@ class WorkbenchApplicationService:
             )
         receipt = self.report_export_writer.export(
             export_id=export_id,
+            finding=finding,
             draft=draft,
             evidence_package=package,
             operator_ref=self.operator_ref,

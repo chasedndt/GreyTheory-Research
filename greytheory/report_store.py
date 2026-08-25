@@ -16,7 +16,7 @@ from typing import Any, Callable, Mapping
 
 from greytheory.audit import AuditLog
 from greytheory.evidence import find_repository_root
-from greytheory.findings import Finding
+from greytheory.findings import Finding, INTERNAL_STATES, Taxonomy
 from greytheory.report import ReportDraft
 from greytheory.validation import Attestation, GateId, ValidationReport
 
@@ -95,6 +95,7 @@ class ReportCase:
     revision: int
     updated_at: datetime
     validations: tuple[ReportValidation, ...] = ()
+    current_validation_index: int | None = None
 
     def __post_init__(self) -> None:
         if self.finding.id != self.draft.finding_id:
@@ -114,6 +115,15 @@ class ReportCase:
             raise ReportStoreError("validation history revisions must increase")
         if any(base_revision >= self.revision for base_revision in base_revisions):
             raise ReportStoreError("validation history references an invalid revision")
+        if self.current_validation_index is not None:
+            if (
+                isinstance(self.current_validation_index, bool)
+                or self.current_validation_index < 0
+                or self.current_validation_index >= len(self.validations)
+            ):
+                raise ReportStoreError("current validation index is invalid")
+            if self.current_validation_index != len(self.validations) - 1:
+                raise ReportStoreError("only the latest validation may be current")
 
     @property
     def id(self) -> str:
@@ -124,8 +134,9 @@ class ReportCase:
         """Return the latest run only when no later case edit invalidated it."""
         if not self.validations:
             return None
-        latest = self.validations[-1]
-        return latest if latest.base_revision + 1 == self.revision else None
+        if self.current_validation_index is None:
+            return None
+        return self.validations[self.current_validation_index]
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -134,18 +145,28 @@ class ReportCase:
             "revision": self.revision,
             "updated_at": self.updated_at.isoformat(),
             "validations": [item.to_dict() for item in self.validations],
+            "current_validation_index": self.current_validation_index,
         }
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> ReportCase:
+        validations = tuple(
+            ReportValidation.from_dict(dict(item))
+            for item in data.get("validations", [])
+        )
+        current_index = data.get("current_validation_index")
+        if "current_validation_index" not in data and validations:
+            revision = int(data["revision"])
+            if validations[-1].base_revision + 1 == revision:
+                current_index = len(validations) - 1
         return cls(
             finding=Finding.from_dict(dict(data["finding"])),
             draft=ReportDraft.from_dict(dict(data["draft"])),
             revision=int(data["revision"]),
             updated_at=datetime.fromisoformat(str(data["updated_at"])),
-            validations=tuple(
-                ReportValidation.from_dict(dict(item))
-                for item in data.get("validations", [])
+            validations=validations,
+            current_validation_index=(
+                int(current_index) if current_index is not None else None
             ),
         )
 
@@ -221,6 +242,7 @@ class ReportStore:
             existing.revision + 1,
             self.clock(),
             existing.validations,
+            None,
         )
         current[updated.id] = updated
         self._write(current)
@@ -247,10 +269,96 @@ class ReportStore:
             existing.revision + 1,
             self.clock(),
             existing.validations,
+            None,
         )
         current[updated.id] = updated
         self._write(current)
         self._audit("report.finding.save", updated, actor)
+        return updated
+
+    def save_claim_matrix(
+        self,
+        finding: Finding,
+        draft: ReportDraft,
+        *,
+        expected_revision: int,
+        actor: str,
+    ) -> ReportCase:
+        """Atomically replace server-derived claims and their report matrix."""
+        existing = self.get(finding.id)
+        if existing.revision != expected_revision:
+            raise ReportRevisionConflict(
+                f"report revision conflict: expected {expected_revision}, "
+                f"current {existing.revision}"
+            )
+        if draft.finding_id != existing.id:
+            raise ReportStoreError("claim matrix draft belongs to another finding")
+        before_finding = existing.finding.to_dict()
+        after_finding = finding.to_dict()
+        for field in ("claims", "provenance", "role_bindings"):
+            before_finding.pop(field, None)
+            after_finding.pop(field, None)
+        if before_finding != after_finding:
+            raise ReportStoreError(
+                "claim matrix assembly cannot change finding identity or lifecycle state"
+            )
+        before_draft = existing.draft.to_dict()
+        after_draft = draft.to_dict()
+        for field in ("claim_matrix", "evidence_index"):
+            before_draft.pop(field, None)
+            after_draft.pop(field, None)
+        if before_draft != after_draft:
+            raise ReportStoreError(
+                "claim matrix assembly cannot change operator-authored report prose"
+            )
+        current = {case.id: case for case in self.cases()}
+        updated = ReportCase(
+            finding,
+            draft,
+            existing.revision + 1,
+            self.clock(),
+            existing.validations,
+            None,
+        )
+        current[updated.id] = updated
+        self._write(current)
+        self._audit("report.claim_matrix.save", updated, actor)
+        return updated
+
+    def advance_finding(
+        self,
+        finding_id: str,
+        to: Taxonomy,
+        *,
+        expected_revision: int,
+        actor: str,
+        note: str,
+    ) -> ReportCase:
+        """Persist one domain-checked internal transition atomically."""
+        if to not in INTERNAL_STATES:
+            raise ReportStoreError(
+                "the private report store cannot enter an external lifecycle state"
+            )
+        existing = self.get(finding_id)
+        if existing.revision != expected_revision:
+            raise ReportRevisionConflict(
+                f"report revision conflict: expected {expected_revision}, "
+                f"current {existing.revision}"
+            )
+        finding = Finding.from_dict(existing.finding.to_dict())
+        finding.advance(to, actor=actor, note=note, now=self.clock())
+        current = {case.id: case for case in self.cases()}
+        updated = ReportCase(
+            finding,
+            existing.draft,
+            existing.revision + 1,
+            self.clock(),
+            existing.validations,
+            existing.current_validation_index,
+        )
+        current[updated.id] = updated
+        self._write(current)
+        self._audit("report.finding.advance", updated, actor)
         return updated
 
     def record_validation(
@@ -278,6 +386,7 @@ class ReportStore:
             existing.revision + 1,
             self.clock(),
             (*existing.validations, validation),
+            len(existing.validations),
         )
         current[updated.id] = updated
         self._write(current)

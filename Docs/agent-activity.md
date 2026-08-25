@@ -4,6 +4,31 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Governed local claim lifecycle
+
+### What was built
+
+- Added exact two-account-fixture claim assembly from existing private raw
+  evidence and persisted operator attestations, rerunning five deterministic
+  validators and creating all seven role bindings without another action.
+- Added atomic finding/report-matrix persistence, fresh-pass-gated internal
+  progression to `report_ready`, a hard stop before submission, and private
+  export of the digest-bound finding/receipt chain.
+
+### What the next agent should not undo
+
+Do not generalise this handler by accepting UI-authored claims, receipts,
+authority, target, lifecycle destination, or arbitrary artifact shapes. Keep
+claim assembly exact-fixture-only until another validator-backed adapter has
+its own evidence contract. Never let the internal lifecycle handler cross
+`report_ready`.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-local-claim-lifecycle.md`.
+
+---
+
 ## 2026-08-25 - Codex - Persisted human-bound report validation
 
 ### What was built
