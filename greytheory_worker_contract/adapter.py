@@ -56,6 +56,10 @@ class TransportFailed(RuntimeError):
     """Raised by a direct transport when no valid response was returned."""
 
 
+class TransportCaptureLimitExceeded(TransportFailed):
+    """Raised when transport bytes cross the signed capture ceiling."""
+
+
 class AdapterTimedOut(TimeoutError):
     """Raised when a resolver or transport cancels at the supplied deadline."""
 
@@ -414,6 +418,8 @@ class PassiveHeadAdapter:
             response = self.transport.head(request)
         except AdapterTimedOut as exc:
             session.stop(BrokerDenialReason.DURATION_EXCEEDED, str(exc))
+        except TransportCaptureLimitExceeded as exc:
+            session.stop(BrokerDenialReason.CAPTURE_TOO_LARGE, str(exc))
         except Exception as exc:
             session.stop(
                 BrokerDenialReason.RESPONSE_INVALID,
@@ -503,4 +509,5 @@ __all__ = [
     "ResolutionResult",
     "Resolver",
     "TransportFailed",
+    "TransportCaptureLimitExceeded",
 ]

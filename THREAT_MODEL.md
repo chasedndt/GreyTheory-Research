@@ -89,12 +89,25 @@ Implemented and tested without network I/O in `greytheory_worker_contract`:
 - fail-closed mapping of resolver, transport, parsing, redirect, size, clock,
   encryption, kill-switch, and deadline failures into signed stop receipts.
 
+Implemented but unlaunched in `greytheory_worker`, with every syscall replaced
+by a deterministic test double during verification:
+
+- blocking system resolution of the absolute DNS name in one specifically
+  owned spawn child, using capped non-pickle JSON pipe output and exact
+  terminate/kill cleanup at the total deadline;
+- direct numeric-address TCP connect with no URL/proxy API or re-resolution,
+  followed by TLS 1.2+ using an explicit CA bundle, canonical SNI and hostname
+  verification, HTTP/1.1 ALPN, compression/renegotiation controls, and disabled
+  TLS key logging;
+- exact peer-address verification, total-deadline connect/handshake/write/read
+  timeouts, one bounded header block, rejection of observed body bytes, and
+  deterministic close on success, timeout, TLS failure, overflow, or mismatch.
+
 Still required before any network posture:
 
-- an actual DNS resolver and direct TLS/HTTP transport behind the typed
-  contract, including OS-level cancellation and proof that the transport never
-  re-resolves the validated numeric address;
-- streaming socket-level header-size/timeout enforcement and host acceptance;
+- Ubuntu host acceptance proving real system-resolver cancellation, numeric
+  no-re-resolution behavior, CA/hostname validation, socket-level streaming
+  limits/timeouts, deterministic cleanup, and constrained egress;
 - an approved OS secret-provider binding, backup/recovery procedure, and host
   acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker

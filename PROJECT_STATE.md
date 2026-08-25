@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, bounded learning/research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 621 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, and the network-free passive adapter conformance contract.
+- **Verified baseline:** 643 repository tests passing on 2026-08-25, including executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, and unlaunched cancellable-DNS/direct-TLS worker primitives verified with injected syscalls.
 
 ## What is built
 
@@ -69,6 +69,12 @@ The complete offline path from supplied authorisation to a validated report draf
   no-redirect, deadline-bound, bounded-header passive result, encrypted capture,
   and broker-sealed receipt; it contains no resolver, socket, TLS/HTTP client,
   process, or live action.
+- an unlaunched `greytheory_worker` primitive package: absolute-name system DNS
+  runs in one owned cancellable spawn child over capped JSON bytes, while direct
+  TLS connects to the broker-selected numeric address with an explicit CA
+  bundle, verified hostname/SNI, TLS 1.2+, HTTP/1.1 ALPN, disabled key logging,
+  total-deadline timeouts, bounded header reads, and deterministic close. All
+  verification uses injected syscalls and proves no Ubuntu host behavior.
 
 ## What is not built
 
@@ -77,7 +83,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - standalone graphical workbench;
 - graphical workbench shell, installed/clean-user Windows acceptance, graphical Learn surface, adaptive scheduling, and assisted/transfer-specific learning modes;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch collector, actual DNS/TLS/HTTP implementation behind the conformance contract, approved OS secret-provider binding for the root KEK, isolated Ubuntu worker image/transport, VM/VPS acceptance, and live collectors;
+- governed external Scope Watch collector, assembled Ubuntu worker service/broker transport and host acceptance for the implemented primitives, approved OS secret-provider binding for the root KEK, OS egress constraints, VM/VPS acceptance, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -105,7 +111,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent work can continue by implementing the actual resolver/direct TLS transport behind the now-tested contract and selecting an approved local KEK binding, followed by an isolated local Ubuntu VM—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent passive work now moves to approved local KEK binding and an isolated Ubuntu VM that assembles and host-tests the existing primitives—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

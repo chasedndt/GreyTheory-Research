@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-25 - GreyTheory passive worker primitives](2026-08-25-greytheory-passive-worker-primitives.md) - cancellable absolute-name DNS and numeric direct-TLS mechanics, unlaunched and syscall-injected; 643 tests
+
 - [2026-08-25 - GreyTheory passive adapter contract](2026-08-25-greytheory-passive-adapter-contract.md) - exact-address no-proxy passive orchestration with injected conformance doubles and no network I/O; 621 tests
 
 - [2026-08-25 - GreyTheory passive capture encryption](2026-08-25-greytheory-passive-capture-encryption.md) - ticket-bound authenticated envelopes and governed wrapped recipient-key lifecycle; 597 tests

@@ -15,6 +15,7 @@ from greytheory_worker_contract.adapter import (
     ResolutionResult,
     Resolver,
     TransportFailed,
+    TransportCaptureLimitExceeded,
 )
 
 __all__ = [
@@ -29,4 +30,5 @@ __all__ = [
     "ResolutionResult",
     "Resolver",
     "TransportFailed",
+    "TransportCaptureLimitExceeded",
 ]

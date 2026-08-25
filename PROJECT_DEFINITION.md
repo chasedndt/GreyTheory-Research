@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guided/review planning, and persisted staged journeys; adaptive and specialised modes remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live, the passive ticket/guard/replay/receipt/encrypted-capture/key-lifecycle foundation is verified offline, and a network-free adapter conformance contract is live; no actual DNS/TLS/HTTP implementation, OS-bound KEK provider, or worker |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, and unlaunched cancellable-DNS/direct-TLS primitives are verified with injected syscalls; no Ubuntu host acceptance, OS-bound KEK provider, assembled worker, or passive action |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
@@ -146,12 +146,20 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   redirect, zero body bytes, closed connection, monotonic deadline, bounded
   strict header parsing, encrypted capture, and signed stop/completion. It is
   not a resolver, TLS/HTTP transport, process, image, or target capability.
+- `greytheory_worker` contains unlaunched OS primitives: blocking system DNS is
+  isolated in one owned spawn child with capped JSON pipe output and exact
+  terminate/kill cleanup; direct TLS connects only to the selected numeric
+  address, uses an explicit CA file and canonical SNI/hostname verification,
+  disables key logging, fixes HTTP/1.1, enforces the shared deadline and header
+  ceiling, and closes on every path. Tests inject every syscall; Ubuntu host
+  behavior, service assembly, broker transport, egress, and target contact are
+  not proven.
 - the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT
 
 - adaptive review scheduling, assisted and transfer-specific orchestration, and broader curriculum packs;
-- governed external Scope Watch collector, passive DNS/HTTP adapter, isolated network workers, and live collectors;
+- governed external Scope Watch collector, accepted Ubuntu passive worker/service and broker transport, isolated network workers, and live collectors;
 - standalone graphical workbench;
 - live research proof and programme outcomes.
 

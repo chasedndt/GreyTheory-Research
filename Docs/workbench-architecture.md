@@ -103,9 +103,11 @@ now exist. The latter accepts only injected resolver/transport implementations
 and proves exact-address, TLS-name, full-request-digest, no-proxy,
 no-followed-redirect, zero-body, close, timeout, bounded-header, encryption,
 kill-switch, and receipt behavior without importing network/process modules.
-The actual resolver, direct TLS/HTTP transport, isolated worker process/image,
-and broker transport do not exist and remain mandatory before any posture
-change.
+The separate `greytheory_worker` package now contains unlaunched resolver and
+direct TLS primitives. Their tests inject all process/socket/TLS behavior, so
+the isolated worker service/image, broker transport, OS egress constraints,
+real cancellation/streaming/CA acceptance, and canary evidence remain mandatory
+before any posture change.
 
 ## 4. Stable application contract
 
@@ -288,6 +290,8 @@ Implemented now:
   an authorised external-KEK-wrapped recipient-key lifecycle;
 - the network-free `greytheory_worker_contract` orchestration boundary and its
   injected resolver/direct-transport conformance suite;
+- unlaunched `greytheory_worker` owned-child resolver and numeric direct-TLS
+  primitives, verified only with injected OS doubles;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -302,8 +306,9 @@ Not implemented now:
 - adaptive scheduling, assisted/transfer-specific journeys, and the graphical
   Learn surface;
 - a general local fixture process broker;
-- any actual DNS/TLS/HTTP implementation, approved OS secret-provider binding
-  for the root KEK, Ubuntu worker, or `PASSIVE_HTTP` action.
+- any assembled/accepted Ubuntu worker service or broker transport, approved OS
+  secret-provider binding for the root KEK, real host/network acceptance, or
+  `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind that shell to the implemented local endpoint and complete

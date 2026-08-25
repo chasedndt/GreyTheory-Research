@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 621 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, and the network-free passive adapter conformance contract; posture remains unchanged.
+- 643 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, and unlaunched cancellable-DNS/direct-TLS worker primitives verified with injected syscalls; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -246,9 +246,15 @@ Offline broker foundation completed without enabling the posture:
   full request digest, exact validated address/TLS name, no proxy or followed
   redirect, zero body, closed connection, strict bounded header parsing,
   monotonic deadline, encryption, and signed stop paths.
-- [ ] Implement and isolate the actual DNS/TLS/HTTP primitives behind that
-  contract; prove no re-resolution, OS-level cancellation, streaming ceilings,
-  and host behavior in the Ubuntu worker.
+- [x] Implement unlaunched actual primitives behind the contract: an owned-child
+  cancellable absolute-name system resolver with capped JSON IPC and a direct
+  numeric-address TLS 1.2+ `HEAD` transport with explicit CA trust, hostname
+  verification, disabled key logging, total deadlines, bounded header reads,
+  and deterministic close. Verification injects every syscall and performs no
+  network I/O.
+- [ ] Assemble those primitives in the Ubuntu worker and prove real
+  no-re-resolution, cancellation, streaming, cleanup, CA/hostname, and egress
+  behavior on the isolated host.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   backup/recovery and host acceptance; no root KEK is stored by the repository.
 - [ ] Build and harden the unprivileged Ubuntu 24.04 worker image and broker transport.

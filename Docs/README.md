@@ -29,7 +29,7 @@ Where to start, and which document wins when two disagree.
 | What is allowed right now | [`scope-policy.md`](scope-policy.md) |
 | Architecture decisions | [`decisions/`](decisions/README.md) |
 | Workbench application, learning, storage, and worker boundary | [`workbench-architecture.md`](workbench-architecture.md) |
-| Passive pilot broker and worker gates | [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) · [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) · [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) · [`THREAT_MODEL.md`](../THREAT_MODEL.md#preconditions-for-any-network-posture) |
+| Passive pilot broker and worker gates | [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) · [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) · [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) · [`ADR-0015`](decisions/ADR-0015-unlaunched-passive-worker-primitives.md) · [`THREAT_MODEL.md`](../THREAT_MODEL.md#preconditions-for-any-network-posture) |
 | Real public programme-source evidence | [`HackerOne/GitLab`](../fixtures/programmes/public/hackerone-gitlab-2026-08-09/) · [`Bugcrowd/YNAB`](../fixtures/programmes/public/bugcrowd-ynab-2026-08-09/) · [`Direct policy/MCP Python SDK`](../fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09/) |
 
 ## Trust kernel and current implementation
@@ -45,6 +45,7 @@ Where to start, and which document wins when two disagree.
 - [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) - dark passive ticket, DNS, replay, kill-switch, and receipt boundary before any network adapter.
 - [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) - ticket-bound capture encryption and operator-side wrapped recipient-key lifecycle without enabling a worker.
 - [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) - exact-address passive adapter orchestration proved with injected conformance doubles and no network implementation.
+- [`ADR-0015`](decisions/ADR-0015-unlaunched-passive-worker-primitives.md) - cancellable system-DNS and numeric direct-TLS primitives implemented without a launcher or host acceptance.
 
 ## Planning and research policy
 

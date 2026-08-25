@@ -38,6 +38,7 @@ from greytheory_worker_contract import (
     PassiveHeadAdapter,
     ResolutionFailed,
     ResolutionResult,
+    TransportCaptureLimitExceeded,
 )
 
 
@@ -440,17 +441,30 @@ def test_response_parser_denies_redirects_ambiguity_body_and_oversize(
     assert_signed_stop(denied, signed, ledger, reason, request_count=1)
 
 
-@pytest.mark.parametrize("phase", ("transport_exception", "transport_deadline"))
-def test_transport_timeout_paths_stop_the_reserved_ticket(tmp_path, phase):
+@pytest.mark.parametrize(
+    ("phase", "reason"),
+    (
+        ("transport_exception", BrokerDenialReason.DURATION_EXCEEDED),
+        ("transport_deadline", BrokerDenialReason.DURATION_EXCEEDED),
+        ("transport_capture_limit", BrokerDenialReason.CAPTURE_TOO_LARGE),
+    ),
+)
+def test_transport_runtime_failures_stop_the_reserved_ticket(tmp_path, phase, reason):
     signed, session, _, ledger = begin_session(
         tmp_path,
-        suffix="6" if phase == "transport_exception" else "7",
+        suffix={
+            "transport_exception": "6",
+            "transport_deadline": "7",
+            "transport_capture_limit": "9",
+        }[phase],
     )
     monotonic = MonotonicFixture()
 
     def callback(request):
         if phase == "transport_exception":
             raise AdapterTimedOut("fixture transport timeout")
+        if phase == "transport_capture_limit":
+            raise TransportCaptureLimitExceeded("fixture streaming ceiling")
         monotonic.value = 31.0
         return transport_result(
             request,
@@ -468,7 +482,7 @@ def test_transport_timeout_paths_stop_the_reserved_ticket(tmp_path, phase):
         denied,
         signed,
         ledger,
-        BrokerDenialReason.DURATION_EXCEEDED,
+        reason,
         request_count=1,
     )
 

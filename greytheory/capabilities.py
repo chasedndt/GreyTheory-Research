@@ -232,7 +232,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive broker foundation",
         CapabilityStatus.PARTIAL,
         "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, ticket-bound X25519/ChaCha20-Poly1305 capture envelopes, audited KEK-wrapped recipient provisioning/rotation/revocation/decryption, and signed receipt metadata.",
-        "No DNS resolver, HTTP adapter, approved OS secret-provider binding for the external root KEK, worker image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
+        "No Ubuntu-host-accepted resolver/direct transport, approved OS secret-provider binding for the external root KEK, assembled worker service/image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_broker",
             "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
@@ -244,17 +244,28 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive adapter conformance contract",
         CapabilityStatus.PARTIAL,
         "A network-free worker contract orchestrates one typed complete DNS result into one full-request-digest-bound direct HEAD transport result, strictly parses one bounded header block, encrypts it, and seals completed or stopped receipts.",
-        "No actual resolver, socket, TLS/HTTP transport, proxy-capable client, worker process/image, or target action is implemented; injected conformance doubles only, and PASSIVE_HTTP remains unavailable.",
+        "The contract itself performs no I/O. Concrete primitives are separate and tested with injected syscalls only; no Ubuntu host acceptance, worker process/image, broker transport, canary, or target action exists, and PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_worker_contract",
             "Docs/decisions/ADR-0014-network-free-passive-adapter-contract.md",
         ),
     ),
     Capability(
+        "passive_worker_primitives",
+        "Passive worker OS primitives",
+        CapabilityStatus.PARTIAL,
+        "An unlaunched worker package implements an owned-child cancellable absolute-name system resolver and a direct numeric-address TLS 1.2+ HEAD transport with explicit CA trust, hostname verification, HTTP/1.1 ALPN, disabled key logging, total-deadline timeouts, bounded header reads, and deterministic close.",
+        "Verification uses injected process/socket/TLS doubles and performs no network I/O. No Ubuntu host acceptance, OS egress policy, service, broker transport, worker identity provisioning, canary, scheduler, or posture route is implemented.",
+        (
+            "greytheory_worker",
+            "Docs/decisions/ADR-0015-unlaunched-passive-worker-primitives.md",
+        ),
+    ),
+    Capability(
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,
-        "No network worker or passive target action is implemented.",
+        "Primitive classes exist, but no assembled, launched, or host-accepted network worker or passive target action is implemented.",
         "PASSIVE_HTTP remains dark until broker controls and operator posture approval are proven.",
         (
             "Docs/roadmap.md",

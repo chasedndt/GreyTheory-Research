@@ -4,6 +4,32 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-25 - Codex - Unlaunched passive worker primitives
+
+### What was built
+
+- Added a cancellable absolute-name system resolver in one owned spawn child,
+  with capped non-pickle JSON IPC and exact terminate/kill cleanup.
+- Added direct numeric IPv4/IPv6 TLS transport with explicit CA trust,
+  hostname/SNI verification, TLS 1.2+, HTTP/1.1 ALPN, disabled TLS key logging,
+  shared-deadline timeouts, bounded header reads, peer verification, and close
+  on every path.
+- Added syscall-injected conformance for process, pipe, socket, TLS, timeout,
+  overflow, body, peer, ALPN, CA, IPv6, and cleanup behavior.
+
+### What the next agent should not undo
+
+Do not add a default CA, KEK, target, ticket source, proxy-aware URL client, or
+launcher to these primitives. Do not claim injected syscall tests prove Ubuntu
+behavior. Assemble only inside the isolated worker after host and egress plans
+are explicit; keep `PASSIVE_HTTP` unavailable until canary and posture gates.
+
+### Verification
+
+See `07_LOGS/Build-Logs/2026-08-25-greytheory-passive-worker-primitives.md`.
+
+---
+
 ## 2026-08-25 - Codex - Network-free passive adapter contract
 
 ### What was built
