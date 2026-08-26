@@ -269,7 +269,8 @@ Offline broker foundation completed without enabling the posture:
   host. Recovered runs exposed and fixed wrapper quoting, WSL `/etc/hosts`,
   absolute-name fixture, exception-masking, and nested-process startup issues,
   but shared WSL/Hermes startup instability prevented a complete JSON record;
-  this remains explicitly unverified.
+  a later no-client retry failed inside WSL at `CreateVm/0x800705b4` before the
+  namespace started. This remains explicitly unverified.
 - [ ] Prove durable egress enforcement in the hardened local image.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   backup/recovery and host acceptance; no root KEK is stored by the repository.

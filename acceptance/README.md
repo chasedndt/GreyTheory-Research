@@ -74,6 +74,12 @@ coincided with an unhealthy distro startup, and the shared distro/service was
 not terminated. Do not describe the full worker service as host-accepted until
 this command finishes with its JSON evidence.
 
+A later clean retry began with no WSL clients present but failed inside WSL
+before `unshare` started: `CreateVm/0x800705b4` reported that its own timeout
+expired. The wrapper exited nonzero and left no GreyTheory-owned WSL client.
+The wrapper retains the native process handle before waiting so Windows
+PowerShell reports the real nonzero exit code rather than an empty value.
+
 Even a successful run would remain an owned no-route local acceptance fixture.
 It would not prove durable egress, a hardened image, OS-bound root KEK,
 authorised programme operation, VPS suitability, or posture approval, and it

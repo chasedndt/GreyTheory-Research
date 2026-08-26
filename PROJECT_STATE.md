@@ -79,7 +79,8 @@ The complete offline path from supplied authorisation to a validated report draf
   Ubuntu namespace proof covers the primitive path only. The full service host
   harness now has bounded Windows-side cleanup, isolated hosts setup, and a
   lower-overhead authority-free process topology, but has not completed
-  acceptance or emitted its required JSON record.
+  acceptance or emitted its required JSON record. The latest clean retry
+  failed inside WSL at `CreateVm/0x800705b4` before namespace setup.
 
 ## What is not built
 

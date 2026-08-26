@@ -141,6 +141,9 @@ Implemented harness but not yet accepted on the host:
 - no attempt emitted the required complete JSON evidence before unrelated
   Hermes WSL clients again coincided with an unhealthy distro startup. No pass
   is claimed, and the shared distro/service was not terminated.
+- a subsequent retry with no WSL clients present failed inside WSL before the
+  namespace command started (`CreateVm/0x800705b4`); the wrapper returned
+  nonzero and no GreyTheory-owned WSL client remained.
 
 Still required before any network posture:
 

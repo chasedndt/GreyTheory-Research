@@ -38,6 +38,7 @@ $arguments = @(
 )
 $process = Start-Process -FilePath "wsl.exe" -ArgumentList $arguments `
     -NoNewWindow -PassThru
+$ownedProcessHandle = $process.Handle
 if (-not $process.WaitForExit($TimeoutSeconds * 1000)) {
     $ownedWslIds = @(Get-OwnedWslDescendantIds -ParentId $process.Id)
     foreach ($ownedWslId in $ownedWslIds) {

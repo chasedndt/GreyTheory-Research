@@ -102,6 +102,7 @@ def test_full_worker_wrapper_drops_identity_and_capabilities_in_no_route_namespa
     assert '"unshare", "-Urnm"' in powershell
     assert '"--user", "root"' in powershell
     assert "WaitForExit($TimeoutSeconds * 1000)" in powershell
+    assert "$ownedProcessHandle = $process.Handle" in powershell
     assert "Get-OwnedWslDescendantIds" in powershell
     assert "Stop-Process -Id $ownedWslId" in powershell
     assert "--map-user=65534" in source

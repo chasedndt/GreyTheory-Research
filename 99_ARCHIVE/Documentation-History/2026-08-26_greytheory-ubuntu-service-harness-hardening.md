@@ -16,3 +16,7 @@
 The source and unit contracts are verified. No complete Ubuntu acceptance JSON
 exists, so the full worker service is not host-accepted and no operating-posture
 transition occurred.
+
+The later clean retry failed at WSL `CreateVm/0x800705b4` before namespace
+startup; this strengthens the external-host blocker evidence but does not
+promote capability truth.

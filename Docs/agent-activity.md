@@ -21,6 +21,11 @@ No complete Ubuntu JSON record exists. Shared WSL/Hermes startup became
 unreliable again; unrelated processes and the shared distro/service were not
 stopped, and `PASSIVE_HTTP` remains unavailable.
 
+A later retry with no WSL clients present failed inside WSL at
+`CreateVm/0x800705b4` before namespace startup. The wrapper returned nonzero,
+left no owned client, and now retains its native handle so PowerShell preserves
+the real exit code.
+
 See `07_LOGS/Build-Logs/2026-08-26-greytheory-ubuntu-service-harness-hardening.md`.
 
 ## 2026-08-26 - Codex - Owned-process passive worker assembly

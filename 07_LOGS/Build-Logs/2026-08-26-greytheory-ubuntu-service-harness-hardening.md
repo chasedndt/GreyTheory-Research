@@ -43,6 +43,22 @@ stopped.
 
 No complete JSON record exists, so this is not host acceptance.
 
+### Later clean retry
+
+After commit `ced2b8b`, a retry began with no WSL clients present. WSL failed
+before `unshare` started with
+`Wsl/Service/CreateInstance/CreateVm/0x800705b4`; its own timeout expired. The
+wrapper returned nonzero and left no GreyTheory-owned WSL client. Windows
+PowerShell 5.1 was also shown to return an empty `Process.ExitCode` unless the
+native process handle is acquired before waiting, so the wrapper now retains
+that handle and its static contract asserts the behavior.
+
+```text
+PowerShell parse: PASS
+tests/test_ubuntu_worker_host_acceptance.py: 5 passed in 5.09s
+python -m pytest -q: 665 passed in 187.20s (0:03:07)
+```
+
 ## Verification
 
 ```text
