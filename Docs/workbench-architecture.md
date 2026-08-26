@@ -213,10 +213,23 @@ operator goal + prerequisite graph + review due dates
   -> reusable lesson linked to research
 ```
 
-Initial scheduling must be deterministic and inspectable. A model may explain,
-question, or critique, but it cannot select hidden criteria, award mastery, or
-promote a claim. Adaptive scheduling is not complete until its policy,
-explanations, clock behaviour, and regression fixtures are tested.
+Scheduling is deterministic and inspectable. `adaptive-evidence-review-v1`
+uses only earlier credited human assessments for the same card and dimension:
+the first assessment uses the level's base interval, one retained or improved
+assessment extends it by 50 percent, two or more consecutive retained or
+improved assessments double it (capped at 180 days), and regression halves the
+base interval (with a three-day floor). Test-fixture assessments never affect
+the schedule. Every persisted assessment carries the policy reference and a
+plain-language rationale; an explicit operator date remains possible and is
+labelled as such.
+
+Three tracks share the same five-stage journey. `standard` supplies no hidden
+assistance. `assisted` exposes a security-property and evidence checklist but
+cannot evidence mastery above `assisted`. `transfer` is operator-selected,
+targets the transfer dimension, requires independent test and prove evidence,
+and requires a distinct local context reference in both proof and final human
+assessment. A model may explain, question, or critique, but it cannot select
+hidden criteria, award mastery, or promote a claim.
 
 ## 7. UX truth rules
 
@@ -307,8 +320,7 @@ Not implemented now:
   host acceptance;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
-- adaptive scheduling, assisted/transfer-specific journeys, and the graphical
-  Learn surface;
+- broader curricula and the graphical Learn surface;
 - a general local fixture process broker;
 - any assembled/accepted Ubuntu worker service or broker transport, approved OS
   secret-provider binding for the root KEK, successful system-DNS/full-adapter

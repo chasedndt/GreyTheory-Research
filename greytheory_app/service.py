@@ -32,10 +32,12 @@ from greytheory.learning import (
     GuidedLearningPlanner,
     JourneyStatus,
     LearningJourneyStore,
+    LearningTrack,
     MasteryAssessment,
     MasteryDimension,
     MasteryLevel,
     MasteryStore,
+    ReviewPolicy,
     abandon_learning_journey,
     advance_learning_journey,
     load_builtin_catalogue,
@@ -591,6 +593,7 @@ class WorkbenchApplicationService:
                         ("current_level", recommendation.current_level.name.lower()),
                         ("review_due", recommendation.review_due.isoformat() if recommendation.review_due else "none"),
                         ("mastery_credit_rule", "explicit human assessment only"),
+                        ("track", recommendation.track.value),
                     ),
                 )
             ]
@@ -609,6 +612,7 @@ class WorkbenchApplicationService:
                         ("stage", item.current_stage.value),
                         ("revision", str(item.revision)),
                         ("awards_mastery", "false"),
+                        ("track", item.track.value),
                     ),
                 )
                 for item in persisted
@@ -1875,8 +1879,8 @@ class WorkbenchApplicationService:
                 "level",
                 "evidence_refs",
                 "rationale",
-                "review_due",
             },
+            optional={"review_due"},
         )
         now = self.clock()
         issued = command.issued_at.astimezone(timezone.utc)
@@ -1887,7 +1891,8 @@ class WorkbenchApplicationService:
             raise WorkbenchContractError("mastery assessment command is stale")
         assessment_id = _command_text(command, "assessment_id")
         assert assessment_id is not None
-        if any(item.id == assessment_id for item in self.mastery.assessments()):
+        existing_assessments = self.mastery.assessments()
+        if any(item.id == assessment_id for item in existing_assessments):
             return CommandResult(
                 command.id,
                 CommandDisposition.CONFLICT,
@@ -1895,17 +1900,43 @@ class WorkbenchApplicationService:
                 f"mastery assessment {assessment_id!r} already exists",
                 (f"mastery-assessment:{assessment_id}",),
             )
+        dimension = MasteryDimension(_command_text(command, "dimension") or "")
+        level = MasteryLevel.parse(_command_text(command, "level") or "")
+        review_due_value = _command_text(command, "review_due", optional=True)
+        schedule = (
+            None
+            if review_due_value is not None
+            else ReviewPolicy().schedule(
+                existing_assessments,
+                card_id=_command_text(command, "card_id") or "",
+                dimension=dimension,
+                level=level,
+                assessed_at=command.issued_at,
+            )
+        )
         assessment = MasteryAssessment(
             id=assessment_id,
             card_id=_command_text(command, "card_id") or "",
-            dimension=MasteryDimension(_command_text(command, "dimension") or ""),
-            level=MasteryLevel.parse(_command_text(command, "level") or ""),
+            dimension=dimension,
+            level=level,
             assessor=self.operator_ref,
             assessor_kind=AssessorKind.HUMAN,
             evidence_refs=_command_texts(command, "evidence_refs"),
             rationale=_command_text(command, "rationale") or "",
             assessed_at=command.issued_at,
-            review_due=date.fromisoformat(_command_text(command, "review_due") or ""),
+            review_due=(
+                date.fromisoformat(review_due_value)
+                if review_due_value is not None
+                else schedule.review_due
+            ),
+            review_policy_ref=(
+                "operator-set-v1" if schedule is None else schedule.policy_ref
+            ),
+            review_rationale=(
+                "operator supplied review date"
+                if schedule is None
+                else schedule.rationale
+            ),
         )
         self.mastery.record(assessment)
         return CommandResult(
@@ -1913,7 +1944,11 @@ class WorkbenchApplicationService:
             CommandDisposition.ACCEPTED,
             "mastery_assessment_recorded",
             "the operator-authored evidence-bound assessment was recorded; no lab, model, or journey awarded mastery",
-            (f"mastery-assessment:{assessment.id}",),
+            (
+                f"mastery-assessment:{assessment.id}",
+                f"review-policy:{assessment.review_policy_ref}",
+                f"review-due:{assessment.review_due.isoformat()}",
+            ),
         )
 
     def _select_workspace(self, command: WorkbenchCommand) -> CommandResult:
@@ -2097,6 +2132,10 @@ class WorkbenchApplicationService:
         dimension_value = command.field("dimension")
         today_value = command.field("today")
         objective = command.field("objective")
+        track_value = command.field("track", LearningTrack.STANDARD.value)
+        if not isinstance(track_value, str):
+            raise WorkbenchContractError("learning track must be text")
+        track = LearningTrack(track_value)
         recommendation = GuidedLearningPlanner(self.catalogue).recommend(
             self.mastery.assessments(),
             today=(
@@ -2110,12 +2149,18 @@ class WorkbenchApplicationService:
                 if isinstance(dimension_value, str)
                 else None
             ),
+            track=track,
         )
         journey = start_learning_journey(
             recommendation,
             journey_id=journey_id,
             now=command.issued_at,
             objective=objective if isinstance(objective, str) else None,
+            transfer_context_ref=(
+                command.field("transfer_context_ref")
+                if isinstance(command.field("transfer_context_ref"), str)
+                else None
+            ),
         )
         self.journeys.save(journey)
         return CommandResult(

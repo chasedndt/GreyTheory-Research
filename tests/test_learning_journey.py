@@ -15,6 +15,7 @@ from greytheory.learning import (
     LearningMode,
     LearningStage,
     LearningStoreError,
+    LearningTrack,
     MasteryAssessment,
     MasteryDimension,
     MasteryLevel,
@@ -38,6 +39,7 @@ def assessment(
     assessed_at: datetime = NOW - timedelta(days=10),
     review_due: date = date(2026, 8, 21),
     assessor_kind: AssessorKind = AssessorKind.HUMAN,
+    evidence_refs: tuple[str, ...] = ("evidence:learning-review",),
 ) -> MasteryAssessment:
     return MasteryAssessment(
         id=assessment_id,
@@ -46,7 +48,7 @@ def assessment(
         level=level,
         assessor="operator-chase" if assessor_kind is AssessorKind.HUMAN else "fixture",
         assessor_kind=assessor_kind,
-        evidence_refs=("evidence:learning-review",),
+        evidence_refs=evidence_refs,
         rationale="Reviewed the explanation against the evidence.",
         assessed_at=assessed_at,
         review_due=review_due,
@@ -115,6 +117,216 @@ def test_review_policy_is_small_deterministic_and_refuses_not_assessed():
     assert policy.review_due(NOW.date(), MasteryLevel.TRANSFERABLE) == date(2026, 11, 22)
     with pytest.raises(LearningError, match="no review interval"):
         policy.review_due(NOW.date(), MasteryLevel.NOT_ASSESSED)
+
+
+def test_adaptive_review_schedule_is_transparent_reinforcing_and_regression_aware():
+    policy = ReviewPolicy()
+    first = policy.schedule(
+        (),
+        card_id="idor-bola",
+        dimension=MasteryDimension.EXPLAIN,
+        level=MasteryLevel.INDEPENDENT,
+        assessed_at=NOW,
+    )
+    assert first.interval_days == 30
+    assert first.review_due == date(2026, 9, 23)
+    assert first.adjustment == "baseline"
+    assert first.policy_ref == "adaptive-evidence-review-v1"
+
+    introductory = assessment(
+        assessment_id="assessment-adaptive-intro",
+        level=MasteryLevel.INTRODUCTORY,
+        assessed_at=NOW - timedelta(days=30),
+        review_due=date(2026, 8, 1),
+    )
+    once = policy.schedule(
+        (introductory,),
+        card_id="idor-bola",
+        dimension=MasteryDimension.EXPLAIN,
+        level=MasteryLevel.ASSISTED,
+        assessed_at=NOW,
+    )
+    assert once.interval_days == 21
+    assert once.adjustment == "reinforced_once"
+
+    assisted = assessment(
+        assessment_id="assessment-adaptive-assisted",
+        level=MasteryLevel.ASSISTED,
+        assessed_at=NOW - timedelta(days=10),
+        review_due=date(2026, 8, 28),
+    )
+    twice = policy.schedule(
+        (introductory, assisted),
+        card_id="idor-bola",
+        dimension=MasteryDimension.EXPLAIN,
+        level=MasteryLevel.INDEPENDENT,
+        assessed_at=NOW,
+    )
+    assert twice.interval_days == 60
+    assert twice.adjustment == "reinforced_twice"
+    assert twice.credited_history_count == 2
+
+    regression = policy.schedule(
+        (
+            assessment(
+                assessment_id="assessment-adaptive-independent",
+                level=MasteryLevel.INDEPENDENT,
+                assessed_at=NOW - timedelta(days=5),
+                review_due=date(2026, 9, 18),
+            ),
+        ),
+        card_id="idor-bola",
+        dimension=MasteryDimension.EXPLAIN,
+        level=MasteryLevel.ASSISTED,
+        assessed_at=NOW,
+    )
+    assert regression.interval_days == 7
+    assert regression.adjustment == "regression"
+
+    fixture_only = policy.schedule(
+        (assessment(assessor_kind=AssessorKind.TEST_FIXTURE),),
+        card_id="idor-bola",
+        dimension=MasteryDimension.EXPLAIN,
+        level=MasteryLevel.ASSISTED,
+        assessed_at=NOW,
+    )
+    assert fixture_only.credited_history_count == 0
+    assert fixture_only.interval_days == 14
+
+
+def test_assisted_track_exposes_guidance_and_caps_journey_mastery_credit():
+    catalogue = load_builtin_catalogue()
+    recommendation = GuidedLearningPlanner(catalogue).recommend(
+        (),
+        today=NOW.date(),
+        preferred_card_id="idor-bola",
+        preferred_dimension=MasteryDimension.EXPLAIN,
+        track=LearningTrack.ASSISTED,
+    )
+    assert recommendation.track is LearningTrack.ASSISTED
+    assert recommendation.stages[0].guidance
+    journey = start_learning_journey(
+        recommendation, journey_id="journey-assisted-idor", now=NOW
+    )
+    for offset, kwargs in (
+        (1, {}),
+        (2, {"fixture_receipt_ref": "fixture-receipt:assisted"}),
+        (3, {"evidence_refs": ("evidence:assisted-notes",)}),
+        (4, {"reflection": "The hint sequence exposed where I skipped the ownership check."}),
+    ):
+        journey = advance_learning_journey(
+            journey, at=NOW + timedelta(minutes=offset), **kwargs
+        )
+    independent = assessment(
+        assessment_id="assessment-assisted-overclaim",
+        level=MasteryLevel.INDEPENDENT,
+        assessed_at=NOW + timedelta(minutes=5),
+        review_due=date(2026, 9, 23),
+    )
+    with pytest.raises(LearningError, match="assisted journey cannot evidence"):
+        advance_learning_journey(
+            journey,
+            at=NOW + timedelta(minutes=6),
+            assessment=independent,
+            recorded_assessment_ids=(independent.id,),
+        )
+    assisted = assessment(
+        assessment_id="assessment-assisted-credited",
+        level=MasteryLevel.ASSISTED,
+        assessed_at=NOW + timedelta(minutes=5),
+        review_due=date(2026, 9, 7),
+    )
+    completed = advance_learning_journey(
+        journey,
+        at=NOW + timedelta(minutes=6),
+        assessment=assisted,
+        recorded_assessment_ids=(assisted.id,),
+    )
+    assert completed.status is JourneyStatus.COMPLETED
+    assert completed.track is LearningTrack.ASSISTED
+
+
+def test_transfer_track_requires_independent_foundations_and_distinct_context_proof():
+    catalogue = load_builtin_catalogue()
+    test_assessment = assessment(
+        assessment_id="assessment-transfer-test",
+        dimension=MasteryDimension.TEST,
+        level=MasteryLevel.INDEPENDENT,
+        assessed_at=NOW - timedelta(days=5),
+        review_due=date(2026, 9, 18),
+    )
+    with pytest.raises(LearningError, match="unmet: prove"):
+        GuidedLearningPlanner(catalogue).recommend(
+            (test_assessment,),
+            today=NOW.date(),
+            preferred_card_id="idor-bola",
+            track=LearningTrack.TRANSFER,
+        )
+    prove_assessment = assessment(
+        assessment_id="assessment-transfer-prove",
+        dimension=MasteryDimension.PROVE,
+        level=MasteryLevel.INDEPENDENT,
+        assessed_at=NOW - timedelta(days=4),
+        review_due=date(2026, 9, 19),
+    )
+    recommendation = GuidedLearningPlanner(catalogue).recommend(
+        (test_assessment, prove_assessment),
+        today=NOW.date(),
+        preferred_card_id="idor-bola",
+        track=LearningTrack.TRANSFER,
+    )
+    assert recommendation.dimension is MasteryDimension.TRANSFER
+    assert recommendation.track is LearningTrack.TRANSFER
+    with pytest.raises(LearningError, match="distinct context"):
+        start_learning_journey(
+            recommendation, journey_id="journey-transfer-missing", now=NOW
+        )
+    context_ref = "local-context:alternate-order-shape"
+    journey = start_learning_journey(
+        recommendation,
+        journey_id="journey-transfer-idor",
+        now=NOW,
+        transfer_context_ref=context_ref,
+    )
+    journey = advance_learning_journey(journey, at=NOW + timedelta(minutes=1))
+    journey = advance_learning_journey(
+        journey,
+        at=NOW + timedelta(minutes=2),
+        fixture_receipt_ref="fixture-receipt:transfer-baseline",
+    )
+    with pytest.raises(LearningError, match="distinct context"):
+        advance_learning_journey(
+            journey,
+            at=NOW + timedelta(minutes=3),
+            evidence_refs=("evidence:transfer-comparison",),
+        )
+    journey = advance_learning_journey(
+        journey,
+        at=NOW + timedelta(minutes=3),
+        evidence_refs=(context_ref, "evidence:transfer-comparison"),
+    )
+    journey = advance_learning_journey(
+        journey,
+        at=NOW + timedelta(minutes=4),
+        reflection="The ownership invariant transferred, but the identifier location changed.",
+    )
+    transfer_assessment = assessment(
+        assessment_id="assessment-transfer-context",
+        dimension=MasteryDimension.TRANSFER,
+        level=MasteryLevel.INTRODUCTORY,
+        assessed_at=NOW + timedelta(minutes=5),
+        review_due=date(2026, 8, 31),
+        evidence_refs=(context_ref, "evidence:transfer-comparison"),
+    )
+    completed = advance_learning_journey(
+        journey,
+        at=NOW + timedelta(minutes=6),
+        assessment=transfer_assessment,
+        recorded_assessment_ids=(transfer_assessment.id,),
+    )
+    assert completed.status is JourneyStatus.COMPLETED
+    assert completed.transfer_context_ref == context_ref
+    assert completed.to_dict()["track"] == "transfer"
 
 
 def test_journey_requires_practice_proof_reflection_and_persisted_human_assessment():
@@ -412,3 +624,63 @@ def test_cli_plans_starts_and_advances_a_private_learning_journey(
     status = json.loads(capsys.readouterr().out)
     assert status["journey_count"] == 1
     assert status["journeys"][0]["current_stage"] == "prove"
+
+
+def test_cli_defaults_human_assessment_to_adaptive_review_and_starts_assisted_track(
+    tmp_path, capsys
+):
+    root = tmp_path / "private-adaptive-learning"
+    assert main(
+        [
+            "learning",
+            "assess",
+            "--root",
+            str(root),
+            "--assessment-id",
+            "assessment-cli-adaptive",
+            "--card",
+            "idor-bola",
+            "--dimension",
+            "explain",
+            "--level",
+            "independent",
+            "--assessor",
+            "operator-chase",
+            "--evidence-ref",
+            "evidence:cli-adaptive",
+            "--rationale",
+            "The operator independently explained the ownership invariant.",
+            "--assessed-at",
+            NOW.isoformat(),
+            "--json",
+        ]
+    ) == 0
+    recorded = json.loads(capsys.readouterr().out)
+    assert recorded["review_policy_ref"] == "adaptive-evidence-review-v1"
+    assert recorded["review_due"] == "2026-09-23"
+    assert recorded["adaptive_review_schedule"]["adjustment"] == "baseline"
+
+    assert main(
+        [
+            "learning",
+            "journey-start",
+            "--root",
+            str(root),
+            "--journey-id",
+            "journey-cli-assisted",
+            "--card",
+            "idor-bola",
+            "--dimension",
+            "recognise",
+            "--track",
+            "assisted",
+            "--today",
+            NOW.date().isoformat(),
+            "--at",
+            NOW.isoformat(),
+            "--json",
+        ]
+    ) == 0
+    started = json.loads(capsys.readouterr().out)
+    assert started["journey"]["track"] == "assisted"
+    assert started["recommendation"]["stages"][0]["guidance"]

@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 646 repository tests pass on 2026-08-25 with executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, human-bound mastery assessment, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and offline Ubuntu 24.04 WSL2 proof for numeric direct TLS plus spawned-child cancellation; posture remains unchanged.
+- 651 repository tests pass on 2026-08-26 with transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and offline Ubuntu 24.04 WSL2 proof for numeric direct TLS plus spawned-child cancellation; posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -109,9 +109,10 @@ The acyclic skill graph exposes all 72 card/dimension states. The private,
 integrity-checked mastery store credits only explicit evidence-bound human
 assessments; test-fixture assessments remain visible but non-crediting. The
 Milestone 4 BOLA proposal maps to exactly one `idor-bola` v1.0.0 revision with
-`test_fixture` provenance. Focused acceptance passes 10 tests; the full suite
-passes 430. Broader training-mode orchestration and adaptive curriculum remain
-PARTIAL and are not part of this exit claim.
+`test_fixture` provenance. Focused acceptance originally passed 10 tests and
+the then-current full suite passed 430. Transparent adaptive review plus bounded
+assisted and transfer tracks were added later under the workbench workstream;
+broader curricula and the graphical Learn surface remain PARTIAL.
 
 ## Milestone 6 — Hypothesis engine *(COMPLETE 2026-08-09)*
 
@@ -217,7 +218,7 @@ The interactive application is not.
 - [x] Advance exactly one internal finding state, require a current Gates B-F pass for `report_ready`, and refuse submission/programme outcomes.
 - [ ] Build the selected graphical application shell.
 - [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
-- [ ] Add adaptive scheduling plus assisted and transfer-specific learning modes beyond the deterministic foundation.
+- [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
 - [ ] Prove keyboard, accessibility, desktop, and 390-pixel operation.
 - [ ] Package and accept on the Windows operator workstation.
 

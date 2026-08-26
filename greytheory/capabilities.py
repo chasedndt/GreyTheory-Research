@@ -156,9 +156,13 @@ CAPABILITIES: tuple[Capability, ...] = (
         "guided_learning",
         "Guided learning orchestration",
         CapabilityStatus.PARTIAL,
-        "Deterministic recommendations, prerequisite routing, review intervals, staged journeys, reflection, private persistence, and CLI flow are live.",
-        "Adaptive scheduling, assisted and transfer-specific journeys, broader curricula, and the graphical Learn surface are not built.",
-        ("greytheory.learning.journey", "Docs/roadmap.md"),
+        "Deterministic recommendations, prerequisite routing, transparent adaptive review intervals, standard/assisted/transfer tracks, staged journeys, reflection, private persistence, CLI flow, and workbench snapshot/command integration are live.",
+        "Assistance cannot evidence mastery above assisted; transfer requires independent test/prove foundations plus distinct-context evidence. Broader curricula and the graphical Learn surface are not built.",
+        (
+            "greytheory.learning.journey",
+            "Docs/decisions/ADR-0017-transparent-adaptive-learning-tracks.md",
+            "Docs/roadmap.md",
+        ),
     ),
     Capability(
         "model_gateway",

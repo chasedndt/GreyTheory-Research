@@ -2,7 +2,7 @@
 
 > **Status:** CANONICAL
 >
-> **Effective:** 2026-08-25
+> **Effective:** 2026-08-26
 >
 > **Current maturity:** Working offline trust and research kernel with governed learning, transparent hypothesis ranking, model gateway, offline Scope Watch, and a workbench foundation; no live-target capability.
 
@@ -84,12 +84,12 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 1 | Programme and Authority Intelligence | PARTIAL |
 | 2 | Research Workspace | LIVE offline; structured store and sessions verified |
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
-| 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guided/review planning, and persisted staged journeys; adaptive and specialised modes remain partial |
+| 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, and persisted staged journeys; broader curricula and graphical Learn remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
 | 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, and unlaunched cancellable-DNS/direct-TLS primitives are verified, with offline Ubuntu 24.04 WSL2 proof for direct TLS and spawned-child cancellation; no complete resolver/adapter host acceptance, OS-bound KEK provider, assembled worker, or passive action |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
-| 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, and mastery records live; adaptive learning loop planned |
+| 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, and bounded assisted/transfer journeys live; broader curriculum and graphical learning loop planned |
 | 10 | Workbench and Integrations | PARTIAL; CLI, static read model, executable capability register, application architecture, versioned snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export handlers, private runtime assembly, and authenticated numeric-loopback transport live; graphical workbench planned |
 
 Planes define trust boundaries. Layers define the capabilities a researcher uses. A layer may never weaken a plane.
@@ -124,7 +124,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - a governed offline model gateway with role/data ceilings, citation checks, budget enforcement, inferred provenance, and an eight-case adversarial evaluation harness;
 - offline Scope Watch comparison and review invalidation through the exact rooted `LocalSourceFetcher`, with no network fetcher escape hatch;
 - an executable capability register shared by dashboard and future workbench surfaces, including explicit `UNAVAILABLE` boundaries for Lane 3, governed external collection, and `PASSIVE_HTTP`.
-- a transport-neutral workbench application service with versioned fail-closed snapshots across the existing stores, stable next-action/context records, idempotent revision-bound learning handlers, create-only hypothesis recording, human-acknowledged scope review, atomic experiment planning, server-derived bounded `LOCAL_FIXTURE` action intent with no Gate or execution, fresh evidence-bound mastery assessment derived from the configured local human operator, revisioned private report authoring, persisted human-bound Gates B-F validation, exact two-account-fixture claim assembly from stored evidence, next-state-only internal finding lifecycle, redacted receipt-chain export from server-held state, and structural refusal of posture above `LOCAL_FIXTURE` or any claim of execution.
+- a transport-neutral workbench application service with versioned fail-closed snapshots across the existing stores, stable next-action/context records, idempotent revision-bound standard/assisted/transfer learning handlers, transparent adaptive review scheduling, create-only hypothesis recording, human-acknowledged scope review, atomic experiment planning, server-derived bounded `LOCAL_FIXTURE` action intent with no Gate or execution, fresh evidence-bound mastery assessment derived from the configured local human operator, revisioned private report authoring, persisted human-bound Gates B-F validation, exact two-account-fixture claim assembly from stored evidence, next-state-only internal finding lifecycle, redacted receipt-chain export from server-held state, and structural refusal of posture above `LOCAL_FIXTURE` or any claim of execution.
 - an integrity-checked private report-case store that round-trips complete finding/claim-role/check-receipt state, refuses Git storage, persists atomically, audits changes, and protects draft edits with optimistic revisions;
 - a Windows-first local runtime and `greytheory-workbench` launcher with private-root enforcement, numeric `127.0.0.1` binding, strict Host/token/origin admission, no CORS, bounded versioned JSON, and no target-network route.
 - an offline Ubuntu 24.04 WSL2 primitive acceptance harness that creates a
@@ -161,18 +161,18 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   cancellation inside a loopback-only namespace with no default route; real
   system-DNS success, full adapter assembly, an unprivileged image, durable
   egress policy, broker transport, and target contact are not proven.
-- the knowledge/skill layer now has a deterministic guided/review journey and explicit human-assessment completion, but not adaptive scheduling, assisted or transfer-specific journeys, broader curriculum packs, or the graphical Learn surface.
+- the knowledge/skill layer now has deterministic guidance, transparent adaptive review scheduling, bounded assisted and transfer-specific journeys, and explicit human-assessment completion, but not broader curriculum packs or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT
 
-- adaptive review scheduling, assisted and transfer-specific orchestration, and broader curriculum packs;
+- broader curriculum packs and the graphical Learn surface;
 - governed external Scope Watch collector, accepted Ubuntu passive worker/service and broker transport, isolated network workers, and live collectors;
 - standalone graphical workbench;
 - live research proof and programme outcomes.
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol now exists only as an offline dark foundation. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: architecture, executable capability truth, UI-neutral application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export handlers, and the authenticated local launch boundary exist, while the interactive shell awaits visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol now exists only as an offline dark foundation. In parallel, the product workbench foundation is in progress under `LOCAL_FIXTURE`: architecture, executable capability truth, UI-neutral application snapshots, transparent adaptive review, bounded standard/assisted/transfer learning, research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export handlers, and the authenticated local launch boundary exist, while the interactive shell awaits visual selection and implementation. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

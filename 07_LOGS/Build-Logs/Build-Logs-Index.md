@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-26 - GreyTheory transparent adaptive learning tracks](2026-08-26-greytheory-adaptive-learning-tracks.md) - inspectable review scheduling and bounded assisted/transfer journeys; 651 tests
+
 - [2026-08-25 - GreyTheory Ubuntu primitive host acceptance](2026-08-25-greytheory-ubuntu-primitive-host-acceptance.md) - offline no-route WSL2 numeric-TLS and spawned-child cancellation proof; 646 tests
 
 - [2026-08-25 - GreyTheory passive worker primitives](2026-08-25-greytheory-passive-worker-primitives.md) - cancellable absolute-name DNS and numeric direct-TLS mechanics, unlaunched and syscall-injected; 643 tests

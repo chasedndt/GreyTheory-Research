@@ -235,11 +235,11 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
 | Transparent research queue | 3 | **Live (offline)** — versioned nine-factor policy, explained ordinal scores, scope-review partition, integrity-bound private output, no execution authority |
 | Vulnerability cards / skill graph | 3 | **Live (offline)** — 12 versioned cards, 12 synthetic fixtures, acyclic prerequisites, and six evidence-bound mastery dimensions |
-| Training modes / adaptive curriculum | 3 | **Partial / designed** — card content and review dates exist; guided, assisted, assessment, transfer, and scheduling orchestration do not |
-| Model gateway | cross-cutting | **Designed, not built** |
-| Standalone graphical workbench | 1/3 | **Planned** — CLI and dashboard read model are live |
+| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, and bounded standard/assisted/transfer journeys exist; broader curricula and graphical Learn do not |
+| Model gateway | cross-cutting | **Live offline** — governed roles, citations, budgets, provenance, adversarial evaluation, and deterministic local provider; no network provider configured |
+| Standalone graphical workbench | 1/3 | **Partial / planned surface** — CLI, dashboard read model, application service, private runtime, and authenticated numeric-loopback transport are live; graphical shell and installed acceptance are not |
 | Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
-| Scope Watch | 1/3 | **Planned** — Milestone 8; first proposed network component |
+| Scope Watch | 1/3 | **Partial** — offline captured-source comparison and invalidation are live; governed external collection is unavailable |
 
 Definitions: **Live** = exists and passes current tests. **Partial** = a useful subset exists. **Designed** = specified, not built. **Planned** = sequenced but not implemented. **Historical** = retained context, not current truth.
 

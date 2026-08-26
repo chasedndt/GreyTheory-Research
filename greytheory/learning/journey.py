@@ -39,6 +39,12 @@ class LearningMode(str, Enum):
     MAINTENANCE = "maintenance"
 
 
+class LearningTrack(str, Enum):
+    STANDARD = "standard"
+    ASSISTED = "assisted"
+    TRANSFER = "transfer"
+
+
 class LearningStage(str, Enum):
     LEARN = "learn"
     PRACTISE = "practise"
@@ -60,13 +66,15 @@ class StageBrief:
     title: str
     objective: str
     required_output: str
+    guidance: tuple[str, ...] = ()
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "stage": self.stage.value,
             "title": self.title,
             "objective": self.objective,
             "required_output": self.required_output,
+            "guidance": list(self.guidance),
         }
 
 
@@ -81,6 +89,11 @@ class LearningRecommendation:
     prerequisite_gaps: tuple[str, ...]
     review_due: date | None
     stages: tuple[StageBrief, ...]
+    track: LearningTrack = LearningTrack.STANDARD
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.track, LearningTrack):
+            raise LearningError("recommendation track must be a LearningTrack value")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -89,6 +102,7 @@ class LearningRecommendation:
             "dimension": self.dimension.value,
             "current_level": self.current_level.name.lower(),
             "mode": self.mode.value,
+            "track": self.track.value,
             "reason": self.reason,
             "prerequisite_gaps": list(self.prerequisite_gaps),
             "review_due": self.review_due.isoformat() if self.review_due else None,
@@ -98,8 +112,40 @@ class LearningRecommendation:
         }
 
 
+@dataclass(frozen=True)
+class ReviewSchedule:
+    policy_ref: str
+    card_id: str
+    dimension: MasteryDimension
+    level: MasteryLevel
+    assessed_on: date
+    review_due: date
+    base_interval_days: int
+    interval_days: int
+    credited_history_count: int
+    adjustment: str
+    rationale: str
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "policy_ref": self.policy_ref,
+            "card_id": self.card_id,
+            "dimension": self.dimension.value,
+            "level": self.level.name.lower(),
+            "assessed_on": self.assessed_on.isoformat(),
+            "review_due": self.review_due.isoformat(),
+            "base_interval_days": self.base_interval_days,
+            "interval_days": self.interval_days,
+            "credited_history_count": self.credited_history_count,
+            "adjustment": self.adjustment,
+            "rationale": self.rationale,
+        }
+
+
 class ReviewPolicy:
-    """Small, inspectable default intervals; never hidden adaptive scoring."""
+    """Transparent evidence-bound intervals; never hidden adaptive scoring."""
+
+    POLICY_REF = "adaptive-evidence-review-v1"
 
     INTERVAL_DAYS = {
         MasteryLevel.INTRODUCTORY: 7,
@@ -112,6 +158,82 @@ class ReviewPolicy:
         if level is MasteryLevel.NOT_ASSESSED:
             raise LearningError("not-assessed has no review interval")
         return assessed_on + timedelta(days=self.INTERVAL_DAYS[level])
+
+    def schedule(
+        self,
+        assessments: Iterable[MasteryAssessment],
+        *,
+        card_id: str,
+        dimension: MasteryDimension,
+        level: MasteryLevel,
+        assessed_at: datetime,
+    ) -> ReviewSchedule:
+        if assessed_at.tzinfo is None:
+            raise LearningError("adaptive review assessment time must be timezone-aware")
+        if level is MasteryLevel.NOT_ASSESSED:
+            raise LearningError("not-assessed has no review interval")
+        history = sorted(
+            (
+                item
+                for item in assessments
+                if item.credits_mastery
+                and item.card_id == card_id
+                and item.dimension is dimension
+                and item.assessed_at < assessed_at
+            ),
+            key=lambda item: (item.assessed_at, item.id),
+        )
+        base = self.INTERVAL_DAYS[level]
+        adjustment = "baseline"
+        interval = base
+        rationale = (
+            f"first credited {level.name.lower()} assessment uses the {base}-day base interval"
+        )
+        if history:
+            previous = history[-1]
+            if level < previous.level:
+                adjustment = "regression"
+                interval = max(3, (base + 1) // 2)
+                rationale = (
+                    f"level regressed from {previous.level.name.lower()} to "
+                    f"{level.name.lower()}; halve the base interval and review sooner"
+                )
+            else:
+                stable = 0
+                ceiling = level
+                for item in reversed(history):
+                    if item.level <= ceiling:
+                        stable += 1
+                        ceiling = item.level
+                    else:
+                        break
+                if stable >= 2:
+                    adjustment = "reinforced_twice"
+                    interval = min(180, base * 2)
+                    rationale = (
+                        f"{stable} consecutive credited assessments were retained or improved; "
+                        "double the base interval up to 180 days"
+                    )
+                else:
+                    adjustment = "reinforced_once"
+                    interval = min(180, (base * 3 + 1) // 2)
+                    rationale = (
+                        "one credited assessment was retained or improved; "
+                        "extend the base interval by 50 percent"
+                    )
+        return ReviewSchedule(
+            policy_ref=self.POLICY_REF,
+            card_id=card_id,
+            dimension=dimension,
+            level=level,
+            assessed_on=assessed_at.date(),
+            review_due=assessed_at.date() + timedelta(days=interval),
+            base_interval_days=base,
+            interval_days=interval,
+            credited_history_count=len(history),
+            adjustment=adjustment,
+            rationale=rationale,
+        )
 
     def to_dict(self) -> dict[str, int]:
         return {
@@ -138,10 +260,41 @@ class GuidedLearningPlanner:
         today: date,
         preferred_card_id: str | None = None,
         preferred_dimension: MasteryDimension | None = None,
+        track: LearningTrack = LearningTrack.STANDARD,
     ) -> LearningRecommendation:
+        if not isinstance(track, LearningTrack):
+            raise LearningError("learning track must be a LearningTrack value")
         recorded = tuple(assessments)
         states = self.catalogue.graph.mastery_states(recorded)
         by_key = {(state.card_id, state.dimension): state for state in states}
+
+        if track is LearningTrack.TRANSFER:
+            if preferred_card_id is None:
+                raise LearningError("transfer track requires an operator-selected card")
+            self.catalogue.card(preferred_card_id)
+            graph_gaps = self.catalogue.graph.prerequisite_gaps(
+                preferred_card_id, recorded
+            )
+            self_gaps = tuple(
+                dimension.value
+                for dimension in (MasteryDimension.TEST, MasteryDimension.PROVE)
+                if by_key[(preferred_card_id, dimension)].level
+                < MasteryLevel.INDEPENDENT
+            )
+            if graph_gaps or self_gaps:
+                details = (*graph_gaps, *self_gaps)
+                raise LearningError(
+                    "transfer track requires independent prerequisite, test, and prove "
+                    f"evidence; unmet: {', '.join(details)}"
+                )
+            state = by_key[(preferred_card_id, MasteryDimension.TRANSFER)]
+            return self._build(
+                state,
+                LearningMode.FOCUSED,
+                "operator-selected transfer practice after independent test and proof",
+                (),
+                track,
+            )
 
         if preferred_card_id is not None:
             self.catalogue.card(preferred_card_id)
@@ -156,6 +309,7 @@ class GuidedLearningPlanner:
                     LearningMode.PREREQUISITE,
                     f"{preferred_card_id} requires independent test evidence for {card_id}",
                     self.catalogue.graph.prerequisite_gaps(card_id, recorded),
+                    track,
                 )
             dimension = preferred_dimension or self._weakest_dimension(
                 preferred_card_id, by_key
@@ -166,6 +320,7 @@ class GuidedLearningPlanner:
                 LearningMode.FOCUSED,
                 "operator-selected card and mastery dimension",
                 (),
+                track,
             )
 
         due = [
@@ -189,6 +344,7 @@ class GuidedLearningPlanner:
                 LearningMode.REVIEW,
                 f"evidence-bound mastery review was due {state.review_due.isoformat()}",
                 self.catalogue.graph.prerequisite_gaps(state.card_id, recorded),
+                track,
             )
 
         candidates = [
@@ -211,6 +367,7 @@ class GuidedLearningPlanner:
                 LearningMode.GUIDED,
                 "earliest prerequisite-ready mastery gap in the canonical skill graph",
                 (),
+                track,
             )
 
         assessed = [state for state in states if state.review_due is not None]
@@ -229,6 +386,7 @@ class GuidedLearningPlanner:
             LearningMode.MAINTENANCE,
             f"all eligible dimensions are transferable; next review is {state.review_due.isoformat()}",
             (),
+            track,
         )
 
     def _weakest_dimension(
@@ -250,6 +408,7 @@ class GuidedLearningPlanner:
         mode: LearningMode,
         reason: str,
         gaps: tuple[str, ...],
+        track: LearningTrack,
     ) -> LearningRecommendation:
         card = self.catalogue.card(state.card_id)
         return LearningRecommendation(
@@ -261,44 +420,69 @@ class GuidedLearningPlanner:
             reason=reason,
             prerequisite_gaps=gaps,
             review_due=state.review_due,
-            stages=_stage_briefs(card, state.dimension),
+            stages=_stage_briefs(card, state.dimension, track),
+            track=track,
         )
 
 
 def _stage_briefs(
-    card: VulnerabilityCard, dimension: MasteryDimension
+    card: VulnerabilityCard,
+    dimension: MasteryDimension,
+    track: LearningTrack,
 ) -> tuple[StageBrief, ...]:
     evidence_roles = ", ".join(item.role for item in card.minimum_evidence)
+    assisted_guidance = (
+        "State the expected security property before inspecting the vulnerable path.",
+        "Compare the positive, vulnerable, and negative controls one at a time.",
+        f"Use the minimum evidence roles as a checklist: {evidence_roles}.",
+    )
+    transfer_guidance = (
+        "Name what is invariant from the original fixture before testing the new context.",
+        "Record at least one contextual difference that could invalidate the analogy.",
+        "Do not reuse the original fixture receipt as transfer proof.",
+    )
+    guidance = (
+        assisted_guidance
+        if track is LearningTrack.ASSISTED
+        else transfer_guidance
+        if track is LearningTrack.TRANSFER
+        else ()
+    )
     return (
         StageBrief(
             LearningStage.LEARN,
             "Learn",
             f"Explain the security property for {card.name}: {card.security_property}",
             f"A concise explanation in your own words for the {dimension.value} dimension.",
+            guidance=guidance,
         ),
         StageBrief(
             LearningStage.PRACTISE,
             "Practise",
             card.safe_test_pattern,
             f"A receipt from the synthetic fixture {card.local_fixture.id}; it proves no real vulnerability.",
+            guidance=guidance,
         ),
         StageBrief(
             LearningStage.PROVE,
             "Prove",
             f"Separate observation, deterministic proof, and judgement using: {evidence_roles}.",
             "Evidence references sufficient for an operator to assess this dimension.",
+            guidance=guidance,
         ),
         StageBrief(
             LearningStage.REFLECT,
             "Reflect",
             "Record what changed in your understanding, what could be a false positive, and what you would do differently.",
             "A written reflection linked to the journey.",
+            guidance=guidance,
         ),
         StageBrief(
             LearningStage.ASSESS,
             "Assess",
             "Make an explicit human judgement against the evidence; do not infer mastery from completion.",
             "A separately persisted evidence-bound human MasteryAssessment.",
+            guidance=guidance,
         ),
     )
 
@@ -349,6 +533,8 @@ class LearningJourney:
     updated_at: datetime
     revision: int = 0
     checkpoints: tuple[LearningCheckpoint, ...] = ()
+    track: LearningTrack = LearningTrack.STANDARD
+    transfer_context_ref: str | None = None
 
     def __post_init__(self) -> None:
         if not SAFE_ID.fullmatch(str(self.id or "")):
@@ -365,6 +551,15 @@ class LearningJourney:
             raise LearningError("journey revision cannot be negative")
         if self.revision != len(self.checkpoints):
             raise LearningError("journey revision must equal its checkpoint count")
+        if not isinstance(self.track, LearningTrack):
+            raise LearningError("journey track must be a LearningTrack value")
+        if self.track is LearningTrack.TRANSFER:
+            if self.dimension is not MasteryDimension.TRANSFER:
+                raise LearningError("transfer journey must assess the transfer dimension")
+            if not str(self.transfer_context_ref or "").strip():
+                raise LearningError("transfer journey requires a distinct context reference")
+        elif self.transfer_context_ref is not None:
+            raise LearningError("only transfer journeys may carry a transfer context")
         previous_time = self.started_at
         for checkpoint in self.checkpoints:
             if checkpoint.completed_at < previous_time:
@@ -414,6 +609,8 @@ class LearningJourney:
             "updated_at": self.updated_at.isoformat(),
             "revision": self.revision,
             "checkpoints": [item.to_dict() for item in self.checkpoints],
+            "track": self.track.value,
+            "transfer_context_ref": self.transfer_context_ref,
             "awards_mastery": False,
             "operating_posture": "LOCAL_FIXTURE",
         }
@@ -435,6 +632,8 @@ class LearningJourney:
                 LearningCheckpoint.from_dict(item)
                 for item in data.get("checkpoints", ())
             ),
+            track=LearningTrack(data.get("track", "standard")),
+            transfer_context_ref=data.get("transfer_context_ref"),
         )
 
 
@@ -444,6 +643,7 @@ def start_learning_journey(
     journey_id: str,
     now: datetime,
     objective: str | None = None,
+    transfer_context_ref: str | None = None,
 ) -> LearningJourney:
     if now.tzinfo is None:
         raise LearningError("journey start time must be timezone-aware")
@@ -457,6 +657,8 @@ def start_learning_journey(
         current_stage=LearningStage.LEARN,
         started_at=now,
         updated_at=now,
+        track=recommendation.track,
+        transfer_context_ref=transfer_context_ref,
     )
 
 
@@ -515,7 +717,27 @@ def advance_learning_journey(
             raise LearningError("mastery assessment does not match the journey")
         if assessment.id not in set(recorded_assessment_ids):
             raise LearningError("mastery assessment must already be persisted")
+        if (
+            journey.track is LearningTrack.ASSISTED
+            and assessment.level > MasteryLevel.ASSISTED
+        ):
+            raise LearningError(
+                "an assisted journey cannot evidence independent or transferable mastery"
+            )
+        if journey.track is LearningTrack.TRANSFER:
+            context_ref = str(journey.transfer_context_ref or "")
+            if context_ref not in assessment.evidence_refs:
+                raise LearningError(
+                    "transfer assessment must cite the journey's distinct context"
+                )
         refs = (f"mastery-assessment:{assessment.id}", *refs)
+
+    if stage is LearningStage.PROVE and journey.track is LearningTrack.TRANSFER:
+        context_ref = str(journey.transfer_context_ref or "")
+        if context_ref not in refs:
+            raise LearningError(
+                "transfer proof must cite the journey's distinct context"
+            )
 
     checkpoint = LearningCheckpoint(
         stage=stage,
@@ -570,6 +792,8 @@ __all__ = [
     "LearningMode",
     "LearningRecommendation",
     "LearningStage",
+    "LearningTrack",
+    "ReviewSchedule",
     "ReviewPolicy",
     "StageBrief",
     "abandon_learning_journey",

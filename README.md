@@ -23,8 +23,8 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, unlaunched DNS/direct-TLS primitives, and offline Ubuntu 24.04 WSL2 proof for numeric TLS plus spawned-child cancellation; no complete resolver/adapter host acceptance, OS-bound KEK provider, assembled worker, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided/review recommendations, staged journeys, reflection, private journey persistence, and explicit human-assessed completion are live; adaptive scheduling, assisted/transfer-specific journeys, broader packs, and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/Gates-B-F-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback API; graphical app not built). |
-| **DESIGNED, NOT BUILT** | Adaptive, assisted, and transfer-specific learning orchestration; selected local graphical shell. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, unlaunched DNS/direct-TLS primitives, and offline Ubuntu 24.04 WSL2 proof for numeric TLS plus spawned-child cancellation; no complete resolver/adapter host acceptance, OS-bound KEK provider, assembled worker, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/Gates-B-F-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback API; graphical app not built). |
+| **DESIGNED, NOT BUILT** | Selected local graphical shell and graphical Learn surface. |
 | **PLANNED** | Governed Scope Watch collector, network workers/live collectors, standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
@@ -166,12 +166,17 @@ evidence-bound human assessment across `explain`, `recognise`, `test`, `prove`,
 `remediate`, and `transfer`; personal mastery state is refused inside Git by
 default.
 
-The deterministic planner now routes unmet prerequisites, prioritises due
-evidence-bound reviews, and guides one private journey through Learn, Practise,
-Prove, Reflect, and Assess. Stage progression requires a synthetic fixture
-receipt, evidence references, a written reflection, and finally an already
-persisted human `MasteryAssessment`. Journey completion itself awards no
-mastery. Use `learning journey-status`, `learning journey-advance`, and
+The planner routes unmet prerequisites, prioritises due evidence-bound reviews,
+and guides one private journey through Learn, Practise, Prove, Reflect, and
+Assess. Human assessments default to the inspectable adaptive review policy;
+`--review-due` remains an explicit override. `--track standard`, `assisted`, or
+`transfer` selects the bounded journey contract. Assisted guidance cannot
+evidence mastery above assisted; transfer requires independent test/prove
+foundations plus `--transfer-context-ref` evidence from a distinct local
+context. Stage progression requires a synthetic fixture receipt, evidence
+references, a written reflection, and finally an already persisted human
+`MasteryAssessment`. Journey completion itself awards no mastery. Use
+`learning journey-status`, `learning journey-advance`, and
 `learning journey-abandon` to operate the same contract without a graphical UI.
 
 Verify the Milestone 6 ranking contract against a synthetic local workspace:

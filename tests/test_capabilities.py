@@ -28,11 +28,14 @@ def test_offline_scope_watch_and_external_collection_are_separate():
     assert "no network fetch" in capability("scope_watch_offline").boundary.lower()
 
 
-def test_learning_core_does_not_overstate_guided_or_adaptive_learning():
+def test_learning_core_keeps_graphical_and_curriculum_boundaries_explicit():
     assert capability("learning_core").status is CapabilityStatus.LIVE
     guided = capability("guided_learning")
     assert guided.status is CapabilityStatus.PARTIAL
-    assert "not built" in guided.boundary.lower()
+    assert "adaptive review" in guided.detail.lower()
+    assert "assisted/transfer" in guided.detail.lower()
+    assert "graphical learn" in guided.boundary.lower()
+    assert "broader curricula" in guided.boundary.lower()
 
 
 def test_application_service_is_partial_while_ui_and_passive_http_remain_unimplemented():

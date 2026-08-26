@@ -430,6 +430,60 @@ def test_learning_commands_are_idempotent_revision_bound_and_non_crediting(tmp_p
     assert mastery.assessments() == ()
 
 
+def test_workbench_applies_adaptive_review_and_persists_assisted_learning_track(
+    tmp_path,
+):
+    mastery, journeys = stores(tmp_path / "learning-adaptive")
+    service = WorkbenchApplicationService(
+        mastery=mastery,
+        journeys=journeys,
+        operator_ref="operator-local",
+        clock=lambda: NOW,
+    )
+    adaptive_fields = tuple(
+        field for field in mastery_fields() if field.name != "review_due"
+    )
+    assessment_result = service.handle(
+        command(
+            "command-record-adaptive-mastery",
+            CommandKind.RECORD_MASTERY_ASSESSMENT,
+            fields=adaptive_fields,
+            revision=0,
+            acknowledged=True,
+        )
+    )
+    assert assessment_result.disposition is CommandDisposition.ACCEPTED, assessment_result
+    persisted = mastery.assessments()[0]
+    assert persisted.review_policy_ref == "adaptive-evidence-review-v1"
+    assert persisted.review_due.isoformat() == "2026-09-08"
+    assert any(
+        item == "review-policy:adaptive-evidence-review-v1"
+        for item in assessment_result.record_refs
+    )
+
+    started = service.handle(
+        command(
+            "command-start-assisted-learning",
+            CommandKind.START_LEARNING_JOURNEY,
+            fields=(
+                CommandField("journey_id", "journey-workbench-assisted"),
+                CommandField("card_id", "idor-bola"),
+                CommandField("dimension", "recognise"),
+                CommandField("track", "assisted"),
+            ),
+        )
+    )
+    journey = journeys.get("journey-workbench-assisted")
+    assert started.disposition is CommandDisposition.ACCEPTED
+    assert journey.track.value == "assisted"
+    record = next(
+        item
+        for item in service.snapshot().section("learning").records
+        if item.id == journey.id
+    )
+    assert ("track", "assisted") in record.attributes
+
+
 def test_action_intent_contract_cannot_raise_posture():
     fields = (
         CommandField("action_type", "fixture.read"),

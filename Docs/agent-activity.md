@@ -4,6 +4,24 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-26 - Codex - Transparent adaptive learning tracks
+
+### What was built
+
+- Added inspectable evidence-history review scheduling with persisted policy
+  references and rationales.
+- Added bounded standard, assisted, and transfer journeys through the shared
+  learning domain, CLI, private stores, application service, and snapshot.
+- Added structural caps for assisted mastery and distinct-context proof for
+  transfer, with 50 focused and 651 full repository tests passing.
+
+### Boundary retained
+
+Journeys do not award mastery or execute fixtures. Broader curricula and the
+graphical Learn/workbench surface remain unbuilt; `LOCAL_FIXTURE` is unchanged.
+
+See `07_LOGS/Build-Logs/2026-08-26-greytheory-adaptive-learning-tracks.md`.
+
 ## 2026-08-25 - Codex - Offline Ubuntu primitive host acceptance
 
 ### What was built

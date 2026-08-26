@@ -2,7 +2,7 @@
 
 > **Status:** CANONICAL boundary; higher levels remain PLANNED.
 >
-> **Effective:** 2026-08-09
+> **Effective:** 2026-08-26
 
 ## Principle
 
@@ -13,7 +13,7 @@ GreyTheory supports bounded autonomy inside a human-authorised research envelope
 | Level | Description | Status |
 |---|---|---|
 | A0 — Record only | Human performs work; GreyTheory records it | LIVE |
-| A1 — Copilot | AI explains, organises, critiques, drafts, and tutors | DESIGNED; model gateway not built |
+| A1 — Copilot | AI explains, organises, critiques, drafts, and tutors | PARTIAL; governed offline model gateway and bounded learning assistance live, no network provider or graphical surface |
 | A2 — Local autonomous analysis | Approved local collectors and validators operate on fixtures/files | PARTIAL |
 | A3 — Bounded passive research | Approved unauthenticated reads in a strict envelope | PLANNED |
 | A4 — Bounded authenticated research | Controlled-account workflows under reviewed plans | PLANNED |

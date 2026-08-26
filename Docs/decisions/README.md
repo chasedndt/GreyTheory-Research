@@ -18,3 +18,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0014 - Prove the passive adapter contract without adding network I/O](ADR-0014-network-free-passive-adapter-contract.md)
 - [ADR-0015 - Implement passive worker primitives without launching them](ADR-0015-unlaunched-passive-worker-primitives.md)
 - [ADR-0016 - Accept Ubuntu primitives in an offline network namespace](ADR-0016-offline-ubuntu-primitive-host-acceptance.md)
+- [ADR-0017 - Keep adaptive learning transparent and assistance bounded](ADR-0017-transparent-adaptive-learning-tracks.md)

@@ -1,8 +1,8 @@
 # GreyTheory Integration Boundaries
 
-> **Status:** CANONICAL boundary; provider and worker protocols are PLANNED migrations.
+> **Status:** CANONICAL boundary; provider/application contracts are implemented offline and network-worker deployment remains planned.
 >
-> **Effective:** 2026-08-09
+> **Effective:** 2026-08-26
 
 ## Standalone rule
 
@@ -35,13 +35,19 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 
 - `greytheory/`: minimal, dependency-light trust kernel and current offline capabilities.
 - `greytheory/research/`: current structured local workspaces, sessions, assets, identity handles, hypotheses, experiments, action records, and lessons.
-- `greytheory/learning/`: current versioned card catalogue, synthetic fixtures, skill graph, and private evidence-bound mastery records; training-mode orchestration remains future work.
+- `greytheory/learning/`: current versioned card catalogue, synthetic fixtures,
+  skill graph, private evidence-bound mastery records, transparent adaptive
+  review, and bounded standard/assisted/transfer journey orchestration.
 - `greytheory/hypothesis/`: current deterministic nine-factor ranking policy,
   explicit estimate contracts, explainable queue engine, synthetic proof, and
   private queue writeback. It consumes governed records and grants no authority.
 - future workers: lower-trust local/network/browser/DNS execution behind tickets.
-- future model package: provider gateway, roles, policies, prompts, and evaluations.
-- future workbench: local API and UI over structured objects.
+- `greytheory/models/`: current governed roles, policies, citations, budgets,
+  provenance, adversarial evaluations, and deterministic offline provider; any
+  network provider remains future work.
+- `greytheory_app/` and `greytheory_local/`: current UI-neutral application
+  snapshots/commands, private runtime, and authenticated numeric-loopback API;
+  the graphical workbench remains future work.
 - future `packs/`: third-party or separately distributed research methods, fixtures, validators, and curriculum; the built-in 12-card catalogue currently ships inside `greytheory.learning`.
 
 Zero dependencies remains a trust-surface choice for the core, not a prohibition on pinned, isolated dependencies in workers, models, or the workbench.

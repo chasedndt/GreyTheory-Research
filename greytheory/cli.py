@@ -474,6 +474,7 @@ def cmd_learning_assess(args: argparse.Namespace) -> int:
         MasteryDimension,
         MasteryLevel,
         MasteryStore,
+        ReviewPolicy,
         load_builtin_catalogue,
         resolve_learning_root,
     )
@@ -481,23 +482,49 @@ def cmd_learning_assess(args: argparse.Namespace) -> int:
     try:
         catalogue = load_builtin_catalogue()
         root = resolve_learning_root(args.root)
+        store = MasteryStore(root, catalogue=catalogue)
+        assessed_at = (
+            datetime.fromisoformat(args.assessed_at)
+            if args.assessed_at
+            else datetime.now(timezone.utc)
+        )
+        dimension = MasteryDimension(args.dimension)
+        level = MasteryLevel.parse(args.level)
+        assessor_kind = AssessorKind(args.assessor_kind)
+        schedule = None
+        if args.review_due:
+            review_due = date.fromisoformat(args.review_due)
+            review_policy_ref = "operator-set-v1"
+            review_rationale = "operator supplied review date"
+        elif assessor_kind is AssessorKind.HUMAN:
+            schedule = ReviewPolicy().schedule(
+                store.assessments(),
+                card_id=args.card,
+                dimension=dimension,
+                level=level,
+                assessed_at=assessed_at,
+            )
+            review_due = schedule.review_due
+            review_policy_ref = schedule.policy_ref
+            review_rationale = schedule.rationale
+        else:
+            review_due = ReviewPolicy().review_due(assessed_at.date(), level)
+            review_policy_ref = "test-fixture-non-crediting-v1"
+            review_rationale = "test fixture record uses the base interval and never credits mastery"
         assessment = MasteryAssessment(
             id=args.assessment_id,
             card_id=args.card,
-            dimension=MasteryDimension(args.dimension),
-            level=MasteryLevel.parse(args.level),
+            dimension=dimension,
+            level=level,
             assessor=args.assessor,
-            assessor_kind=AssessorKind(args.assessor_kind),
+            assessor_kind=assessor_kind,
             evidence_refs=tuple(args.evidence_ref),
             rationale=args.rationale,
-            assessed_at=(
-                datetime.fromisoformat(args.assessed_at)
-                if args.assessed_at
-                else datetime.now(timezone.utc)
-            ),
-            review_due=date.fromisoformat(args.review_due),
+            assessed_at=assessed_at,
+            review_due=review_due,
+            review_policy_ref=review_policy_ref,
+            review_rationale=review_rationale,
         )
-        store = MasteryStore(root, catalogue=catalogue)
         store.audit = AuditLog(root / "audit.jsonl")
         store.record(assessment)
         store.verify()
@@ -506,6 +533,7 @@ def cmd_learning_assess(args: argparse.Namespace) -> int:
         return 1
     payload = assessment.to_dict()
     payload["credits_mastery"] = assessment.credits_mastery
+    payload["adaptive_review_schedule"] = schedule.to_dict() if schedule else None
     if args.json:
         print(json.dumps(payload, indent=2))
     else:
@@ -520,6 +548,7 @@ def cmd_learning_plan(args: argparse.Namespace) -> int:
     from greytheory.learning import (
         GuidedLearningPlanner,
         LearningError,
+        LearningTrack,
         MasteryDimension,
         MasteryStore,
         ReviewPolicy,
@@ -537,6 +566,7 @@ def cmd_learning_plan(args: argparse.Namespace) -> int:
             preferred_dimension=(
                 MasteryDimension(args.dimension) if args.dimension else None
             ),
+            track=LearningTrack(args.track),
         )
     except (OSError, LearningError, ValueError) as exc:
         print(f"refused: {exc}", file=sys.stderr)
@@ -564,6 +594,7 @@ def cmd_learning_journey_start(args: argparse.Namespace) -> int:
         GuidedLearningPlanner,
         LearningError,
         LearningJourneyStore,
+        LearningTrack,
         MasteryDimension,
         MasteryStore,
         load_builtin_catalogue,
@@ -582,6 +613,7 @@ def cmd_learning_journey_start(args: argparse.Namespace) -> int:
             preferred_dimension=(
                 MasteryDimension(args.dimension) if args.dimension else None
             ),
+            track=LearningTrack(args.track),
         )
         started_at = (
             datetime.fromisoformat(args.at)
@@ -593,6 +625,7 @@ def cmd_learning_journey_start(args: argparse.Namespace) -> int:
             journey_id=args.journey_id,
             now=started_at,
             objective=args.objective,
+            transfer_context_ref=args.transfer_context_ref,
         )
         journeys = LearningJourneyStore(
             root,
@@ -964,7 +997,10 @@ def build_parser() -> argparse.ArgumentParser:
     q.add_argument("--evidence-ref", action="append", required=True)
     q.add_argument("--rationale", required=True)
     q.add_argument("--assessed-at", help="timezone-aware ISO-8601 timestamp")
-    q.add_argument("--review-due", required=True, help="ISO date")
+    q.add_argument(
+        "--review-due",
+        help="optional ISO date override; omitted uses the transparent adaptive policy",
+    )
     q.add_argument("--json", action="store_true", help="emit structured JSON")
     q.set_defaults(func=cmd_learning_assess)
 
@@ -977,6 +1013,11 @@ def build_parser() -> argparse.ArgumentParser:
         "--dimension", choices=[item.value for item in MasteryDimension]
     )
     q.add_argument("--today", help="ISO date for deterministic planning")
+    q.add_argument(
+        "--track",
+        choices=["standard", "assisted", "transfer"],
+        default="standard",
+    )
     q.add_argument("--json", action="store_true", help="emit structured JSON")
     q.set_defaults(func=cmd_learning_plan)
 
@@ -990,6 +1031,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--dimension", choices=[item.value for item in MasteryDimension]
     )
     q.add_argument("--objective", help="operator-owned learning objective")
+    q.add_argument(
+        "--track",
+        choices=["standard", "assisted", "transfer"],
+        default="standard",
+    )
+    q.add_argument(
+        "--transfer-context-ref",
+        help="distinct local evidence/context reference required by transfer journeys",
+    )
     q.add_argument("--today", help="ISO date for deterministic planning")
     q.add_argument("--at", help="timezone-aware ISO-8601 start timestamp")
     q.add_argument("--json", action="store_true", help="emit structured JSON")

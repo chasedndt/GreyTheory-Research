@@ -462,6 +462,8 @@ class MasteryAssessment(SerializableRecord):
     rationale: str
     assessed_at: datetime
     review_due: date
+    review_policy_ref: str = "operator-set-v1"
+    review_rationale: str = "operator supplied review date"
 
     def __post_init__(self) -> None:
         _safe_id(self.id, "mastery assessment id")
@@ -478,6 +480,8 @@ class MasteryAssessment(SerializableRecord):
         _aware(self.assessed_at, "mastery assessment time")
         if self.review_due < self.assessed_at.date():
             raise LearningError("mastery review date cannot precede assessment")
+        _required(self.review_policy_ref, "mastery review policy reference")
+        _required(self.review_rationale, "mastery review rationale")
 
     @property
     def credits_mastery(self) -> bool:
@@ -497,6 +501,10 @@ class MasteryAssessment(SerializableRecord):
             rationale=data["rationale"],
             assessed_at=assessed_at,
             review_due=date.fromisoformat(data["review_due"]),
+            review_policy_ref=data.get("review_policy_ref", "operator-set-v1"),
+            review_rationale=data.get(
+                "review_rationale", "operator supplied review date"
+            ),
         )
 
 
