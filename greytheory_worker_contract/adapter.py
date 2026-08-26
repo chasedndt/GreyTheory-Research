@@ -10,12 +10,14 @@ evidence into an encrypted capture plus a broker-signed receipt.
 
 from __future__ import annotations
 
+import base64
+import binascii
 import hashlib
 import json
 import math
 import re
 from dataclasses import dataclass
-from typing import Callable, Protocol
+from typing import Any, Callable, Mapping, Protocol
 from urllib.parse import urlsplit
 
 from greytheory_broker.contracts import SignedPassiveReceipt
@@ -78,6 +80,35 @@ def _required(value: str, label: str) -> str:
     return text
 
 
+def _exact_fields(data: Mapping[str, Any], expected: set[str], label: str) -> None:
+    if set(data) != expected:
+        raise AdapterContractError(f"{label} fields are invalid")
+
+
+def _json_int(value: Any, label: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise AdapterContractError(f"{label} must be a JSON integer")
+    return value
+
+
+def _json_float(value: Any, label: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise AdapterContractError(f"{label} must be a JSON number")
+    return float(value)
+
+
+def _json_bool(value: Any, label: str) -> bool:
+    if not isinstance(value, bool):
+        raise AdapterContractError(f"{label} must be a JSON boolean")
+    return value
+
+
+def _json_text(value: Any, label: str) -> str:
+    if not isinstance(value, str):
+        raise AdapterContractError(f"{label} must be JSON text")
+    return value
+
+
 @dataclass(frozen=True)
 class ResolutionResult:
     """Evidence claimed by one future resolver invocation."""
@@ -102,6 +133,52 @@ class ResolutionResult:
             raise AdapterContractError("DNS search-suffix expansion is forbidden")
         if not isinstance(self.addresses, tuple):
             raise AdapterContractError("resolution addresses must be a tuple")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "canonical_host": self.canonical_host,
+            "addresses": list(self.addresses),
+            "started_monotonic": self.started_monotonic,
+            "ended_monotonic": self.ended_monotonic,
+            "resolver_call_count": self.resolver_call_count,
+            "search_suffix_used": self.search_suffix_used,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> ResolutionResult:
+        _exact_fields(
+            data,
+            {
+                "canonical_host",
+                "addresses",
+                "started_monotonic",
+                "ended_monotonic",
+                "resolver_call_count",
+                "search_suffix_used",
+            },
+            "resolution result",
+        )
+        addresses = data["addresses"]
+        if not isinstance(addresses, list) or any(
+            not isinstance(item, str) for item in addresses
+        ):
+            raise AdapterContractError("resolution addresses must be a JSON list of text")
+        return cls(
+            canonical_host=_json_text(data["canonical_host"], "resolution host"),
+            addresses=tuple(addresses),
+            started_monotonic=_json_float(
+                data["started_monotonic"], "resolution start"
+            ),
+            ended_monotonic=_json_float(
+                data["ended_monotonic"], "resolution end"
+            ),
+            resolver_call_count=_json_int(
+                data["resolver_call_count"], "resolver call count"
+            ),
+            search_suffix_used=_json_bool(
+                data["search_suffix_used"], "search suffix state"
+            ),
+        )
 
 
 class Resolver(Protocol):
@@ -196,6 +273,61 @@ class DirectHeadRequest:
         ).encode("ascii")
         return hashlib.sha256(encoded).hexdigest()
 
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "ticket_digest": self.ticket_digest,
+            "canonical_url": self.canonical_url,
+            "canonical_host": self.canonical_host,
+            "request_target": self.request_target,
+            "exact_address": self.exact_address,
+            "tls_server_name": self.tls_server_name,
+            "max_capture_bytes": self.max_capture_bytes,
+            "deadline_monotonic": self.deadline_monotonic,
+            "method": self.method,
+            "port": self.port,
+            "proxy_mode": self.proxy_mode,
+            "redirect_mode": self.redirect_mode,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> DirectHeadRequest:
+        _exact_fields(
+            data,
+            {
+                "ticket_digest",
+                "canonical_url",
+                "canonical_host",
+                "request_target",
+                "exact_address",
+                "tls_server_name",
+                "max_capture_bytes",
+                "deadline_monotonic",
+                "method",
+                "port",
+                "proxy_mode",
+                "redirect_mode",
+            },
+            "direct request",
+        )
+        return cls(
+            ticket_digest=_json_text(data["ticket_digest"], "ticket digest"),
+            canonical_url=_json_text(data["canonical_url"], "canonical URL"),
+            canonical_host=_json_text(data["canonical_host"], "canonical host"),
+            request_target=_json_text(data["request_target"], "request target"),
+            exact_address=_json_text(data["exact_address"], "exact address"),
+            tls_server_name=_json_text(data["tls_server_name"], "TLS server name"),
+            max_capture_bytes=_json_int(
+                data["max_capture_bytes"], "request capture ceiling"
+            ),
+            deadline_monotonic=_json_float(
+                data["deadline_monotonic"], "request deadline"
+            ),
+            method=_json_text(data["method"], "request method"),
+            port=_json_int(data["port"], "request port"),
+            proxy_mode=_json_text(data["proxy_mode"], "proxy mode"),
+            redirect_mode=_json_text(data["redirect_mode"], "redirect mode"),
+        )
+
 
 @dataclass(frozen=True)
 class HeadTransportResult:
@@ -238,6 +370,83 @@ class HeadTransportResult:
             raise AdapterContractError("transport followed a redirect")
         if not self.connection_closed:
             raise AdapterContractError("transport did not close its connection")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_digest": self.request_digest,
+            "connected_address": self.connected_address,
+            "tls_server_name": self.tls_server_name,
+            "raw_header_block_b64": base64.b64encode(self.raw_header_block).decode(
+                "ascii"
+            ),
+            "bytes_received": self.bytes_received,
+            "body_bytes_received": self.body_bytes_received,
+            "started_monotonic": self.started_monotonic,
+            "ended_monotonic": self.ended_monotonic,
+            "proxy_used": self.proxy_used,
+            "redirects_followed": self.redirects_followed,
+            "connection_closed": self.connection_closed,
+        }
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> HeadTransportResult:
+        _exact_fields(
+            data,
+            {
+                "request_digest",
+                "connected_address",
+                "tls_server_name",
+                "raw_header_block_b64",
+                "bytes_received",
+                "body_bytes_received",
+                "started_monotonic",
+                "ended_monotonic",
+                "proxy_used",
+                "redirects_followed",
+                "connection_closed",
+            },
+            "transport result",
+        )
+        try:
+            raw = base64.b64decode(
+                _json_text(
+                    data["raw_header_block_b64"], "transport header capture"
+                ),
+                validate=True,
+            )
+        except (binascii.Error, ValueError, TypeError) as exc:
+            raise AdapterContractError(
+                "transport header capture is not canonical base64"
+            ) from exc
+        return cls(
+            request_digest=_json_text(data["request_digest"], "request digest"),
+            connected_address=_json_text(
+                data["connected_address"], "connected address"
+            ),
+            tls_server_name=_json_text(
+                data["tls_server_name"], "transport TLS server name"
+            ),
+            raw_header_block=raw,
+            bytes_received=_json_int(
+                data["bytes_received"], "transport byte count"
+            ),
+            body_bytes_received=_json_int(
+                data["body_bytes_received"], "transport body byte count"
+            ),
+            started_monotonic=_json_float(
+                data["started_monotonic"], "transport start"
+            ),
+            ended_monotonic=_json_float(
+                data["ended_monotonic"], "transport end"
+            ),
+            proxy_used=_json_bool(data["proxy_used"], "transport proxy state"),
+            redirects_followed=_json_int(
+                data["redirects_followed"], "transport redirect count"
+            ),
+            connection_closed=_json_bool(
+                data["connection_closed"], "transport close state"
+            ),
+        )
 
 
 class HeadTransport(Protocol):

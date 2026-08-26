@@ -41,7 +41,9 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 - `greytheory/hypothesis/`: current deterministic nine-factor ranking policy,
   explicit estimate contracts, explainable queue engine, synthetic proof, and
   private queue writeback. It consumes governed records and grants no authority.
-- future workers: lower-trust local/network/browser/DNS execution behind tickets.
+- `greytheory_worker/`: current dark lower-trust DNS/direct-TLS process boundary
+  behind one-use tickets; its trusted parent retains broker authority and no
+  launcher, scheduler, accepted image, or posture route exists.
 - `greytheory/models/`: current governed roles, policies, citations, budgets,
   provenance, adversarial evaluations, and deterministic offline provider; any
   network provider remains future work.

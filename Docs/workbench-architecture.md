@@ -103,14 +103,18 @@ now exist. The latter accepts only injected resolver/transport implementations
 and proves exact-address, TLS-name, full-request-digest, no-proxy,
 no-followed-redirect, zero-body, close, timeout, bounded-header, encryption,
 kill-switch, and receipt behavior without importing network/process modules.
-The separate `greytheory_worker` package now contains unlaunched resolver and
-direct TLS primitives. Unit tests inject all process/socket/TLS behavior; an
-offline Ubuntu 24.04 WSL2 namespace now additionally proves production numeric
-TLS without re-resolution, explicit CA/hostname enforcement, streamed headers,
-cleanup, and real spawned-child cancellation with only loopback and no default
-route. Successful real system DNS, full adapter assembly, the isolated worker
-service/image, broker transport, durable OS egress controls, and authorised
-canary evidence remain mandatory before any posture change.
+The separate `greytheory_worker` package now contains the resolver/direct-TLS
+primitives and a dark two-phase owned-process service. The trusted parent keeps
+ticket/receipt keys, replay and kill-switch state, capture private keys, and the
+research store; the child receives one resolve command, then one exact-address
+request only after the parent broker validates the complete DNS answer. It
+scrubs its environment and must report non-root, zero-capability,
+no-new-privileges Linux identity. Earlier offline Ubuntu 24.04 WSL2 acceptance
+proves production numeric TLS and spawned-child cancellation only. The new full
+service harness is implemented, but its first run produced no evidence before
+WSL became unavailable; successful full-path host acceptance, durable OS egress
+controls, hardened image, and authorised programme evidence remain mandatory
+before any posture change.
 
 ## 4. Stable application contract
 
@@ -306,9 +310,10 @@ Implemented now:
   an authorised external-KEK-wrapped recipient-key lifecycle;
 - the network-free `greytheory_worker_contract` orchestration boundary and its
   injected resolver/direct-transport conformance suite;
-- unlaunched `greytheory_worker` owned-child resolver and numeric direct-TLS
-  primitives, verified with injected OS doubles plus bounded offline Ubuntu
-  WSL2 proof for numeric TLS and spawned-child cancellation;
+- `greytheory_worker` owned-child resolver, numeric direct-TLS primitive, and
+  capped two-command spawned-process assembly, unit-verified with strict child
+  identity/environment/lifecycle rules plus the earlier bounded Ubuntu
+  primitive host proof;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -322,9 +327,9 @@ Not implemented now:
   exact local fixture; external submission/programme outcomes stay unavailable;
 - broader curricula and the graphical Learn surface;
 - a general local fixture process broker;
-- any assembled/accepted Ubuntu worker service or broker transport, approved OS
-  secret-provider binding for the root KEK, successful system-DNS/full-adapter
-  acceptance, durable egress policy, or `PASSIVE_HTTP` action.
+- successful full Ubuntu worker-service acceptance, approved OS secret-provider
+  binding for the root KEK, durable egress policy, hardened image,
+  launcher/scheduler, or any `PASSIVE_HTTP` action.
 
 The next implementation step is to select one of the three audited visual
 directions, then bind that shell to the implemented local endpoint and complete

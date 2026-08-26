@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, and persisted staged journeys; broader curricula and graphical Learn remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, and unlaunched cancellable-DNS/direct-TLS primitives are verified, with offline Ubuntu 24.04 WSL2 proof for direct TLS and spawned-child cancellation; no complete resolver/adapter host acceptance, OS-bound KEK provider, assembled worker, or passive action |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified, with earlier offline Ubuntu primitive proof; the full service has not passed host acceptance and no OS-bound KEK provider, durable egress, hardened image, launcher, or passive action exists |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, and bounded assisted/transfer journeys live; broader curriculum and graphical learning loop planned |
@@ -151,16 +151,16 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   redirect, zero body bytes, closed connection, monotonic deadline, bounded
   strict header parsing, encrypted capture, and signed stop/completion. It is
   not a resolver, TLS/HTTP transport, process, image, or target capability.
-- `greytheory_worker` contains unlaunched OS primitives: blocking system DNS is
-  isolated in one owned spawn child with capped JSON pipe output and exact
-  terminate/kill cleanup; direct TLS connects only to the selected numeric
-  address, uses an explicit CA file and canonical SNI/hostname verification,
-  disables key logging, fixes HTTP/1.1, enforces the shared deadline and header
-  ceiling, and closes on every path. Tests inject every syscall. Ubuntu 24.04
-  WSL2 now proves the production direct transport and resolver-parent
-  cancellation inside a loopback-only namespace with no default route; real
-  system-DNS success, full adapter assembly, an unprivileged image, durable
-  egress policy, broker transport, and target contact are not proven.
+- `greytheory_worker` contains the OS primitives plus a capped, two-command
+  spawned-process service. The trusted parent retains ticket/receipt keys,
+  replay state, kill-switch authority, capture private keys, and research data;
+  the worker resolves once, the broker rechecks the complete answer, and the
+  worker performs one bound direct TLS request before exiting. It scrubs its
+  environment and is refused unless Linux is non-root, capability-empty, and
+  no-new-privileges. Earlier Ubuntu 24.04 WSL2 proof covers primitive numeric
+  TLS and spawned-child cancellation only; the new full service has not passed
+  host acceptance, and durable egress, a hardened image, OS-bound KEK,
+  scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, transparent adaptive review scheduling, bounded assisted and transfer-specific journeys, and explicit human-assessment completion, but not broader curriculum packs or the graphical Learn surface.
 
 ### PLANNED / NOT BUILT

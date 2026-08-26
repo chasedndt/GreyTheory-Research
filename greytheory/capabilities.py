@@ -236,7 +236,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive broker foundation",
         CapabilityStatus.PARTIAL,
         "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, ticket-bound X25519/ChaCha20-Poly1305 capture envelopes, audited KEK-wrapped recipient provisioning/rotation/revocation/decryption, and signed receipt metadata.",
-        "Ubuntu WSL2 now proves the direct-TLS primitive and spawned-child cancellation inside an offline namespace, but no approved OS secret-provider binding, complete resolver/adapter acceptance, assembled worker service/image, VM/VPS acceptance, or target action is shipped; PASSIVE_HTTP remains unavailable.",
+        "An owned-process broker/worker assembly now keeps signing keys, replay state, kill-switch authority, private capture keys, and research data out of the worker. Full Ubuntu service acceptance, approved OS secret-provider binding, durable egress, a hardened image, VM/VPS acceptance, and every target action remain unverified or unavailable; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_broker",
             "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
@@ -247,8 +247,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_adapter_contract",
         "Passive adapter conformance contract",
         CapabilityStatus.PARTIAL,
-        "A network-free worker contract orchestrates one typed complete DNS result into one full-request-digest-bound direct HEAD transport result, strictly parses one bounded header block, encrypts it, and seals completed or stopped receipts.",
-        "The contract itself performs no I/O. The direct transport and spawned cancellation path have offline Ubuntu WSL2 host proof, but the full adapter is not assembled or host-accepted and no worker process/image, broker transport, authorised canary, or target action exists; PASSIVE_HTTP remains unavailable.",
+        "A network-free contract plus trusted parent assembly orchestrate one typed complete DNS result through a broker address recheck into one full-request-digest-bound direct worker HEAD, then strictly parse, encrypt, and seal completed or stopped receipts.",
+        "The two-phase owned-process assembly and identity/lifecycle controls are unit-verified, but the complete service path has not passed Ubuntu host acceptance. No hardened image, durable egress policy, scheduler, VPS, programme action, or posture route exists; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_worker_contract",
             "Docs/decisions/ADR-0014-network-free-passive-adapter-contract.md",
@@ -258,8 +258,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_worker_primitives",
         "Passive worker OS primitives",
         CapabilityStatus.PARTIAL,
-        "An unlaunched worker package implements an owned-child cancellable absolute-name system resolver and a direct numeric-address TLS 1.2+ HEAD transport; Ubuntu 24.04 WSL2 now proves numeric no-re-resolution, explicit CA/hostname enforcement, bounded streaming, close, and spawned-child cancellation in an offline namespace.",
-        "Host proof is limited to local WSL2 primitive mechanics with a synthetic loopback canary. Real system-resolver success, the full adapter, an unprivileged image, durable OS egress policy, broker transport, worker identity, authorised canary, scheduler, and posture route remain unimplemented.",
+        "The worker package implements the cancellable resolver and direct-TLS primitives plus a capped two-command spawned-process service that reports identity, scrubs its environment, and is refused unless Linux is non-root, capability-empty, and no-new-privileges.",
+        "Ubuntu WSL2 proves only the earlier primitive mechanics. The new full service harness is implemented but has not completed host acceptance; real system-resolver/full-path proof, durable egress, hardened image, scheduler, and posture route remain unverified or unimplemented.",
         (
             "greytheory_worker",
             "Docs/decisions/ADR-0015-unlaunched-passive-worker-primitives.md",
@@ -269,8 +269,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,
-        "Primitive classes exist, but no assembled, launched, or host-accepted network worker or passive target action is implemented.",
-        "PASSIVE_HTTP remains dark until broker controls and operator posture approval are proven.",
+        "A dark owned-process assembly exists in source, but it has no launcher, scheduler, programme route, successful full Ubuntu host acceptance, or passive target action.",
+        "PASSIVE_HTTP remains dark until full host/image/egress/secret-provider controls, one reviewed programme, sustained operation, and explicit operator posture approval are proven.",
         (
             "Docs/roadmap.md",
             "THREAT_MODEL.md",

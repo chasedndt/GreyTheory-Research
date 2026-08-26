@@ -2,7 +2,7 @@
 
 > **Status:** CANONICAL baseline; controls marked PLANNED are preconditions for network operation.
 >
-> **Effective:** 2026-08-09
+> **Effective:** 2026-08-26
 
 ## Assets to protect
 
@@ -89,8 +89,8 @@ Implemented and tested without network I/O in `greytheory_worker_contract`:
 - fail-closed mapping of resolver, transport, parsing, redirect, size, clock,
   encryption, kill-switch, and deadline failures into signed stop receipts.
 
-Implemented but unlaunched in `greytheory_worker`, with every syscall replaced
-by a deterministic test double during verification:
+Implemented in the dark `greytheory_worker` package, with no launcher,
+scheduler, programme route, or enabled posture:
 
 - blocking system resolution of the absolute DNS name in one specifically
   owned spawn child, using capped non-pickle JSON pipe output and exact
@@ -102,6 +102,15 @@ by a deterministic test double during verification:
 - exact peer-address verification, total-deadline connect/handshake/write/read
   timeouts, one bounded header block, rejection of observed body bytes, and
   deterministic close on success, timeout, TLS failure, overflow, or mismatch.
+- a capped, canonical-JSON, two-command owned-process channel: resolve once,
+  return the complete answer for broker recheck, then accept one exact request
+  only for that host and one address in the worker's own answer;
+- parent-only ticket/receipt keys, replay ledger, kill-switch authority,
+  capture private key, and research state; the child receives only its channel
+  and explicit CA path;
+- child environment scrubbing plus refusal unless the worker reports non-root
+  UID/GID, no foreign supplementary groups, zero effective/bounding
+  capabilities, and no-new-privileges.
 
 Accepted on the operator's Ubuntu 24.04 WSL2 host without external contact:
 
@@ -114,11 +123,23 @@ Accepted on the operator's Ubuntu 24.04 WSL2 host without external contact:
 - a real spawned resolver child deliberately blocks past its deadline and is
   terminated and reaped by the production resolver parent.
 
+Implemented harness but not yet accepted on the host:
+
+- `acceptance/ubuntu_worker_service.py` and its PowerShell wrapper construct a
+  no-default-route namespace, temporary synthetic hosts view, non-root
+  capability-empty process, full resolver/broker recheck/direct TLS path,
+  encrypted capture, exact-once ledger completion, and signed receipt against
+  the owned canary;
+- the first run exceeded its 120-second outer ceiling without evidence and the
+  Ubuntu WSL control path then stopped responding. No pass is claimed, and the
+  distro was not terminated because unrelated processes also use it.
+
 Still required before any network posture:
 
-- successful real system-resolution plus full adapter/capture/receipt acceptance
-  on the isolated host; the current blocking-child proof covers cancellation,
-  not a successful system DNS result;
+- successful real system-resolution plus full adapter/capture/receipt
+  acceptance on a recovered or explicitly restart-approved isolated host; the
+  current accepted evidence still covers primitive cancellation and numeric
+  TLS only;
 - an approved OS secret-provider binding, backup/recovery procedure, and host
   acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker

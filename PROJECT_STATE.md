@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, transparent adaptive review, bounded standard/assisted/transfer learning, research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 651 repository tests passing on 2026-08-26, including transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and offline Ubuntu 24.04 WSL2 host proof for numeric direct TLS plus spawned-child cancellation.
+- **Verified baseline:** 664 repository tests passing on 2026-08-26, including the unit-verified two-phase owned-process worker assembly and strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof. The new full worker service has not passed Ubuntu host acceptance.
 
 ## What is built
 
@@ -69,15 +69,15 @@ The complete offline path from supplied authorisation to a validated report draf
   no-redirect, deadline-bound, bounded-header passive result, encrypted capture,
   and broker-sealed receipt; it contains no resolver, socket, TLS/HTTP client,
   process, or live action.
-- an unlaunched `greytheory_worker` primitive package: absolute-name system DNS
-  runs in one owned cancellable spawn child over capped JSON bytes, while direct
-  TLS connects to the broker-selected numeric address with an explicit CA
-  bundle, verified hostname/SNI, TLS 1.2+, HTTP/1.1 ALPN, disabled key logging,
-  total-deadline timeouts, bounded header reads, and deterministic close.
-  Injected syscall coverage is supplemented by an offline Ubuntu 24.04 WSL2
-  namespace harness proving production numeric TLS, zero re-resolution,
-  CA/hostname enforcement, split-header capture, cleanup, and real spawned-child
-  cancellation with only loopback and no default route.
+- a dark `greytheory_worker` package with absolute-name system DNS in one owned
+  cancellable spawned child, direct numeric-address TLS 1.2+ `HEAD`, and a
+  second owned-process boundary that permits exactly one resolve then one
+  broker-rechecked exact request. The lower-trust child receives no signing
+  keys, replay/kill-switch state, capture private key, or research store; it
+  scrubs its environment and must report non-root, zero-capability,
+  no-new-privileges Linux identity before its evidence is accepted. Earlier
+  Ubuntu namespace proof covers the primitive path only; the full service host
+  harness is implemented but has not completed acceptance.
 
 ## What is not built
 
@@ -85,7 +85,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - broader curriculum packs beyond the first 12 cards;
 - standalone graphical workbench shell, graphical Learn surface, and installed/clean-user Windows acceptance;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch collector, successful real system-resolver and full-adapter host acceptance, assembled Ubuntu worker service/broker transport, approved OS secret-provider binding for the root KEK, durable OS egress constraints, VM/VPS acceptance, and live collectors;
+- governed external Scope Watch collector, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -113,7 +113,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent passive work now moves to approved local KEK binding and an isolated Ubuntu VM that assembles and host-tests the existing primitives—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
+Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent passive work now needs a recovered or explicitly restart-approved Ubuntu environment to run the implemented full-service no-route harness, followed by approved local KEK binding and durable egress/image acceptance—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

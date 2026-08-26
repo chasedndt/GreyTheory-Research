@@ -19,3 +19,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0015 - Implement passive worker primitives without launching them](ADR-0015-unlaunched-passive-worker-primitives.md)
 - [ADR-0016 - Accept Ubuntu primitives in an offline network namespace](ADR-0016-offline-ubuntu-primitive-host-acceptance.md)
 - [ADR-0017 - Keep adaptive learning transparent and assistance bounded](ADR-0017-transparent-adaptive-learning-tracks.md)
+- [ADR-0018 - Keep broker authority outside the passive worker process](ADR-0018-keep-broker-authority-outside-passive-worker.md)

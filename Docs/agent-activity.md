@@ -4,6 +4,25 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-26 - Codex - Owned-process passive worker assembly
+
+### What was built
+
+- Added one capped spawned worker process that may resolve once and perform one
+  broker-rechecked exact TLS request before exiting.
+- Kept broker authority and private keys in the parent; scrubbed the child
+  environment and enforced non-root/zero-capability/no-new-privileges identity.
+- Added a full no-route Ubuntu service harness, 91 focused passing tests, and a
+  664-test passing repository baseline.
+
+### Boundary retained
+
+The first host run timed out without evidence and WSL then became unavailable.
+The refined harness is not host-accepted; no unrelated Hermes process was
+stopped, and `PASSIVE_HTTP` remains unavailable.
+
+See `07_LOGS/Build-Logs/2026-08-26-greytheory-owned-process-worker-assembly.md`.
+
 ## 2026-08-26 - Codex - Transparent adaptive learning tracks
 
 ### What was built

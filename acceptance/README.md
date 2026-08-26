@@ -39,3 +39,37 @@ This is host acceptance for the primitive layer only. It does not prove the
 future Ubuntu image, OS-bound root KEK, broker transport, worker identity,
 programme review, canary authorization, sustained operation, or operator
 posture approval.
+
+## Ubuntu 24.04 full worker-service acceptance harness
+
+The direction-independent next harness is present at:
+
+```powershell
+& .\acceptance\run-ubuntu-worker-service.ps1
+```
+
+It creates a fresh user, mount, and network namespace; maps the process to
+UID/GID 65534; exposes only loopback with no default route; overlays `/etc`
+ephemerally to map `greytheory-canary.invalid` to the synthetic local
+`8.8.8.8`; permits unprivileged port 443 only inside that namespace; then drops
+all effective/bounding/inheritable/ambient capabilities and enables
+no-new-privileges before Python starts.
+
+The intended acceptance chain is one successful production system resolution,
+broker validation of the complete answer, one exact worker TLS `HEAD`, encrypted
+capture round trip, signed receipt verification, exact-once replay completion,
+and terminal worker cleanup. The worker child receives no broker or private-key
+authority.
+
+**Current proof state:** the harness and static contracts are implemented, but
+the first bounded host run emitted no evidence before its 120-second wrapper
+ceiling and left the Ubuntu WSL control path unresponsive. Because unrelated
+Hermes processes use that distribution, it was not terminated or restarted.
+Do not describe the full worker service as host-accepted until this command
+finishes with its JSON evidence on a recovered or explicitly restart-approved
+Ubuntu environment.
+
+Even a successful run would remain an owned no-route local acceptance fixture.
+It would not prove durable egress, a hardened image, OS-bound root KEK,
+authorised programme operation, VPS suitability, or posture approval, and it
+would not enable `PASSIVE_HTTP`.
