@@ -255,6 +255,13 @@ def _sanitize_worker_environment() -> None:
     os.environ.update(WORKER_SAFE_ENVIRONMENT)
 
 
+def _default_worker_process_context() -> Any:
+    if platform.system().lower() == "linux":
+        multiprocessing.set_forkserver_preload(["greytheory_worker.service"])
+        return multiprocessing.get_context("forkserver")
+    return multiprocessing.get_context("spawn")
+
+
 class WorkerProtocolService:
     """One resolve command followed by one bound direct-HEAD command."""
 
@@ -386,8 +393,11 @@ def _worker_child(channel: Any, ca_file: str) -> None:
     """Serve the fixed two-command protocol in one owned spawned process."""
 
     _sanitize_worker_environment()
+    if platform.system().lower() != "linux":
+        raise WorkerServiceError("the passive worker child requires Linux")
+    resolver_context = multiprocessing.get_context("fork")
     service = WorkerProtocolService(
-        resolver=CancellableSystemResolver(),
+        resolver=CancellableSystemResolver(process_context=resolver_context),
         transport=DirectTlsHeadTransport(ca_file=ca_file),
     )
     try:
@@ -454,7 +464,9 @@ class SpawnedWorkerClient:
         self.ca_file = Path(ca_file).expanduser().resolve()
         if not self.ca_file.is_file():
             raise WorkerServiceError("worker CA bundle must be an existing file")
-        self.process_context = process_context or multiprocessing.get_context("spawn")
+        self.process_context = (
+            process_context or _default_worker_process_context()
+        )
         self.monotonic = monotonic
         self.shutdown_grace_seconds = float(shutdown_grace_seconds)
         if (

@@ -258,7 +258,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_worker_primitives",
         "Passive worker OS primitives",
         CapabilityStatus.PARTIAL,
-        "The worker package implements the cancellable resolver and direct-TLS primitives plus a capped two-command spawned-process service that reports identity, scrubs its environment, and is refused unless Linux is non-root, capability-empty, and no-new-privileges.",
+        "The worker package implements the cancellable resolver and direct-TLS primitives plus a capped two-command service. On Linux the outer worker starts from a clean fork server and only the scrubbed authority-free worker forks its resolver; evidence is refused unless Linux is non-root, capability-empty, and no-new-privileges.",
         "Ubuntu WSL2 proves only the earlier primitive mechanics. The new full service harness is implemented but has not completed host acceptance; real system-resolver/full-path proof, durable egress, hardened image, scheduler, and posture route remain unverified or unimplemented.",
         (
             "greytheory_worker",

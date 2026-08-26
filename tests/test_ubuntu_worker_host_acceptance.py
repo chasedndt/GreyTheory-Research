@@ -91,11 +91,19 @@ def test_full_worker_harness_assembles_only_the_owned_offline_path():
 
 
 def test_full_worker_wrapper_drops_identity_and_capabilities_in_no_route_namespace():
-    source = (ACCEPTANCE / "run-ubuntu-worker-service.ps1").read_text(
+    powershell = (ACCEPTANCE / "run-ubuntu-worker-service.ps1").read_text(
         encoding="utf-8"
     )
+    shell = (ACCEPTANCE / "run-ubuntu-worker-service.sh").read_text(
+        encoding="utf-8"
+    )
+    source = powershell + shell
 
-    assert "unshare -Urnm" in source
+    assert '"unshare", "-Urnm"' in powershell
+    assert '"--user", "root"' in powershell
+    assert "WaitForExit($TimeoutSeconds * 1000)" in powershell
+    assert "Get-OwnedWslDescendantIds" in powershell
+    assert "Stop-Process -Id $ownedWslId" in powershell
     assert "--map-user=65534" in source
     assert "--map-group=65534" in source
     assert "--kill-child=KILL" in source
@@ -106,7 +114,12 @@ def test_full_worker_wrapper_drops_identity_and_capabilities_in_no_route_namespa
     assert "--inh-caps=-all" in source
     assert "--ambient-caps=-all" in source
     assert "mount -t overlay overlay" in source
+    assert "umount /etc/hosts" in shell
+    assert 'mount --bind "$runtime_dir/hosts" /etc/hosts' in shell
     assert "greytheory-canary.invalid" in source
+    assert "greytheory-canary.invalid." in shell
+    assert '"bash", "acceptance/run-ubuntu-worker-service.sh"' in powershell
+    assert "case \"$runtime_dir\" in" in shell
     assert not any(
         token in source.lower() for token in ("curl ", "wget ", "invoke-webrequest")
     )

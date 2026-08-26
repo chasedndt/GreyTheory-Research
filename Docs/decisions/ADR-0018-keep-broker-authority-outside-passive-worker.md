@@ -42,6 +42,15 @@ supplementary group, zero effective and bounding capabilities, and
 `NoNewPrivs=1`. Frames are canonical JSON capped at 196,608 bytes; they are not
 pickle and their schemas and sequence are exact.
 
+On Linux, the parent starts the worker through a clean multiprocessing fork
+server preloaded only with the worker service module. It does not fork the
+broker process and therefore cannot inherit broker keys or state. Once the
+worker has scrubbed its environment and has no broker authority, it may fork
+one cancellable resolver child; this avoids a second full application spawn
+inside the signed 30-second action ceiling without weakening the parent/worker
+boundary. Non-Linux fallback remains spawn-based and cannot satisfy the Linux
+identity admission contract.
+
 There is no CLI, scheduler, listener, service manager, programme route, default
 CA, or posture switch. The included host harness is safe only inside its
 ephemeral no-default-route namespace and does not enable `PASSIVE_HTTP`.
@@ -55,9 +64,11 @@ ephemeral no-default-route namespace and does not enable `PASSIVE_HTTP`.
   reject private, metadata, mixed, or otherwise invalid answers before TCP.
 - A crash consumes rather than replays the ticket, and the parent terminates
   and reaps only the exact owned worker process on timeout or protocol failure.
-- The implementation and unit contract do not prove Ubuntu host behavior. The
-  first full host run timed out while WSL became unavailable, so successful real
-  system DNS, full-path host acceptance, durable egress, hardened image,
+- The implementation and unit contract do not prove Ubuntu host behavior.
+  Recovered attempts fixed multiple wrapper/fixture/startup defects but shared
+  WSL/Hermes startup instability prevented a complete JSON record, so
+  successful real system DNS, full-path host acceptance, durable egress,
+  hardened image,
   approved root-KEK provider, and VM/VPS acceptance remain open.
 - `PASSIVE_HTTP` remains unavailable and operating posture remains
   `LOCAL_FIXTURE`.

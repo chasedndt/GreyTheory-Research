@@ -48,8 +48,9 @@ The direction-independent next harness is present at:
 & .\acceptance\run-ubuntu-worker-service.ps1
 ```
 
-It creates a fresh user, mount, and network namespace; maps the process to
-UID/GID 65534; exposes only loopback with no default route; overlays `/etc`
+It uses WSL root only as the namespace bootstrap, then creates a fresh user,
+mount, and network namespace; maps the Python process to UID/GID 65534; exposes
+only loopback with no default route; overlays `/etc`
 ephemerally to map `greytheory-canary.invalid` to the synthetic local
 `8.8.8.8`; permits unprivileged port 443 only inside that namespace; then drops
 all effective/bounding/inheritable/ambient capabilities and enables
@@ -61,13 +62,17 @@ capture round trip, signed receipt verification, exact-once replay completion,
 and terminal worker cleanup. The worker child receives no broker or private-key
 authority.
 
-**Current proof state:** the harness and static contracts are implemented, but
-the first bounded host run emitted no evidence before its 120-second wrapper
-ceiling and left the Ubuntu WSL control path unresponsive. Because unrelated
-Hermes processes use that distribution, it was not terminated or restarted.
-Do not describe the full worker service as host-accepted until this command
-finishes with its JSON evidence on a recovered or explicitly restart-approved
-Ubuntu environment.
+**Current proof state:** the harness and static contracts are implemented and
+the wrapper now owns a separate Linux script, an exact 120-second Windows-side
+process ceiling, and leaf-to-parent cleanup of only its WSL clients. Recovered
+runs exposed and fixed native quoting, WSL's nested `/etc/hosts` mount, the
+resolver's absolute trailing-dot name, masked worker errors, and nested spawn
+overhead. The outer worker now starts from a clean fork server and only that
+scrubbed authority-free worker forks its cancellable resolver. No run has yet
+emitted the required complete JSON record; unrelated Hermes WSL clients again
+coincided with an unhealthy distro startup, and the shared distro/service was
+not terminated. Do not describe the full worker service as host-accepted until
+this command finishes with its JSON evidence.
 
 Even a successful run would remain an owned no-route local acceptance fixture.
 It would not prove durable egress, a hardened image, OS-bound root KEK,

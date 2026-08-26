@@ -158,8 +158,10 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   worker performs one bound direct TLS request before exiting. It scrubs its
   environment and is refused unless Linux is non-root, capability-empty, and
   no-new-privileges. Earlier Ubuntu 24.04 WSL2 proof covers primitive numeric
-  TLS and spawned-child cancellation only; the new full service has not passed
-  host acceptance, and durable egress, a hardened image, OS-bound KEK,
+  TLS and spawned-child cancellation only. The hardened full-service wrapper
+  and authority-free Linux fork-server/fork topology are source-verified but
+  have not produced a successful host JSON record; durable egress, a hardened
+  image, OS-bound KEK,
   scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, transparent adaptive review scheduling, bounded assisted and transfer-specific journeys, and explicit human-assessment completion, but not broader curriculum packs or the graphical Learn surface.
 

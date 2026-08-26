@@ -111,10 +111,12 @@ request only after the parent broker validates the complete DNS answer. It
 scrubs its environment and must report non-root, zero-capability,
 no-new-privileges Linux identity. Earlier offline Ubuntu 24.04 WSL2 acceptance
 proves production numeric TLS and spawned-child cancellation only. The new full
-service harness is implemented, but its first run produced no evidence before
-WSL became unavailable; successful full-path host acceptance, durable OS egress
-controls, hardened image, and authorised programme evidence remain mandatory
-before any posture change.
+service harness now has an owned Linux script, bounded Windows-side process
+cleanup, isolated synthetic hosts view, clean fork-server worker start, and an
+in-worker forked resolver. Recovered attempts still produced no complete JSON
+record before shared WSL/Hermes startup became unreliable; successful full-path
+host acceptance, durable OS egress controls, hardened image, and authorised
+programme evidence remain mandatory before any posture change.
 
 ## 4. Stable application contract
 

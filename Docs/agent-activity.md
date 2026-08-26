@@ -4,6 +4,25 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-08-26 - Codex - Ubuntu service harness hardening
+
+### What was built
+
+- Replaced fragile inline Bash with a checked-in no-route namespace script and
+  exact Windows-side timeout/owned-client cleanup.
+- Isolated WSL's hosts mount and covered the resolver's absolute dotted name.
+- Started the Linux worker from a clean fork server and forked DNS only inside
+  the scrubbed authority-free worker.
+- Verified 92 focused passive-security tests and a 665-test repository baseline.
+
+### Boundary retained
+
+No complete Ubuntu JSON record exists. Shared WSL/Hermes startup became
+unreliable again; unrelated processes and the shared distro/service were not
+stopped, and `PASSIVE_HTTP` remains unavailable.
+
+See `07_LOGS/Build-Logs/2026-08-26-greytheory-ubuntu-service-harness-hardening.md`.
+
 ## 2026-08-26 - Codex - Owned-process passive worker assembly
 
 ### What was built

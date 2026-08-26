@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-26 - GreyTheory Ubuntu service harness hardening](2026-08-26_greytheory-ubuntu-service-harness-hardening.md) - bounded wrapper, clean worker start, and honest shared-WSL host boundary
+
 - [2026-08-26 - GreyTheory owned-process worker assembly](2026-08-26_greytheory-owned-process-worker-assembly.md) - broker authority retained outside the child; full host proof still absent
 
 - [2026-08-26 - GreyTheory adaptive learning tracks](2026-08-26_greytheory-adaptive-learning-tracks.md) - transparent review policy and bounded specialised learning without graphical overclaim

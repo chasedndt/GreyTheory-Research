@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-26 - GreyTheory Ubuntu service harness hardening](2026-08-26-greytheory-ubuntu-service-harness-hardening.md) - bounded namespace/process fixes verified; full Ubuntu JSON acceptance still absent; 665 tests
+
 - [2026-08-26 - GreyTheory owned-process passive worker assembly](2026-08-26-greytheory-owned-process-worker-assembly.md) - two-phase broker/worker boundary unit-verified; full Ubuntu host acceptance unverified; 664 tests
 
 - [2026-08-26 - GreyTheory transparent adaptive learning tracks](2026-08-26-greytheory-adaptive-learning-tracks.md) - inspectable review scheduling and bounded assisted/transfer journeys; 651 tests

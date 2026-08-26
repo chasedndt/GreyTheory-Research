@@ -37,7 +37,10 @@ from greytheory_worker import (
     WorkerProtocolError,
     WorkerProtocolService,
 )
-from greytheory_worker.service import _worker_child
+from greytheory_worker.service import (
+    _default_worker_process_context,
+    _worker_child,
+)
 from greytheory_worker_contract import (
     AdapterContractError,
     DirectHeadRequest,
@@ -394,6 +397,9 @@ def test_worker_child_receives_no_broker_authority_or_private_key_material():
         "ca_file",
     )
     source = Path(inspect.getsourcefile(_worker_child)).read_text(encoding="utf-8")
+    assert 'multiprocessing.get_context("forkserver")' in source
+    assert 'set_forkserver_preload(["greytheory_worker.service"])' in source
+    assert 'multiprocessing.get_context("fork")' in source
     forbidden = {
         "CaptureKeyStore",
         "MessageSigner",
@@ -417,6 +423,24 @@ def test_worker_child_receives_no_broker_authority_or_private_key_material():
         supplementary_gids=(0,),
         environment_keys=("LANG", "LC_ALL", "PYTHONDONTWRITEBYTECODE"),
     ).is_unprivileged_linux
+
+
+def test_linux_worker_context_uses_clean_forkserver(monkeypatch):
+    marker = object()
+    preloads = []
+
+    monkeypatch.setattr("greytheory_worker.service.platform.system", lambda: "Linux")
+    monkeypatch.setattr(
+        "greytheory_worker.service.multiprocessing.set_forkserver_preload",
+        lambda modules: preloads.append(modules),
+    )
+    monkeypatch.setattr(
+        "greytheory_worker.service.multiprocessing.get_context",
+        lambda method: marker if method == "forkserver" else None,
+    )
+
+    assert _default_worker_process_context() is marker
+    assert preloads == [["greytheory_worker.service"]]
 
 
 class FakeChildChannel:

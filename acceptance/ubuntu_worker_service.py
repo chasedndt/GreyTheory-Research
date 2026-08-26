@@ -284,7 +284,17 @@ def _assert_full_worker_path() -> dict[str, Any]:
                 ca_file=CERTIFICATE,
                 clock=lambda: datetime.now(timezone.utc),
             ).run(ticket=ticket, recipient=recipient)
-        finally:
+        except BaseException as worker_error:
+            try:
+                canary.finish()
+            except AcceptanceError as canary_error:
+                raise AcceptanceError(
+                    "worker assembly failed before the canary completed: "
+                    f"{type(worker_error).__name__}: {worker_error}; "
+                    f"canary: {canary_error}"
+                ) from worker_error
+            raise
+        else:
             canary.finish()
         if decrypt_capture(
             result.adapter.capture, private_key=capture_private

@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, transparent adaptive review, bounded standard/assisted/transfer learning, research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 664 repository tests passing on 2026-08-26, including the unit-verified two-phase owned-process worker assembly and strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof. The new full worker service has not passed Ubuntu host acceptance.
+- **Verified baseline:** 665 repository tests passing on 2026-08-26, including the unit-verified two-phase owned-process worker assembly, clean Linux fork-server start boundary, in-worker cancellable forked resolver, strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof. The new full worker service has not passed Ubuntu host acceptance.
 
 ## What is built
 
@@ -76,8 +76,10 @@ The complete offline path from supplied authorisation to a validated report draf
   keys, replay/kill-switch state, capture private key, or research store; it
   scrubs its environment and must report non-root, zero-capability,
   no-new-privileges Linux identity before its evidence is accepted. Earlier
-  Ubuntu namespace proof covers the primitive path only; the full service host
-  harness is implemented but has not completed acceptance.
+  Ubuntu namespace proof covers the primitive path only. The full service host
+  harness now has bounded Windows-side cleanup, isolated hosts setup, and a
+  lower-overhead authority-free process topology, but has not completed
+  acceptance or emitted its required JSON record.
 
 ## What is not built
 

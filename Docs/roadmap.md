@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 664 repository tests pass on 2026-08-26 with the unit-verified two-phase owned-process worker assembly and strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof; the new full service remains host-unaccepted and posture remains unchanged.
+- 665 repository tests pass on 2026-08-26 with the unit-verified two-phase owned-process worker assembly, clean Linux fork-server start boundary, in-worker cancellable forked resolver, strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof; the new full service remains host-unaccepted and posture remains unchanged.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -266,8 +266,10 @@ Offline broker foundation completed without enabling the posture:
 - [ ] Run the implemented full-service harness to completion and prove
   successful real system DNS, broker recheck, unprivileged process behavior,
   encrypted evidence return, signed receipt, and cleanup on the isolated Ubuntu
-  host. The first bounded attempt produced no evidence before WSL became
-  unavailable, so this remains explicitly unverified.
+  host. Recovered runs exposed and fixed wrapper quoting, WSL `/etc/hosts`,
+  absolute-name fixture, exception-masking, and nested-process startup issues,
+  but shared WSL/Hermes startup instability prevented a complete JSON record;
+  this remains explicitly unverified.
 - [ ] Prove durable egress enforcement in the hardened local image.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   backup/recovery and host acceptance; no root KEK is stored by the repository.

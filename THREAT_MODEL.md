@@ -130,9 +130,17 @@ Implemented harness but not yet accepted on the host:
   capability-empty process, full resolver/broker recheck/direct TLS path,
   encrypted capture, exact-once ledger completion, and signed receipt against
   the owned canary;
-- the first run exceeded its 120-second outer ceiling without evidence and the
-  Ubuntu WSL control path then stopped responding. No pass is claimed, and the
-  distro was not terminated because unrelated processes also use it.
+- recovered runs exposed and fixed PowerShell/native quoting, WSL's nested
+  `/etc/hosts` mount, the resolver's deliberate trailing-dot absolute name,
+  masked worker exceptions, nested spawn overhead, and unbounded Windows-side
+  client cleanup;
+- the latest source uses WSL root only to create the namespace, maps Python to
+  UID/GID 65534, starts the outer worker from a clean fork server, forks the
+  cancellable resolver only inside the scrubbed authority-free worker, and
+  bounds/stops only its owned Windows WSL clients on timeout;
+- no attempt emitted the required complete JSON evidence before unrelated
+  Hermes WSL clients again coincided with an unhealthy distro startup. No pass
+  is claimed, and the shared distro/service was not terminated.
 
 Still required before any network posture:
 
