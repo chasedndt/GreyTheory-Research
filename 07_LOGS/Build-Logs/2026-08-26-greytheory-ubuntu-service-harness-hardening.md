@@ -94,3 +94,37 @@ evidence.
 Run `acceptance/run-ubuntu-worker-service.ps1` when the Ubuntu distribution has
 a clean startup window with no unrelated Hermes operation. Require the complete
 JSON record and keep `PASSIVE_HTTP` unavailable until that evidence exists.
+
+## 2026-08-27 resumed acceptance and host diagnosis
+
+The first resumed run reached the full worker path and exposed a fixture timing
+defect: the owned TLS canary stopped accepting after 10 seconds even though the
+signed broker action permits a bounded 30-second duration. The canary accept and
+join ceilings now outlive that action window. The wrapper also stages the exact
+checkout Python sources into its owned native-Linux temporary directory before
+dropping privileges, so clean fork-server startup does not spend the action
+budget repeatedly importing from the Windows DrvFS mount. The staged source is
+removed by the existing owned-runtime cleanup and does not replace the checkout.
+
+```text
+python -m pytest -q tests\test_ubuntu_worker_host_acceptance.py tests\test_passive_worker_service.py
+18 passed in 27.78s
+```
+
+Host acceptance is still **not complete**. After the fixture fix, one run reached
+the worker but the resolver process could not start within the signed 30-second
+action budget. Later cold starts again failed before `unshare` with
+`Wsl/Service/CreateInstance/CreateVm/0x800705b4`, including after a no-client,
+no-running-distro `wsl --shutdown` reset. No complete acceptance JSON exists.
+
+The Ubuntu and Docker WSL distributions both live on the external Micron
+CT1000X9SSD9 at `E:`. Windows recorded 89 `disk` event ID 11 controller errors
+for `\Device\Harddisk2\DR2` during the preceding seven days, including repeated
+errors on 2026-08-26 and two after midnight on 2026-08-27. The repeated VM
+creation timeouts, 50-90 second WSL command starts, and those controller events
+make the external storage path the current host-level risk. No filesystem repair,
+distro migration, service disablement, or device reset was attempted.
+
+`PASSIVE_HTTP` remains unavailable. The next safe action is to stabilise or
+replace the E: device connection and protect its data, then rerun the full
+acceptance and require the complete JSON record before changing capability truth.

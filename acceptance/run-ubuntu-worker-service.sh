@@ -32,6 +32,21 @@ if mountpoint -q /etc/hosts; then
 fi
 mount --bind "$runtime_dir/hosts" /etc/hosts
 
+# Fork-server startup must remain inside the signed 30-second action budget.
+# Importing the worker repeatedly from a Windows DrvFS mount can consume that
+# entire budget on a cold or degraded WSL host, without exercising the worker.
+# Stage the exact checkout sources in the owned native-Linux runtime first.
+source_dir="$runtime_dir/source"
+mkdir -p "$source_dir"
+cp -a -- \
+  acceptance \
+  greytheory \
+  greytheory_broker \
+  greytheory_worker \
+  greytheory_worker_contract \
+  "$source_dir/"
+cd "$source_dir"
+
 setpriv --no-new-privs --bounding-set=-all --inh-caps=-all --ambient-caps=-all -- \
   env PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=. \
   python3 acceptance/ubuntu_worker_service.py

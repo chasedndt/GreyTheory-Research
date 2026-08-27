@@ -37,6 +37,7 @@ from greytheory.authority.scope import (
 )
 from greytheory.research import ActionRequest, AssetKind, EffectBudget, TargetAsset
 from greytheory_broker import (
+    BrokerLimits,
     BrokerKillSwitch,
     CaptureRecipient,
     Ed25519Signer,
@@ -51,6 +52,9 @@ CANARY_ADDRESS = "8.8.8.8"
 CANARY_HOST = "greytheory-canary.invalid"
 CANARY_URL = f"https://{CANARY_HOST}/acceptance"
 CANARY_PORT = 443
+CANARY_ACCEPT_TIMEOUT_SECONDS = float(BrokerLimits().max_duration_seconds + 2)
+CANARY_IO_TIMEOUT_SECONDS = 10.0
+CANARY_FINISH_TIMEOUT_SECONDS = CANARY_ACCEPT_TIMEOUT_SECONDS + 2.0
 ROOT = Path(__file__).resolve().parents[1]
 CERTIFICATE = ROOT / "acceptance" / "fixtures" / "ubuntu-canary-cert.pem"
 PRIVATE_KEY = ROOT / "acceptance" / "fixtures" / "ubuntu-canary-key.pem"
@@ -144,7 +148,11 @@ class _CanaryServer:
         self.error: BaseException | None = None
         self._listener = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self._listener.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self._listener.settimeout(10.0)
+        # Starting the clean fork server is part of the broker's bounded action
+        # duration.  The owned canary must remain available for that whole
+        # interval; a shorter fixture timeout can close the listener before a
+        # valid worker reaches it and turn slow startup into a false refusal.
+        self._listener.settimeout(CANARY_ACCEPT_TIMEOUT_SECONDS)
         self._listener.bind((CANARY_ADDRESS, CANARY_PORT))
         self._listener.listen(1)
         self._thread = threading.Thread(
@@ -159,7 +167,7 @@ class _CanaryServer:
     def _serve(self) -> None:
         try:
             raw, _ = self._listener.accept()
-            raw.settimeout(10.0)
+            raw.settimeout(CANARY_IO_TIMEOUT_SECONDS)
             context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
             context.minimum_version = ssl.TLSVersion.TLSv1_2
             context.load_cert_chain(certfile=CERTIFICATE, keyfile=PRIVATE_KEY)
@@ -186,7 +194,7 @@ class _CanaryServer:
             self._listener.close()
 
     def finish(self) -> None:
-        self._thread.join(timeout=12.0)
+        self._thread.join(timeout=CANARY_FINISH_TIMEOUT_SECONDS)
         if self._thread.is_alive():
             raise AcceptanceError("owned TLS canary did not stop")
         if self.error is not None:
