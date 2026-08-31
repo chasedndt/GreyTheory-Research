@@ -30,3 +30,12 @@ prototype. The integrated and installed workbench remains incomplete.
 ## Verification
 
 See `07_LOGS/Build-Logs/2026-08-31-greytheory-research-ledger-prototype.md`.
+
+## Follow-up panel completion
+
+- Replaced all navigation placeholders with searchable, filterable, inspectable
+  synthetic local panels and responsive context inspectors.
+- Preserved the original Ledger interactions and visual target.
+- Added a current panel Mermaid map and README-safe Visual QA capture.
+- Recorded the Apache-2.0 open-core boundary without changing licence or
+  publishing state.

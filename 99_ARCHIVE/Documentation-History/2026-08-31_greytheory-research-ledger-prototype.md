@@ -16,3 +16,13 @@
 This proves the graphical direction and core prototype interactions, not API
 integration, persistence, desktop packaging, Ubuntu host acceptance, or live
 research capability.
+
+## Panel completion delta
+
+- Updated workbench truth from a Ledger-only interactive screen to thirteen
+  functional prototype navigation panels.
+- Added a Mermaid panel map and a curated synthetic README screenshot.
+- Documented the recommended Apache-2.0 open-core/private-operator-state split.
+- Replaced the placeholder advisory link with the repository's private advisory
+  route and reconciled the dark passive-worker wording in `SECURITY.md`.
+- Preserved API integration and installed-shell packaging as incomplete.

@@ -217,6 +217,7 @@ The interactive application is not.
 - [x] Assemble all seven claim roles for the exact two-account fixture from stored evidence and persisted operator attestations without another target action.
 - [x] Advance exactly one internal finding state, require a current Gates B-F pass for `report_ready`, and refuse submission/programme outcomes.
 - [x] Select visual direction 1 and build a responsive, browser-verified Research Ledger prototype with local-fixture-only interactions.
+- [x] Complete all thirteen visible prototype navigation panels with search, filters, inspection, responsive context, and explicit write boundaries.
 - [ ] Build the selected graphical application shell.
 - [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.

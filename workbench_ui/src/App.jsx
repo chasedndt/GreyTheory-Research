@@ -27,6 +27,7 @@ import {
   SquaresFour,
   X,
 } from "@phosphor-icons/react";
+import { defaultPanelData, panelData } from "./panelData";
 
 const navGroups = [
   {
@@ -273,6 +274,83 @@ function EvidenceInspector({ onClose, isDrawer = false }) {
   );
 }
 
+function ModulePanel({ name, onAction }) {
+  const data = panelData[name] || defaultPanelData;
+  const [query, setQuery] = useState("");
+  const [filter, setFilter] = useState("All");
+  const [expanded, setExpanded] = useState(null);
+  const filters = ["All", ...new Set(data.rows.map((row) => row.status))];
+  const normalizedQuery = query.trim().toLowerCase();
+  const visibleRows = data.rows.filter((row) => {
+    const matchesFilter = filter === "All" || row.status === filter;
+    const matchesQuery = !normalizedQuery || `${row.id} ${row.title} ${row.detail} ${row.kind}`.toLowerCase().includes(normalizedQuery);
+    return matchesFilter && matchesQuery;
+  });
+
+  return (
+    <section className="module-panel" aria-labelledby="module-title">
+      <header className="module-header">
+        <div>
+          <p className="module-kicker">LOCAL_FIXTURE · {name}</p>
+          <h2 id="module-title">{data.title}</h2>
+          <p>{data.subtitle}</p>
+        </div>
+        <button className="button button--primary module-action" onClick={() => onAction(data.action, name)}>
+          {data.action} <ArrowRight size={17} />
+        </button>
+      </header>
+
+      <div className="module-stats" aria-label={`${name} summary`}>
+        {data.stats.map(([label, value]) => (
+          <div className="module-stat" key={label}><span>{label}</span><strong>{value}</strong></div>
+        ))}
+      </div>
+
+      <div className="module-toolbar">
+        <label className="module-search">
+          <span className="sr-only">Search {name}</span>
+          <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={`Search ${name.toLowerCase()}…`} />
+        </label>
+        <div className="module-filters" aria-label={`${name} status filter`}>
+          {filters.map((item) => (
+            <button key={item} className={filter === item ? "is-active" : ""} aria-pressed={filter === item} onClick={() => setFilter(item)}>{item}</button>
+          ))}
+        </div>
+      </div>
+
+      <div className="module-list" aria-label={`${name} records`}>
+        {visibleRows.map((row) => (
+          <article className={`module-row ${expanded === row.id ? "module-row--expanded" : ""}`} key={row.id}>
+            <div className="module-row__identity"><span>{row.kind}</span><small>{row.id}</small></div>
+            <div className="module-row__copy"><strong>{row.title}</strong><p>{row.detail}</p>{expanded === row.id && <div className="module-detail"><ShieldCheck size={17} /><span>{data.boundary}</span></div>}</div>
+            <div className="module-row__state"><span><StatusDot tone={row.tone} /> {row.status}</span><button className="button button--quiet button--compact" onClick={() => setExpanded(expanded === row.id ? null : row.id)} aria-expanded={expanded === row.id}>{expanded === row.id ? "Close" : "Inspect"}</button></div>
+          </article>
+        ))}
+        {!visibleRows.length && <div className="module-empty"><Info size={22} /><strong>No matching local records</strong><p>Clear the search or choose a different status.</p></div>}
+      </div>
+
+      <div className="module-boundary"><ShieldCheck size={19} /><p>{data.boundary}</p></div>
+    </section>
+  );
+}
+
+function ModuleInspector({ name, onClose, isDrawer = false }) {
+  const data = panelData[name] || defaultPanelData;
+  return (
+    <aside className={`inspector module-inspector ${isDrawer ? "inspector--drawer" : ""}`} aria-label={`${name} context inspector`}>
+      <div className="inspector__heading">
+        <h2>{name} context</h2>
+        {isDrawer ? <button className="icon-button" onClick={onClose} aria-label="Close context inspector"><X size={19} /></button> : <Info size={17} aria-label={`${name} context information`} />}
+      </div>
+      <section className="inspector__section selected-claim"><p className="section-kicker">Current panel</p><p>{data.title}</p><span>{data.subtitle}</span></section>
+      <section className="inspector__section"><h3>Local summary</h3><dl className="module-inspector__stats">{data.stats.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
+      <section className="inspector__section"><h3>Boundary</h3><div className="boundary-note"><ShieldCheck size={20} /><p>{data.boundary}</p></div></section>
+      <section className="inspector__section provenance"><h3>Provenance</h3><dl><div><dt>Workspace</dt><dd>LOCAL_FIXTURE</dd></div><div><dt>Data source</dt><dd>Synthetic prototype</dd></div><div><dt>Persistence</dt><dd>Not API-bound</dd></div><div><dt>Sharing</dt><dd>None</dd></div></dl></section>
+      <div className="inspector__privacy"><ShieldCheck size={18} /><p>No panel can contact a target.<br />Human governance remains required.</p></div>
+    </aside>
+  );
+}
+
 export function App() {
   const [dialog, setDialog] = useState(null);
   const [drawer, setDrawer] = useState(null);
@@ -280,6 +358,8 @@ export function App() {
   const [savedReflection, setSavedReflection] = useState("");
   const [notice, setNotice] = useState("");
   const [activeNav, setActiveNav] = useState("Ledger");
+  const [moduleAction, setModuleAction] = useState(null);
+  const activePanel = panelData[activeNav] || defaultPanelData;
 
   const missingEvidence = useMemo(
     () => [
@@ -292,11 +372,12 @@ export function App() {
 
   function chooseNav(item) {
     setActiveNav(item);
-    if (item !== "Ledger") {
-      setNotice(`${item} is represented in the shell; this review remains on the Research Ledger.`);
-      window.setTimeout(() => setNotice(""), 3600);
-    }
     setDrawer(null);
+  }
+
+  function openModuleAction(action, panel) {
+    setModuleAction({ action, panel });
+    setDialog("module-action");
   }
 
   function saveReflection() {
@@ -319,8 +400,8 @@ export function App() {
           </div>
         </div>
         <div className="topbar__title">
-          <h1>Research Ledger</h1>
-          <p>Evidence-first research. Human governed.</p>
+          <h1>{activeNav === "Ledger" ? "Research Ledger" : activePanel.title}</h1>
+          <p>{activeNav === "Ledger" ? "Evidence-first research. Human governed." : activePanel.subtitle}</p>
         </div>
         <button className="mobile-menu icon-button" onClick={() => setDrawer("nav")} aria-label="Open navigation">
           <List size={22} />
@@ -375,8 +456,9 @@ export function App() {
 
       <main className="ledger">
         {notice && <div className="notice" role="status">{notice}</div>}
+        {activeNav === "Ledger" ? <>
         <section className="ledger__header">
-          <button className="back-link" onClick={() => setNotice("Hypothesis index is outside this selected screen.")}>
+          <button className="back-link" onClick={() => chooseNav("Hypotheses")}>
             <ArrowLeft size={15} /> All hypotheses
           </button>
           <div className="ledger__hero-row">
@@ -434,13 +516,14 @@ export function App() {
           <button className="button button--quiet" onClick={() => setDialog("receipt")}><Eye size={18} /> Open receipt</button>
           <button className="button button--quiet" onClick={() => setDialog("reflection")}><ChatCircleText size={18} /> Add reflection</button>
         </section>
+        </> : <ModulePanel key={activeNav} name={activeNav} onAction={openModuleAction} />}
       </main>
 
-      <div className="desktop-inspector"><EvidenceInspector /></div>
-      <button className="inspector-toggle" onClick={() => setDrawer("inspector")}><SealCheck size={18} /> Evidence</button>
+      <div className="desktop-inspector">{activeNav === "Ledger" ? <EvidenceInspector /> : <ModuleInspector name={activeNav} />}</div>
+      <button className="inspector-toggle" onClick={() => setDrawer("inspector")}><SealCheck size={18} /> {activeNav === "Ledger" ? "Evidence" : "Context"}</button>
 
       {drawer && <div className="drawer-backdrop" onMouseDown={() => setDrawer(null)} />}
-      {drawer === "inspector" && <EvidenceInspector isDrawer onClose={() => setDrawer(null)} />}
+      {drawer === "inspector" && (activeNav === "Ledger" ? <EvidenceInspector isDrawer onClose={() => setDrawer(null)} /> : <ModuleInspector name={activeNav} isDrawer onClose={() => setDrawer(null)} />)}
       {drawer === "nav" && (
         <aside className="mobile-nav" aria-label="Mobile navigation">
           <div className="mobile-nav__heading"><BrandMark /><strong>GreyTheory AI</strong><button className="icon-button" onClick={() => setDrawer(null)} aria-label="Close navigation"><X size={20} /></button></div>
@@ -480,6 +563,12 @@ export function App() {
         <Dialog title="Add reflection" eyebrow="Private learning note" onClose={() => setDialog(null)} actions={<><button className="button button--quiet" onClick={() => setDialog(null)}>Cancel</button><button className="button button--primary" onClick={saveReflection} disabled={!reflection.trim()}>Save reflection</button></>}>
           <label className="field"><span>What did this controlled experiment teach you?</span><textarea value={reflection} onChange={(event) => setReflection(event.target.value)} placeholder="Record what changed in your understanding, what remains uncertain, and what you would test next…" rows={6} /></label>
           <p className="field-help">This prototype keeps the note only in the current browser session.</p>
+        </Dialog>
+      )}
+
+      {dialog === "module-action" && moduleAction && (
+        <Dialog title={moduleAction.action} eyebrow={`${moduleAction.panel} · prototype boundary`} onClose={() => setDialog(null)} actions={<button className="button button--primary" onClick={() => setDialog(null)}>Understood</button>}>
+          <div className="authority-detail"><ShieldCheck size={28} /><div><strong>The panel is operational for local review and inspection.</strong><p>Create, edit, and persistence commands stay intentionally unavailable until this prototype is bound to the authenticated GreyTheory application service. No target or external-network action can be initiated here.</p></div></div>
         </Dialog>
       )}
     </div>

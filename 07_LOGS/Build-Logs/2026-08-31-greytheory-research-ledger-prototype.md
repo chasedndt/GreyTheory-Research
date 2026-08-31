@@ -48,3 +48,27 @@ Bind the verified Research Ledger shell to read-only authenticated application
 snapshots first, then add typed local-fixture commands behind the existing
 application boundary. Keep Windows as the pilot host; Ubuntu service acceptance
 remains a separate blocked infrastructure proof.
+
+## Panel completion increment
+
+The same branch now resolves every visible navigation entry to a functional
+local-fixture prototype panel. Overview, Hypotheses, Experiments, Receipts,
+Claims, Reflections, Knowledge, Artifacts, Templates, Governance, Workspaces,
+and Settings support search, status filtering, empty-state recovery, record
+inspection, responsive context, and an explicit non-persisting action boundary.
+The original Ledger flows remain intact.
+
+Additional verification:
+
+- live browser matrix across all twelve non-Ledger panels - PASS for identity,
+  search, empty-state recovery, inspection, and action-boundary dialog;
+- Ledger evidence, receipt, and reflection regression - PASS;
+- Governance at 390 x 844 plus mobile navigation/context drawer - PASS;
+- desktop/mobile horizontal overflow and browser warning/error checks - PASS;
+- refreshed `npm run build` - PASS; 4,571 modules transformed;
+- `npm run test:sites` - PASS; 4 tests;
+- targeted GreyTheory application/transport/capability suite - PASS; 30 tests.
+
+The README now carries a curated synthetic Overview screenshot copied from the
+project-specific Visual QA review. No raw evidence or private workspace data was
+placed in Git.

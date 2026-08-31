@@ -29,6 +29,17 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
+### Workbench prototype
+
+![GreyTheory Research Ledger overview](Docs/assets/research-ledger-overview.png)
+
+The selected Research Ledger direction now includes working Overview, Ledger,
+Hypotheses, Experiments, Receipts, Claims, Reflections, Knowledge, Artifacts,
+Templates, Governance, Workspaces, and Settings panels. Search, status filters,
+record inspection, context drawers, local reflection, and evidence dialogs are
+browser-verified at desktop and 390-pixel widths. The visible data is synthetic;
+write persistence and API binding remain intentionally incomplete.
+
 ### Quickstart
 
 ```bash
@@ -208,7 +219,7 @@ needing scope review are partitioned behind planning candidates.
 
 ### Diagrams
 
-Fourteen Mermaid diagrams — the trust-kernel flows plus the learning and transparent-ranking boundaries — in [`Docs/diagrams.md`](Docs/diagrams.md).
+Fourteen Mermaid diagrams — the trust-kernel flows plus the learning and transparent-ranking boundaries — are in [`Docs/diagrams.md`](Docs/diagrams.md). The current UI panel map and Windows-to-Ubuntu transition boundary are documented in [`Docs/workbench-architecture.md`](Docs/workbench-architecture.md).
 
 ### Documentation
 
@@ -242,6 +253,14 @@ Mark, wordmark, icons and social preview are in [`assets/`](assets/README.md), w
 ### Licence
 
 Apache-2.0. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+
+The recommended product boundary is an open, auditable trust kernel and local
+workbench, with operator evidence, credentials, programme-specific private
+state, signing material, and deployment secrets kept outside the repository.
+Before a wider public release, apply the current
+[OpenSSF OSPS Baseline](https://baseline.openssf.org/),
+enforce reviewed CI and dependency policy, and provide a tested private
+vulnerability-reporting route alongside [`SECURITY.md`](SECURITY.md).
 
 Nothing in this repository grants authority to test anything — see [`SECURITY.md`](SECURITY.md).
 

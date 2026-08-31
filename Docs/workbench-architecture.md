@@ -4,7 +4,7 @@
 >
 > **Current posture:** `LOCAL_FIXTURE`; offline only; no target interaction
 >
-> **Visual implementation:** awaiting operator selection from three audited concepts
+> **Visual implementation:** direction 1 selected; thirteen navigation panels browser-verified
 
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence
@@ -71,6 +71,60 @@ flowchart LR
     WORKER -. "receipt and capture" .-> BROKER
     BROKER -. "local evidence" .-> CORE
 ```
+
+### Workbench panel map
+
+Every visible navigation entry now resolves to a working local prototype panel.
+The panel shell supports search, status filtering, record inspection, responsive
+context, and explicit action-boundary dialogs. Only the Research Ledger's
+reflection is session-writable; application persistence remains the next
+integration boundary.
+
+```mermaid
+flowchart LR
+    OP["Human operator"] --> SHELL["GreyTheory workbench shell"]
+    SHELL --> OVERVIEW["Overview"]
+    SHELL --> RESEARCH["Research records"]
+    SHELL --> KNOWLEDGE["Knowledge and artifacts"]
+    SHELL --> GOVERNANCE["Governance and settings"]
+
+    RESEARCH --> LEDGER["Ledger"]
+    RESEARCH --> HYP["Hypotheses"]
+    RESEARCH --> EXP["Experiments"]
+    RESEARCH --> RECEIPTS["Receipts"]
+    RESEARCH --> CLAIMS["Claims"]
+    RESEARCH --> REFLECTIONS["Reflections"]
+
+    KNOWLEDGE --> CARDS["Knowledge"]
+    KNOWLEDGE --> ARTIFACTS["Artifacts"]
+    KNOWLEDGE --> TEMPLATES["Templates"]
+
+    GOVERNANCE --> POLICY["Governance"]
+    GOVERNANCE --> WORKSPACES["Workspaces"]
+    GOVERNANCE --> SETTINGS["Settings"]
+
+    OVERVIEW --> READ["Synthetic local read and inspect"]
+    LEDGER --> READ
+    HYP --> READ
+    EXP --> READ
+    RECEIPTS --> READ
+    CLAIMS --> READ
+    REFLECTIONS --> READ
+    CARDS --> READ
+    ARTIFACTS --> READ
+    TEMPLATES --> READ
+    POLICY --> READ
+    WORKSPACES --> READ
+    SETTINGS --> READ
+
+    READ -. "next: authenticated binding" .-> APP["Local application service"]
+    APP --> CORE["Offline GreyTheory core"]
+    CORE --> GATE["Authority gate"]
+    GATE --> FIXTURE["LOCAL_FIXTURE only"]
+```
+
+The dashed edge is deliberately not a completion claim: the visual panels are
+implemented, while their read/write binding to `greytheory_local` is not.
 
 ### Workbench UI
 
