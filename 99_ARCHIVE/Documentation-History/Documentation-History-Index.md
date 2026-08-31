@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-08-31 - GreyTheory Research Ledger prototype](2026-08-31_greytheory-research-ledger-prototype.md) - selected interactive direction verified without API, packaging, Ubuntu, or posture overclaim
+
 - [2026-08-26 - GreyTheory Ubuntu service harness hardening](2026-08-26_greytheory-ubuntu-service-harness-hardening.md) - bounded wrapper, clean worker start, and honest shared-WSL host boundary
 
 - [2026-08-26 - GreyTheory owned-process worker assembly](2026-08-26_greytheory-owned-process-worker-assembly.md) - broker authority retained outside the child; full host proof still absent

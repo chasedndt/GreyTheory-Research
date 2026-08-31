@@ -1,6 +1,6 @@
 # GreyTheory Workbench Architecture
 
-> **Status:** FOUNDATION IN PROGRESS
+> **Status:** RESEARCH LEDGER PROTOTYPE VERIFIED; INTEGRATION IN PROGRESS
 >
 > **Current posture:** `LOCAL_FIXTURE`; offline only; no target interaction
 >
@@ -8,8 +8,9 @@
 
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence
-will prove the local research pilot is usable. It does not claim that the
-graphical workbench has been built.
+will prove the local research pilot is usable. The selected Research Ledger
+prototype is implemented and browser-verified, but it is not yet bound to the
+authenticated application service or packaged as the installed workbench.
 
 ## 1. Product objective
 
@@ -322,8 +323,9 @@ Implemented now:
 
 Not implemented now:
 
-- the selected interactive UI;
-- the graphical application shell, installed shortcut, and packaged Windows
+- binding the selected interactive Research Ledger UI to authenticated local
+  snapshots and commands;
+- the complete graphical Today/Learn application shell, installed shortcut, and packaged Windows
   host acceptance;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
@@ -333,6 +335,7 @@ Not implemented now:
   binding for the root KEK, durable egress policy, hardened image,
   launcher/scheduler, or any `PASSIVE_HTTP` action.
 
-The next implementation step is to select one of the three audited visual
-directions, then bind that shell to the implemented local endpoint and complete
-the Today/Learn/Research browser journey without changing posture.
+Visual direction 1, Research Ledger, is now selected, implemented, and verified
+at desktop and 390-pixel widths. The next implementation step is to bind that
+shell to the implemented local endpoint and complete the Today/Learn/Research
+browser journey without changing posture.

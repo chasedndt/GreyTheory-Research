@@ -23,9 +23,9 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/Gates-B-F-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback API; graphical app not built). |
-| **DESIGNED, NOT BUILT** | Selected local graphical shell and graphical Learn surface. |
-| **PLANNED** | Governed Scope Watch collector, network workers/live collectors, standalone graphical workbench, live research proof. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/Gates-B-F-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, authenticated numeric-loopback API, and a browser-verified interactive Research Ledger prototype; the prototype is not yet bound to the API or packaged as the installed application). |
+| **DESIGNED, NOT BUILT** | Graphical Today/Learn journeys and the installed application shell around the verified Research Ledger direction. |
+| **PLANNED** | Governed Scope Watch collector, network workers/live collectors, integrated standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
@@ -35,8 +35,8 @@ The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#curr
 pip install -e ".[dev]" && python -m pytest -q
 ```
 
-Launch the current Windows-first local API foundation (not yet the graphical
-workbench). Its default private root is under the current user's local app-data
+Launch the current Windows-first local API foundation (not yet connected to the
+graphical prototype). Its default private root is under the current user's local app-data
 directory and it binds only to `127.0.0.1`:
 
 ```bash
@@ -44,7 +44,8 @@ greytheory-workbench
 ```
 
 The launcher prints a one-process session token. No target-network capability
-or graphical shell is enabled by this command.
+or graphical shell is enabled by this command. The separately verified
+`workbench_ui/` prototype remains local-fixture-only review code.
 
 Compile a deliberately broken programme and watch it fail closed:
 

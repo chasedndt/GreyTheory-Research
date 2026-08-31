@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-08-31 - GreyTheory Research Ledger prototype](2026-08-31-greytheory-research-ledger-prototype.md) - selected direction 1 implemented and browser-verified; API integration and installed shell remain partial
+
 - [2026-08-26 - GreyTheory Ubuntu service harness hardening](2026-08-26-greytheory-ubuntu-service-harness-hardening.md) - bounded namespace/process fixes verified; full Ubuntu JSON acceptance still absent; 665 tests
 
 - [2026-08-26 - GreyTheory owned-process passive worker assembly](2026-08-26-greytheory-owned-process-worker-assembly.md) - two-phase broker/worker boundary unit-verified; full Ubuntu host acceptance unverified; 664 tests
