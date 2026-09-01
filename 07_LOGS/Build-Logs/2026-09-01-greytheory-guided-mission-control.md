@@ -39,6 +39,8 @@ conversation, and Ubuntu service acceptance remain open.
 - responsive browser checks — no horizontal overflow at 390, 768, 1024, or
   1440 CSS pixels.
 - `workbench_ui/design-qa.md` — `final result: passed`.
+- GitHub PR #1 — all 8 checks passed across authority/no-network proof and the
+  Python 3.11/3.12/3.13 Ubuntu/Windows matrix.
 
 ## Untouched boundaries
 
