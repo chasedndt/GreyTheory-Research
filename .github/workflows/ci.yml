@@ -54,7 +54,20 @@ jobs:
 
       - name: Clean programme compiles, and grants nothing before review
         run: |
-          python -m greytheory.cli --audit ci.jsonl compile fixtures/programmes/mock-verified.json -o contract.json
+          python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          source = Path("fixtures/programmes/mock-verified.json")
+          payload = json.loads(source.read_text(encoding="utf-8"))
+          payload["verified_at"] = datetime.now(timezone.utc).isoformat()
+          Path("mock-verified-ci.json").write_text(
+              json.dumps(payload, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          PY
+          python -m greytheory.cli --audit ci.jsonl compile mock-verified-ci.json -o contract.json
           if python -m greytheory.cli --audit ci.jsonl check contract.json --asset app.mock-verified.test; then
             echo "::error::unreviewed contract granted access"
             exit 1

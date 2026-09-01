@@ -9,6 +9,8 @@
   local snapshot integration.
 - Documented exact-origin CORS, in-memory bearer-token handling, and the
   remaining command boundary.
+- Made the authority-plane CI proof date-independent by refreshing only its
+  synthetic `.test` fixture while preserving the production stale-contract gate.
 - Preserved Windows-first pilot guidance, `LOCAL_FIXTURE`, and separate Ubuntu
   worker acceptance.
 

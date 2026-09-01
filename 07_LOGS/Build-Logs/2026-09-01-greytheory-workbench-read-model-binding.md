@@ -34,6 +34,9 @@ transport. The browser still cannot issue commands or authorize research.
 - Browser connection against the live local Python service - PASS; the
   Overview provenance changed to `Authenticated local API`.
 - Desktop and 390-pixel visual QA - PASS; no UI warnings or errors.
+- GitHub Linux authority-plane proof - repaired to refresh only its reserved
+  `.test` CI fixture at runtime, so the seven-day stale-contract guard remains
+  enforced without making the workflow expire by calendar date.
 
 ## Untouched boundaries
 
