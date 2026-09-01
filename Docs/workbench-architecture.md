@@ -1,17 +1,20 @@
 # GreyTheory Workbench Architecture
 
-> **Status:** RESEARCH LEDGER PROTOTYPE VERIFIED; INTEGRATION IN PROGRESS
+> **Status:** RESEARCH LEDGER BASELINE PARTIAL; AI-NATIVE REDESIGN SELECTION OPEN
 >
 > **Current posture:** `LOCAL_FIXTURE`; offline only; no target interaction
 >
-> **Visual implementation:** direction 1 selected; thirteen navigation panels browser-verified
+> **Visual implementation:** earlier Research Ledger baseline exists; 2026-09-01 audit found desktop overflow and 390-pixel clipping; three replacement directions await selection
 
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence
-will prove the local research pilot is usable. The selected Research Ledger
-prototype is implemented and browser-verified. Matching read-only panels can
+will prove the local research pilot is usable. The earlier Research Ledger
+prototype is implemented as an evidence-view baseline. Matching read-only panels can
 now bind to authenticated application snapshots through an explicit numeric-
 loopback UI origin. Browser commands and installed packaging remain open.
+The learner-first information architecture, agent-security track, bounded coach,
+visualisations, and responsive acceptance contract live in
+[`ai-native-learning-workbench.md`](ai-native-learning-workbench.md).
 
 ## 1. Product objective
 
@@ -203,7 +206,7 @@ does not mean `executed`; execution still requires a fresh gate decision.
 
 ## 5. Primary journeys
 
-The navigation labels and visual hierarchy may change with the chosen concept,
+The navigation labels and visual hierarchy will change with the modernized concept,
 but these journeys are required.
 
 ### Today / Home
@@ -258,6 +261,20 @@ but these journeys are required.
   executable register.
 - Run local health, fixture, audit-chain, and storage checks.
 - Do not expose a control that raises posture as an ordinary preference.
+
+### Learner-first shell
+
+The primary navigation groups the required journeys as Today, Learn, Practise,
+Research, Prove, Library, and Readiness. Storage-shaped views such as
+Hypotheses, Experiments, Receipts, Claims, and Reflections remain available
+inside the relevant journey. The Research Ledger remains the chronological case
+view; it is no longer the default home screen.
+
+The home surface presents one next safe mission and explains its prerequisites,
+reason, expected time, fixture, required evidence, and assessment. Agentic-
+system security is a specialization built on web/API authorization and evidence
+practice. See [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md)
+for the exact recommendation, visualisation, coach, and responsive contracts.
 
 ## 6. Learning architecture
 
@@ -378,9 +395,9 @@ Implemented now:
 
 Not implemented now:
 
-- binding the selected interactive Research Ledger UI to authenticated local
-  snapshots and commands;
-- the complete graphical Today/Learn application shell, installed shortcut, and packaged Windows
+- binding browser commands to the authenticated local service; matching panels
+  already have an explicit read-only snapshot bridge;
+- the modern learner-first Today/Learn/Practise/Prove shell, installed shortcut, and packaged Windows
   host acceptance;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
@@ -390,7 +407,9 @@ Not implemented now:
   binding for the root KEK, durable egress policy, hardened image,
   launcher/scheduler, or any `PASSIVE_HTTP` action.
 
-Visual direction 1, Research Ledger, is now selected, implemented, and verified
-at desktop and 390-pixel widths. The next implementation step is to bind that
-shell to the implemented local endpoint and complete the Today/Learn/Research
-browser journey without changing posture.
+The current Research Ledger baseline is retained as a first-class Research case
+view, but the 2026-09-01 audit invalidated the earlier responsive acceptance
+claim: desktop and 390-pixel captures show horizontal clipping. Three modern
+learner-first directions now exist in Figma and visual QA. Selection,
+implementation, command binding, full Today/Learn journeys, installed packaging,
+and clean-user acceptance remain open.

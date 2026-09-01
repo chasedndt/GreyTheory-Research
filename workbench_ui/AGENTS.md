@@ -15,3 +15,12 @@ Preserve its dense chronological evidence ledger, persistent governance context,
 right-side evidence inspector, navy/amber visual language, and explicit
 `LOCAL_FIXTURE`/unproven/no-live-target wording unless the operator changes the
 direction. The prototype must never imply authority or target execution.
+
+On 2026-09-01 the operator changed the direction: the Research Ledger remains a
+first-class case view, but it is no longer the accepted dashboard shell. The
+next shell must be modern, learner-first, responsive, and designed for an
+AI-native security researcher and bug-bounty learner. It must surface a guided
+learning loop, explain recommendations, include agent-security pathways and
+useful evidence/skill visualisations, keep AI advisory and human-governed, and
+pass desktop plus 390-pixel visual QA without horizontal clipping. Three new
+directions now await explicit selection before substantial UI implementation.

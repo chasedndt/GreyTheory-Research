@@ -86,7 +86,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 - human resolution of the two recorded YNAB policy conflicts;
 - broader curriculum packs beyond the first 12 cards;
-- standalone graphical workbench shell, graphical Learn surface, and installed/clean-user Windows acceptance;
+- modern learner-first graphical shell, graphical Today/Learn/Practise/Prove surfaces, responsive acceptance, and installed/clean-user Windows acceptance; the current Research Ledger baseline clips content at desktop and 390 pixels;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
 - governed external Scope Watch collector, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
@@ -116,7 +116,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three audited workbench directions, then bind that shell to the implemented local endpoint and prove the realistic fixture journey. Direction-independent passive work now needs a recovered or explicitly restart-approved Ubuntu environment to run the implemented full-service no-route harness, followed by approved local KEK binding and durable egress/image acceptance—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
+Select one of the three 2026-09-01 modernized workbench directions, with Guided Mission Control recommended, then build the learner-first shell, remove horizontal overflow, bind it to the implemented local endpoint, and prove the realistic Learn -> Practise -> Prove -> Reflect -> Assess journey. Direction-independent passive work now needs a recovered or explicitly restart-approved Ubuntu environment to run the implemented full-service no-route harness, followed by approved local KEK binding and durable egress/image acceptance—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

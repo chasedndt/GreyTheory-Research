@@ -4,6 +4,17 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - AI-native learner dashboard direction
+
+- Added the learner-first Today/Learn/Practise/Research/Prove/Library product contract, inspectable recommendation rules, agent-security learning track, bounded AI-coach boundary, visualisation system, and responsive acceptance criteria.
+- Added two Mermaid diagrams for the evidence-bound learner loop and the Windows-local to Ubuntu-worker/VPS transition.
+- Added a live desktop/390 visual audit, three modern dashboard concepts, and an editable Figma direction board. Guided Mission Control is recommended; production UI selection remains operator-owned.
+
+### Changed - responsive workbench truth
+
+- Reclassified the current Research Ledger from the accepted dashboard shell to a partial first-class Research case view after current captures exposed desktop overflow and 390-pixel clipping.
+- Removed the temporary Figma capture script after capture so the local-first application retains no external Figma runtime dependency.
+
 ### Added - governed local-fixture claim assembly and lifecycle
 
 - Added a human-acknowledged, revision-bound handler that assembles all seven claim roles for the exact two-account fixture by rerunning five deterministic validators over raw evidence already in the private vault and deriving two judgement roles from persisted operator attestations. It performs no new fixture or target action.

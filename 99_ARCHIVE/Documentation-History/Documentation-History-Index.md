@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-01 - GreyTheory AI-native dashboard direction](2026-09-01_greytheory-ai-native-dashboard-direction.md) - reopened learner-first visual direction, corrected responsive truth, and documented Windows-to-Ubuntu transition
+
 - [2026-09-01 - GreyTheory workbench typography redesign](2026-09-01_greytheory-workbench-typography-redesign.md) - verified desktop/mobile preview media and locally bundled type system without capability overclaim
 
 - [2026-09-01 - GreyTheory workbench read-model binding](2026-09-01_greytheory-workbench-read-model-binding.md) - authenticated read-only UI snapshot and Apache-2.0 research-preview identity without command or Ubuntu overclaim

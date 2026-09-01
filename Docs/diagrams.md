@@ -586,3 +586,61 @@ cost, and side-effect risk. The five explicit factors must identify their source
 and uncertainty. The resulting number is an ordinal queue score only: it cannot
 be reinterpreted as likelihood of a vulnerability, severity, proof, or
 permission to act.
+
+---
+
+## 15. AI-native learner loop
+
+The learner-facing workbench begins with one next safe mission and makes every
+transition inspectable. AI can explain and critique; it cannot execute, check
+evidence, or award mastery.
+
+```mermaid
+flowchart LR
+    TODAY["Today: one next safe mission"] --> LEARN["Learn: concept and boundaries"]
+    LEARN --> PRACTISE["Practise: synthetic local fixture"]
+    PRACTISE --> PROVE["Prove: evidence and receipt"]
+    PROVE --> REFLECT["Reflect: limits and lesson"]
+    REFLECT --> ASSESS["Assess: explicit human judgement"]
+    ASSESS --> TRANSFER["Transfer: distinct local context"]
+    TRANSFER --> TODAY
+
+    AUTH["Authority envelope\nLOCAL_FIXTURE · no live targets"] --> TODAY
+    AUTH --> PRACTISE
+    AUTH --> PROVE
+    COACH["AI coach\nexplain · question · critique"] -. advisory .-> LEARN
+    COACH -. advisory .-> REFLECT
+    COACH -. "cannot execute or award mastery" .-> ASSESS
+
+    style AUTH fill:#78350f,stroke:#f59e0b,color:#fff
+    style COACH fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style ASSESS fill:#065f46,stroke:#10b981,color:#fff
+```
+
+---
+
+## 16. Pilot launch and worker transition
+
+The learner pilot starts on the Windows operator workstation. Ubuntu becomes an
+isolated worker only after local acceptance; a VPS is a later availability
+choice, not a shortcut around host, key, egress, receipt, or posture gates.
+
+```mermaid
+flowchart LR
+    WIN["Windows operator workstation\nWorkbench + local service + offline core"]
+    FIX["Controlled local fixtures\nLOCAL_FIXTURE"]
+    VM["Ubuntu 24.04 local VM\nacceptance only"]
+    VPS["Ubuntu VPS\nscheduled passive availability"]
+    LIVE["PASSIVE_HTTP\none ticket · one target · one receipt"]
+
+    WIN --> FIX
+    FIX -->|"learner pilot accepted"| VM
+    VM -->|"host, egress, key and receipt gates pass"| VPS
+    VPS -->|"explicit posture approval"| LIVE
+    LIVE -. "receipt + encrypted capture" .-> WIN
+
+    style FIX fill:#065f46,stroke:#10b981,color:#fff
+    style VM fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style VPS fill:#78350f,stroke:#f59e0b,color:#fff
+    style LIVE fill:#7f1d1d,stroke:#ef4444,color:#fff
+```

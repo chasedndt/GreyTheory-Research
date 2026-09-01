@@ -192,12 +192,16 @@ A changed or removed source does invalidate review. A source recorded without a
 comparable hash is skipped rather than guessed at, since watching something
 uncomparable would report every run as changed.
 
-## Product workstream - Workbench and guided learning *(FOUNDATION IN PROGRESS 2026-08-24)*
+## Product workstream - AI-native workbench and guided learning *(DESIGN SELECTION IN PROGRESS 2026-09-01)*
 
 This workstream runs under `LOCAL_FIXTURE` and does not depend on raising the
 research posture. The executable capability register and the application,
 process, storage, learning, and future-worker boundary are now implemented.
-The interactive application is not.
+The current interactive Research Ledger is a partial prototype, not the final
+learner workbench. The 2026-09-01 visual audit found desktop canvas overflow and
+390-pixel clipping, and the operator reopened the direction decision. The
+learner-facing contract is now defined in
+[`ai-native-learning-workbench.md`](ai-native-learning-workbench.md).
 
 - [x] Audit the existing desktop and 390-pixel static dashboard.
 - [x] Produce three grounded workbench directions for operator selection.
@@ -205,7 +209,10 @@ The interactive application is not.
 - [x] Accept the workbench-as-application-boundary decision in ADR-0010.
 - [x] Define required Today, Learn, Programmes, Research, Evidence, Reports, and Readiness journeys.
 - [x] Implement deterministic prerequisite/review planning, staged private journeys, reflection, explicit persisted-human-assessment completion, and CLI operation.
-- [ ] Select the visual direction.
+- [x] Capture the current desktop and 390-pixel implementation in the central GreyTheory visual-QA registry.
+- [x] Audit the learner journey, typography, hierarchy, responsiveness, and agent-security learning needs.
+- [x] Produce three modern dashboard concepts plus an editable Figma audit/direction board.
+- [ ] Select the modernized visual direction; Direction 1, Guided Mission Control, is recommended.
 - [x] Build the versioned, transport-neutral application snapshot and bounded learning command contract.
 - [x] Add create-only hypothesis, human scope-review, and atomic experiment-planning application handlers with optimistic revisions.
 - [x] Build authenticated numeric-loopback transport, private runtime assembly, and the Windows-first local launch command.
@@ -216,13 +223,15 @@ The interactive application is not.
 - [x] Persist fresh human-bound Gates B-F validation history without claim or finding promotion.
 - [x] Assemble all seven claim roles for the exact two-account fixture from stored evidence and persisted operator attestations without another target action.
 - [x] Advance exactly one internal finding state, require a current Gates B-F pass for `report_ready`, and refuse submission/programme outcomes.
-- [x] Select visual direction 1 and build a responsive, browser-verified Research Ledger prototype with local-fixture-only interactions.
+- [x] Build the earlier Research Ledger direction as a local-fixture-only baseline; retain its ledger as a first-class Research case view.
 - [x] Complete all thirteen visible prototype navigation panels with search, filters, inspection, responsive context, and explicit write boundaries.
 - [x] Bind matching panels to authenticated server-owned snapshots through an explicit read-only numeric-loopback UI origin; retain exemplar labels where no server section exists and keep cross-origin commands disabled.
-- [ ] Build the selected graphical application shell.
-- [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
+- [ ] Build the newly selected learner-first graphical shell and remove all document-level horizontal overflow.
+- [ ] Implement Today, Learn, Practise, Research, Prove, and Library journeys with realistic local-fixture data.
+- [ ] Add an inspectable recommendation explanation, six-stage learner loop, prerequisite/skill trajectory, agent-security track, and evidence-quality visualisations.
+- [ ] Add the bounded AI coach as explanation/questioning/critique only; no execution, authority, hidden ranking, checked evidence, or mastery award.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
-- [ ] Prove keyboard, accessibility, desktop, and 390-pixel operation.
+- [ ] Prove keyboard, accessibility, reduced-motion, desktop, tablet, and 390-pixel operation; the current 390-pixel baseline is failing and cannot be called responsive.
 - [ ] Package and accept on the Windows operator workstation.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a

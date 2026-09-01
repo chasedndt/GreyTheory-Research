@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-01 - GreyTheory AI-native dashboard direction](2026-09-01-greytheory-ai-native-dashboard-direction.md) - live desktop/mobile audit, three visual directions, Figma board, and learner-first product contract; selection remains open
+
 - [2026-09-01 - GreyTheory workbench typography redesign](2026-09-01-greytheory-workbench-typography-redesign.md) - locally bundled typography, responsive hierarchy and full visible-panel browser QA without authority expansion
 
 - [2026-09-01 - GreyTheory workbench read-model binding](2026-09-01-greytheory-workbench-read-model-binding.md) - Apache-2.0 research preview with authenticated read-only local snapshot; commands and Ubuntu acceptance remain incomplete

@@ -4,6 +4,26 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-01 — Codex — AI-native learner dashboard direction
+
+### What was established
+
+- The current Research Ledger is retained as a case view, not the final home.
+- Real desktop and 390-pixel captures show horizontal clipping, so the earlier
+  responsive acceptance claim is no longer current.
+- Three modern directions and an editable Figma board now ground the next choice.
+- The learner-first architecture, agent-security track, bounded AI coach,
+  visualisations, responsive gate, and Windows-to-Ubuntu transition are documented.
+
+### What the next agent should not undo
+
+Do not implement from prose or silently merge all three concepts. Wait for the
+operator to select 1, 2, or 3. Keep AI advisory, mastery human-assessed,
+`LOCAL_FIXTURE` visible, and the Windows-local pilot separate from the later
+Ubuntu worker and VPS posture gates.
+
+See `07_LOGS/Build-Logs/2026-09-01-greytheory-ai-native-dashboard-direction.md`.
+
 ## 2026-08-26 - Codex - Ubuntu service harness hardening
 
 ### What was built

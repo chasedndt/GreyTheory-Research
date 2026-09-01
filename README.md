@@ -23,8 +23,8 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded learning/research-planning/local-fixture-intent/human-assessment/revisioned-report-authoring/Gates-B-F-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, authenticated numeric-loopback API, and a browser-verified interactive Research Ledger prototype; selected panels can now consume authenticated server-owned snapshots through an explicitly allowed read-only loopback origin, while command binding, Today/Learn journeys, and installed packaging remain open). |
-| **DESIGNED, NOT BUILT** | Graphical Today/Learn journeys and the installed application shell around the verified Research Ledger direction. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded application commands, private runtime assembly, authenticated numeric-loopback API, and a thirteen-panel Research Ledger baseline; selected panels consume authenticated server-owned snapshots through an explicitly allowed read-only loopback origin, while the current desktop/390 layout clips content and command binding, learner-first journeys, responsive acceptance, and installed packaging remain open). |
+| **DESIGNED, NOT BUILT** | AI-native Today/Learn/Practise/Prove journeys, inspectable recommendations, agent-security pathway, bounded coach, learning/evidence visualisations, and the installed learner-first application shell. |
 | **PLANNED** | Governed Scope Watch collector, network workers/live collectors, integrated standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
@@ -33,15 +33,22 @@ The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#curr
 
 ![GreyTheory Research Ledger overview](Docs/assets/research-ledger-overview.png)
 
-The selected Research Ledger direction now includes working Overview, Ledger,
+The current Research Ledger baseline includes Overview, Ledger,
 Hypotheses, Experiments, Receipts, Claims, Reflections, Knowledge, Artifacts,
 Templates, Governance, Workspaces, and Settings panels. Search, status filters,
 record inspection, context drawers, local reflection, and evidence dialogs are
-browser-verified at desktop and 390-pixel widths. The ledger remains an explicit
+implemented in the local preview. The 2026-09-01 visual audit found that the
+desktop canvas overflows and the 390-pixel layout clips core content, so it is
+not responsively accepted. The ledger remains an explicit
 synthetic exemplar. Overview, Hypotheses, Knowledge, Artifacts, Claims,
 Governance, and Workspaces can replace their exemplar rows with authenticated
 server-owned snapshot sections. Panels without a matching server section stay
 labelled as prototype exemplars, and browser command submission remains disabled.
+
+Three modern learner-first directions and the implementation contract are in
+[`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
+Guided Mission Control is recommended, but production UI work waits for the
+operator's explicit selection.
 
 ### Quickstart
 
@@ -229,7 +236,7 @@ needing scope review are partitioned behind planning candidates.
 
 ### Diagrams
 
-Fourteen Mermaid diagrams — the trust-kernel flows plus the learning and transparent-ranking boundaries — are in [`Docs/diagrams.md`](Docs/diagrams.md). The current UI panel map and Windows-to-Ubuntu transition boundary are documented in [`Docs/workbench-architecture.md`](Docs/workbench-architecture.md).
+Eighteen Mermaid diagrams — the trust-kernel flows plus the learning, transparent-ranking, learner-loop, and launch-transition boundaries — are in [`Docs/diagrams.md`](Docs/diagrams.md). The current UI panel map and Windows-to-Ubuntu transition boundary are documented in [`Docs/workbench-architecture.md`](Docs/workbench-architecture.md).
 
 ### Documentation
 
@@ -239,6 +246,7 @@ Fourteen Mermaid diagrams — the trust-kernel flows plus the learning and trans
 - [`THREAT_MODEL.md`](THREAT_MODEL.md) / [`DATA_POLICY.md`](DATA_POLICY.md) — pre-network threats and data handling
 - [`INTEGRATION_BOUNDARIES.md`](INTEGRATION_BOUNDARIES.md) — standalone, ChaseOS, worker, and provider boundaries
 - [`Docs/roadmap.md`](Docs/roadmap.md) — thirteen milestones and exit conditions
+- [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md) — learner-first dashboard, agent-security track, visualisations, and launch transition
 
 [`Docs/system-overview.md`](Docs/system-overview.md) explains the whole architecture and why each part is shaped as it is — start there.
 
