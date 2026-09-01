@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-01 - GreyTheory workbench typography redesign](2026-09-01_greytheory-workbench-typography-redesign.md) - verified desktop/mobile preview media and locally bundled type system without capability overclaim
+
 - [2026-09-01 - GreyTheory workbench read-model binding](2026-09-01_greytheory-workbench-read-model-binding.md) - authenticated read-only UI snapshot and Apache-2.0 research-preview identity without command or Ubuntu overclaim
 
 - [2026-08-31 - GreyTheory Research Ledger prototype](2026-08-31_greytheory-research-ledger-prototype.md) - selected interactive direction verified without API, packaging, Ubuntu, or posture overclaim

@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-01 - GreyTheory workbench typography redesign](2026-09-01-greytheory-workbench-typography-redesign.md) - locally bundled typography, responsive hierarchy and full visible-panel browser QA without authority expansion
+
 - [2026-09-01 - GreyTheory workbench read-model binding](2026-09-01-greytheory-workbench-read-model-binding.md) - Apache-2.0 research preview with authenticated read-only local snapshot; commands and Ubuntu acceptance remain incomplete
 
 - [2026-08-31 - GreyTheory Research Ledger prototype](2026-08-31-greytheory-research-ledger-prototype.md) - selected direction 1 implemented and browser-verified; API integration and installed shell remain partial

@@ -1,44 +1,43 @@
-# GreyTheory Research Ledger design QA
+# GreyTheory Research Preview design QA
 
 ## Evidence
 
-- Source visual truth: `Docs/assets/research-ledger-overview.png`
-- Implementation: `http://127.0.0.1:4174/`
-- Desktop implementation: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-research-preview-overview-desktop.png`
-- Mobile implementation: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-research-preview-mobile.png`
-- Authenticated state: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-authenticated-overview-desktop.png`
-- Combined comparison: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\design-comparison-source-left-implementation-right.png`
-- Source pixels: 1488 x 1058 JPEG, 1x reference capture.
-- Implementation pixels: 1425 x 990 PNG at a requested 1440 x 1000 CSS viewport; browser content measured 1425 x 990, device scale 1.
-- Mobile pixels: 375 x 812 PNG at a requested 390 x 844 CSS viewport; browser content measured 375 x 812, device scale 1.
-- State compared: Overview, disconnected prototype exemplar. The new 40-pixel licence/research-preview banner is an intentional addition.
+- Live implementation: `http://127.0.0.1:4174/`
+- Baseline desktop: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\01-current-desktop.png`
+- Redesigned desktop: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\03-redesigned-desktop.png`
+- Redesigned mobile: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\04-redesigned-mobile.png`
+- Same-viewport comparison: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\05-before-after-desktop.png`
+- Repository preview media: `Docs/assets/research-ledger-overview.png` and `Docs/assets/research-ledger-mobile.png`
+- Desktop viewport: 1440 x 1000 CSS pixels.
+- Mobile viewport: 390 x 844 CSS pixels; document width 375 pixels with no horizontal overflow.
 
-## Findings
+## Findings and corrections
 
-- No actionable P0, P1 or P2 mismatch remains.
-- Fonts and typography: the system sans and monospace hierarchy, weights, wrapping, and compact labels remain faithful. The licence banner uses the existing compact monospace language.
-- Spacing and layout rhythm: the three-column ledger shell, navigation density, panel rows and evidence inspector remain aligned. The intentional banner reduces visible vertical content slightly but preserves scrolling and all persistent controls.
-- Colors and visual tokens: navy surfaces, amber authority emphasis, green verification and muted secondary copy match the selected Research Ledger direction. The Apache-2.0 banner uses the existing amber boundary color rather than adding a competing palette.
-- Image quality and asset fidelity: the repository-owned GreyTheory mark remains sharp and correctly scaled. No visible asset was replaced with CSS art or a placeholder.
-- Copy and content: `Open source research preview`, `Apache-2.0`, `LOCAL_FIXTURE`, and `no live targets` are simultaneously visible. Prototype exemplar and authenticated local API sources are separately labelled.
+- Typography: replaced the inconsistent system-only stack with locally bundled Manrope and IBM Plex Mono. Display, body, metadata and control styles now have distinct weights, tracking and line heights.
+- Hierarchy: strengthened the product header, case title, entry titles and evidence headings while reserving monospace for provenance, identifiers and timestamps.
+- Density: increased ledger row rhythm, authority-card padding, touch targets and inspector spacing without changing the approved three-column research-ledger direction.
+- Secondary surfaces: raised inspector body size and contrast so the evidence roles and provenance remain readable supporting material.
+- Mobile: restored a full-width hero, stable two-column metadata grid, deliberate ledger cards and a readable authority surface. The licence banner no longer competes with the primary title.
+- Portability: fonts are repository-owned build assets, so Windows, Ubuntu and VPS-hosted builds do not depend on a third-party font request.
 
 ## Interaction and responsive evidence
 
-- Desktop and 390-pixel layouts rendered without hidden persistent controls or horizontal overflow.
-- The connection dialog opened, accepted the numeric-loopback URL and in-memory session token, and changed the banner to `Local read model connected`.
-- The authenticated Overview panel identified its source as `Authenticated local API` and displayed server-owned metrics.
-- Cross-origin command submission remains absent from the browser UI and refused by transport tests.
-- Navigation, dialogs, local searches, filters and inspectors remain available.
-- Browser console warnings/errors: none.
+- All 13 navigation destinations were opened in the in-app browser: Overview, Hypotheses, Experiments, Receipts, Claims, Reflections, Knowledge, Artifacts, Templates, Governance, Workspaces, Settings and Ledger.
+- The mobile evidence drawer opened and exposed the complete claim-evidence role model and provenance panel.
+- The ledger remained the selected local-fixture state after the navigation sweep.
+- Persistent controls remained available and the mobile document produced no horizontal overflow.
+- No browser command transport, live target or posture promotion was introduced.
 
-## Comparison history
+## Automated verification
 
-1. The first evidence pair used different visible panels and was rejected as an invalid comparison.
-2. The implementation was recaptured on Overview at the same desktop state. The normalized side-by-side comparison found only the intentional licence banner and explicit source label additions.
+- Vite production bundle: PASS; 4,572 modules transformed and all three local font files emitted.
+- Sites build preparation: PASS.
+- Workbench API tests: PASS; 3/3.
+- Sites worker tests: PASS; 4/4.
 
-## Follow-up polish
+## Residual polish
 
-- P3: revisit the banner density when the installed application shell replaces the browser preview.
-- P3: add a dedicated empty-state illustration only after the wider UI art direction is reviewed.
+- P3: the floating mobile evidence control can become a bottom navigation affordance in the later full application-shell redesign.
+- P3: the utility header can be simplified further when workspace and researcher identity become server-owned product states.
 
 final result: passed
