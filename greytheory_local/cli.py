@@ -26,18 +26,29 @@ def build_parser() -> argparse.ArgumentParser:
         default=8765,
         help="numeric-loopback port (default: 8765; use 0 for an ephemeral port)",
     )
+    parser.add_argument(
+        "--ui-origin",
+        help="optional exact numeric-loopback UI origin permitted to read snapshots",
+    )
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     runtime = LocalWorkbenchRuntime.assemble(args.root)
-    server = LocalWorkbenchHTTPServer(runtime.service, port=args.port)
+    server = LocalWorkbenchHTTPServer(
+        runtime.service,
+        port=args.port,
+        allowed_ui_origin=args.ui_origin,
+    )
     print(f"GreyTheory local API: {server.base_url}")
     print("Operating posture: LOCAL_FIXTURE; live targets unavailable")
     print(f"Private data root: {runtime.root}")
     print(f"Session token: {server.session_token}")
-    print("Graphical shell: awaiting operator-selected visual direction")
+    print(
+        "Graphical read model: "
+        + (f"enabled for {server.allowed_ui_origin}" if server.allowed_ui_origin else "cross-origin access disabled")
+    )
     print("Press Ctrl+C to stop.")
     try:
         server.serve_forever(poll_interval=0.25)

@@ -1,68 +1,44 @@
-# Design QA - Research Ledger
+# GreyTheory Research Ledger design QA
 
-**Comparison target**
+## Evidence
 
-- Source visual truth: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-08-31-research-ledger-workbench\reference\research-ledger-selected.png`
-- Implementation: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-08-31-research-ledger-workbench\screenshots\implementation-ledger-expanded-panels.png`
-- Combined comparison: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-08-31-research-ledger-workbench\screenshots\comparison-expanded-panels.png`
-- Expanded-panel evidence: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-08-31-research-ledger-workbench\screenshots\implementation-overview-panels-clean.png`
-- Responsive evidence: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-08-31-research-ledger-workbench\screenshots\implementation-governance-mobile-390.png`
-- Source pixels: 1487 x 1058.
-- Desktop CSS viewport: 1488 x 1058 at device density 1; browser content capture: 1473 x 1047.
-- Mobile CSS viewport: 390 x 844 at device density 1; browser content capture: 375 x 812.
-- Normalization: the source and current Ledger capture were placed in one comparison canvas and scaled proportionally to the same 700-pixel content height. No device frame or browser chrome was included.
-- State: dark `LOCAL_FIXTURE` research ledger, selected IDOR/BOLA hypothesis, evidence inspector open, claim unproven.
+- Source visual truth: `Docs/assets/research-ledger-overview.png`
+- Implementation: `http://127.0.0.1:4174/`
+- Desktop implementation: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-research-preview-overview-desktop.png`
+- Mobile implementation: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-research-preview-mobile.png`
+- Authenticated state: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\greytheory-authenticated-overview-desktop.png`
+- Combined comparison: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-read-model-binding\design-comparison-source-left-implementation-right.png`
+- Source pixels: 1488 x 1058 JPEG, 1x reference capture.
+- Implementation pixels: 1425 x 990 PNG at a requested 1440 x 1000 CSS viewport; browser content measured 1425 x 990, device scale 1.
+- Mobile pixels: 375 x 812 PNG at a requested 390 x 844 CSS viewport; browser content measured 375 x 812, device scale 1.
+- State compared: Overview, disconnected prototype exemplar. The new 40-pixel licence/research-preview banner is an intentional addition.
 
-**Findings**
+## Findings
 
-- No actionable P0, P1, or P2 differences remain.
-- Fonts and typography: the system sans stack, restrained weights, compact labels, and ledger hierarchy closely reproduce the source; no material wrapping or truncation drift remains.
-- Spacing and layout rhythm: the three-column shell, top utility bar, dense ledger rows, inspector, and action rail preserve the source hierarchy and density. Desktop and 390-pixel layouts have no horizontal overflow.
-- Colors and visual tokens: deep navy surfaces, low-contrast separators, grey text hierarchy, amber actions, and green/amber semantic states match the selected direction.
-- Image quality and asset fidelity: the repository's supplied GreyTheory raster mark is used cleanly; interface icons use Phosphor rather than handmade SVG, CSS art, emoji, or text glyphs.
-- Copy and content: visible authority, evidence, receipt, claim, provenance, local-only, unproven, and no-live-target wording matches the source intent and repository truth.
-- Expanded panels: Overview and the twelve other navigation destinations preserve the selected shell's typography, density, tokens, interaction hierarchy, and explicit local-only boundary. Their record content is synthetic and labelled accordingly.
+- No actionable P0, P1 or P2 mismatch remains.
+- Fonts and typography: the system sans and monospace hierarchy, weights, wrapping, and compact labels remain faithful. The licence banner uses the existing compact monospace language.
+- Spacing and layout rhythm: the three-column ledger shell, navigation density, panel rows and evidence inspector remain aligned. The intentional banner reduces visible vertical content slightly but preserves scrolling and all persistent controls.
+- Colors and visual tokens: navy surfaces, amber authority emphasis, green verification and muted secondary copy match the selected Research Ledger direction. The Apache-2.0 banner uses the existing amber boundary color rather than adding a competing palette.
+- Image quality and asset fidelity: the repository-owned GreyTheory mark remains sharp and correctly scaled. No visible asset was replaced with CSS art or a placeholder.
+- Copy and content: `Open source research preview`, `Apache-2.0`, `LOCAL_FIXTURE`, and `no live targets` are simultaneously visible. Prototype exemplar and authenticated local API sources are separately labelled.
 
-**Focused region comparison**
+## Interaction and responsive evidence
 
-No separate crop was required: the original-resolution combined comparison keeps the header, brand mark, six ledger rows, statuses, evidence roles, provenance, and action controls readable together. The expanded Overview panel was inspected separately at original resolution because it is a new state rather than a direct source-frame match.
+- Desktop and 390-pixel layouts rendered without hidden persistent controls or horizontal overflow.
+- The connection dialog opened, accepted the numeric-loopback URL and in-memory session token, and changed the banner to `Local read model connected`.
+- The authenticated Overview panel identified its source as `Authenticated local API` and displayed server-owned metrics.
+- Cross-origin command submission remains absent from the browser UI and refused by transport tests.
+- Navigation, dialogs, local searches, filters and inspectors remain available.
+- Browser console warnings/errors: none.
 
-**Comparison history**
+## Comparison history
 
-1. Pass 1 found one P2 desktop-header defect: the mobile navigation control remained visible at desktop width and forced utility controls into an implicit second row. The external SVG mark also rendered only its amber gate because `currentColor` does not inherit through an image document.
-2. Fix: raised the desktop hide selector to `.icon-button.mobile-menu`, restored it only below 760 pixels, and replaced the external-currentColor mark with the supplied GreyTheory raster mark.
-3. Pass 2 evidence: `comparison-desktop-pass-2.png`. Header tracks, mark, utilities, ledger, inspector, and action rail align with the selected direction. No actionable P0/P1/P2 issue remains.
-4. Expansion pass: all thirteen navigation panels were implemented using the same shell. `comparison-expanded-panels.png` confirms the original Ledger remains aligned; `implementation-overview-panels-clean.png` and `implementation-governance-mobile-390.png` confirm the extension preserves hierarchy and responsive behavior. No new P0/P1/P2 issue was found.
+1. The first evidence pair used different visible panels and was rejected as an invalid comparison.
+2. The implementation was recaptured on Overview at the same desktop state. The normalized side-by-side comparison found only the intentional licence banner and explicit source label additions.
 
-**Primary interactions tested**
+## Follow-up polish
 
-- Minimum-evidence review dialog opens and closes.
-- Check-receipt dialog opens and closes.
-- Reflection form accepts text, saves, marks the claim, and retains the note in the browser session.
-- Mobile navigation drawer opens and closes.
-- Mobile evidence inspector opens and closes.
-- Every navigation panel resolves to its correct title and local records.
-- Search, empty state, filter controls, record inspection, and action-boundary dialog work across all twelve non-Ledger panels.
-- Responsive context inspector opens and closes on a non-Ledger panel.
-- Desktop and mobile document widths remain within the viewport.
-- Browser warning/error log: empty.
-
-**Open Questions**
-
-- API binding and persisted domain data are intentionally outside this visual prototype; the repository continues to classify the installed workbench as partial. Secondary panels extend the selected design system but do not have their own source mockups.
-
-**Implementation Checklist**
-
-- [x] Match selected desktop visual direction.
-- [x] Use real repository brand asset and an icon library.
-- [x] Make core ledger actions interactive.
-- [x] Make all thirteen visible navigation panels functional for local browsing and inspection.
-- [x] Verify desktop and 390-pixel responsive behavior.
-- [x] Verify browser console health.
-- [x] Preserve `LOCAL_FIXTURE` and no-live-target boundaries.
-
-**Follow-up Polish**
-
-- None required for visual handoff. API-backed loading, empty/error states, keyboard automation, and installed-shell packaging belong to the next integration milestone.
+- P3: revisit the banner density when the installed application shell replaces the browser preview.
+- P3: add a dedicated empty-state illustration only after the wider UI art direction is reviewed.
 
 final result: passed

@@ -43,6 +43,7 @@ class LocalWorkbenchHTTPServer(ThreadingHTTPServer):
         host: str = LOOPBACK_HOST,
         port: int = 0,
         token: str | None = None,
+        allowed_ui_origin: str | None = None,
     ) -> None:
         if host != LOOPBACK_HOST:
             raise LocalTransportError(
@@ -57,6 +58,7 @@ class LocalWorkbenchHTTPServer(ThreadingHTTPServer):
             )
         self.service = service
         self.session_token = session_token
+        self.allowed_ui_origin = _validate_ui_origin(allowed_ui_origin)
         super().__init__((host, port), LocalWorkbenchRequestHandler)
 
     @property
@@ -108,10 +110,17 @@ class LocalWorkbenchRequestHandler(BaseHTTPRequestHandler):
         self.send_header("X-Frame-Options", "DENY")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Content-Security-Policy", "default-src 'none'; frame-ancestors 'none'")
+        self._cors_headers()
         self.send_header("Connection", "close")
         self.end_headers()
         self.wfile.write(encoded)
         self.close_connection = True
+
+    def _cors_headers(self) -> None:
+        origins = self.headers.get_all("Origin", failobj=[])
+        if self.server.allowed_ui_origin and origins == [self.server.allowed_ui_origin]:
+            self.send_header("Access-Control-Allow-Origin", self.server.allowed_ui_origin)
+            self.send_header("Vary", "Origin")
 
     def _error(self, status: HTTPStatus, code: str, message: str) -> None:
         self._reply(status, {"error": {"code": code, "message": message}})
@@ -274,12 +283,43 @@ class LocalWorkbenchRequestHandler(BaseHTTPRequestHandler):
         self._reply(status, result.to_dict())
 
     def do_OPTIONS(self) -> None:
-        if self._admit_common():
+        if not self._admit_common():
+            return
+        parsed = urlsplit(self.path)
+        origins = self.headers.get_all("Origin", failobj=[])
+        methods = self.headers.get_all("Access-Control-Request-Method", failobj=[])
+        requested_headers = self.headers.get_all("Access-Control-Request-Headers", failobj=[])
+        header_names = {
+            item.strip().lower()
+            for value in requested_headers
+            for item in value.split(",")
+            if item.strip()
+        }
+        if (
+            not self.server.allowed_ui_origin
+            or origins != [self.server.allowed_ui_origin]
+            or parsed.path != "/api/v1/snapshot"
+            or parsed.query
+            or methods != ["GET"]
+            or header_names != {"authorization"}
+        ):
             self._error(
                 HTTPStatus.METHOD_NOT_ALLOWED,
                 "cors_disabled",
-                "Cross-origin transport is disabled",
+                "Cross-origin transport is disabled for this origin or operation",
             )
+            return
+        self.send_response(HTTPStatus.NO_CONTENT.value)
+        self.send_header("Access-Control-Allow-Origin", self.server.allowed_ui_origin)
+        self.send_header("Access-Control-Allow-Methods", "GET")
+        self.send_header("Access-Control-Allow-Headers", "Authorization")
+        self.send_header("Access-Control-Max-Age", "300")
+        self.send_header("Vary", "Origin")
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Content-Length", "0")
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.close_connection = True
 
 
 def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
@@ -289,6 +329,31 @@ def _unique_json_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
             raise WorkbenchContractError(f"duplicate JSON key {key!r}")
         result[key] = value
     return result
+
+
+def _validate_ui_origin(value: str | None) -> str | None:
+    if value is None:
+        return None
+    parsed = urlsplit(value)
+    try:
+        port = parsed.port
+    except ValueError as exc:
+        raise LocalTransportError("UI origin must contain a valid port") from exc
+    if (
+        parsed.scheme != "http"
+        or parsed.hostname != LOOPBACK_HOST
+        or port is None
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.path not in ("", "/")
+        or parsed.query
+        or parsed.fragment
+        or value.rstrip("/") != f"http://{LOOPBACK_HOST}:{port}"
+    ):
+        raise LocalTransportError(
+            "UI origin must be an exact numeric IPv4 loopback origin such as http://127.0.0.1:4173"
+        )
+    return f"http://{LOOPBACK_HOST}:{port}"
 
 
 __all__ = [

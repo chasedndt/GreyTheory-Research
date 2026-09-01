@@ -218,6 +218,7 @@ The interactive application is not.
 - [x] Advance exactly one internal finding state, require a current Gates B-F pass for `report_ready`, and refuse submission/programme outcomes.
 - [x] Select visual direction 1 and build a responsive, browser-verified Research Ledger prototype with local-fixture-only interactions.
 - [x] Complete all thirteen visible prototype navigation panels with search, filters, inspection, responsive context, and explicit write boundaries.
+- [x] Bind matching panels to authenticated server-owned snapshots through an explicit read-only numeric-loopback UI origin; retain exemplar labels where no server section exists and keep cross-origin commands disabled.
 - [ ] Build the selected graphical application shell.
 - [ ] Implement the Today/Learn/Research primary journey with realistic local fixture data.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.

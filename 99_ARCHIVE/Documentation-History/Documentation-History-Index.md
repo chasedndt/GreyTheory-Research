@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-01 - GreyTheory workbench read-model binding](2026-09-01_greytheory-workbench-read-model-binding.md) - authenticated read-only UI snapshot and Apache-2.0 research-preview identity without command or Ubuntu overclaim
+
 - [2026-08-31 - GreyTheory Research Ledger prototype](2026-08-31_greytheory-research-ledger-prototype.md) - selected interactive direction verified without API, packaging, Ubuntu, or posture overclaim
 
 - [2026-08-26 - GreyTheory Ubuntu service harness hardening](2026-08-26_greytheory-ubuntu-service-harness-hardening.md) - bounded wrapper, clean worker start, and honest shared-WSL host boundary

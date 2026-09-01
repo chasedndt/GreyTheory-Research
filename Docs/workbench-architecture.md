@@ -9,8 +9,9 @@
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence
 will prove the local research pilot is usable. The selected Research Ledger
-prototype is implemented and browser-verified, but it is not yet bound to the
-authenticated application service or packaged as the installed workbench.
+prototype is implemented and browser-verified. Matching read-only panels can
+now bind to authenticated application snapshots through an explicit numeric-
+loopback UI origin. Browser commands and installed packaging remain open.
 
 ## 1. Product objective
 

@@ -111,6 +111,73 @@ def test_transport_refuses_every_non_loopback_binding(tmp_path):
             LocalWorkbenchHTTPServer(runtime.service, host=host, token=TOKEN)
 
 
+def test_optional_ui_origin_is_exact_and_read_only(tmp_path):
+    runtime = LocalWorkbenchRuntime.assemble(tmp_path / "private-workbench")
+    with pytest.raises(LocalTransportError, match="exact numeric"):
+        LocalWorkbenchHTTPServer(
+            runtime.service,
+            token=TOKEN,
+            allowed_ui_origin="http://localhost:4173",
+        )
+
+    origin = "http://127.0.0.1:4173"
+    server = LocalWorkbenchHTTPServer(
+        runtime.service,
+        port=0,
+        token=TOKEN,
+        allowed_ui_origin=origin,
+    )
+    thread = Thread(target=server.serve_forever, kwargs={"poll_interval": 0.01})
+    thread.start()
+    try:
+        connection = HTTPConnection(server.host, server.port, timeout=5)
+        connection.request(
+            "OPTIONS",
+            "/api/v1/snapshot",
+            headers={
+                "Host": server.expected_host_header,
+                "Origin": origin,
+                "Access-Control-Request-Method": "GET",
+                "Access-Control-Request-Headers": "Authorization",
+            },
+        )
+        response = connection.getresponse()
+        response.read()
+        assert response.status == 204
+        assert response.getheader("Access-Control-Allow-Origin") == origin
+        assert response.getheader("Access-Control-Allow-Methods") == "GET"
+        connection.close()
+
+        status, snapshot, headers = request(
+            server,
+            "GET",
+            "/api/v1/snapshot",
+            headers={"Authorization": f"Bearer {TOKEN}", "Origin": origin},
+        )
+        assert status == 200
+        assert snapshot["live_target_available"] is False
+        assert headers["access-control-allow-origin"] == origin
+
+        body = json.dumps(learning_command().to_dict()).encode("utf-8")
+        status, refused, _ = request(
+            server,
+            "POST",
+            "/api/v1/commands",
+            body=body,
+            headers={
+                "Authorization": f"Bearer {TOKEN}",
+                "Origin": origin,
+                "Content-Type": "application/json",
+            },
+        )
+        assert status == 403
+        assert refused["error"]["code"] == "origin_refused"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
 def test_local_launch_package_has_no_target_client_or_process_adapter():
     root = Path(__file__).resolve().parents[1] / "greytheory_local"
     modules: set[str] = set()

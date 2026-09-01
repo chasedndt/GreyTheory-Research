@@ -28,6 +28,7 @@ import {
   X,
 } from "@phosphor-icons/react";
 import { defaultPanelData, panelData } from "./panelData";
+import { fetchWorkbenchSnapshot, panelsFromSnapshot } from "./workbenchApi";
 
 const navGroups = [
   {
@@ -274,8 +275,7 @@ function EvidenceInspector({ onClose, isDrawer = false }) {
   );
 }
 
-function ModulePanel({ name, onAction }) {
-  const data = panelData[name] || defaultPanelData;
+function ModulePanel({ name, data, onAction }) {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All");
   const [expanded, setExpanded] = useState(null);
@@ -291,7 +291,7 @@ function ModulePanel({ name, onAction }) {
     <section className="module-panel" aria-labelledby="module-title">
       <header className="module-header">
         <div>
-          <p className="module-kicker">LOCAL_FIXTURE · {name}</p>
+          <p className="module-kicker">LOCAL_FIXTURE · {name} · {data.dataSource || "Prototype exemplar"}</p>
           <h2 id="module-title">{data.title}</h2>
           <p>{data.subtitle}</p>
         </div>
@@ -334,8 +334,7 @@ function ModulePanel({ name, onAction }) {
   );
 }
 
-function ModuleInspector({ name, onClose, isDrawer = false }) {
-  const data = panelData[name] || defaultPanelData;
+function ModuleInspector({ name, data, onClose, isDrawer = false }) {
   return (
     <aside className={`inspector module-inspector ${isDrawer ? "inspector--drawer" : ""}`} aria-label={`${name} context inspector`}>
       <div className="inspector__heading">
@@ -345,7 +344,7 @@ function ModuleInspector({ name, onClose, isDrawer = false }) {
       <section className="inspector__section selected-claim"><p className="section-kicker">Current panel</p><p>{data.title}</p><span>{data.subtitle}</span></section>
       <section className="inspector__section"><h3>Local summary</h3><dl className="module-inspector__stats">{data.stats.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl></section>
       <section className="inspector__section"><h3>Boundary</h3><div className="boundary-note"><ShieldCheck size={20} /><p>{data.boundary}</p></div></section>
-      <section className="inspector__section provenance"><h3>Provenance</h3><dl><div><dt>Workspace</dt><dd>LOCAL_FIXTURE</dd></div><div><dt>Data source</dt><dd>Synthetic prototype</dd></div><div><dt>Persistence</dt><dd>Not API-bound</dd></div><div><dt>Sharing</dt><dd>None</dd></div></dl></section>
+      <section className="inspector__section provenance"><h3>Provenance</h3><dl><div><dt>Workspace</dt><dd>LOCAL_FIXTURE</dd></div><div><dt>Data source</dt><dd>{data.dataSource || "Prototype exemplar"}</dd></div><div><dt>Persistence</dt><dd>{data.dataSource === "Authenticated local API" ? "Server-owned read model" : "Not API-bound"}</dd></div><div><dt>Sharing</dt><dd>None</dd></div></dl></section>
       <div className="inspector__privacy"><ShieldCheck size={18} /><p>No panel can contact a target.<br />Human governance remains required.</p></div>
     </aside>
   );
@@ -359,7 +358,12 @@ export function App() {
   const [notice, setNotice] = useState("");
   const [activeNav, setActiveNav] = useState("Ledger");
   const [moduleAction, setModuleAction] = useState(null);
-  const activePanel = panelData[activeNav] || defaultPanelData;
+  const [panels, setPanels] = useState(() => Object.fromEntries(Object.entries(panelData).map(([name, data]) => [name, { ...data, dataSource: "Prototype exemplar" }])));
+  const [connection, setConnection] = useState({ state: "offline", generatedAt: null, sourceErrors: [] });
+  const [apiUrl, setApiUrl] = useState("http://127.0.0.1:8765");
+  const [apiToken, setApiToken] = useState("");
+  const [connectionError, setConnectionError] = useState("");
+  const activePanel = panels[activeNav] || { ...defaultPanelData, dataSource: "Prototype exemplar" };
 
   const missingEvidence = useMemo(
     () => [
@@ -380,6 +384,24 @@ export function App() {
     setDialog("module-action");
   }
 
+  async function connectLocalApi(event) {
+    event?.preventDefault();
+    setConnectionError("");
+    setConnection((current) => ({ ...current, state: "connecting" }));
+    try {
+      const snapshot = await fetchWorkbenchSnapshot({ baseUrl: apiUrl, token: apiToken });
+      setPanels(panelsFromSnapshot(snapshot, panelData));
+      setConnection({ state: "connected", generatedAt: snapshot.generated_at, sourceErrors: snapshot.source_errors || [] });
+      setApiToken("");
+      setDialog(null);
+      setNotice(snapshot.source_errors?.length ? "Connected. Some local sources reported UNKNOWN or blocked state." : "Authenticated local read model connected.");
+      window.setTimeout(() => setNotice(""), 4200);
+    } catch (error) {
+      setConnection({ state: "error", generatedAt: null, sourceErrors: [] });
+      setConnectionError(error instanceof Error ? error.message : "The local API connection failed closed.");
+    }
+  }
+
   function saveReflection() {
     const trimmed = reflection.trim();
     if (!trimmed) return;
@@ -391,6 +413,13 @@ export function App() {
 
   return (
     <div className="app-shell">
+      <div className="license-banner" role="status">
+        <div><strong>OPEN SOURCE RESEARCH PREVIEW</strong><span>Apache-2.0</span><span>LOCAL_FIXTURE · no live targets</span></div>
+        <button className={`connection-chip connection-chip--${connection.state}`} onClick={() => setDialog("connection")}>
+          <StatusDot tone={connection.state === "connected" ? "verified" : connection.state === "error" ? "blocked" : "observed"} />
+          {connection.state === "connected" ? "Local read model connected" : connection.state === "connecting" ? "Connecting…" : "Connect local API"}
+        </button>
+      </div>
       <header className="topbar">
         <div className="topbar__brand">
           <BrandMark />
@@ -516,14 +545,14 @@ export function App() {
           <button className="button button--quiet" onClick={() => setDialog("receipt")}><Eye size={18} /> Open receipt</button>
           <button className="button button--quiet" onClick={() => setDialog("reflection")}><ChatCircleText size={18} /> Add reflection</button>
         </section>
-        </> : <ModulePanel key={activeNav} name={activeNav} onAction={openModuleAction} />}
+        </> : <ModulePanel key={activeNav} name={activeNav} data={activePanel} onAction={openModuleAction} />}
       </main>
 
-      <div className="desktop-inspector">{activeNav === "Ledger" ? <EvidenceInspector /> : <ModuleInspector name={activeNav} />}</div>
+      <div className="desktop-inspector">{activeNav === "Ledger" ? <EvidenceInspector /> : <ModuleInspector name={activeNav} data={activePanel} />}</div>
       <button className="inspector-toggle" onClick={() => setDrawer("inspector")}><SealCheck size={18} /> {activeNav === "Ledger" ? "Evidence" : "Context"}</button>
 
       {drawer && <div className="drawer-backdrop" onMouseDown={() => setDrawer(null)} />}
-      {drawer === "inspector" && (activeNav === "Ledger" ? <EvidenceInspector isDrawer onClose={() => setDrawer(null)} /> : <ModuleInspector name={activeNav} isDrawer onClose={() => setDrawer(null)} />)}
+      {drawer === "inspector" && (activeNav === "Ledger" ? <EvidenceInspector isDrawer onClose={() => setDrawer(null)} /> : <ModuleInspector name={activeNav} data={activePanel} isDrawer onClose={() => setDrawer(null)} />)}
       {drawer === "nav" && (
         <aside className="mobile-nav" aria-label="Mobile navigation">
           <div className="mobile-nav__heading"><BrandMark /><strong>GreyTheory AI</strong><button className="icon-button" onClick={() => setDrawer(null)} aria-label="Close navigation"><X size={20} /></button></div>
@@ -569,6 +598,18 @@ export function App() {
       {dialog === "module-action" && moduleAction && (
         <Dialog title={moduleAction.action} eyebrow={`${moduleAction.panel} · prototype boundary`} onClose={() => setDialog(null)} actions={<button className="button button--primary" onClick={() => setDialog(null)}>Understood</button>}>
           <div className="authority-detail"><ShieldCheck size={28} /><div><strong>The panel is operational for local review and inspection.</strong><p>Create, edit, and persistence commands stay intentionally unavailable until this prototype is bound to the authenticated GreyTheory application service. No target or external-network action can be initiated here.</p></div></div>
+        </Dialog>
+      )}
+
+      {dialog === "connection" && (
+        <Dialog title="Connect the local read model" eyebrow="Read only · numeric loopback" onClose={() => { setDialog(null); setConnectionError(""); }} actions={<><button className="button button--quiet" onClick={() => setDialog(null)}>Cancel</button><button className="button button--primary" type="submit" form="local-api-form" disabled={connection.state === "connecting"}>Connect read only</button></>}>
+          <form id="local-api-form" className="connection-form" onSubmit={connectLocalApi}>
+            <p className="dialog-intro">Launch GreyTheory with this UI origin explicitly allowed, then enter the printed one-process token. The token stays in memory only and is cleared after connection.</p>
+            <label className="field"><span>Local API URL</span><input value={apiUrl} onChange={(event) => setApiUrl(event.target.value)} inputMode="url" autoComplete="off" spellCheck="false" /></label>
+            <label className="field"><span>Session token</span><input value={apiToken} onChange={(event) => setApiToken(event.target.value)} type="password" autoComplete="off" spellCheck="false" placeholder="Paste the one-process token" /></label>
+            {connectionError && <p className="connection-error" role="alert">{connectionError}</p>}
+            <div className="boundary-note"><ShieldCheck size={20} /><p>Only GET /api/v1/snapshot is enabled cross-origin. Commands remain same-origin and cannot be sent by this preview.</p></div>
+          </form>
         </Dialog>
       )}
     </div>
