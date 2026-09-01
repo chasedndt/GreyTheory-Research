@@ -192,15 +192,18 @@ A changed or removed source does invalidate review. A source recorded without a
 comparable hash is skipped rather than guessed at, since watching something
 uncomparable would report every run as changed.
 
-## Product workstream - AI-native workbench and guided learning *(DESIGN SELECTION IN PROGRESS 2026-09-01)*
+## Product workstream - AI-native workbench and guided learning *(INTERACTIVE PREVIEW VERIFIED 2026-09-01)*
 
 This workstream runs under `LOCAL_FIXTURE` and does not depend on raising the
 research posture. The executable capability register and the application,
 process, storage, learning, and future-worker boundary are now implemented.
-The current interactive Research Ledger is a partial prototype, not the final
-learner workbench. The 2026-09-01 visual audit found desktop canvas overflow and
-390-pixel clipping, and the operator reopened the direction decision. The
-learner-facing contract is now defined in
+The operator selected Direction 1, Guided Mission Control, as the shell and
+approved borrowing Direction 2's focused lesson/skill map plus Direction 3's
+case canvas/evidence/competency views. The interactive preview removes the
+earlier document-level overflow and completes one deterministic local
+Learn -> Practise -> Prove -> Reflect -> Assess case. The earlier Research
+Ledger remains a first-class Research case view. The learner-facing contract is
+defined in
 [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md).
 
 - [x] Audit the existing desktop and 390-pixel static dashboard.
@@ -212,7 +215,7 @@ learner-facing contract is now defined in
 - [x] Capture the current desktop and 390-pixel implementation in the central GreyTheory visual-QA registry.
 - [x] Audit the learner journey, typography, hierarchy, responsiveness, and agent-security learning needs.
 - [x] Produce three modern dashboard concepts plus an editable Figma audit/direction board.
-- [ ] Select the modernized visual direction; Direction 1, Guided Mission Control, is recommended.
+- [x] Select Direction 1, Guided Mission Control, with focused-learning and case/evidence borrowings from Directions 2 and 3.
 - [x] Build the versioned, transport-neutral application snapshot and bounded learning command contract.
 - [x] Add create-only hypothesis, human scope-review, and atomic experiment-planning application handlers with optimistic revisions.
 - [x] Build authenticated numeric-loopback transport, private runtime assembly, and the Windows-first local launch command.
@@ -226,12 +229,12 @@ learner-facing contract is now defined in
 - [x] Build the earlier Research Ledger direction as a local-fixture-only baseline; retain its ledger as a first-class Research case view.
 - [x] Complete all thirteen visible prototype navigation panels with search, filters, inspection, responsive context, and explicit write boundaries.
 - [x] Bind matching panels to authenticated server-owned snapshots through an explicit read-only numeric-loopback UI origin; retain exemplar labels where no server section exists and keep cross-origin commands disabled.
-- [ ] Build the newly selected learner-first graphical shell and remove all document-level horizontal overflow.
-- [ ] Implement Today, Learn, Practise, Research, Prove, and Library journeys with realistic local-fixture data.
-- [ ] Add an inspectable recommendation explanation, six-stage learner loop, prerequisite/skill trajectory, agent-security track, and evidence-quality visualisations.
-- [ ] Add the bounded AI coach as explanation/questioning/critique only; no execution, authority, hidden ranking, checked evidence, or mastery award.
+- [x] Build the selected learner-first graphical shell and remove document-level overflow at 390, 768, 1024, and 1440 pixels.
+- [x] Implement Today, Learn, Practise, Research, Prove, Readiness, and Library preview journeys with realistic local-fixture data.
+- [x] Add an inspectable recommendation explanation, six-stage learner loop, prerequisite/skill trajectory, agent-security track, case canvas, and evidence-quality visualisations.
+- [ ] Connect the bounded AI coach to the governed model gateway; its advisory-only presentation and explicit no-execution/no-mastery boundary are implemented.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
-- [ ] Prove keyboard, accessibility, reduced-motion, desktop, tablet, and 390-pixel operation; the current 390-pixel baseline is failing and cannot be called responsive.
+- [ ] Complete accessibility and installed acceptance; desktop plus 390/768/1024 responsive browser checks pass without horizontal overflow, but full sequential-keyboard and clean-user Windows acceptance remain open.
 - [ ] Package and accept on the Windows operator workstation.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a

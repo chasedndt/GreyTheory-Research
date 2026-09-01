@@ -1,6 +1,6 @@
 # AI-Native Learning Workbench
 
-> **Status:** PRODUCT DIRECTION; visual selection open; implementation not yet complete
+> **Status:** SELECTED INTERACTIVE PREVIEW; responsive learner journey verified locally; installed acceptance open
 >
 > **Current posture:** `LOCAL_FIXTURE`; no live targets; AI advisory only
 >
@@ -8,10 +8,10 @@
 > evidence, and agentic-system security through controlled local practice
 
 This document defines the learner-facing product foundation for GreyTheory. It
-does not widen authority and it does not claim that the redesigned workbench is
-already implemented. The current thirteen-panel Research Ledger remains a
-useful evidence-view prototype, but the 2026-09-01 audit found that it is not a
-complete learner dashboard and that its 390-pixel layout clips core content.
+does not widen authority. On 2026-09-01 the operator selected Guided Mission
+Control as the shell and the first interactive implementation was verified
+locally. The earlier thirteen-panel Research Ledger remains a useful case view,
+while the new shell provides the complete guided local learner journey.
 
 ## Product objective
 
@@ -138,9 +138,9 @@ The 2026-09-01 audit produced three grounded directions in the editable
 3. **Adaptive Pathways + Case Canvas** — strongest visual systems model and the
    most expensive to implement and validate.
 
-The recommended composition is Direction 1 as the shell, Direction 2's focused
-learning note as the Learn detail, and Direction 3's case canvas as the Research
-detail. Production UI implementation waits for explicit operator selection.
+The selected composition is Direction 1 as the shell, Direction 2's focused
+learning note and skill map as the Learn detail, and Direction 3's case canvas,
+evidence-quality, and competency views as the Research/Prove detail.
 
 ## Responsive and accessibility acceptance
 
@@ -162,12 +162,27 @@ The redesigned shell is not accepted until all of the following pass:
 |---|---|---|
 | D0 Audit | current desktop/mobile evidence and failure list | COMPLETE 2026-09-01 |
 | D1 Direction | three grounded visual options and editable Figma board | COMPLETE 2026-09-01 |
-| D2 Selection | operator chooses the shell and permitted borrowings | OPEN |
-| D3 Foundations | tokens, typography, shell, responsive grid, navigation | PLANNED |
-| D4 Today/Learn | recommendation, learner loop, focused lesson, skill graph | PLANNED |
-| D5 Practise/Research/Prove | fixture handoff, case canvas, ledger, evidence | PLANNED |
-| D6 AI coach | advisory-only explanation and critique through governed model gateway | PLANNED |
-| D7 Acceptance | keyboard, accessibility, desktop/390, clean-user Windows package | PLANNED |
+| D2 Selection | operator chooses the shell and permitted borrowings | COMPLETE 2026-09-01 |
+| D3 Foundations | tokens, typography, shell, responsive grid, navigation | COMPLETE IN PREVIEW 2026-09-01 |
+| D4 Today/Learn | recommendation, learner loop, focused lesson, skill graph | COMPLETE IN PREVIEW 2026-09-01 |
+| D5 Practise/Research/Prove | fixture handoff, case canvas, ledger, evidence | COMPLETE IN PREVIEW 2026-09-01 |
+| D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
+| D7 Acceptance | desktop/390/768/1024 visual and interaction proof complete; full keyboard and clean-user Windows package | PARTIAL |
+
+## Implemented reference case
+
+`CASE-AGENT-AUTH-001` teaches the Agent Tool Authorization Boundary through
+paired local controls:
+
+- a direct, currently consented request to write an approved local note is
+  allowed by the deterministic fixture policy;
+- the same available tool cannot be invoked by instructions embedded in an
+  untrusted document;
+- both decisions declare `externalAction: false` and the negative control is
+  denied before the tool adapter;
+- the learner must inspect the evidence, write a limitations-aware reflection,
+  and complete an independent readiness question; and
+- completion remains practice evidence rather than automatic mastery.
 
 ## Launch and transition
 

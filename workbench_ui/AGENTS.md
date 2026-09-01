@@ -22,5 +22,14 @@ next shell must be modern, learner-first, responsive, and designed for an
 AI-native security researcher and bug-bounty learner. It must surface a guided
 learning loop, explain recommendations, include agent-security pathways and
 useful evidence/skill visualisations, keep AI advisory and human-governed, and
-pass desktop plus 390-pixel visual QA without horizontal clipping. Three new
-directions now await explicit selection before substantial UI implementation.
+pass desktop plus 390-pixel visual QA without horizontal clipping.
+
+The operator selected direction 1, **Guided Mission Control**, as the production
+shell. Use its calm mission-first hierarchy and learner loop, while incorporating
+direction 2's focused lesson and skill map plus direction 3's case canvas,
+evidence-quality, and competency views. The first complete teaching case is the
+LOCAL_FIXTURE-only Agent Tool Authorization Boundary scenario. It must teach
+traditional access control and ethical research alongside AI-native risks such
+as indirect prompt injection, excessive agency, consent, context isolation, and
+tool authorization. Guided completion is practice, not mastery; AI remains
+advisory and human assessment remains explicit.

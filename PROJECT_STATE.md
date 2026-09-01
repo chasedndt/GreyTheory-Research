@@ -18,7 +18,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Workbench foundation under `LOCAL_FIXTURE`; capability register, architecture, versioned application snapshot, transparent adaptive review, bounded standard/assisted/transfer learning, research-planning/local-fixture-intent/human-mastery/revisioned-report-authoring/persisted-validation/exact-fixture-claim-assembly/internal-lifecycle/private-export commands, private runtime assembly, and authenticated numeric-loopback launch boundary implemented; interactive shell awaits visual selection.
+- **Current product workstream:** Guided Mission Control interactive preview under `LOCAL_FIXTURE`; capability register, application contracts, authenticated read-only snapshot boundary, responsive learner shell, deterministic agent-authorization case, evidence and readiness views are implemented. Server-persisted graphical journey commands, governed coach conversation, comprehensive keyboard acceptance, and installed Windows acceptance remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
 - **Verified baseline:** 665 repository tests passing on 2026-08-26, including the unit-verified two-phase owned-process worker assembly, clean Linux fork-server start boundary, in-worker cancellable forked resolver, strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof. The new full worker service has not passed Ubuntu host acceptance.
 
@@ -86,7 +86,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 - human resolution of the two recorded YNAB policy conflicts;
 - broader curriculum packs beyond the first 12 cards;
-- modern learner-first graphical shell, graphical Today/Learn/Practise/Prove surfaces, responsive acceptance, and installed/clean-user Windows acceptance; the current Research Ledger baseline clips content at desktop and 390 pixels;
+- server-persisted graphical learner commands, governed model-backed coach conversation, comprehensive keyboard acceptance, and installed/clean-user Windows acceptance; the Guided Mission Control preview now provides the learner shell and passes local desktop/390/768/1024 responsive checks;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
 - governed external Scope Watch collector, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
@@ -116,7 +116,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Select one of the three 2026-09-01 modernized workbench directions, with Guided Mission Control recommended, then build the learner-first shell, remove horizontal overflow, bind it to the implemented local endpoint, and prove the realistic Learn -> Practise -> Prove -> Reflect -> Assess journey. Direction-independent passive work now needs a recovered or explicitly restart-approved Ubuntu environment to run the implemented full-service no-route harness, followed by approved local KEK binding and durable egress/image acceptance—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
+Bind the verified Guided Mission Control learner journey to server-persisted application commands, complete sequential-keyboard and clean-user Windows package acceptance, and connect coach conversation only through the governed model gateway. Direction-independent passive work still needs a recovered or explicitly restart-approved Ubuntu environment to run the implemented full-service no-route harness, followed by approved local KEK binding and durable egress/image acceptance—not a VPS or live programme. The posture remains `LOCAL_FIXTURE`; broader claim assembly, the separate YNAB conflict-resolution gate, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

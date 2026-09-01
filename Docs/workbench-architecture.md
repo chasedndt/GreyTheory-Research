@@ -4,7 +4,7 @@
 >
 > **Current posture:** `LOCAL_FIXTURE`; offline only; no target interaction
 >
-> **Visual implementation:** earlier Research Ledger baseline exists; 2026-09-01 audit found desktop overflow and 390-pixel clipping; three replacement directions await selection
+> **Visual implementation:** Guided Mission Control selected and implemented as the learner shell; local desktop/390/768/1024 responsive proof passes; installed acceptance remains open
 
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence

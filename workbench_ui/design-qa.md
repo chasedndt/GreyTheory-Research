@@ -1,43 +1,41 @@
-# GreyTheory Research Preview design QA
+# Guided Mission Control design QA
 
-## Evidence
+**Source visual truth:** `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-ai-native-dashboard-audit\06-direction-1-guided-mission-control.png`
 
-- Live implementation: `http://127.0.0.1:4174/`
-- Baseline desktop: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\01-current-desktop.png`
-- Redesigned desktop: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\03-redesigned-desktop.png`
-- Redesigned mobile: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\04-redesigned-mobile.png`
-- Same-viewport comparison: `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-workbench-typography-redesign\05-before-after-desktop.png`
-- Repository preview media: `Docs/assets/research-ledger-overview.png` and `Docs/assets/research-ledger-mobile.png`
-- Desktop viewport: 1440 x 1000 CSS pixels.
-- Mobile viewport: 390 x 844 CSS pixels; document width 375 pixels with no horizontal overflow.
+**Implementation evidence:** `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-guided-mission-control-implementation\01-mission-control-desktop.png`
 
-## Findings and corrections
+**Comparison:** source 1487 x 1058 pixels; implementation 1440 x 1024 pixels at a 1440 x 1024 CSS viewport and device pixel ratio 1. The 47-pixel width difference does not change the desktop breakpoint or major-region composition. State: initial Mission Control with `LOCAL_FIXTURE`, no live targets, and advisory coach visible.
 
-- Typography: replaced the inconsistent system-only stack with locally bundled Manrope and IBM Plex Mono. Display, body, metadata and control styles now have distinct weights, tracking and line heights.
-- Hierarchy: strengthened the product header, case title, entry titles and evidence headings while reserving monospace for provenance, identifiers and timestamps.
-- Density: increased ledger row rhythm, authority-card padding, touch targets and inspector spacing without changing the approved three-column research-ledger direction.
-- Secondary surfaces: raised inspector body size and contrast so the evidence roles and provenance remain readable supporting material.
-- Mobile: restored a full-width hero, stable two-column metadata grid, deliberate ledger cards and a readable authority surface. The licence banner no longer competes with the primary title.
-- Portability: fonts are repository-owned build assets, so Windows, Ubuntu and VPS-hosted builds do not depend on a third-party font request.
+## Findings
 
-## Interaction and responsive evidence
+No actionable P0, P1, or P2 differences remain.
 
-- All 13 navigation destinations were opened in the in-app browser: Overview, Hypotheses, Experiments, Receipts, Claims, Reflections, Knowledge, Artifacts, Templates, Governance, Workspaces, Settings and Ledger.
-- The mobile evidence drawer opened and exposed the complete claim-evidence role model and provenance panel.
-- The ledger remained the selected local-fixture state after the navigation sweep.
-- Persistent controls remained available and the mobile document produced no horizontal overflow.
-- No browser command transport, live target or posture promotion was introduced.
+- Typography: locally bundled Manrope and IBM Plex Mono reproduce the source's clear display/body/technical hierarchy without clipped headings at desktop or 390 pixels.
+- Spacing and layout: the shell retains the source's left navigation, mission-first center, bounded coach, learner loop, trajectory, and fixed safety footer. The implemented mission is intentionally Agent Tool Authorization rather than the mock's IDOR example.
+- Colors and tokens: navy surfaces, low-contrast rules, amber action state, green evidence state, blue next state, and violet judgment state remain semantically consistent.
+- Image and icon quality: the supplied GreyTheory mark and Phosphor icon family are used throughout. No placeholder image, emoji, handcrafted SVG, or decorative CSS illustration replaces a source asset.
+- Copy and content: recommendations explain why they appear, the coach states its limit, the environment is explicit, and practice is not described as mastery.
+- Responsiveness: document overflow is absent at 390, 768, 1024, and 1440 CSS pixels. Mobile uses a working navigation drawer and puts the current lesson first.
+- Interaction: navigation, recommendation, lesson checklist, authority review, theory, paired simulation, receipt, reflection, evidence selection, library filtering, and readiness assessment were exercised in the in-app browser. Console error count: zero.
 
-## Automated verification
+## Comparison history
 
-- Vite production bundle: PASS; 4,572 modules transformed and all three local font files emitted.
-- Sites build preparation: PASS.
-- Workbench API tests: PASS; 3/3.
-- Sites worker tests: PASS; 4/4.
+1. P2: at 390 pixels the topic carousel initially showed the introductory card instead of the selected current topic and exposed a native scrollbar. Fixed by ordering the selected card first at the mobile breakpoint and hiding only the scrollbar chrome; post-fix capture: `08-learn-mobile.png`.
+2. P2: the desktop brand and release badge repeated “Research Preview.” Fixed by reserving the label for the release badge; post-fix capture: `01-mission-control-desktop.png`.
 
-## Residual polish
+## Focused evidence
 
-- P3: the floating mobile evidence control can become a bottom navigation affordance in the later full application-shell redesign.
-- P3: the utility header can be simplified further when workspace and researcher identity become server-owned product states.
+- Desktop lesson: `02-learn-desktop.png`
+- Paired controls: `03-safe-lab-controls-desktop.png`
+- Allow/deny decision: `04-safe-lab-evidence-desktop.png`
+- Evidence receipt: `05-evidence-desktop.png`
+- Human readiness check: `06-readiness-desktop.png`
+- Mobile Mission Control: `07-mission-control-mobile.png`
+- Mobile focused lesson: `08-learn-mobile.png`
+- Retained Research Ledger: `09-research-ledger-desktop.png`
 
-final result: passed
+Full-view comparison was sufficient for the shell; focused captures were used for typography, controls, evidence, and assessment states. Full sequential-keyboard traversal and installed clean-user Windows acceptance remain product acceptance work, not a visual mismatch in this comparison.
+
+**Follow-up polish:** preserve the current density while adding the server-persisted learner command path; do not turn the home screen into a record table.
+
+**final result: passed**

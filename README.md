@@ -23,32 +23,31 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, and explicit human-assessed completion are live; broader packs and the graphical Learn surface are not), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded application commands, private runtime assembly, authenticated numeric-loopback API, and a thirteen-panel Research Ledger baseline; selected panels consume authenticated server-owned snapshots through an explicitly allowed read-only loopback origin, while the current desktop/390 layout clips content and command binding, learner-first journeys, responsive acceptance, and installed packaging remain open). |
-| **DESIGNED, NOT BUILT** | AI-native Today/Learn/Practise/Prove journeys, inspectable recommendations, agent-security pathway, bounded coach, learning/evidence visualisations, and the installed learner-first application shell. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, explicit human-assessed completion, and the graphical learner preview are live; broader packs and server-persisted graphical journey commands remain open), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded application commands, private runtime assembly, authenticated numeric-loopback API, the retained Research Ledger, and the selected Guided Mission Control shell; the browser preview now completes a responsive local Learn -> Practise -> Prove -> Reflect -> Assess case, while command persistence, comprehensive keyboard acceptance, installed packaging, and clean-user acceptance remain open). |
+| **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, complete curriculum packs, installed learner-first application shell, and accepted Ubuntu passive worker. |
 | **PLANNED** | Governed Scope Watch collector, network workers/live collectors, integrated standalone graphical workbench, live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
 ### Workbench prototype
 
-![GreyTheory Research Ledger overview](Docs/assets/research-ledger-overview.png)
+![GreyTheory Guided Mission Control research preview](Docs/assets/guided-mission-control-preview.png)
 
-The current Research Ledger baseline includes Overview, Ledger,
-Hypotheses, Experiments, Receipts, Claims, Reflections, Knowledge, Artifacts,
-Templates, Governance, Workspaces, and Settings panels. Search, status filters,
-record inspection, context drawers, local reflection, and evidence dialogs are
-implemented in the local preview. The 2026-09-01 visual audit found that the
-desktop canvas overflows and the 390-pixel layout clips core content, so it is
-not responsively accepted. The ledger remains an explicit
-synthetic exemplar. Overview, Hypotheses, Knowledge, Artifacts, Claims,
-Governance, and Workspaces can replace their exemplar rows with authenticated
-server-owned snapshot sections. Panels without a matching server section stay
-labelled as prototype exemplars, and browser command submission remains disabled.
+The operator selected **Guided Mission Control** as the learner shell. The
+preview now includes inspectable recommendations, a six-stage learner loop,
+focused ethical and technical lessons, an agent-security skill map, a
+deterministic local authorization lab, a case canvas, evidence-quality views,
+reflection, and an independent readiness check. Its first complete test case
+compares a consented local tool request with an indirect prompt-injection
+control; the injected instruction is denied before the tool adapter and neither
+path can contact a live target.
 
-Three modern learner-first directions and the implementation contract are in
+The earlier Research Ledger remains a first-class Research case view and its
+authenticated read-only snapshot boundary is preserved. Browser command
+submission, server-persisted learner actions, installed packaging, and the
+Ubuntu passive-worker acceptance are still open. The selected composition and
+acceptance evidence are documented in
 [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
-Guided Mission Control is recommended, but production UI work waits for the
-operator's explicit selection.
 
 ### Quickstart
 
