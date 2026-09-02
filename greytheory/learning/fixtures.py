@@ -146,6 +146,18 @@ class FixtureCaseResult:
     controlled_effect_observed: bool
     observation: str
 
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> FixtureCaseResult:
+        return cls(
+            case_id=str(data["case_id"]),
+            role=FixtureCaseRole(data["role"]),
+            property_held=data.get("property_held") is True,
+            controlled_effect_observed=(
+                data.get("controlled_effect_observed") is True
+            ),
+            observation=str(data["observation"]),
+        )
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "case_id": self.case_id,
@@ -172,6 +184,42 @@ class FixtureRunReceipt:
     scope: str = "synthetic_training_only"
     proves_real_vulnerability: bool = False
     credits_mastery: bool = False
+
+    def __post_init__(self) -> None:
+        if self.executed_at.tzinfo is None:
+            raise LearningError("fixture receipt time must be timezone-aware")
+        if self.scope != "synthetic_training_only":
+            raise LearningError("fixture receipts must remain synthetic training evidence")
+        if self.proves_real_vulnerability or self.credits_mastery:
+            raise LearningError("fixture receipts prove no real vulnerability and credit no mastery")
+        if len(self.case_results) != 3 or set(item.role for item in self.case_results) != set(FixtureCaseRole):
+            raise LearningError("fixture receipts require all three control roles")
+        if not self.controls_passed or not self.vulnerable_case_demonstrated:
+            raise LearningError("persisted fixture receipts require passing controls and a demonstrated local vulnerable case")
+
+    @classmethod
+    def from_dict(cls, data: Mapping[str, Any]) -> FixtureRunReceipt:
+        return cls(
+            id=str(data["id"]),
+            fixture_id=str(data["fixture_id"]),
+            card_id=str(data["card_id"]),
+            fixture_digest=str(data["fixture_digest"]),
+            runner_id=str(data["runner_id"]),
+            runner_version=str(data["runner_version"]),
+            runner_digest=str(data["runner_digest"]),
+            executed_at=datetime.fromisoformat(str(data["executed_at"])),
+            case_results=tuple(
+                FixtureCaseResult.from_dict(item)
+                for item in data.get("case_results", ())
+            ),
+            controls_passed=data.get("controls_passed") is True,
+            vulnerable_case_demonstrated=(
+                data.get("vulnerable_case_demonstrated") is True
+            ),
+            scope=str(data.get("scope", "")),
+            proves_real_vulnerability=data.get("proves_real_vulnerability") is True,
+            credits_mastery=data.get("credits_mastery") is True,
+        )
 
     def to_dict(self) -> dict[str, Any]:
         return {

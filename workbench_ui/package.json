@@ -7,8 +7,9 @@
     "dev": "vite",
     "build": "vite build && node scripts/prepare-sites-build.mjs",
     "preview": "vite preview",
+    "test": "npm run test:ui && npm run test:sites",
     "test:sites": "node --test tests/sites-worker.test.mjs",
-    "test:ui": "node --test tests/workbench-api.test.mjs tests/learning-case.test.mjs"
+    "test:ui": "node --test tests/workbench-api.test.mjs tests/learning-case.test.mjs tests/case-packs.test.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

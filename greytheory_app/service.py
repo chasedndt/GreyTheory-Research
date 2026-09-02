@@ -29,9 +29,11 @@ from greytheory.evidence import EvidenceVault
 from greytheory.findings import Finding, INTERNAL_STATES, Taxonomy
 from greytheory.learning import (
     AssessorKind,
+    FixtureReceiptStore,
     GuidedLearningPlanner,
     JourneyStatus,
     LearningJourneyStore,
+    LearningStage,
     LearningTrack,
     MasteryAssessment,
     MasteryDimension,
@@ -41,6 +43,7 @@ from greytheory.learning import (
     abandon_learning_journey,
     advance_learning_journey,
     load_builtin_catalogue,
+    load_builtin_case_packs,
     start_learning_journey,
 )
 from greytheory.registry import ProgrammeRegistry
@@ -193,6 +196,7 @@ class WorkbenchApplicationService:
         research: ResearchStore | None = None,
         mastery: MasteryStore | None = None,
         journeys: LearningJourneyStore | None = None,
+        fixture_receipts: FixtureReceiptStore | None = None,
         evidence: EvidenceVault | None = None,
         findings: Sequence[Finding] | None = None,
         report_drafts: Sequence[ReportDraft] | None = None,
@@ -212,6 +216,7 @@ class WorkbenchApplicationService:
         self.research = research
         self.mastery = mastery
         self.journeys = journeys
+        self.fixture_receipts = fixture_receipts
         self.evidence = evidence
         self.findings = None if findings is None else tuple(findings)
         self.report_drafts = None if report_drafts is None else tuple(report_drafts)
@@ -235,6 +240,7 @@ class WorkbenchApplicationService:
         self.operator_ref = str(operator_ref).strip()
         self.clock = clock
         self.catalogue = load_builtin_catalogue()
+        self.case_packs = load_builtin_case_packs(self.catalogue)
         self._idempotency: dict[str, tuple[str, CommandResult]] = {}
 
     def _current_findings(self) -> tuple[Finding, ...] | None:
@@ -609,6 +615,8 @@ class WorkbenchApplicationService:
                     subtitle=f"{item.dimension.value} · {item.status.value}",
                     detail=item.objective,
                     attributes=(
+                        ("card_id", item.card_id),
+                        ("dimension", item.dimension.value),
                         ("stage", item.current_stage.value),
                         ("revision", str(item.revision)),
                         ("awards_mastery", "false"),
@@ -616,6 +624,63 @@ class WorkbenchApplicationService:
                     ),
                 )
                 for item in persisted
+            )
+            records.extend(
+                WorkbenchRecord(
+                    id=f"case-pack:{pack.id}:{pack.version}",
+                    title=pack.title,
+                    status=(
+                        ReadinessStatus.READY
+                        if pack.state == "ready_local"
+                        else ReadinessStatus.UNKNOWN
+                    ),
+                    subtitle=f"Case pack {pack.version} · {pack.state.replace('_', ' ')}",
+                    detail=pack.summary,
+                    references=(
+                        f"learning-card:{pack.primary_card_id}",
+                        f"local-fixture:{pack.fixture_id}",
+                    ),
+                    attributes=(
+                        ("case_pack_id", pack.id),
+                        ("estimated_minutes", str(pack.estimated_minutes)),
+                        ("current_posture", "LOCAL_FIXTURE"),
+                        ("live_programme_adapter", "dark"),
+                        ("awards_mastery", "false"),
+                    ),
+                )
+                for pack in self.case_packs.packs()
+            )
+            if self.fixture_receipts is not None:
+                records.extend(
+                    WorkbenchRecord(
+                        id=f"fixture-receipt:{receipt.id}",
+                        title=f"Synthetic fixture receipt · {self.catalogue.card(receipt.card_id).name}",
+                        status=ReadinessStatus.READY,
+                        subtitle="Server issued · synthetic training only",
+                        detail="All controls matched the fixture oracle; this proves no real vulnerability and awards no mastery.",
+                        references=(
+                            f"local-fixture:{receipt.fixture_id}",
+                            f"learning-card:{receipt.card_id}",
+                        ),
+                        attributes=(
+                            ("receipt_id", receipt.id),
+                            ("card_id", receipt.card_id),
+                            ("executed_at", receipt.executed_at.isoformat()),
+                            ("controls_passed", "true"),
+                            ("proves_real_vulnerability", "false"),
+                            ("credits_mastery", "false"),
+                        ),
+                    )
+                    for receipt in sorted(
+                        self.fixture_receipts.receipts(),
+                        key=lambda item: (item.executed_at, item.id),
+                        reverse=True,
+                    )
+                )
+            receipt_count = (
+                len(self.fixture_receipts.receipts())
+                if self.fixture_receipts is not None
+                else 0
             )
             return (
                 WorkbenchSection(
@@ -636,6 +701,12 @@ class WorkbenchApplicationService:
                             "Active journeys",
                             str(len(active)),
                             ReadinessStatus.ATTENTION if active else ReadinessStatus.READY,
+                        ),
+                        WorkbenchMetric(
+                            "Fixture receipts",
+                            str(receipt_count),
+                            ReadinessStatus.READY,
+                            "server-issued synthetic receipts; no real-vulnerability or mastery claim",
                         ),
                     ),
                     records=tuple(records),
@@ -1203,6 +1274,8 @@ class WorkbenchApplicationService:
                 result = self._select_workspace(command)
             elif command.kind is CommandKind.START_LEARNING_JOURNEY:
                 result = self._start_learning(command)
+            elif command.kind is CommandKind.RUN_LEARNING_FIXTURE:
+                result = self._run_learning_fixture(command)
             elif command.kind is CommandKind.ADVANCE_LEARNING_JOURNEY:
                 result = self._advance_learning(command)
             elif command.kind is CommandKind.ABANDON_LEARNING_JOURNEY:
@@ -2227,6 +2300,52 @@ class WorkbenchApplicationService:
             "learning_journey_advanced",
             f"journey advanced to {updated.current_stage.value}; no mastery was awarded by the journey",
             (f"learning-journey:{updated.id}",),
+        )
+
+    def _run_learning_fixture(self, command: WorkbenchCommand) -> CommandResult:
+        if self.journeys is None or self.fixture_receipts is None:
+            raise WorkbenchContractError(
+                "journey and fixture-receipt stores must both be configured"
+            )
+        _require_command_fields(
+            command,
+            required={"journey_id", "case_pack_id", "card_id"},
+        )
+        journey_id = _command_text(command, "journey_id")
+        case_pack_id = _command_text(command, "case_pack_id")
+        card_id = _command_text(command, "card_id")
+        current = self.journeys.get(journey_id)
+        if current.revision != command.expected_revision:
+            return CommandResult(
+                command.id,
+                CommandDisposition.CONFLICT,
+                "revision_conflict",
+                f"expected revision {command.expected_revision}, current {current.revision}",
+                (f"learning-journey:{current.id}",),
+            )
+        if current.status is not JourneyStatus.ACTIVE or current.current_stage is not LearningStage.PRACTISE:
+            raise WorkbenchContractError(
+                "a synthetic learning fixture may run only during an active practise stage"
+            )
+        pack = self.case_packs.pack(case_pack_id)
+        if card_id != current.card_id or card_id not in pack.card_ids:
+            raise WorkbenchContractError(
+                "the active journey card must belong to the selected case pack"
+            )
+        receipt = self.catalogue.run_fixture(
+            card_id, clock=lambda: command.issued_at
+        )
+        self.fixture_receipts.record(receipt)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "learning_fixture_recorded",
+            "the server ran one synthetic network-free fixture and recorded its receipt; no real vulnerability or mastery was created",
+            (
+                f"case-pack:{pack.id}:{pack.version}",
+                f"learning-journey:{current.id}",
+                f"fixture-receipt:{receipt.id}",
+            ),
         )
 
     def _abandon_learning(self, command: WorkbenchCommand) -> CommandResult:

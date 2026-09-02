@@ -10,6 +10,13 @@ from greytheory.learning.catalogue import (
     VulnerabilityCatalogue,
     load_builtin_catalogue,
 )
+from greytheory.learning.casepacks import (
+    CASE_PACK_SCHEMA_VERSION,
+    CasePackRegistry,
+    LearningCasePack,
+    LiveProgrammeAdapter,
+    load_builtin_case_packs,
+)
 from greytheory.learning.domain import (
     AssessorKind,
     CardRevision,
@@ -51,6 +58,7 @@ from greytheory.learning.journey import (
     start_learning_journey,
 )
 from greytheory.learning.store import (
+    FixtureReceiptStore,
     LearningJourneyStore,
     LearningStoreError,
     MasteryStore,
@@ -58,6 +66,10 @@ from greytheory.learning.store import (
 )
 
 __all__ = [
+    "CASE_PACK_SCHEMA_VERSION",
+    "CasePackRegistry",
+    "LearningCasePack",
+    "LiveProgrammeAdapter",
     "AssessorKind",
     "CardRevision",
     "CardUpdateProposal",
@@ -68,6 +80,7 @@ __all__ = [
     "FixtureCaseRole",
     "FixtureMechanism",
     "FixtureRunReceipt",
+    "FixtureReceiptStore",
     "FrameworkReference",
     "GuidedLearningPlanner",
     "HypothesisTemplate",
@@ -97,6 +110,7 @@ __all__ = [
     "VulnerabilityCard",
     "VulnerabilityCatalogue",
     "load_builtin_catalogue",
+    "load_builtin_case_packs",
     "resolve_learning_root",
     "abandon_learning_journey",
     "advance_learning_journey",

@@ -30,6 +30,10 @@ def build_parser() -> argparse.ArgumentParser:
         "--ui-origin",
         help="optional exact numeric-loopback UI origin permitted to read snapshots",
     )
+    parser.add_argument(
+        "--ui-root",
+        help="optional built workbench UI directory served from the exact API origin",
+    )
     return parser
 
 
@@ -40,6 +44,7 @@ def main(argv: list[str] | None = None) -> int:
         runtime.service,
         port=args.port,
         allowed_ui_origin=args.ui_origin,
+        ui_root=args.ui_root,
     )
     print(f"GreyTheory local API: {server.base_url}")
     print("Operating posture: LOCAL_FIXTURE; live targets unavailable")
@@ -48,6 +53,10 @@ def main(argv: list[str] | None = None) -> int:
     print(
         "Graphical read model: "
         + (f"enabled for {server.allowed_ui_origin}" if server.allowed_ui_origin else "cross-origin access disabled")
+    )
+    print(
+        "Same-origin graphical commands: "
+        + (f"available from {server.base_url}" if server.ui_root else "disabled (no built UI root configured)")
     )
     print("Press Ctrl+C to stop.")
     try:

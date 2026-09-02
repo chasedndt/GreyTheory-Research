@@ -30,6 +30,7 @@ Where to start, and which document wins when two disagree.
 | Architecture decisions | [`decisions/`](decisions/README.md) |
 | Workbench application, learning, storage, and worker boundary | [`workbench-architecture.md`](workbench-architecture.md) |
 | AI-native learner dashboard, agent-security track, visualisations, and delivery stages | [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md) |
+| Exact live-programme compatibility fields and transition gate | [`live-programme-transition.md`](live-programme-transition.md) |
 | Passive pilot broker and worker gates | [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) · [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) · [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) · [`ADR-0015`](decisions/ADR-0015-unlaunched-passive-worker-primitives.md) · [`ADR-0016`](decisions/ADR-0016-offline-ubuntu-primitive-host-acceptance.md) · [`ADR-0018`](decisions/ADR-0018-keep-broker-authority-outside-passive-worker.md) · [`THREAT_MODEL.md`](../THREAT_MODEL.md#preconditions-for-any-network-posture) |
 | Real public programme-source evidence | [`HackerOne/GitLab`](../fixtures/programmes/public/hackerone-gitlab-2026-08-09/) · [`Bugcrowd/YNAB`](../fixtures/programmes/public/bugcrowd-ynab-2026-08-09/) · [`Direct policy/MCP Python SDK`](../fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09/) |
 
@@ -44,6 +45,7 @@ Where to start, and which document wins when two disagree.
 - [`evidence-policy.md`](evidence-policy.md) — evidence location, integrity, and export.
 - [`workbench-architecture.md`](workbench-architecture.md) - application boundary, required journeys, deployment shape, and acceptance evidence.
 - [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md) - learner-first information architecture, bounded AI coach, agent-security curriculum, visual direction gate, responsive acceptance, and Windows-to-Ubuntu transition.
+- [`live-programme-transition.md`](live-programme-transition.md) - dark compatibility adapter, five mandatory activation gates, and the exact signal for considering a passive pilot.
 - [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) - dark passive ticket, DNS, replay, kill-switch, and receipt boundary before any network adapter.
 - [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) - ticket-bound capture encryption and operator-side wrapped recipient-key lifecycle without enabling a worker.
 - [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) - exact-address passive adapter orchestration proved with injected conformance doubles and no network implementation.

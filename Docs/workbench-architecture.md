@@ -1,6 +1,6 @@
 # GreyTheory Workbench Architecture
 
-> **Status:** RESEARCH LEDGER BASELINE PARTIAL; AI-NATIVE REDESIGN SELECTION OPEN
+> **Status:** GUIDED MISSION CONTROL FOUNDATION PARTIAL; SAME-ORIGIN LEARNER COMMANDS IMPLEMENTED
 >
 > **Current posture:** `LOCAL_FIXTURE`; offline only; no target interaction
 >
@@ -9,9 +9,11 @@
 This is the implementation contract common to every visual direction. It
 defines what must work, which component owns each decision, and what evidence
 will prove the local research pilot is usable. The earlier Research Ledger
-prototype is implemented as an evidence-view baseline. Matching read-only panels can
-now bind to authenticated application snapshots through an explicit numeric-
-loopback UI origin. Browser commands and installed packaging remain open.
+prototype is implemented as an evidence-view baseline. The built learner UI can
+now share the authenticated numeric-loopback application origin and persist a
+bounded learning journey plus synthetic receipt. Separate development-preview
+origins remain read-only. Visual acceptance of that persisted path and installed
+packaging remain open.
 The learner-first information architecture, agent-security track, bounded coach,
 visualisations, and responsive acceptance contract live in
 [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md).
@@ -121,14 +123,16 @@ flowchart LR
     WORKSPACES --> READ
     SETTINGS --> READ
 
-    READ -. "next: authenticated binding" .-> APP["Local application service"]
+    READ -->|"authenticated snapshot"| APP["Local application service"]
+    SHELL -->|"same-origin bounded learner command"| APP
     APP --> CORE["Offline GreyTheory core"]
     CORE --> GATE["Authority gate"]
     GATE --> FIXTURE["LOCAL_FIXTURE only"]
 ```
 
-The dashed edge is deliberately not a completion claim: the visual panels are
-implemented, while their read/write binding to `greytheory_local` is not.
+The command edge applies only to the versioned learner journey and synthetic
+fixture command contracts. It is not a general browser execution route, cannot
+raise posture, and cannot reach a target.
 
 ### Workbench UI
 
@@ -146,8 +150,10 @@ the pilot and reject cross-origin or oversized requests.
 The implemented `greytheory_local` adapter binds only to numeric
 `127.0.0.1`, validates the exact Host header, requires an in-memory bearer
 token for private reads, requires the exact same origin for writes, emits no
-CORS permission, and caps strict JSON command bodies at 64 KiB. It serves no
-files and has no target-network client. ADR-0012 records the boundary.
+write-capable CORS permission, and caps strict JSON command bodies at 64 KiB.
+An explicitly configured preview origin may read snapshots only. The launcher
+may optionally serve one validated built UI directory with self-only browser
+policy headers; it has no target-network client. ADR-0012 records the boundary.
 
 ### Offline core
 
@@ -379,6 +385,12 @@ Implemented now:
 - the separate `greytheory_local` private-runtime assembly, strict versioned
   JSON decoder, authenticated numeric-loopback snapshot/command transport, and
   `greytheory-workbench` Windows-first launch command;
+- optional bounded same-origin UI serving with a self-only content policy,
+  cross-origin isolation headers, no caching, safe suffix and size limits, and
+  no directory traversal;
+- three versioned Case Packs, an immutable private synthetic-receipt store, one
+  practise-stage fixture command, and the graphical Learn -> Practise -> Prove
+  -> Reflect binding; the live-programme adapter remains dark and disabled;
 - the separate, network-free `greytheory_broker` `passive-head-v1` contracts,
   policy guard, replay ledger, default-engaged kill switch, and signed receipt
   metadata foundation, plus ticket-bound authenticated capture encryption and
@@ -395,21 +407,20 @@ Implemented now:
 
 Not implemented now:
 
-- binding browser commands to the authenticated local service; matching panels
-  already have an explicit read-only snapshot bridge;
-- the modern learner-first Today/Learn/Practise/Prove shell, installed shortcut, and packaged Windows
-  host acceptance;
+- browser visual and sequential-keyboard acceptance of the same-origin
+  persisted learner path, an installed shortcut, and packaged clean-user
+  Windows host acceptance;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
-- broader curricula and the graphical Learn surface;
+- broader ready curricula beyond the first local Case Pack and governed
+  model-backed coach conversation;
 - a general local fixture process broker;
 - successful full Ubuntu worker-service acceptance, approved OS secret-provider
   binding for the root KEK, durable egress policy, hardened image,
   launcher/scheduler, or any `PASSIVE_HTTP` action.
 
-The current Research Ledger baseline is retained as a first-class Research case
-view, but the 2026-09-01 audit invalidated the earlier responsive acceptance
-claim: desktop and 390-pixel captures show horizontal clipping. Three modern
-learner-first directions now exist in Figma and visual QA. Selection,
-implementation, command binding, full Today/Learn journeys, installed packaging,
-and clean-user acceptance remain open.
+The current Research Ledger remains a first-class Research case view. Guided
+Mission Control is the selected shell, and its preview had passed the earlier
+responsive checks. The newly persisted same-origin flow still requires current
+browser visual QA, sequential-keyboard acceptance, installed packaging, and
+clean-user acceptance before the Windows pilot exit condition is met.

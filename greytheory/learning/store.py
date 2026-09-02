@@ -15,6 +15,7 @@ from typing import Any, Iterable, Mapping
 from greytheory.audit import AuditLog
 from greytheory.learning.catalogue import VulnerabilityCatalogue
 from greytheory.learning.domain import LearningError, MasteryAssessment
+from greytheory.learning.fixtures import FixtureRunReceipt
 from greytheory.learning.journey import LearningJourney
 
 
@@ -135,6 +136,121 @@ class MasteryStore:
         encoded = json.dumps(wrapper, indent=2, sort_keys=True) + "\n"
         handle, temp_name = tempfile.mkstemp(
             prefix="mastery-", suffix=".tmp", dir=self.root
+        )
+        temp_path = Path(temp_name)
+        try:
+            with os.fdopen(handle, "w", encoding="utf-8", newline="\n") as stream:
+                stream.write(encoded)
+                stream.flush()
+                os.fsync(stream.fileno())
+            temp_path.replace(self.path)
+        except Exception:
+            temp_path.unlink(missing_ok=True)
+            raise
+
+
+class FixtureReceiptStore:
+    """Immutable, integrity-checked receipts from server-run synthetic fixtures."""
+
+    def __init__(
+        self,
+        root: Path | None,
+        *,
+        catalogue: VulnerabilityCatalogue,
+        allow_in_repository: bool = False,
+        audit: AuditLog | None = None,
+    ) -> None:
+        self.root = resolve_learning_root(root)
+        if not allow_in_repository and _inside_git_worktree(self.root):
+            raise LearningStoreError(
+                "fixture receipts are private runtime data and are refused inside a git working tree"
+            )
+        self.catalogue = catalogue
+        self.audit = audit
+        self.path = self.root / "fixture-receipts.json"
+
+    def receipts(self) -> tuple[FixtureRunReceipt, ...]:
+        return tuple(
+            FixtureRunReceipt.from_dict(item)
+            for item in self._load_payload().get("receipts", ())
+        )
+
+    def get(self, receipt_id: str) -> FixtureRunReceipt:
+        for receipt in self.receipts():
+            if receipt.id == receipt_id:
+                return receipt
+        raise LearningStoreError(f"unknown fixture receipt {receipt_id!r}")
+
+    def record(self, receipt: FixtureRunReceipt) -> FixtureRunReceipt:
+        card = self.catalogue.card(receipt.card_id)
+        if card.local_fixture.id != receipt.fixture_id:
+            raise LearningStoreError("fixture receipt does not match its catalogue card")
+        current = {item.id: item for item in self.receipts()}
+        if receipt.id in current:
+            if current[receipt.id] != receipt:
+                raise LearningStoreError("fixture receipt identifier conflict")
+            return current[receipt.id]
+        current[receipt.id] = receipt
+        self._write(current.values())
+        if self.audit is not None:
+            self.audit.append(
+                actor="operator",
+                action="learning.fixture.record",
+                detail={
+                    "receipt_id": receipt.id,
+                    "fixture_id": receipt.fixture_id,
+                    "card_id": receipt.card_id,
+                    "controls_passed": receipt.controls_passed,
+                    "proves_real_vulnerability": False,
+                    "credits_mastery": False,
+                },
+            )
+        return receipt
+
+    def verify(self) -> None:
+        self._load_payload()
+        for receipt in self.receipts():
+            if self.catalogue.card(receipt.card_id).local_fixture.id != receipt.fixture_id:
+                raise LearningStoreError("fixture receipt catalogue binding changed")
+
+    def _load_payload(self) -> dict[str, Any]:
+        if not self.path.exists():
+            return {
+                "schema_version": 1,
+                "catalogue_digest": self.catalogue.digest(),
+                "receipts": [],
+            }
+        try:
+            wrapper = json.loads(self.path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise LearningStoreError(f"cannot load fixture receipts: {exc}") from exc
+        if not isinstance(wrapper, dict) or set(wrapper) != {"payload", "digest"}:
+            raise LearningStoreError("fixture receipts have an invalid envelope")
+        payload = wrapper["payload"]
+        if not isinstance(payload, dict) or _digest(payload) != wrapper["digest"]:
+            raise LearningStoreError("fixture receipt integrity check failed")
+        if payload.get("schema_version") != 1:
+            raise LearningStoreError("unsupported fixture-receipt schema")
+        if payload.get("catalogue_digest") != self.catalogue.digest():
+            raise LearningStoreError("fixture receipts belong to a different catalogue revision")
+        if not isinstance(payload.get("receipts"), list):
+            raise LearningStoreError("fixture receipts must be a list")
+        return payload
+
+    def _write(self, receipts: Iterable[FixtureRunReceipt]) -> None:
+        self.root.mkdir(parents=True, exist_ok=True)
+        payload = {
+            "schema_version": 1,
+            "catalogue_digest": self.catalogue.digest(),
+            "receipts": [
+                item.to_dict()
+                for item in sorted(receipts, key=lambda value: value.id)
+            ],
+        }
+        wrapper = {"payload": payload, "digest": _digest(payload)}
+        encoded = json.dumps(wrapper, indent=2, sort_keys=True) + "\n"
+        handle, temp_name = tempfile.mkstemp(
+            prefix="fixture-receipts-", suffix=".tmp", dir=self.root
         )
         temp_path = Path(temp_name)
         try:
@@ -280,6 +396,7 @@ class LearningJourneyStore:
 
 
 __all__ = [
+    "FixtureReceiptStore",
     "LearningJourneyStore",
     "LearningStoreError",
     "MasteryStore",

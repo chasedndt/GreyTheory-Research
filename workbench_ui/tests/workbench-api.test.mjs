@@ -2,8 +2,12 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  commandMode,
+  createWorkbenchCommand,
   fetchWorkbenchSnapshot,
+  learningStateFromSnapshot,
   panelsFromSnapshot,
+  sendWorkbenchCommand,
   validateLocalConnection,
 } from "../src/workbenchApi.js";
 
@@ -40,4 +44,69 @@ test("snapshot records replace only panels with server-owned sections", () => {
   assert.equal(panels.Overview.dataSource, "Authenticated local API");
   assert.equal(panels.Overview.rows[0].status, "Ready");
   assert.equal(panels.Experiments.dataSource, "Prototype exemplar");
+});
+
+test("commands are schema-bound and refused away from the same application origin", async () => {
+  const command = createWorkbenchCommand({
+    kind: "start_learning_journey",
+    fields: { journey_id: "journey-one" },
+    now: new Date("2026-09-02T00:00:00Z"),
+    randomId: "test-command",
+  });
+  assert.equal(command.executable, false);
+  assert.equal(command.id, "ui-start_learning_journey-test-command");
+  assert.equal(commandMode("http://127.0.0.1:8765", "http://127.0.0.1:4174"), "read_only");
+  await assert.rejects(
+    sendWorkbenchCommand({
+      baseUrl: "http://127.0.0.1:8765",
+      token,
+      command,
+      pageOrigin: "http://127.0.0.1:4174",
+      fetchImpl: async () => { throw new Error("must not fetch"); },
+    }),
+    /same numeric-loopback origin/,
+  );
+});
+
+test("same-origin command client authenticates and validates non-executing results", async () => {
+  let seen;
+  const command = createWorkbenchCommand({
+    kind: "advance_learning_journey",
+    fields: { journey_id: "journey-one" },
+    expectedRevision: 0,
+    now: new Date("2026-09-02T00:01:00Z"),
+    randomId: "advance-one",
+  });
+  const result = await sendWorkbenchCommand({
+    baseUrl: "http://127.0.0.1:8765",
+    token,
+    command,
+    pageOrigin: "http://127.0.0.1:8765",
+    fetchImpl: async (url, init) => {
+      seen = { url: String(url), init };
+      return { ok: true, json: async () => ({ disposition: "accepted", executed: false, record_refs: [] }) };
+    },
+  });
+  assert.equal(result.disposition, "accepted");
+  assert.equal(seen.url, "http://127.0.0.1:8765/api/v1/commands");
+  assert.equal(JSON.parse(seen.init.body).expected_revision, 0);
+});
+
+test("learning snapshot projection restores active journey and case-pack metadata", () => {
+  const state = learningStateFromSnapshot({
+    context: { learning_journey_id: "journey-one" },
+    sections: [{
+      id: "learning",
+      metrics: [{ label: "Fixture receipts", value: "2" }],
+      records: [
+        { id: "recommendation:idor-bola:test", title: "IDOR" },
+        { id: "journey-one", attributes: { stage: "practise", revision: "1", track: "standard" } },
+        { id: "case-pack:agent-authorization-boundary:1.0.0", attributes: { current_posture: "LOCAL_FIXTURE" } },
+      ],
+    }],
+  });
+  assert.equal(state.journey.stage, "practise");
+  assert.equal(state.journey.revision, 1);
+  assert.equal(state.packs.length, 1);
+  assert.equal(state.fixtureReceiptCount, 2);
 });

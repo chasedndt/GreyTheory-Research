@@ -7,11 +7,13 @@ from __future__ import annotations
 
 import hmac
 import json
+import mimetypes
 import secrets
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
 from typing import Any
-from urllib.parse import parse_qs, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from greytheory.authority.gate import AuthorityLevel
 from greytheory_app import (
@@ -24,6 +26,10 @@ from greytheory_app import (
 
 LOOPBACK_HOST = "127.0.0.1"
 MAX_REQUEST_BYTES = 65_536
+MAX_STATIC_BYTES = 10 * 1024 * 1024
+STATIC_SUFFIXES = frozenset(
+    {".html", ".js", ".css", ".png", ".jpg", ".jpeg", ".webp", ".svg", ".woff2", ".ico", ".json"}
+)
 
 
 class LocalTransportError(ValueError):
@@ -44,6 +50,7 @@ class LocalWorkbenchHTTPServer(ThreadingHTTPServer):
         port: int = 0,
         token: str | None = None,
         allowed_ui_origin: str | None = None,
+        ui_root: str | Path | None = None,
     ) -> None:
         if host != LOOPBACK_HOST:
             raise LocalTransportError(
@@ -59,6 +66,7 @@ class LocalWorkbenchHTTPServer(ThreadingHTTPServer):
         self.service = service
         self.session_token = session_token
         self.allowed_ui_origin = _validate_ui_origin(allowed_ui_origin)
+        self.ui_root = _validate_ui_root(ui_root)
         super().__init__((host, port), LocalWorkbenchRequestHandler)
 
     @property
@@ -88,7 +96,7 @@ class LocalWorkbenchHTTPServer(ThreadingHTTPServer):
 
 
 class LocalWorkbenchRequestHandler(BaseHTTPRequestHandler):
-    """Strict v1 JSON handler. It never serves files or follows URLs."""
+    """Strict v1 JSON handler plus an optional bounded same-origin UI."""
 
     server: LocalWorkbenchHTTPServer
     protocol_version = "HTTP/1.1"
@@ -122,6 +130,65 @@ class LocalWorkbenchRequestHandler(BaseHTTPRequestHandler):
             self.send_header("Access-Control-Allow-Origin", self.server.allowed_ui_origin)
             self.send_header("Vary", "Origin")
 
+    def _reply_static(self, path: Path) -> None:
+        try:
+            size = path.stat().st_size
+            if size < 0 or size > MAX_STATIC_BYTES:
+                raise OSError("static asset outside size limit")
+            encoded = path.read_bytes()
+        except OSError:
+            self._error(HTTPStatus.NOT_FOUND, "not_found", "Unknown local route")
+            return
+        media_type = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+        if path.suffix == ".js":
+            media_type = "text/javascript"
+        if media_type.startswith("text/") or media_type in {
+            "application/javascript",
+            "application/json",
+        }:
+            media_type += "; charset=utf-8"
+        self.send_response(HTTPStatus.OK.value)
+        self.send_header("Content-Type", media_type)
+        self.send_header("Content-Length", str(len(encoded)))
+        self.send_header("Cache-Control", "no-store")
+        self.send_header("Pragma", "no-cache")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        self.send_header("X-Frame-Options", "DENY")
+        self.send_header("Referrer-Policy", "no-referrer")
+        self.send_header("Cross-Origin-Opener-Policy", "same-origin")
+        self.send_header("Cross-Origin-Resource-Policy", "same-origin")
+        self.send_header(
+            "Content-Security-Policy",
+            "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'",
+        )
+        self.send_header("Connection", "close")
+        self.end_headers()
+        self.wfile.write(encoded)
+        self.close_connection = True
+
+    def _static_path(self, request_path: str) -> Path | None:
+        root = self.server.ui_root
+        if root is None:
+            return None
+        try:
+            decoded = unquote(request_path, errors="strict")
+        except (UnicodeDecodeError, ValueError):
+            return None
+        if "\\" in decoded or "\x00" in decoded:
+            return None
+        relative = "index.html" if decoded in {"", "/"} else decoded.lstrip("/")
+        parts = Path(relative).parts
+        if not parts or any(part in {"", ".", ".."} for part in parts):
+            return None
+        candidate = (root / Path(*parts)).resolve()
+        try:
+            candidate.relative_to(root)
+        except ValueError:
+            return None
+        if candidate.suffix.lower() not in STATIC_SUFFIXES or not candidate.is_file():
+            return None
+        return candidate
+
     def _error(self, status: HTTPStatus, code: str, message: str) -> None:
         self._reply(status, {"error": {"code": code, "message": message}})
 
@@ -151,6 +218,9 @@ class LocalWorkbenchRequestHandler(BaseHTTPRequestHandler):
         if not self._admit_common():
             return
         parsed = urlsplit(self.path)
+        if not parsed.query and (asset := self._static_path(parsed.path)) is not None:
+            self._reply_static(asset)
+            return
         if parsed.path == "/healthz" and not parsed.query:
             self._reply(
                 HTTPStatus.OK,
@@ -356,9 +426,19 @@ def _validate_ui_origin(value: str | None) -> str | None:
     return f"http://{LOOPBACK_HOST}:{port}"
 
 
+def _validate_ui_root(value: str | Path | None) -> Path | None:
+    if value is None:
+        return None
+    root = Path(value).expanduser().resolve()
+    if not root.is_dir() or not (root / "index.html").is_file():
+        raise LocalTransportError("UI root must be a built directory containing index.html")
+    return root
+
+
 __all__ = [
     "LOOPBACK_HOST",
     "MAX_REQUEST_BYTES",
+    "MAX_STATIC_BYTES",
     "LocalTransportError",
     "LocalWorkbenchHTTPServer",
 ]

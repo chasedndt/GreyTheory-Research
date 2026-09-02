@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "api-object-ownership",
+  "version": "1.0.0",
+  "title": "API Object Ownership",
+  "summary": "Build a two-account object-authorization method from HTTP identity through ownership evidence and report limitations.",
+  "state": "queued",
+  "estimated_minutes": 50,
+  "primary_card_id": "idor-bola",
+  "card_ids": [
+    "idor-bola",
+    "session-management",
+    "business-logic-authorization"
+  ],
+  "fixture_id": "fixture-idor-bola",
+  "objectives": [
+    "Separate authentication from object authorization.",
+    "Design positive, vulnerable, and negative two-account controls.",
+    "Bind ownership observations to reproducible evidence.",
+    "Transfer the ownership invariant to an unfamiliar identifier shape."
+  ],
+  "traditional_lens": "Trace identity, object ownership, lookup behavior, policy enforcement, and minimum-impact reproduction.",
+  "ai_lens": "Use AI to generate and challenge hypotheses without allowing it to invent scope, identities, effects, or proof.",
+  "tracks": ["guided", "assisted", "transfer"],
+  "live_programme_adapter": {
+    "state": "dark",
+    "enabled": false,
+    "required_authority_fields": [
+      "programme_id",
+      "source_bundle_digest",
+      "scope_contract_fingerprint",
+      "max_authority",
+      "rate_limit",
+      "data_policy",
+      "disclosure_policy"
+    ],
+    "activation_gates": [
+      "installed Windows workbench acceptance",
+      "full Ubuntu worker host acceptance",
+      "durable egress and key-provider acceptance",
+      "one verified programme review",
+      "explicit human posture approval"
+    ]
+  },
+  "current_posture": "LOCAL_FIXTURE",
+  "awards_mastery": false,
+  "proves_real_vulnerability": false
+}

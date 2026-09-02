@@ -644,3 +644,32 @@ flowchart LR
     style VPS fill:#78350f,stroke:#f59e0b,color:#fff
     style LIVE fill:#7f1d1d,stroke:#ef4444,color:#fff
 ```
+## 17. Case-pack learner loop and live-programme boundary
+
+```mermaid
+flowchart LR
+    Goal["Learner goal"] --> Planner["Inspectable recommendation"]
+    Planner --> Pack["Versioned case pack"]
+    Pack --> Learn["Learn"]
+    Learn --> Practise["Practise in LOCAL_FIXTURE"]
+    Practise --> Receipt["Immutable synthetic receipt"]
+    Receipt --> Prove["Prove with limitations"]
+    Prove --> Reflect["Reflect"]
+    Reflect --> Assess["Human assessment"]
+    Assess --> Transfer["Independent transfer"]
+    Pack -. "dark compatibility fields" .-> Live["Future programme adapter"]
+    Live -. "requires all five gates" .-> Worker["Ubuntu passive worker"]
+```
+
+## 18. Five-gate transition to a passive pilot
+
+```mermaid
+flowchart TB
+    Current["LOCAL_FIXTURE research preview"] --> W["1. Windows installed acceptance"]
+    W --> U["2. Ubuntu full-worker acceptance"]
+    U --> E["3. Durable egress and key-provider acceptance"]
+    E --> P["4. One verified programme review"]
+    P --> H["5. Explicit human posture approval"]
+    H --> Pilot["PASSIVE_HTTP pilot: one programme, one action type"]
+    VPS["Optional VPS deployment"] -. "only after local image acceptance" .-> Pilot
+```

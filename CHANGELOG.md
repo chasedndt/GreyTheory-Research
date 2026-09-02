@@ -4,6 +4,18 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - Case Pack and persisted learner foundation
+
+- Added three versioned Case Packs, one ready local Agent Tool Authorization
+  pack, immutable synthetic fixture receipts, and a working guided/full/transfer
+  Demo Suite.
+- Added exact same-origin learner commands and optional bounded UI serving to
+  the numeric-loopback local application while retaining read-only cross-origin
+  previews and the `LOCAL_FIXTURE` ceiling.
+- Added a deliberately dark live-programme compatibility contract, five
+  mandatory transition gates, and two Mermaid diagrams for the learner and
+  passive-pilot boundaries.
+
 ### Added - AI-native learner dashboard direction
 
 - Added the learner-first Today/Learn/Practise/Research/Prove/Library product contract, inspectable recommendation rules, agent-security learning track, bounded AI-coach boundary, visualisation system, and responsive acceptance criteria.

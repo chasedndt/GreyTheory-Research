@@ -23,7 +23,7 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guided recommendations, transparent adaptive review scheduling, bounded standard/assisted/transfer tracks, staged journeys, reflection, private persistence, explicit human-assessed completion, and the graphical learner preview are live; broader packs and server-persisted graphical journey commands remain open), workbench surface (CLI, static read model, executable capability register, versioned application snapshots, bounded application commands, private runtime assembly, authenticated numeric-loopback API, the retained Research Ledger, and the selected Guided Mission Control shell; the browser preview now completes a responsive local Learn -> Practise -> Prove -> Reflect -> Assess case, while command persistence, comprehensive keyboard acceptance, installed packaging, and clean-user acceptance remain open). |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with one ready local pack, immutable synthetic fixture receipts, and explicit human-assessed completion exist; broader ready curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, optional same-origin UI serving, Guided Mission Control, working Demo Suite, and the retained Research Ledger exist; visual browser acceptance of the new persisted flow, comprehensive keyboard acceptance, installed packaging, and clean-user acceptance remain open). |
 | **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, complete curriculum packs, installed learner-first application shell, and accepted Ubuntu passive worker. |
 | **PLANNED** | Governed Scope Watch collector, network workers/live collectors, integrated standalone graphical workbench, live research proof. |
 
@@ -42,9 +42,11 @@ compares a consented local tool request with an indirect prompt-injection
 control; the injected instruction is denied before the tool adapter and neither
 path can contact a live target.
 
-The earlier Research Ledger remains a first-class Research case view and its
-authenticated read-only snapshot boundary is preserved. Browser command
-submission, server-persisted learner actions, installed packaging, and the
+The earlier Research Ledger remains a first-class Research case view. The local
+service can now serve the built UI from its exact origin, accept bounded learner
+commands, run only the network-free synthetic fixture runner, and persist
+immutable receipts outside Git. A separate development preview remains
+read-only. Installed packaging, full keyboard and visual acceptance, and the
 Ubuntu passive-worker acceptance are still open. The selected composition and
 acceptance evidence are documented in
 [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
@@ -55,8 +57,8 @@ acceptance evidence are documented in
 pip install -e ".[dev]" && python -m pytest -q
 ```
 
-Launch the current Windows-first local API foundation (not yet connected to the
-graphical prototype). Its default private root is under the current user's local app-data
+Launch the Windows-first local application foundation. Its default private root
+is under the current user's local app-data
 directory and it binds only to `127.0.0.1`:
 
 ```bash
@@ -73,6 +75,18 @@ greytheory-workbench --ui-origin http://127.0.0.1:4173
 This exception admits authenticated `GET /api/v1/snapshot` only. Cross-origin
 commands remain disabled, the token is held in browser memory only, and no
 target-network capability is enabled.
+
+To serve the built learner UI from the same numeric-loopback origin and enable
+only its bounded local learner commands:
+
+```bash
+npm --prefix workbench_ui run build
+greytheory-workbench --ui-root workbench_ui/dist/client
+```
+
+The future live-programme adapter remains dark. Its required authority fields
+and five activation gates are documented in
+[`Docs/live-programme-transition.md`](Docs/live-programme-transition.md).
 
 Compile a deliberately broken programme and watch it fail closed:
 

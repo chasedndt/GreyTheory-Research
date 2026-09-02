@@ -1,0 +1,17 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+
+import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES, casePackById } from "../src/casePacks.js";
+
+test("case-pack preview exposes one local pack and keeps live activation gated", () => {
+  assert.equal(CASE_PACKS.length, 3);
+  assert.equal(CASE_PACKS.filter((item) => item.status === "Ready locally").length, 1);
+  assert.equal(casePackById("agent-authorization-boundary").primaryCard, "tool-authorization-failure");
+  assert.equal(LIVE_PROGRAMME_GATES.length, 5);
+  assert.ok(LIVE_PROGRAMME_GATES.every((item) => !/ready now|enabled/i.test(item)));
+});
+
+test("demo suite separates guided, full, and independent transfer runs", () => {
+  assert.deepEqual(DEMO_RUNS.map((item) => item.id), ["guided-preview", "learner-mission", "transfer-check"]);
+  assert.match(DEMO_RUNS[2].status, /human review/);
+});

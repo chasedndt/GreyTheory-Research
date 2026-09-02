@@ -4,6 +4,24 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-02 — Codex — Case Pack and persisted learner foundation
+
+### What was built
+
+- Added three versioned Case Packs, immutable synthetic receipts, same-origin
+  learner command persistence, and a working three-run Demo Suite.
+- Added a dark live-programme compatibility contract and documented its five
+  all-or-nothing transition gates.
+- Added bounded same-origin static UI serving without adding a target client.
+
+### What the next agent should not undo
+
+Keep cross-origin previews read-only. Never accept programme authority from the
+browser, award mastery from a fixture, treat synthetic evidence as a live
+finding, or use a VPS to skip local Windows and Ubuntu acceptance.
+
+See `07_LOGS/Build-Logs/2026-09-02-greytheory-case-pack-foundation.md`.
+
 ## 2026-09-01 — Codex — AI-native learner dashboard direction
 
 ### What was established

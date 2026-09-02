@@ -14,6 +14,7 @@ from greytheory.authority.approvals import LocalApprovalStore
 from greytheory.authority.gate import AuthorityLevel
 from greytheory.evidence import EvidenceVault, find_repository_root
 from greytheory.learning import (
+    FixtureReceiptStore,
     LearningJourneyStore,
     MasteryStore,
     load_builtin_catalogue,
@@ -88,6 +89,9 @@ class LocalWorkbenchRuntime:
                 private_root / "learning", catalogue=catalogue, audit=audit
             ),
             journeys=LearningJourneyStore(
+                private_root / "learning", catalogue=catalogue, audit=audit
+            ),
+            fixture_receipts=FixtureReceiptStore(
                 private_root / "learning", catalogue=catalogue, audit=audit
             ),
             evidence=EvidenceVault(private_root / "evidence", audit=audit),

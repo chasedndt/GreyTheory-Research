@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "session-role-transition",
+  "version": "1.0.0",
+  "title": "Session and Role Transition",
+  "summary": "Connect session lifecycle, function-level authorization, and business workflow state to a reusable research method.",
+  "state": "queued",
+  "estimated_minutes": 55,
+  "primary_card_id": "session-management",
+  "card_ids": [
+    "session-management",
+    "bfla",
+    "business-logic-authorization"
+  ],
+  "fixture_id": "fixture-session-management",
+  "objectives": [
+    "Explain session validity separately from role permission.",
+    "Test logout, rotation, and function boundaries with controls.",
+    "Recognise workflow-state authorization failures.",
+    "Produce a limitation-aware evidence narrative."
+  ],
+  "traditional_lens": "Model token lifecycle, role transitions, permitted functions, and workflow preconditions.",
+  "ai_lens": "Prevent remembered context, prior grants, or model suggestions from persisting authority after state changes.",
+  "tracks": ["guided", "assisted", "transfer"],
+  "live_programme_adapter": {
+    "state": "dark",
+    "enabled": false,
+    "required_authority_fields": [
+      "programme_id",
+      "source_bundle_digest",
+      "scope_contract_fingerprint",
+      "max_authority",
+      "rate_limit",
+      "data_policy",
+      "disclosure_policy"
+    ],
+    "activation_gates": [
+      "installed Windows workbench acceptance",
+      "full Ubuntu worker host acceptance",
+      "durable egress and key-provider acceptance",
+      "one verified programme review",
+      "explicit human posture approval"
+    ]
+  },
+  "current_posture": "LOCAL_FIXTURE",
+  "awards_mastery": false,
+  "proves_real_vulnerability": false
+}

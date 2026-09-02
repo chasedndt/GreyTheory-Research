@@ -164,10 +164,11 @@ The redesigned shell is not accepted until all of the following pass:
 | D1 Direction | three grounded visual options and editable Figma board | COMPLETE 2026-09-01 |
 | D2 Selection | operator chooses the shell and permitted borrowings | COMPLETE 2026-09-01 |
 | D3 Foundations | tokens, typography, shell, responsive grid, navigation | COMPLETE IN PREVIEW 2026-09-01 |
-| D4 Today/Learn | recommendation, learner loop, focused lesson, skill graph | COMPLETE IN PREVIEW 2026-09-01 |
-| D5 Practise/Research/Prove | fixture handoff, case canvas, ledger, evidence | COMPLETE IN PREVIEW 2026-09-01 |
+| D4 Today/Learn | recommendation, learner loop, focused lesson, skill graph | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
+| D5 Practise/Research/Prove | fixture command, immutable receipt, case canvas, ledger, evidence | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
+| D5a Case Packs/Demos | one ready local pack, two queued packs, guided/full/transfer demo suite | IMPLEMENTED 2026-09-02 |
 | D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
-| D7 Acceptance | desktop/390/768/1024 visual and interaction proof complete; full keyboard and clean-user Windows package | PARTIAL |
+| D7 Acceptance | earlier responsive preview proof exists; current same-origin persisted flow, full keyboard, and clean-user Windows package | PARTIAL |
 
 ## Implemented reference case
 
@@ -184,6 +185,31 @@ paired local controls:
   and complete an independent readiness question; and
 - completion remains practice evidence rather than automatic mastery.
 
+## Industry-practice grounding
+
+The implementation borrows durable learning patterns without copying another
+product's visual design:
+
+- [PortSwigger Web Security Academy](https://portswigger.net/web-security/getting-started)
+  grounds the read, practise, and progress-tracking loop; its
+  [essential-skills guidance](https://portswigger.net/web-security/essential-skills)
+  also reinforces that one lab is one variation and skill requires transfer.
+- [Hack The Box Academy paths](https://academy.hackthebox.com/catalogue/paths)
+  support ordered paths that join theory, practical work, methodology, and
+  reporting rather than presenting an undifferentiated topic library.
+- The [OWASP Top 10 for Agentic Applications](https://genai.owasp.org/download/52117/)
+  informs the agent-security track, including prompt injection, excessive
+  agency, tool misuse, identity/privilege, and memory/context risks.
+- [HackerOne scope and rewards guidance](https://docs.hackerone.com/en/articles/14432111-unified-scope-rewards-setup)
+  supports making scope groups, exclusions, warnings, and changes visible
+  before authorised testing begins.
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/) and its
+  [focus-order guidance](https://www.w3.org/WAI/WCAG22/Understanding/focus-order.html)
+  define the keyboard, focus, and target-size acceptance basis.
+
+These references shape the learning and safety contracts; they do not imply
+endorsement, equivalence, or competitive feature parity.
+
 ## Launch and transition
 
 The passive lab research pilot launches first on the operator's **Windows
@@ -197,6 +223,10 @@ key handling, broker/receipt path, sustained clean operation, and explicit
 human posture approval have passed. The workbench remains on Windows while the
 worker receives one short-lived ticket and returns one receipt and encrypted
 capture.
+
+The exact compatibility fields, all-or-nothing five-gate decision, and the
+signal for considering transition are defined in
+[`live-programme-transition.md`](live-programme-transition.md).
 
 ```mermaid
 flowchart LR

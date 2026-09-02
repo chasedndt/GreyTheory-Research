@@ -33,6 +33,7 @@ class ReadinessStatus(str, Enum):
 class CommandKind(str, Enum):
     SELECT_WORKSPACE = "select_workspace"
     START_LEARNING_JOURNEY = "start_learning_journey"
+    RUN_LEARNING_FIXTURE = "run_learning_fixture"
     ADVANCE_LEARNING_JOURNEY = "advance_learning_journey"
     ABANDON_LEARNING_JOURNEY = "abandon_learning_journey"
     CREATE_HYPOTHESIS = "create_hypothesis"
@@ -365,6 +366,19 @@ class WorkbenchCommand:
             raise WorkbenchContractError(
                 "creating a hypothesis requires expected revision zero"
             )
+        if self.kind is CommandKind.RUN_LEARNING_FIXTURE:
+            if self.expected_revision is None:
+                raise WorkbenchContractError(
+                    "running a learning fixture requires the current journey revision"
+                )
+            if self.requested_authority is not AuthorityLevel.LOCAL_FIXTURE:
+                raise WorkbenchContractError(
+                    "learning fixtures require exactly LOCAL_FIXTURE authority"
+                )
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "running a learning fixture requires explicit human acknowledgement"
+                )
         if self.kind in {
             CommandKind.REVIEW_HYPOTHESIS_SCOPE,
             CommandKind.PLAN_EXPERIMENT,

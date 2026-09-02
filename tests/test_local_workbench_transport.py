@@ -178,6 +178,53 @@ def test_optional_ui_origin_is_exact_and_read_only(tmp_path):
         thread.join(timeout=5)
 
 
+def test_optional_same_origin_ui_is_bounded_and_keeps_api_headers(tmp_path):
+    runtime = LocalWorkbenchRuntime.assemble(tmp_path / "private-workbench")
+    ui_root = tmp_path / "ui"
+    assets = ui_root / "assets"
+    assets.mkdir(parents=True)
+    (ui_root / "index.html").write_text("<!doctype html><title>GreyTheory</title>", encoding="utf-8")
+    (assets / "app.js").write_text("globalThis.greytheory = true;", encoding="utf-8")
+    server = LocalWorkbenchHTTPServer(runtime.service, port=0, token=TOKEN, ui_root=ui_root)
+    thread = Thread(target=server.serve_forever, kwargs={"poll_interval": 0.01})
+    thread.start()
+    try:
+        connection = HTTPConnection(server.host, server.port, timeout=5)
+        connection.request("GET", "/", headers={"Host": server.expected_host_header})
+        response = connection.getresponse()
+        assert response.status == 200
+        assert response.getheader("Cross-Origin-Resource-Policy") == "same-origin"
+        assert "connect-src 'self'" in response.getheader("Content-Security-Policy")
+        assert b"GreyTheory" in response.read()
+        connection.close()
+
+        connection = HTTPConnection(server.host, server.port, timeout=5)
+        connection.request("GET", "/assets/app.js", headers={"Host": server.expected_host_header})
+        response = connection.getresponse()
+        assert response.status == 200
+        assert response.getheader("Content-Type").startswith("text/javascript")
+        response.read()
+        connection.close()
+
+        status, refused, _ = request(server, "GET", "/../private-workbench/audit/audit.jsonl")
+        assert status == 404
+        assert refused["error"]["code"] == "not_found"
+
+        status, snapshot, headers = request(
+            server,
+            "GET",
+            "/api/v1/snapshot",
+            headers={"Authorization": f"Bearer {TOKEN}"},
+        )
+        assert status == 200
+        assert snapshot["live_target_available"] is False
+        assert headers["cache-control"] == "no-store"
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=5)
+
+
 def test_local_launch_package_has_no_target_client_or_process_adapter():
     root = Path(__file__).resolve().parents[1] / "greytheory_local"
     modules: set[str] = set()

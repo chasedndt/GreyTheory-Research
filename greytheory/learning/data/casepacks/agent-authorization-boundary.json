@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "id": "agent-authorization-boundary",
+  "version": "1.0.0",
+  "title": "Agent Tool Authorization Boundary",
+  "summary": "Connect traditional access control to indirect prompt injection, delegated agency, tool tickets, and evidence-safe denial.",
+  "state": "ready_local",
+  "estimated_minutes": 35,
+  "primary_card_id": "tool-authorization-failure",
+  "card_ids": [
+    "idor-bola",
+    "indirect-prompt-injection",
+    "tool-authorization-failure"
+  ],
+  "fixture_id": "fixture-tool-authorization-failure",
+  "objectives": [
+    "Explain why tool availability is not authority.",
+    "Compare a consented request with an untrusted instruction.",
+    "Run a server-issued synthetic fixture and inspect its receipt.",
+    "State what the evidence proves and what remains unknown."
+  ],
+  "traditional_lens": "Identify the actor, resource, action, policy decision, and least-privilege boundary.",
+  "ai_lens": "Trace instruction origin, current consent, context isolation, tool scope, output handling, and excessive agency.",
+  "tracks": ["guided", "assisted", "transfer"],
+  "live_programme_adapter": {
+    "state": "dark",
+    "enabled": false,
+    "required_authority_fields": [
+      "programme_id",
+      "source_bundle_digest",
+      "scope_contract_fingerprint",
+      "max_authority",
+      "rate_limit",
+      "data_policy",
+      "disclosure_policy"
+    ],
+    "activation_gates": [
+      "installed Windows workbench acceptance",
+      "full Ubuntu worker host acceptance",
+      "durable egress and key-provider acceptance",
+      "one verified programme review",
+      "explicit human posture approval"
+    ]
+  },
+  "current_posture": "LOCAL_FIXTURE",
+  "awards_mastery": false,
+  "proves_real_vulnerability": false
+}

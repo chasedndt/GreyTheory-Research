@@ -111,8 +111,10 @@ assessments; test-fixture assessments remain visible but non-crediting. The
 Milestone 4 BOLA proposal maps to exactly one `idor-bola` v1.0.0 revision with
 `test_fixture` provenance. Focused acceptance originally passed 10 tests and
 the then-current full suite passed 430. Transparent adaptive review plus bounded
-assisted and transfer tracks were added later under the workbench workstream;
-broader curricula and the graphical Learn surface remain PARTIAL.
+assisted and transfer tracks were added later under the workbench workstream.
+Three versioned Case Packs and the graphical Learn surface now exist, but only
+the first Case Pack is ready locally and installed product acceptance remains
+PARTIAL.
 
 ## Milestone 6 — Hypothesis engine *(COMPLETE 2026-08-09)*
 
@@ -234,12 +236,22 @@ defined in
 - [x] Add an inspectable recommendation explanation, six-stage learner loop, prerequisite/skill trajectory, agent-security track, case canvas, and evidence-quality visualisations.
 - [ ] Connect the bounded AI coach to the governed model gateway; its advisory-only presentation and explicit no-execution/no-mastery boundary are implemented.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
+- [x] Define versioned Case Pack contracts for guided, assisted, and independent transfer runs; ship Agent Tool Authorization as the first ready local pack and queue API ownership plus session/role transition packs.
+- [x] Persist immutable synthetic fixture receipts and bind the graphical Learn -> Practise -> Prove -> Reflect path to same-origin, revision-safe application commands.
+- [x] Serve the built learner UI from the numeric-loopback application under a self-only content policy while keeping separate preview origins read-only.
+- [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
 - [ ] Complete accessibility and installed acceptance; desktop plus 390/768/1024 responsive browser checks pass without horizontal overflow, but full sequential-keyboard and clean-user Windows acceptance remain open.
 - [ ] Package and accept on the Windows operator workstation.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a
 bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
+
+Current next product gate: visually verify the same-origin persisted path,
+complete sequential-keyboard acceptance, then package and exercise it under a
+clean Windows user. See [`live-programme-transition.md`](live-programme-transition.md)
+for the later five-gate transition; no VPS or programme connection is part of
+this product gate.
 
 ## Milestone 9 — Passive execution pilot
 
