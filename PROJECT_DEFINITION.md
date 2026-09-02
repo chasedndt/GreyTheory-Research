@@ -84,7 +84,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 1 | Programme and Authority Intelligence | PARTIAL |
 | 2 | Research Workspace | LIVE offline; structured store and sessions verified |
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
-| 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready local pack, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
+| 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
 | 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified, with earlier offline Ubuntu primitive proof; the full service has not passed host acceptance and no OS-bound KEK provider, durable egress, hardened image, launcher, or passive action exists |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
@@ -119,7 +119,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - an acyclic prerequisite graph and six-dimensional mastery model (`explain`, `recognise`, `test`, `prove`, `remediate`, `transfer`) backed by an integrity-checked private store;
 - explicit mastery governance: only evidence-bound human assessments credit mastery; labelled test-fixture assessments remain visible but non-crediting;
 - deterministic guided-learning recommendations with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess stage requirements, integrity-checked private journey persistence, optimistic revisions, and a CLI workflow; journey completion never awards mastery;
-- three versioned learner Case Packs, one ready for local use and two queued, with guided/assisted/transfer tracks and a live-programme adapter contract that is structurally fixed dark and grants no target authority;
+- three versioned learner Case Packs, one ready as an exact 30-minute local mission and two queued, with guided/assisted/transfer tracks, practice-only scenario checks, and a live-programme adapter contract that is structurally fixed dark and grants no target authority;
 - immutable, integrity-checked synthetic fixture receipts persisted outside Git, plus a bounded application command that runs a fixture only for an active practise-stage journey with exact `LOCAL_FIXTURE` authority and human acknowledgement;
 - the Milestone 4 `card-update-local-bola-v1` proposal applied to canonical `idor-bola` v1.0.0 with `test_fixture` revision provenance and no real-session claim.
 - a versioned conservative nine-factor ranking policy, deterministic engine, and integrity-checked private research queue that explains every score, partitions uncertain scope, labels every item `unproven`, and carries no execution authority;
@@ -168,7 +168,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   have not produced a successful host JSON record; durable egress, a hardened
   image, OS-bound KEK,
   scheduler, and target contact remain unproven or unavailable.
-- the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
+- the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, an offline programme-to-local-case readiness view, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
 
 ### PLANNED / NOT BUILT
 

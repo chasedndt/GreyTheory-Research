@@ -164,7 +164,7 @@ The redesigned shell is not accepted until all of the following pass:
 | D1 Direction | three grounded visual options and editable Figma board | COMPLETE 2026-09-01 |
 | D2 Selection | operator chooses the shell and permitted borrowings | COMPLETE 2026-09-01 |
 | D3 Foundations | tokens, typography, shell, responsive grid, navigation | COMPLETE IN PREVIEW 2026-09-01 |
-| D4 Today/Learn | recommendation, learner loop, focused lesson, skill graph | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
+| D4 Today/Learn | recommendation, exact 30-minute learner loop, scenario checks, focused lesson, skill graph | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
 | D5 Practise/Research/Prove | fixture command, immutable receipt, case canvas, ledger, evidence | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
 | D5a Case Packs/Demos | one ready local pack, two queued packs, guided/full/transfer demo suite | IMPLEMENTED 2026-09-02 |
 | D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
@@ -176,6 +176,11 @@ selecting a later node reveals the path but cannot award progress. The three
 current agent-security topics each own distinct instructional content,
 checkpoints, lenses, official resources, and a four-lesson progression from
 beginner orientation to independent transfer.
+
+The ready mission now budgets Learn 8, Practise 10, Prove 5, Reflect 4, and
+Assess 3 minutes. Each topic adds two scored scenarios to the learner's own
+explanation checklist. Both scenarios and three explanations are required to
+open the lab, but neither the unlock nor mission completion grants mastery.
 
 ## Public intelligence and programme connectors
 
@@ -189,6 +194,12 @@ account credentials and permissions, so the preview shows their requirements
 without accepting tokens or making requests. A future local worker must keep
 credentials outside the browser, import only authorised account data, preserve
 source/retrieval evidence, and remain separate from target testing.
+
+The Programmes view uses the already saved source bundles to teach a four-step
+transition: read the dated source, resolve scope through human review, derive a
+synthetic local case, and only later consider a posture decision. The fourth
+step remains unavailable, YNAB ambiguity remains blocked, and the view performs
+no refresh, account access, programme contact, or target request.
 
 ## Implemented reference case
 

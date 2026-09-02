@@ -48,3 +48,12 @@ test("modal retains escape close and a bounded focus loop", () => {
   assert.match(appSource, /focusable\[0\]/);
   assert.match(appSource, /focusable\[focusable\.length - 1\]/);
 });
+
+test("guided learning exposes accessible mission stages and scenario checks", () => {
+  assert.match(appSource, /aria-labelledby="mission-plan-title"/);
+  assert.match(appSource, /aria-label="Mission stages"/);
+  assert.match(appSource, /<fieldset key=\{item\.question\}>/);
+  assert.match(appSource, /<legend>\{checkIndex \+ 1\}\. \{item\.question\}<\/legend>/);
+  assert.match(appSource, /disabled=\{!labReady\}/);
+  assert.match(appSource, /This unlocks practice only; it does not award mastery\./);
+});

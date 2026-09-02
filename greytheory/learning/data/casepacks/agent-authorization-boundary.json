@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
   "id": "agent-authorization-boundary",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": "Agent Tool Authorization Boundary",
   "summary": "Connect traditional access control to indirect prompt injection, delegated agency, tool tickets, and evidence-safe denial.",
   "state": "ready_local",
-  "estimated_minutes": 35,
+  "estimated_minutes": 30,
   "primary_card_id": "tool-authorization-failure",
   "card_ids": [
     "idor-bola",

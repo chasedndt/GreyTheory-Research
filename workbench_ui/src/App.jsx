@@ -35,7 +35,7 @@ import {
   validateLocalConnection,
 } from "./workbenchApi";
 import { runAuthorizationSimulation } from "./learningCase";
-import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES } from "./casePacks";
+import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES, MISSION_SEGMENTS, PROGRAMME_READINESS } from "./casePacks";
 import { LEARNING_TOPICS, SKILL_TRACKS, topicById } from "./learningPaths";
 import { INTEGRATION_GUARDRAILS, PROGRAMME_CONNECTORS, PUBLIC_INTELLIGENCE_SOURCES } from "./intelligenceSources";
 
@@ -231,7 +231,7 @@ function MissionControl({ navigate, startMission, journey, persistenceMode }) {
         <section className="surface mission-card">
           <div className="mission-card__copy">
             <div className="mission-icon"><LockKey /></div>
-            <div><span className="eyebrow">Case Pack 01 · Local fixture</span><h2>Agent Tool Authorization Boundary</h2><p>Learn when an AI agent may invoke a tool, then test the boundary against an indirect prompt-injection case.</p><div className="tag-row"><Pill>Agent security</Pill><Pill>Least privilege</Pill><Pill tone="green">Beginner-friendly</Pill><Pill tone="blue">35 min</Pill>{journey && <Pill tone="violet">Assigned: {journey.title}</Pill>}</div></div>
+            <div><span className="eyebrow">Case Pack 01 · Local fixture</span><h2>Agent Tool Authorization Boundary</h2><p>Learn when an AI agent may invoke a tool, then test the boundary against an indirect prompt-injection case.</p><div className="tag-row"><Pill>Agent security</Pill><Pill>Least privilege</Pill><Pill tone="green">Beginner-friendly</Pill><Pill tone="blue">30 min</Pill>{journey && <Pill tone="violet">Assigned: {journey.title}</Pill>}</div></div>
           </div>
           <div className="mission-objectives"><span className="eyebrow">Mission objectives</span><ul><li><CheckCircle />Explain capability versus authorization</li><li><CheckCircle />Run a synthetic positive and negative control</li><li><CheckCircle />Capture a deterministic evidence receipt</li><li><CheckCircle />Reflect and request human assessment</li></ul></div>
           <div className="mission-actions"><button className="button button--primary" onClick={startMission}>{journey ? "Resume persisted mission" : "Start guided mission"} <ArrowRight /></button><button className="button button--secondary" onClick={() => navigate("cases")}>Preview case</button><span className={`persistence-note persistence-note--${persistenceMode}`}>{persistenceMode === "interactive" ? "Private progress persistence on" : "Preview progress only"}</span></div>
@@ -253,18 +253,30 @@ function MissionControl({ navigate, startMission, journey, persistenceMode }) {
 function LearnView({ openLab, journey }) {
   const [topic, setTopic] = useState(() => journey?.cardId === "indirect-prompt-injection" ? "prompt-boundaries" : "tool-authorization");
   const [lessonIndex, setLessonIndex] = useState(0);
-  const [checked, setChecked] = useState([true, false, false, false]);
+  const [checked, setChecked] = useState([false, false, false, false]);
+  const [answers, setAnswers] = useState({});
+  const [missionSegment, setMissionSegment] = useState("learn");
   const selected = topicById(topic);
+  const activeSegment = MISSION_SEGMENTS.find((segment) => segment.id === missionSegment) || MISSION_SEGMENTS[0];
+  const correctAnswers = selected.practiceChecks.filter((item, index) => answers[index] === item.answer).length;
+  const conceptChecks = checked.filter(Boolean).length;
+  const labReady = conceptChecks >= 3 && correctAnswers === selected.practiceChecks.length;
   const selectTopic = (id) => {
     if (id === topic) return;
     setTopic(id);
     setLessonIndex(0);
     setChecked([false, false, false, false]);
+    setAnswers({});
   };
   const toggle = (index) => setChecked((items) => items.map((value, itemIndex) => itemIndex === index ? !value : value));
   return (
     <div className="content-page learn-page">
-      <header className="page-heading"><div><span className="eyebrow">Learn · Recommended for you</span><h1>Today’s learning brief</h1><p>A focused sequence that connects traditional access control to AI-native agent security.</p>{journey && <div className="tag-row"><Pill tone="violet">Assigned step: {journey.title}</Pill><Pill>{journey.dimension}</Pill></div>}</div><div className="time-chip"><BookOpen />35 min guided path</div></header>
+      <header className="page-heading"><div><span className="eyebrow">Learn · Recommended for you</span><h1>Today’s learning brief</h1><p>A focused sequence that connects traditional access control to AI-native agent security.</p>{journey && <div className="tag-row"><Pill tone="violet">Assigned step: {journey.title}</Pill><Pill>{journey.dimension}</Pill></div>}</div><div className="time-chip"><BookOpen />30 min guided mission</div></header>
+      <section className="surface mission-plan" aria-labelledby="mission-plan-title">
+        <div className="mission-plan__heading"><div><span className="eyebrow">Your route today</span><h2 id="mission-plan-title">One complete research-learning loop</h2></div><Pill tone="green">30 minutes total</Pill></div>
+        <div className="mission-segments" role="group" aria-label="Mission stages">{MISSION_SEGMENTS.map((segment, index) => <button type="button" key={segment.id} className={segment.id === missionSegment ? "is-selected" : ""} onClick={() => setMissionSegment(segment.id)} aria-pressed={segment.id === missionSegment}><span>{String(index + 1).padStart(2, "0")}</span><strong>{segment.label}</strong><small>{segment.minutes} min</small></button>)}</div>
+        <div className="mission-segment-detail" aria-live="polite"><div><span className="eyebrow">Outcome</span><strong>{activeSegment.outcome}</strong></div><div><span className="eyebrow">Produce</span><p>{activeSegment.deliverable}</p></div><div><span className="eyebrow">Safety boundary</span><p>{activeSegment.boundary}</p></div></div>
+      </section>
       <div className="topic-grid">
         {LEARNING_TOPICS.map(({ id, title, copy, duration, level }) => { const Icon = TOPIC_ICONS[id]; return <button key={id} className={`topic-card ${topic === id ? "is-selected" : ""}`} onClick={() => selectTopic(id)} onMouseEnter={() => selectTopic(id)} onFocus={() => selectTopic(id)} aria-pressed={topic === id}><div><Icon /><Pill tone={topic === id ? "amber" : "neutral"}>{topic === id ? "Current topic" : level}</Pill></div><strong>{title}</strong><p>{copy}</p><span>{duration} · {level}</span></button>; })}
       </div>
@@ -288,11 +300,13 @@ function LearnView({ openLab, journey }) {
           </section>
         </main>
         <aside className="surface lesson-checklist">
-          <span className="eyebrow">Learning checkpoint</span><h2>Can you explain it?</h2><p>Mark each statement only when you can explain it in your own words.</p>
+          <span className="eyebrow">Practice check</span><h2>Reason before the lab</h2><p>Answer both scenarios, then confirm what you can explain in your own words.</p>
+          <div className="practice-checks">{selected.practiceChecks.map((item, checkIndex) => <fieldset key={item.question}><legend>{checkIndex + 1}. {item.question}</legend>{item.options.map((option, optionIndex) => <label key={option}><input type="radio" name={`${selected.id}-check-${checkIndex}`} checked={answers[checkIndex] === optionIndex} onChange={() => setAnswers((current) => ({ ...current, [checkIndex]: optionIndex }))} /><span>{option}</span></label>)}{answers[checkIndex] !== undefined && <div className={`practice-feedback ${answers[checkIndex] === item.answer ? "is-correct" : "is-wrong"}`} role="status"><strong>{answers[checkIndex] === item.answer ? "Good reasoning" : "Try that boundary again"}</strong><p>{answers[checkIndex] === item.answer ? item.explanation : "Re-read the focused note and choose the answer that preserves explicit authority and the smallest safe scope."}</p></div>}</fieldset>)}</div>
+          <div className="self-check-heading"><span className="eyebrow">Explain it yourself</span><Pill tone={conceptChecks >= 3 ? "green" : "neutral"}>{conceptChecks}/4</Pill></div>
           {selected.checkpoints.map((label, index) => <label key={label}><input type="checkbox" checked={checked[index]} onChange={() => toggle(index)} /><span><i><Check /></i>{label}</span></label>)}
-          <Progress value={checked.filter(Boolean).length * 25} label="Concept readiness" />
-          <button className="button button--primary button--full" onClick={openLab} disabled={checked.filter(Boolean).length < 3}>Open the safe lab <ArrowRight /></button>
-          <small>Complete at least three checks to continue. This is self-attestation, not mastery.</small>
+          <Progress value={Math.round(((conceptChecks + correctAnswers) / 6) * 100)} label="Practice readiness" />
+          <button className="button button--primary button--full" onClick={openLab} disabled={!labReady}>Open the safe lab <ArrowRight /></button>
+          <small>Answer both practice checks correctly and confirm at least three explanations. This unlocks practice only; it does not award mastery.</small>
         </aside>
       </div>
     </div>
@@ -352,16 +366,20 @@ function LabView({ navigate, labState, setLabState, onRunFixture, onCaptureProof
 }
 
 function ProgrammesView() {
-  const programmes = [
-    { id: "gitlab", platform: "HackerOne", name: "GitLab public programme", status: "Bundle available", scope: "Snapshot requires human review", source: "2026-08-09 source bundle" },
-    { id: "ynab", platform: "Bugcrowd", name: "YNAB public programme", status: "Ambiguity blocked", scope: "Target-group conflict preserved", source: "2026-08-09 source bundle" },
-    { id: "mcp", platform: "Direct VDP", name: "MCP Python SDK", status: "Bundle available", scope: "Security policy source only", source: "2026-08-09 source bundle" },
+  const [selectedId, setSelectedId] = useState(PROGRAMME_READINESS[0].id);
+  const [stage, setStage] = useState("source");
+  const selected = PROGRAMME_READINESS.find((programme) => programme.id === selectedId) || PROGRAMME_READINESS[0];
+  const stages = [
+    ["source", "Read source", selected.sourceState],
+    ["review", "Review scope", selected.reviewState],
+    ["case", "Derive local case", selected.caseState],
+    ["live", "Raise posture", "Unavailable"],
   ];
-  const [selected, setSelected] = useState(programmes[0]);
   return (
     <div className="content-page programmes-page">
       <header className="page-heading"><div><span className="eyebrow">Research · Authority first</span><h1>Programme scope library</h1><p>Review versioned scope and policy sources before creating a hypothesis. Imported text cannot activate testing.</p></div><Pill tone="amber">3 offline bundles</Pill></header>
-      <div className="programme-layout"><main className="surface programme-list"><div className="section-heading"><div><span className="eyebrow">Available sources</span><h2>Programme bundles</h2></div></div>{programmes.map((programme) => <button key={programme.id} className={selected.id === programme.id ? "is-selected" : ""} onClick={() => setSelected(programme)}><Target /><div><small>{programme.platform}</small><strong>{programme.name}</strong><span>{programme.source}</span></div><Pill tone={programme.status.includes("blocked") ? "amber" : "green"}>{programme.status}</Pill></button>)}</main><aside className="surface programme-inspector"><span className="eyebrow">Selected programme</span><h2>{selected.name}</h2><p>{selected.scope}</p><dl><div><dt>Platform</dt><dd>{selected.platform}</dd></div><div><dt>Source state</dt><dd>{selected.status}</dd></div><div><dt>Network access</dt><dd>Unavailable</dd></div><div><dt>Authority</dt><dd>Human review required</dd></div></dl><div className="evidence-limit"><ShieldCheck /><p>This panel helps you understand policy and scope. It cannot contact, scan, or test any programme asset.</p></div></aside></div>
+      <section className="surface programme-readiness" aria-labelledby="programme-readiness-title"><div><span className="eyebrow">Learning-to-research transition</span><h2 id="programme-readiness-title">From public policy to a safe local case</h2><p>Select each stage to see what can happen now. Nothing here grants target authority.</p></div><div className="programme-stages" role="group" aria-label="Programme readiness stages">{stages.map(([id, label, state], index) => <button type="button" key={id} className={stage === id ? "is-selected" : ""} onClick={() => setStage(id)} aria-pressed={stage === id}><span>{index + 1}</span><strong>{label}</strong><small>{state}</small></button>)}</div><div className="programme-stage-note" role="status"><ShieldCheck /><div><strong>{stage === "source" ? "Saved source, not live truth" : stage === "review" ? "A human resolves scope" : stage === "case" ? "Learning stays synthetic" : "Live access remains dark"}</strong><p>{stage === "source" ? "Inspect the versioned snapshot and record its date; refresh is a separate governed action." : stage === "review" ? "Confirm assets, exclusions, rates, data handling, and disclosure terms without guessing through conflicts." : stage === "case" ? selected.nextAction : "Windows product acceptance, Ubuntu worker proof, durable egress, key binding, programme review, and explicit posture approval are still required."}</p></div></div></section>
+      <div className="programme-layout"><main className="surface programme-list"><div className="section-heading"><div><span className="eyebrow">Available sources</span><h2>Programme bundles</h2></div></div>{PROGRAMME_READINESS.map((programme) => <button key={programme.id} className={selected.id === programme.id ? "is-selected" : ""} onClick={() => { setSelectedId(programme.id); setStage("source"); }}><Target /><div><small>{programme.platform}</small><strong>{programme.name}</strong><span>{programme.source}</span></div><Pill tone={programme.blocked ? "amber" : "green"}>{programme.reviewState}</Pill></button>)}</main><aside className="surface programme-inspector"><span className="eyebrow">Selected programme</span><h2>{selected.name}</h2><p>{selected.nextAction}</p><dl><div><dt>Platform</dt><dd>{selected.platform}</dd></div><div><dt>Source state</dt><dd>{selected.sourceState}</dd></div><div><dt>Review state</dt><dd>{selected.reviewState}</dd></div><div><dt>Local case</dt><dd>{selected.caseState}</dd></div><div><dt>Network access</dt><dd>Unavailable</dd></div></dl><div className="evidence-limit"><ShieldCheck /><p>This panel teaches programme analysis and can shape a synthetic case. It cannot contact, scan, or test any programme asset.</p></div></aside></div>
     </div>
   );
 }

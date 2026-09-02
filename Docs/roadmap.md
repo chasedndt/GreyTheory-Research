@@ -240,11 +240,17 @@ defined in
 - [x] Give every current agent-security topic distinct focused notes,
   principles, traditional/AI lenses, self-checks, official learning sources,
   and a four-stage beginner-to-transfer roadmap.
+- [x] Turn the ready local Case Pack into an exact 30-minute guided mission with
+  selectable timed stages, two scored scenario checks per topic, and an
+  explain-it-yourself threshold that unlocks practice without awarding mastery.
 - [x] Restore the complete thirteen-panel navigation with working Programmes,
   Hypotheses, Intelligence, Reports, and Settings journeys.
 - [x] Add a network-free public-intelligence contract for OSV, CISA KEV, FIRST
   EPSS, NVD, and GitHub Advisories; authenticated bug-bounty connectors remain
   dark and no fetcher is enabled.
+- [x] Add an interactive programme-to-local-case readiness view for the saved
+  HackerOne, Bugcrowd, and direct-policy bundles; ambiguity, network access, and
+  live target activity remain blocked.
 - [ ] Connect the bounded AI coach to the governed model gateway; its advisory-only presentation and explicit no-execution/no-mastery boundary are implemented.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
 - [x] Define versioned Case Pack contracts for guided, assisted, and independent transfer runs; ship Agent Tool Authorization as the first ready local pack and queue API ownership plus session/role transition packs.

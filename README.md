@@ -41,13 +41,20 @@ The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#curr
 
 The operator selected **Guided Mission Control** as the learner shell. The
 preview now includes inspectable recommendations, a six-stage learner loop,
-focused ethical and technical lessons, an agent-security skill map, a
+an exact 30-minute Learn/Practise/Prove/Reflect/Assess mission, scored practice
+checks that unlock practice without awarding mastery, focused ethical and
+technical lessons, an agent-security skill map, a
 deterministic local authorization lab, a case canvas, evidence-quality views,
 reflection, an independent readiness check, and a contract-only public
 intelligence catalogue. Its first complete test case
 compares a consented local tool request with an indirect prompt-injection
 control; the injected instruction is denied before the tool adapter and neither
 path can contact a live target.
+
+The Programmes journey also demonstrates how a versioned HackerOne, Bugcrowd,
+or direct-policy snapshot may become a human-reviewed synthetic learning case.
+Ambiguity remains blocked, imported text cannot grant authority, and the bridge
+does not fetch, contact, scan, or test programme assets.
 
 The earlier Research Ledger remains a first-class Research case view. The local
 service can now serve the built UI from its exact origin, accept bounded learner

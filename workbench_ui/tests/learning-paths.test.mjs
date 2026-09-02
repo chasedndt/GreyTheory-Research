@@ -10,6 +10,10 @@ test("every learning topic has its own content, progression, and real resources"
   for (const topic of LEARNING_TOPICS) {
     assert.equal(topic.principles.length, 4);
     assert.equal(topic.checkpoints.length, 4);
+    assert.equal(topic.practiceChecks.length, 2);
+    assert.ok(topic.practiceChecks.every((item) => item.options.length === 3));
+    assert.ok(topic.practiceChecks.every((item) => Number.isInteger(item.answer) && item.options[item.answer]));
+    assert.ok(topic.practiceChecks.every((item) => item.explanation.length > 30));
     assert.equal(topic.lessons.length, 4);
     assert.ok(topic.resources.every((resource) => resource[2].startsWith("https://")));
   }

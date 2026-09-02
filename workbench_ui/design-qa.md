@@ -143,3 +143,17 @@ but are not approved promotional media. Use the earlier DPR-1 campaign captures
 until a new DPR-1 media pass is recorded.
 
 **final result: functional pass; promotional recapture required**
+# Guided mission and programme readiness - 2026-09-02
+
+The accepted Guided Mission Control design now includes an exact 30-minute
+stage selector, topic-specific practice questions, an honest lab unlock gate,
+and an offline programme-to-local-case readiness explainer. Desktop interaction
+and 390-pixel geometry passed. The tall full-page mobile capture remains subject
+to the in-app capture duplication defect, so the two current viewport captures
+are the visual acceptance source.
+
+Evidence:
+`E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-02-guided-mission-and-programme-readiness`.
+
+**Final result: guided mission and programme readiness interaction passed;
+live programme and Ubuntu worker acceptance remain open.**

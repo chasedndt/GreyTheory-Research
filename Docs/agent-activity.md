@@ -4,6 +4,25 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-02 - Codex - Guided mission and programme readiness
+
+### What was built
+
+- An exact 30-minute mission budget with selectable Learn, Practise, Prove,
+  Reflect, and Assess stages.
+- Two scored scenarios per current topic plus a learner-explanation threshold;
+  the Safe Lab unlocks only for practice and never awards mastery.
+- An offline programme-to-synthetic-case explainer for the saved HackerOne,
+  Bugcrowd, and direct-policy bundles.
+
+### What the next agent should not undo
+
+Do not convert saved programme text, scenario answers, or lab completion into
+authority, target access, proof, or mastery. YNAB ambiguity and live posture
+must remain blocked until their independent gates pass.
+
+See `07_LOGS/Build-Logs/2026-09-02-greytheory-guided-mission-and-programme-readiness.md`.
+
 ## 2026-09-02 - Codex - Navigation scrollbar and keyboard follow-up
 
 ### What was built
