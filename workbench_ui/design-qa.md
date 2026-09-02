@@ -1,5 +1,30 @@
 # Guided Mission Control design QA
 
+## Keyboard and packaged-workbench follow-up - 2026-09-02
+
+The in-app browser exposed unnamed icon-only navigation at the 1024-pixel
+compact breakpoint and an off-screen mobile drawer that remained interactive
+while closed. Both P1 accessibility defects are fixed.
+
+- All thirteen compact navigation buttons retain explicit accessible names.
+- The closed 390-pixel drawer is inert and `aria-hidden`; opening it focuses the
+  Close control and exposes a labelled modal navigation drawer.
+- Shift+Tab from the first control wraps to Settings, Tab from Settings wraps to
+  Close, Escape closes the drawer and restores Open navigation, and selecting
+  Learn closes the drawer and focuses the named Learn workspace.
+- The connection dialog separately passed reverse/forward focus wrapping and
+  Escape restoration to the safety control.
+- The production build was bundled into a wheel and accepted from an empty
+  Windows install prefix. This is functional acceptance, not new promotional
+  media and not separate-user installer proof.
+
+Evidence root:
+`E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-02-keyboard-and-windows-package`.
+
+Accepted interaction capture: `02-mobile-navigation-open.png`.
+
+**final result: P1 defects fixed; focused keyboard and isolated-package checks passed**
+
 ## Release-media refresh - 2026-09-02
 
 The current Mission Control, skill trajectory, topic-owned learning path,

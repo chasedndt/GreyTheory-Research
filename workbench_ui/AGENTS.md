@@ -50,3 +50,11 @@ lesson persists across reload, and route navigation must continue to focus the
 selected workspace while respecting reduced-motion preferences. Do not mark the
 whole accessibility gate complete until sequential-keyboard and clean-user
 Windows package acceptance have separately passed.
+
+The 2026-09-02 keyboard follow-up requires compact navigation controls to keep
+accessible names and the closed mobile drawer to remain inert. Opening either
+the mobile drawer or connection dialog must move focus inside, contain forward
+and reverse focus, close on Escape, and restore the invoking control. The
+bundled wheel passes empty-prefix Windows acceptance, but this is not a
+substitute for whole-application first-entry traversal or a separate-user
+shortcut/installer run.

@@ -4,6 +4,19 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - keyboard boundaries and packaged Windows workbench
+
+- Added accessible names for compact navigation, removed the closed mobile
+  drawer from interaction, and added focus entry, containment, Escape close,
+  and trigger restoration for the mobile drawer.
+- Added a reproducible wheel build that bundles the production learner UI and
+  complete learning resources; installed launches use the bundled UI by default
+  while `--no-ui` preserves an explicit API-only option.
+- Added empty-prefix Windows acceptance for the installed launcher, loopback UI,
+  `LOCAL_FIXTURE` health, authenticated snapshot, exact-process cleanup, and a
+  non-echoed ephemeral environment token. Separate-user shortcut/installer
+  acceptance remains open.
+
 ### Added - release media and persisted-flow acceptance
 
 - Replaced the earlier dashboard preview media with current Mission Control,

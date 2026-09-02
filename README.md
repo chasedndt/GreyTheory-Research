@@ -54,10 +54,14 @@ service can now serve the built UI from its exact origin, accept bounded learner
 commands, run only the network-free synthetic fixture runner, and persist
 immutable receipts outside Git. Browser acceptance now proves that an assigned
 learning step survives a full same-origin reload and that route changes move
-visible focus into the selected workspace. A separate development preview
-remains read-only. Full sequential-keyboard acceptance, installed packaging,
-clean-user Windows acceptance, and the Ubuntu passive-worker acceptance are
-still open. The selected composition and acceptance evidence are documented in
+visible focus into the selected workspace. Mobile navigation and the connection
+dialog now own, wrap, dismiss, and restore keyboard focus; compact navigation
+keeps accessible names, and a closed mobile drawer is inert. A separate
+development preview remains read-only. A reproducible wheel with the bundled UI
+has passed an empty-prefix Windows install, launcher, loopback UI, health, and
+authenticated-snapshot check. Whole-application first-entry keyboard traversal,
+a separate Windows-user shortcut/installer run, and Ubuntu passive-worker
+acceptance remain open. The selected composition and acceptance evidence are documented in
 [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
 
 ### Quickstart
@@ -92,6 +96,21 @@ only its bounded local learner commands:
 npm --prefix workbench_ui run build
 greytheory-workbench --ui-root workbench_ui/dist/client
 ```
+
+Release-oriented Windows builds include that UI automatically. Build a wheel
+into a unique E: evidence directory, or run the isolated install acceptance:
+
+```powershell
+& .\scripts\build-windows-package.ps1
+& .\acceptance\run-windows-packaged-workbench.ps1
+```
+
+The acceptance uses an empty install prefix and private data root, verifies the
+installed console launcher and authenticated loopback application, supplies the
+ephemeral token only through the child process environment, keeps it out of
+stdout, restores the parent environment after stopping the exact process, and
+never enables a target-network posture. It is not yet proof of a separate user account,
+shortcut, signed installer, upgrade, or recovery flow.
 
 The future live-programme adapter remains dark. Its required authority fields
 and five activation gates are documented in

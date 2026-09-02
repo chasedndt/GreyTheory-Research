@@ -51,6 +51,9 @@ evidence:
 
 1. **Installed Windows workbench acceptance** — a clean user can install,
    launch, reconnect, persist a complete learner journey, and recover safely.
+   The bundled wheel and an empty-prefix launcher/UI/snapshot check pass; the
+   separate-user shortcut/installer, restart, upgrade, and recovery portions do
+   not yet pass, so this activation gate remains open.
 2. **Full Ubuntu worker-host acceptance** — the owned-process service completes
    its no-route harness with unprivileged identity, encrypted evidence return,
    signed receipt, and deterministic cleanup.
@@ -89,4 +92,3 @@ GreyTheory should surface a transition-readiness panel only when all five gates
 are machine-verifiably present. Until then, the product must show the live
 programme bridge as **Not connected** and identify the next unmet gate. The
 operator, not the software, makes the posture decision.
-

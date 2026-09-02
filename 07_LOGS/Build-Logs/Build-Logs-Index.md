@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-02 - GreyTheory keyboard and Windows package](2026-09-02-greytheory-keyboard-and-windows-package.md) - compact/mobile focus repair, bundled wheel, and isolated Windows launcher acceptance
+
 - [2026-09-02 - GreyTheory release media and persisted-flow acceptance](2026-09-02-greytheory-release-media-and-persisted-acceptance.md) - current release captures, reload-safe same-origin learner state, and route-focus accessibility
 
 - [2026-09-02 - GreyTheory interactive learning paths](2026-09-02-greytheory-interactive-learning-paths.md) - 24 interactive trajectory lessons, topic-owned roadmaps, thirteen-panel navigation, and network-free intelligence contracts

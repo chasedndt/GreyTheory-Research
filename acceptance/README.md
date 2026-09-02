@@ -4,6 +4,27 @@ These checks exercise operating-system behavior that syscall-injected unit
 tests cannot prove. They do not enable `PASSIVE_HTTP`, launch a worker service,
 or contact a target.
 
+## Windows packaged-workbench acceptance
+
+From PowerShell at the repository root:
+
+```powershell
+& .\acceptance\run-windows-packaged-workbench.ps1
+```
+
+The harness builds a wheel in a unique E: directory, installs it into an empty
+prefix, verifies the generated `greytheory-workbench` console launcher, launches
+only that installed application on an ephemeral numeric-loopback port, loads the
+bundled UI, checks `LOCAL_FIXTURE` health, authenticates a snapshot, stops only
+the process it created, keeps the token only in the child process environment,
+never echoes it, and restores the parent environment. Its JSON record contains
+the wheel digest and private evidence paths.
+
+This accepts wheel contents and isolated Windows launcher behavior. It does not
+yet prove a separate Windows user account, shortcut or signed installer,
+persisted-journey restart, upgrade, uninstall, recovery, Ubuntu worker, VPS, or
+live-programme posture.
+
 ## Ubuntu 24.04 passive primitive acceptance
 
 From PowerShell at the repository root:

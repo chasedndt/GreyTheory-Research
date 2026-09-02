@@ -251,16 +251,25 @@ defined in
 - [x] Persist immutable synthetic fixture receipts and bind the graphical Learn -> Practise -> Prove -> Reflect path to same-origin, revision-safe application commands.
 - [x] Serve the built learner UI from the numeric-loopback application under a self-only content policy while keeping separate preview origins read-only.
 - [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
-- [ ] Complete accessibility and installed acceptance; desktop plus 390/768/1024 responsive browser checks pass without horizontal overflow, the same-origin persisted journey survives reload, and route changes focus the selected workspace, but full sequential-keyboard and clean-user Windows acceptance remain open.
-- [ ] Package and accept on the Windows operator workstation.
+- [ ] Complete accessibility acceptance; responsive geometry, reload persistence,
+  route focus, compact navigation names, inert closed mobile navigation, and
+  mobile-drawer/modal focus containment and restoration pass, while a complete
+  first-entry and whole-application keyboard sweep remains open.
+- [x] Build a reproducible wheel that bundles the learner UI and all learning
+  resources, then accept it from an empty Windows install prefix through its
+  console launcher, numeric-loopback UI, health endpoint, and authenticated
+  snapshot without enabling live targets.
+- [ ] Complete the broader Windows host gate with a separate user account,
+  installed shortcut or signed installer, persisted-journey restart, upgrade,
+  and recovery acceptance.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a
 bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
 
-Current next product gate: complete sequential-keyboard acceptance against the
-visually verified, reload-safe same-origin path, then package and exercise it under a
-clean Windows user. See [`live-programme-transition.md`](live-programme-transition.md)
+Current next product gate: finish first-entry and whole-application keyboard
+traversal, then exercise the accepted wheel through a separate Windows user and
+shortcut/install/recovery path. See [`live-programme-transition.md`](live-programme-transition.md)
 for the later five-gate transition; no VPS or programme connection is part of
 this product gate.
 

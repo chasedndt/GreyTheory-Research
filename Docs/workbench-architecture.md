@@ -388,6 +388,11 @@ Implemented now:
 - optional bounded same-origin UI serving with a self-only content policy,
   cross-origin isolation headers, no caching, safe suffix and size limits, and
   no directory traversal;
+- reproducible Windows wheel assembly that stages the built UI and complete
+  learning resources, plus an empty-prefix acceptance harness that verifies the
+  installed console launcher, loopback UI, health posture, authenticated
+  snapshot, exact-process cleanup, and a non-echoed ephemeral environment
+  token;
 - three versioned Case Packs, an immutable private synthetic-receipt store, one
   practise-stage fixture command, and the graphical Learn -> Practise -> Prove
   -> Reflect binding; the live-programme adapter remains dark and disabled;
@@ -407,9 +412,9 @@ Implemented now:
 
 Not implemented now:
 
-- browser visual and sequential-keyboard acceptance of the same-origin
-  persisted learner path, an installed shortcut, and packaged clean-user
-  Windows host acceptance;
+- whole-application first-entry keyboard traversal of the same-origin persisted
+  learner path, a separate-user installed shortcut or signed installer, and
+  upgrade/recovery Windows host acceptance;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
 - broader ready curricula beyond the first local Case Pack and governed
@@ -420,7 +425,8 @@ Not implemented now:
   launcher/scheduler, or any `PASSIVE_HTTP` action.
 
 The current Research Ledger remains a first-class Research case view. Guided
-Mission Control is the selected shell, and its preview had passed the earlier
-responsive checks. The newly persisted same-origin flow still requires current
-browser visual QA, sequential-keyboard acceptance, installed packaging, and
-clean-user acceptance before the Windows pilot exit condition is met.
+Mission Control is the selected shell. Current browser visual, same-origin
+persistence, route-focus, mobile-drawer/modal focus, and isolated wheel-install
+checks pass. Whole-application first-entry keyboard traversal and a separate
+Windows-user shortcut/installer and recovery run remain before the Windows
+pilot exit condition is met.

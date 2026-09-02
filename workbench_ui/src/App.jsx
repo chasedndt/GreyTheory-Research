@@ -494,6 +494,20 @@ function FooterBoundary() {
   return <footer className="global-footer"><div><ShieldCheck /><span><strong>LOCAL_FIXTURE</strong><small>All activities are isolated and safe.</small></span></div><div><Target /><span><strong>No live targets</strong><small>Research-only environment.</small></span></div><div><UserCircle /><span><strong>Human approval required</strong><small>You control what happens next.</small></span></div><div><FileText /><span><strong>Apache-2.0</strong><small>Open source research preview.</small></span></div></footer>;
 }
 
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(() => typeof window !== "undefined" && window.matchMedia(query).matches);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, [query]);
+
+  return matches;
+}
+
 export function App() {
   const [active, setActive] = useState("mission");
   const [mobileNav, setMobileNav] = useState(false);
@@ -507,6 +521,10 @@ export function App() {
   const [snapshot, setSnapshot] = useState(null);
   const [latestReceiptRef, setLatestReceiptRef] = useState(null);
   const workspaceRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const mobileNavRef = useRef(null);
+  const mobileNavCloseRef = useRef(null);
+  const isMobile = useMediaQuery("(max-width: 760px)");
   const currentNav = NAV_ITEMS.find((item) => item.id === active) || NAV_ITEMS[0];
   const groups = [...new Set(NAV_ITEMS.map((item) => item.group))];
   const learningState = useMemo(() => learningStateFromSnapshot(snapshot), [snapshot]);
@@ -525,6 +543,39 @@ export function App() {
     const stageProgress = { learn: 0, practise: 2, prove: 3, reflect: 4, assess: 5, complete: 5 };
     setLabState((current) => Math.max(current, stageProgress[journey.stage] || 0));
   }, [journey?.id, journey?.stage]);
+
+  useEffect(() => {
+    if (!isMobile || !mobileNav) return undefined;
+    const drawer = mobileNavRef.current;
+    const previous = document.activeElement;
+    mobileNavCloseRef.current?.focus();
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setMobileNav(false);
+        return;
+      }
+      if (event.key !== "Tab" || !drawer) return;
+      const focusable = [...drawer.querySelectorAll('button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      (previous instanceof HTMLElement ? previous : mobileMenuRef.current)?.focus();
+    };
+  }, [isMobile, mobileNav]);
 
   async function refresh(activeSession = session) {
     if (!activeSession) return null;
@@ -673,19 +724,19 @@ export function App() {
     <div className="app-shell">
       <a className="skip-link" href="#workspace-main">Skip to workspace</a>
       <header className="topbar">
-        <button className="mobile-menu icon-button" onClick={() => setMobileNav(true)} aria-label="Open navigation"><List /></button>
+        <button ref={mobileMenuRef} className="mobile-menu icon-button" onClick={() => setMobileNav(true)} aria-label="Open navigation" aria-expanded={mobileNav} aria-controls="primary-sidebar"><List /></button>
         <Brand />
         <div className="release-lockup"><Pill tone="amber">Research Preview</Pill><span>Apache-2.0</span></div>
         <div className="topbar-spacer" />
         <button className="safety-chip" onClick={() => setModal("connection")}><i className={connection.state === "connected" ? "is-connected" : ""} /><span>{connection.mode === "interactive" ? "APP CONNECTED" : connection.state === "connected" ? "READ MODEL" : "LOCAL_FIXTURE"}</span><b>no live targets</b><ShieldCheck /></button>
         <button className="profile-button" onClick={() => setNotice("Local learner profile. Identity and cloud sync are not connected in this preview.")}><UserCircle /><span>GT</span></button>
       </header>
-      <aside className={`sidebar ${mobileNav ? "is-open" : ""}`}>
-        <div className="sidebar-mobile"><Brand /><button className="icon-button" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X /></button></div>
-        <nav aria-label="Primary navigation">{groups.map((group) => <div className="nav-group" key={group}><span>{group}</span>{NAV_ITEMS.filter((item) => item.group === group).map(({ id, label, icon: Icon, badge }) => <button key={id} aria-current={active === id ? "page" : undefined} className={active === id ? "is-active" : ""} onClick={() => navigate(id)}><Icon /><span>{label}</span>{badge && <b>{badge}</b>}</button>)}</div>)}</nav>
+      <aside ref={mobileNavRef} id="primary-sidebar" className={`sidebar ${mobileNav ? "is-open" : ""}`} inert={isMobile && !mobileNav} aria-hidden={isMobile && !mobileNav ? "true" : undefined} role={isMobile && mobileNav ? "dialog" : undefined} aria-modal={isMobile && mobileNav ? "true" : undefined} aria-label={isMobile && mobileNav ? "Navigation drawer" : undefined}>
+        <div className="sidebar-mobile"><Brand /><button ref={mobileNavCloseRef} className="icon-button" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X /></button></div>
+        <nav aria-label="Primary navigation">{groups.map((group) => <div className="nav-group" key={group}><span>{group}</span>{NAV_ITEMS.filter((item) => item.group === group).map(({ id, label, icon: Icon, badge }) => <button key={id} aria-label={label} title={label} aria-current={active === id ? "page" : undefined} className={active === id ? "is-active" : ""} onClick={() => navigate(id)}><Icon /><span>{label}</span>{badge && <b>{badge}</b>}</button>)}</div>)}</nav>
         <div className="sidebar-profile"><div>GT</div><span><strong>Grey Researcher</strong><small>Learner · local</small></span><CaretDown /></div>
       </aside>
-      {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} aria-label="Close navigation" />}
+      {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} tabIndex="-1" aria-hidden="true" aria-label="Close navigation" />}
       <main ref={workspaceRef} id="workspace-main" className="workspace" tabIndex="-1" aria-label={currentNav.label}>{view}</main>
       <FooterBoundary />
       {notice && <div className="toast" role="status" aria-live="polite"><CheckCircle /><span>{notice}</span><button className="icon-button" onClick={() => setNotice("")} aria-label="Dismiss notification"><X /></button></div>}

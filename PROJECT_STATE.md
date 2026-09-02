@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence and route-level focus management. Governed coach conversation, accepted public-intelligence fetching, comprehensive sequential-keyboard acceptance, and installed Windows acceptance remain open.
+- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence, route focus, named compact navigation, inert closed mobile navigation, mobile drawer focus containment/return, and modal focus containment/return. A reproducible wheel with bundled UI has passed empty-prefix Windows installation and loopback application checks. Governed coach conversation, accepted public-intelligence fetching, whole-application first-entry keyboard traversal, and separate-user shortcut/installer acceptance remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 679 repository tests passing on 2026-09-02, including the prior trust-kernel/worker baseline plus versioned Case Packs, immutable synthetic receipts, practise-stage command gating, bounded same-origin UI serving, and network-free public-intelligence contracts. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
+- **Verified baseline:** 682 repository tests passing on 2026-09-02, plus 18 UI and 4 Sites tests, a production UI build, interactive keyboard/browser checks, and one accepted isolated Windows wheel installation. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
 
 ## What is built
 
@@ -90,7 +90,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 - human resolution of the two recorded YNAB policy conflicts;
 - broader curriculum packs beyond the first 12 cards;
-- governed model-backed coach conversation, broader ready case packs, comprehensive sequential-keyboard acceptance, and installed/clean-user Windows acceptance; the Guided Mission Control shell has passed current visual QA and same-origin reload/persistence acceptance, while its commands and synthetic receipts persist privately;
+- governed model-backed coach conversation, broader ready case packs, whole-application first-entry keyboard traversal, and separate-user shortcut/signed-installer Windows acceptance; the Guided Mission Control shell has passed current visual QA, same-origin reload/persistence, mobile-drawer/modal focus, and empty-prefix wheel acceptance, while its commands and synthetic receipts persist privately;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
 - governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
@@ -120,7 +120,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Finish sequential-keyboard acceptance against the now visually accepted, reload-safe same-origin learner flow, then package and test it under a clean Windows user. After that, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. Passive work still needs the full Ubuntu no-route host acceptance, approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
+Finish whole-application first-entry keyboard traversal, then exercise the accepted wheel through a separate Windows user plus shortcut/install/recovery path. After that, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. Passive work still needs the full Ubuntu no-route host acceptance, approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

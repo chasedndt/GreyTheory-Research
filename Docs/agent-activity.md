@@ -4,6 +4,25 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-02 — Codex — Keyboard boundaries and packaged Windows workbench
+
+### What was built
+
+- Corrected compact/mobile navigation semantics and focus containment without
+  changing the selected Guided Mission Control visual direction.
+- Added reproducible wheel assembly with bundled UI and learning resources.
+- Added empty-prefix Windows launcher/UI/health/snapshot acceptance with exact
+  process cleanup and a non-echoed ephemeral environment token.
+
+### What the next agent should not undo
+
+Do not make an off-screen drawer focusable, strip accessible names from
+icon-only navigation, log an active session token, or call isolated-prefix
+acceptance a clean-user installer result. Keep `LOCAL_FIXTURE` and all five
+live-programme gates intact.
+
+See `07_LOGS/Build-Logs/2026-09-02-greytheory-keyboard-and-windows-package.md`.
+
 ## 2026-09-02 — Codex — Interactive learning paths and intelligence contracts
 
 ### What was built
