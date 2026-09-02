@@ -253,8 +253,9 @@ defined in
 - [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
 - [ ] Complete accessibility acceptance; responsive geometry, reload persistence,
   route focus, compact navigation names, inert closed mobile navigation, and
-  mobile-drawer/modal focus containment and restoration pass, while a complete
-  first-entry and whole-application keyboard sweep remains open.
+  mobile-drawer/modal focus containment and restoration pass. The themed
+  navigation scrollbar and runtime focusable-order inventory now pass too,
+  while a complete first-entry and whole-application keyboard sweep remains open.
 - [x] Build a reproducible wheel that bundles the learner UI and all learning
   resources, then accept it from an empty Windows install prefix through its
   console launcher, numeric-loopback UI, health endpoint, and authenticated

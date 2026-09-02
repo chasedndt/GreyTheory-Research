@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-02 - GreyTheory navigation scrollbar and keyboard](2026-09-02-greytheory-navigation-scrollbar-and-keyboard.md) - themed navigation scroll rail, responsive QA, and explicit first-entry harness limit
+
 - [2026-09-02 - GreyTheory keyboard and Windows package](2026-09-02-greytheory-keyboard-and-windows-package.md) - compact/mobile focus repair, bundled wheel, and isolated Windows launcher acceptance
 
 - [2026-09-02 - GreyTheory release media and persisted-flow acceptance](2026-09-02-greytheory-release-media-and-persisted-acceptance.md) - current release captures, reload-safe same-origin learner state, and route-focus accessibility

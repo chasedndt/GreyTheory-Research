@@ -4,6 +4,24 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-02 - Codex - Navigation scrollbar and keyboard follow-up
+
+### What was built
+
+- Matched the visible navigation scrollbar to the Guided Mission Control navy,
+  muted-blue, and amber system without hiding the scroll affordance.
+- Added a stable gutter, overscroll containment, regression coverage, and
+  current desktop and mobile visual QA.
+- Reconfirmed the drawer focus loop and recorded the runtime focusable order.
+
+### What the next agent should not undo
+
+Do not restore bright native drawer chrome, hide the only vertical scroll cue,
+or claim whole-app first-entry keyboard acceptance from a DOM-order inventory.
+The current browser harness still cannot issue the initial Tab from BODY.
+
+See `07_LOGS/Build-Logs/2026-09-02-greytheory-navigation-scrollbar-and-keyboard.md`.
+
 ## 2026-09-02 — Codex — Keyboard boundaries and packaged Windows workbench
 
 ### What was built

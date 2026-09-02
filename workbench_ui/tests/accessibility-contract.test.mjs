@@ -33,6 +33,16 @@ test("mobile navigation owns focus while open and restores its trigger", () => {
   assert.match(appSource, /mobileMenuRef\.current\)\?\.focus\(\)/);
 });
 
+test("navigation scrollbar stays visible and uses the mission-control palette", () => {
+  assert.match(styles, /--scrollbar-track:#071321/);
+  assert.match(styles, /--scrollbar-thumb:#3a536b/);
+  assert.match(styles, /html\{[^}]*scrollbar-width:thin;scrollbar-color:var\(--scrollbar-thumb\) #030a12\}/);
+  assert.match(styles, /\.sidebar nav\{[\s\S]*scrollbar-gutter:stable;[\s\S]*scrollbar-width:thin;[\s\S]*scrollbar-color:var\(--scrollbar-thumb\) var\(--scrollbar-track\)/);
+  assert.match(styles, /\.sidebar nav::-webkit-scrollbar-thumb\{[\s\S]*border-radius:999px;[\s\S]*background:var\(--scrollbar-thumb\)/);
+  assert.match(styles, /\.sidebar nav::-webkit-scrollbar-thumb:active\{background:var\(--amber\)\}/);
+  assert.doesNotMatch(styles, /\.sidebar nav[^}]*scrollbar-width:none/);
+});
+
 test("modal retains escape close and a bounded focus loop", () => {
   assert.match(appSource, /if \(event\.key === "Escape"\) onClose\(\)/);
   assert.match(appSource, /focusable\[0\]/);

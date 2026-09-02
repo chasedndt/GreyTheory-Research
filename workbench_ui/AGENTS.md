@@ -58,3 +58,8 @@ and reverse focus, close on Escape, and restore the invoking control. The
 bundled wheel passes empty-prefix Windows acceptance, but this is not a
 substitute for whole-application first-entry traversal or a separate-user
 shortcut/installer run.
+
+The 2026-09-02 navigation-polish follow-up keeps scroll position discoverable
+without exposing the browser's bright default chrome. Scrollable navigation
+uses the mission-control navy track, muted blue thumb, stable gutter, and amber
+active state; do not hide the drawer scrollbar or let it overlap labels.

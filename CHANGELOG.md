@@ -4,6 +4,15 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Changed - navigation scrollbar polish
+
+- Replaced the bright native navigation scrollbar with a slim, visible
+  mission-control rail using the existing navy, muted-blue, and amber tokens.
+- Added a stable scrollbar gutter and overscroll containment so navigation
+  labels do not shift or sit beneath the thumb.
+- Added focused visual and contract QA; the complete first-entry keyboard gate
+  remains open.
+
 ### Added - keyboard boundaries and packaged Windows workbench
 
 - Added accessible names for compact navigation, removed the closed mobile

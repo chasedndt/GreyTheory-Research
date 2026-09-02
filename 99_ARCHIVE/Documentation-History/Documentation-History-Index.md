@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-02 - GreyTheory navigation scrollbar and keyboard](2026-09-02_greytheory-navigation-scrollbar-and-keyboard.md) - matched navigation scroll chrome, responsive evidence, and explicit keyboard and Figma limits
+
 - [2026-09-02 - GreyTheory keyboard and Windows package](2026-09-02_greytheory-keyboard-and-windows-package.md) - repaired focus boundaries, bundled-wheel truth, and remaining Windows host gate
 
 - [2026-09-02 - GreyTheory release media and persisted-flow acceptance](2026-09-02_greytheory-release-media-and-persisted-acceptance.md) - current promotional evidence, reload-safe same-origin learning state, and remaining acceptance truth

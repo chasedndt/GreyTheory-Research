@@ -1,5 +1,36 @@
 # Guided Mission Control design QA
 
+## Navigation scrollbar and keyboard follow-up - 2026-09-02
+
+The mobile navigation rail now uses the accepted Guided Mission Control navy,
+muted-blue, and amber vocabulary instead of bright native scrollbar chrome.
+The scrollbar remains visible, gains a stable gutter, and does not cover labels
+or change the drawer's information architecture.
+
+- 390-pixel closed and open states have no horizontal document overflow.
+- The scrollable drawer reports a thin scrollbar, navy track, muted-blue thumb,
+  and stable gutter at runtime.
+- Reverse wrapping from Close reaches Settings; forward wrapping returns to
+  Close; Escape closes the drawer and restores Open navigation.
+- Desktop retains all thirteen navigation journeys and the accepted
+  mission-first hierarchy.
+- Runtime inspection found the skip link first in the visible focusable DOM
+  order.
+- The in-app browser still cannot synthesize the first Tab from an unfocused
+  document body, so first-entry keyboard acceptance remains open.
+
+Evidence root:
+`E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-02-navigation-scrollbar-and-keyboard`.
+
+Accepted captures: `01-mobile-closed.png`,
+`02-mobile-navigation-open.png`, and `03-desktop-navigation.png`.
+
+Figma board update was attempted only after the screenshots were inspected, but
+the authenticated Starter plan had reached its MCP call limit. No Figma nodes
+were created or changed in this pass.
+
+**final result: scrollbar polish and bounded keyboard behavior passed; whole-app first-entry remains open**
+
 ## Keyboard and packaged-workbench follow-up - 2026-09-02
 
 The in-app browser exposed unnamed icon-only navigation at the 1024-pixel
