@@ -28,6 +28,8 @@ posture remains `LOCAL_FIXTURE` and no live-programme adapter is enabled.
 - `npm run test:sites` — 4 passed.
 - `npm run build` — passed; Sites bundle prepared.
 - `python -m pytest` — 670 passed in 261.52 seconds.
+- GitHub pull request checks — 8 passed across Python 3.11-3.13 on Ubuntu and
+  Windows, authority-plane proof, and the core no-network-surface guard.
 - Browser visual acceptance is pending because the selected in-app browser
   refused the numeric-loopback URL under its URL policy after the preview
   restart. No alternate browser or bypass was used.
