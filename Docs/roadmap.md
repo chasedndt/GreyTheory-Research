@@ -251,15 +251,15 @@ defined in
 - [x] Persist immutable synthetic fixture receipts and bind the graphical Learn -> Practise -> Prove -> Reflect path to same-origin, revision-safe application commands.
 - [x] Serve the built learner UI from the numeric-loopback application under a self-only content policy while keeping separate preview origins read-only.
 - [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
-- [ ] Complete accessibility and installed acceptance; desktop plus 390/768/1024 responsive browser checks pass without horizontal overflow, but full sequential-keyboard and clean-user Windows acceptance remain open.
+- [ ] Complete accessibility and installed acceptance; desktop plus 390/768/1024 responsive browser checks pass without horizontal overflow, the same-origin persisted journey survives reload, and route changes focus the selected workspace, but full sequential-keyboard and clean-user Windows acceptance remain open.
 - [ ] Package and accept on the Windows operator workstation.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a
 bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
 
-Current next product gate: visually verify the same-origin persisted path,
-complete sequential-keyboard acceptance, then package and exercise it under a
+Current next product gate: complete sequential-keyboard acceptance against the
+visually verified, reload-safe same-origin path, then package and exercise it under a
 clean Windows user. See [`live-programme-transition.md`](live-programme-transition.md)
 for the later five-gate transition; no VPS or programme connection is part of
 this product gate.

@@ -83,6 +83,7 @@ svg{flex:0 0 auto}
 .sidebar-profile>span{display:flex;flex-direction:column;min-width:0}.sidebar-profile strong{font-size:.76rem}.sidebar-profile small{color:var(--muted);font-size:.67rem}.sidebar-profile svg{margin-left:auto;width:15px;color:var(--muted)}
 
 .workspace{margin-left:238px;padding-top:66px;padding-bottom:70px;min-height:100vh;background:var(--bg)}
+.workspace:focus{outline:none}.workspace:focus-visible{outline:2px solid var(--blue);outline-offset:-2px}
 .page{display:grid;grid-template-columns:minmax(0,1fr) 338px;gap:20px;max-width:1510px;margin:0 auto;padding:28px}
 .page-main{min-width:0}
 .content-page{max-width:1450px;margin:0 auto;padding:32px 34px 40px}

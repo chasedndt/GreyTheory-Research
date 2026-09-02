@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-02 - GreyTheory release media and persisted-flow acceptance](2026-09-02_greytheory-release-media-and-persisted-acceptance.md) - current promotional evidence, reload-safe same-origin learning state, and remaining acceptance truth
+
 - [2026-09-02 - GreyTheory interactive learning paths](2026-09-02_greytheory-interactive-learning-paths.md) - complete trajectory and topic teaching interactions, thirteen-panel navigation, and contract-only public intelligence
 
 - [2026-09-01 - GreyTheory Guided Mission Control](2026-09-01_greytheory-guided-mission-control.md) - selected learner shell, deterministic authorization case, responsive proof, and corrected repository status

@@ -4,6 +4,17 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - release media and persisted-flow acceptance
+
+- Replaced the earlier dashboard preview media with current Mission Control,
+  topic-learning, roadmap, and public-intelligence captures suitable for the
+  repository and ChaseInTech project page.
+- Verified in the in-app browser that a bounded assigned lesson persists across
+  a full reload of the same-origin local application.
+- Added route-level focus management with reduced-motion support and static
+  accessibility contract tests. Full sequential-keyboard and installed Windows
+  acceptance remain open.
+
 ### Added - interactive learning paths and public-intelligence contracts
 
 - Replaced passive Skill Trajectory marks with 24 accessible lesson nodes that

@@ -31,13 +31,20 @@ The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#curr
 
 ### Workbench prototype
 
-![GreyTheory Guided Mission Control research preview](Docs/assets/guided-mission-control-preview.png)
+![GreyTheory Guided Mission Control research preview](Docs/assets/guided-mission-control-current.png)
+
+| Topic-owned learning path | Read-only public intelligence |
+| --- | --- |
+| ![Prompt-injection learning path with focused note and checkpoint](Docs/assets/guided-learning-path-current.png) | ![Public intelligence contracts and query guardrails](Docs/assets/public-intelligence-current.png) |
+
+![Four-stage prompt-injection roadmap from beginner to independent transfer](Docs/assets/topic-roadmap-current.png)
 
 The operator selected **Guided Mission Control** as the learner shell. The
 preview now includes inspectable recommendations, a six-stage learner loop,
 focused ethical and technical lessons, an agent-security skill map, a
 deterministic local authorization lab, a case canvas, evidence-quality views,
-reflection, and an independent readiness check. Its first complete test case
+reflection, an independent readiness check, and a contract-only public
+intelligence catalogue. Its first complete test case
 compares a consented local tool request with an indirect prompt-injection
 control; the injected instruction is denied before the tool adapter and neither
 path can contact a live target.
@@ -45,10 +52,12 @@ path can contact a live target.
 The earlier Research Ledger remains a first-class Research case view. The local
 service can now serve the built UI from its exact origin, accept bounded learner
 commands, run only the network-free synthetic fixture runner, and persist
-immutable receipts outside Git. A separate development preview remains
-read-only. Installed packaging, full keyboard and visual acceptance, and the
-Ubuntu passive-worker acceptance are still open. The selected composition and
-acceptance evidence are documented in
+immutable receipts outside Git. Browser acceptance now proves that an assigned
+learning step survives a full same-origin reload and that route changes move
+visible focus into the selected workspace. A separate development preview
+remains read-only. Full sequential-keyboard acceptance, installed packaging,
+clean-user Windows acceptance, and the Ubuntu passive-worker acceptance are
+still open. The selected composition and acceptance evidence are documented in
 [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
 
 ### Quickstart

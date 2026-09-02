@@ -18,7 +18,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Governed coach conversation, accepted public-intelligence fetching, comprehensive keyboard acceptance, and installed Windows acceptance remain open.
+- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence and route-level focus management. Governed coach conversation, accepted public-intelligence fetching, comprehensive sequential-keyboard acceptance, and installed Windows acceptance remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
 - **Verified baseline:** 679 repository tests passing on 2026-09-02, including the prior trust-kernel/worker baseline plus versioned Case Packs, immutable synthetic receipts, practise-stage command gating, bounded same-origin UI serving, and network-free public-intelligence contracts. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
 
@@ -90,7 +90,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 - human resolution of the two recorded YNAB policy conflicts;
 - broader curriculum packs beyond the first 12 cards;
-- governed model-backed coach conversation, broader ready case packs, browser visual acceptance of the persisted flow, comprehensive keyboard acceptance, and installed/clean-user Windows acceptance; the Guided Mission Control preview provides the learner shell, while same-origin commands and synthetic receipts now persist privately;
+- governed model-backed coach conversation, broader ready case packs, comprehensive sequential-keyboard acceptance, and installed/clean-user Windows acceptance; the Guided Mission Control shell has passed current visual QA and same-origin reload/persistence acceptance, while its commands and synthetic receipts persist privately;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
 - governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
@@ -120,7 +120,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Run visual and sequential-keyboard acceptance against the same-origin persisted learner flow, then package and test it under a clean Windows user. After that, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. Passive work still needs the full Ubuntu no-route host acceptance, approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
+Finish sequential-keyboard acceptance against the now visually accepted, reload-safe same-origin learner flow, then package and test it under a clean Windows user. After that, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. Passive work still needs the full Ubuntu no-route host acceptance, approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-02 - GreyTheory release media and persisted-flow acceptance](2026-09-02-greytheory-release-media-and-persisted-acceptance.md) - current release captures, reload-safe same-origin learner state, and route-focus accessibility
+
 - [2026-09-02 - GreyTheory interactive learning paths](2026-09-02-greytheory-interactive-learning-paths.md) - 24 interactive trajectory lessons, topic-owned roadmaps, thirteen-panel navigation, and network-free intelligence contracts
 
 - [2026-09-02 - GreyTheory Case Pack foundation](2026-09-02-greytheory-case-pack-foundation.md) - persisted learner commands, immutable synthetic receipts, demo suite, and dark live-programme transition gates

@@ -506,12 +506,19 @@ export function App() {
   const [session, setSession] = useState(null);
   const [snapshot, setSnapshot] = useState(null);
   const [latestReceiptRef, setLatestReceiptRef] = useState(null);
+  const workspaceRef = useRef(null);
   const currentNav = NAV_ITEMS.find((item) => item.id === active) || NAV_ITEMS[0];
   const groups = [...new Set(NAV_ITEMS.map((item) => item.group))];
   const learningState = useMemo(() => learningStateFromSnapshot(snapshot), [snapshot]);
   const journey = learningState.journey;
   const persistenceMode = connection.mode === "interactive" ? "interactive" : "preview";
-  const navigate = (view) => { setActive(view); setMobileNav(false); window.scrollTo({ top: 0, behavior: "smooth" }); };
+  const navigate = (view) => {
+    setActive(view);
+    setMobileNav(false);
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    window.requestAnimationFrame(() => workspaceRef.current?.focus({ preventScroll: true }));
+  };
 
   useEffect(() => {
     if (!journey) return;
@@ -679,7 +686,7 @@ export function App() {
         <div className="sidebar-profile"><div>GT</div><span><strong>Grey Researcher</strong><small>Learner · local</small></span><CaretDown /></div>
       </aside>
       {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} aria-label="Close navigation" />}
-      <main id="workspace-main" className="workspace" tabIndex="-1" aria-label={currentNav.label}>{view}</main>
+      <main ref={workspaceRef} id="workspace-main" className="workspace" tabIndex="-1" aria-label={currentNav.label}>{view}</main>
       <FooterBoundary />
       {notice && <div className="toast" role="status" aria-live="polite"><CheckCircle /><span>{notice}</span><button className="icon-button" onClick={() => setNotice("")} aria-label="Dismiss notification"><X /></button></div>}
       {modal === "connection" && <Modal title="Connect the local workbench" eyebrow="Numeric loopback only" onClose={() => setModal(null)} actions={<><button className="button button--secondary" onClick={() => setModal(null)}>Cancel</button><button className="button button--primary" type="submit" form="connect-form" disabled={connection.state === "connecting"}>{connection.state === "connecting" ? "Connecting…" : "Connect securely"}</button></>}><form id="connect-form" onSubmit={connect} className="connect-form"><p>The same-origin Windows application can persist bounded learner commands. A separate preview origin remains read-only. Neither mode can contact a live target.</p><label><span>Local API URL</span><input value={apiUrl} onChange={(e) => setApiUrl(e.target.value)} autoComplete="off" /></label><label><span>One-process session token</span><input type="password" value={apiToken} onChange={(e) => setApiToken(e.target.value)} autoComplete="off" placeholder="Paste token from local launch" /></label>{connection.error && <div className="form-error"><Warning />{connection.error}</div>}<div className="modal-boundary"><ShieldCheck /><p>Commands are accepted only from the API's exact origin. The token stays in memory and is cleared from this form after connection.</p></div></form></Modal>}

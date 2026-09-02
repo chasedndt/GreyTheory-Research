@@ -43,3 +43,10 @@ thirteen product panels represented in navigation. Public intelligence belongs
 in read-only, source-preserving contracts; authenticated bug-bounty connectors
 remain dark until credentials, account authority, and the external-worker gate
 are separately accepted.
+
+The 2026-09-02 release-media pass is the current visual source for repository
+and ChaseInTech presentation. Same-origin browser acceptance proves an assigned
+lesson persists across reload, and route navigation must continue to focus the
+selected workspace while respecting reduced-motion preferences. Do not mark the
+whole accessibility gate complete until sequential-keyboard and clean-user
+Windows package acceptance have separately passed.

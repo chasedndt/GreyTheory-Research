@@ -168,7 +168,7 @@ The redesigned shell is not accepted until all of the following pass:
 | D5 Practise/Research/Prove | fixture command, immutable receipt, case canvas, ledger, evidence | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
 | D5a Case Packs/Demos | one ready local pack, two queued packs, guided/full/transfer demo suite | IMPLEMENTED 2026-09-02 |
 | D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
-| D7 Acceptance | earlier responsive preview proof exists; current same-origin persisted flow, full keyboard, and clean-user Windows package | PARTIAL |
+| D7 Acceptance | current visual QA, same-origin reload persistence, and route-focus management pass; full sequential keyboard and clean-user Windows package remain | PARTIAL |
 
 The D4 learner surface now makes all 24 visible trajectory lessons selectable.
 Completed, current, previewed, and future states remain semantically separate;

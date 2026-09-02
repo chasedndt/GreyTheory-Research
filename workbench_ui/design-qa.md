@@ -1,5 +1,23 @@
 # Guided Mission Control design QA
 
+## Release-media refresh - 2026-09-02
+
+The current Mission Control, skill trajectory, topic-owned learning path,
+beginner-to-transfer roadmap, and public-intelligence screen were recaptured in
+the in-app browser and inspected at original resolution. Accepted evidence is
+under `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-02-release-media-refresh`.
+
+- All five captures show the intended local preview state without blank,
+  loading, error, or document-level horizontal-overflow failure.
+- Prompt-injection selection replaces the complete topic body and checkpoint.
+- Trajectory preview state remains visibly distinct from earned mastery.
+- Intelligence sources remain contract-only; no request was sent.
+- The browser error console was empty.
+- Sequential keyboard, clean-user Windows, Ubuntu service and live-programme
+  acceptance remain open and are not implied by the media.
+
+final result: passed
+
 **Source visual truth:** `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-ai-native-dashboard-audit\06-direction-1-guided-mission-control.png`
 
 **Implementation evidence:** `E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-01-guided-mission-control-implementation\01-mission-control-desktop.png`
