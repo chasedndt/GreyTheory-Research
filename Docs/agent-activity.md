@@ -4,6 +4,23 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-02 — Codex — Interactive learning paths and intelligence contracts
+
+### What was built
+
+- Added inspectable 24-node skill trajectories and topic-owned four-stage
+  roadmaps without converting exploration into mastery.
+- Restored the selected shell's complete thirteen-panel navigation.
+- Added a network-free, identifier-only contract for five public vulnerability
+  intelligence sources and kept bug-bounty account connectors dark.
+
+### What the next agent should not undo
+
+Keep browser previews credential-free, provider plans non-executing, target
+inputs rejected, and imported intelligence distinct from finding evidence.
+
+See `07_LOGS/Build-Logs/2026-09-02-greytheory-interactive-learning-paths.md`.
+
 ## 2026-09-02 — Codex — Case Pack and persisted learner foundation
 
 ### What was built

@@ -673,3 +673,43 @@ flowchart TB
     H --> Pilot["PASSIVE_HTTP pilot: one programme, one action type"]
     VPS["Optional VPS deployment"] -. "only after local image acceptance" .-> Pilot
 ```
+
+## 19. Interactive topic progression
+
+```mermaid
+flowchart LR
+    Topic["Selected topic"] --> Note["Topic-owned focused note"]
+    Note --> Lens["Traditional + AI lenses"]
+    Lens --> L1["1 · Beginner orientation"]
+    L1 --> L2["2 · Foundation mapping"]
+    L2 --> L3["3 · Applied local controls"]
+    L3 --> L4["4 · Independent transfer"]
+    L3 --> Receipt["Synthetic evidence receipt"]
+    Receipt --> Review["Human assessment"]
+    Click["Trajectory click"] -. "previews path only" .-> L4
+    Click -. "cannot award" .-> Review
+
+    style Topic fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style Receipt fill:#065f46,stroke:#10b981,color:#fff
+    style Review fill:#78350f,stroke:#f59e0b,color:#fff
+```
+
+## 20. Public intelligence boundary
+
+```mermaid
+flowchart LR
+    UI["Workbench Intelligence panel"] --> Plan["CONTRACT_ONLY request plan"]
+    Plan --> Validate["CVE or versioned package validation"]
+    Validate --> Registry["OSV · CISA KEV · EPSS · NVD · GitHub Advisories"]
+    Registry -. "future accepted worker" .-> Fetch["Read-only fetch + bounded cache"]
+    Fetch --> Source["Immutable source + retrieval evidence"]
+    Source --> Offline["Offline enrichment and learning"]
+    Offline -. "never becomes" .-> Proof["Live finding proof"]
+    Target["Hostname · target · scan · exploit input"] --> Deny["Fail closed"]
+    Account["HackerOne / Bugcrowd credentials"] -. "server-side gate only" .-> Fetch
+
+    style Plan fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style Source fill:#065f46,stroke:#10b981,color:#fff
+    style Deny fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style Proof fill:#7f1d1d,stroke:#ef4444,color:#fff
+```

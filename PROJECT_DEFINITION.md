@@ -129,6 +129,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - a transport-neutral workbench application service with versioned fail-closed snapshots across the existing stores, stable next-action/context records, idempotent revision-bound standard/assisted/transfer learning handlers, transparent adaptive review scheduling, create-only hypothesis recording, human-acknowledged scope review, atomic experiment planning, server-derived bounded `LOCAL_FIXTURE` action intent with no Gate or execution, fresh evidence-bound mastery assessment derived from the configured local human operator, revisioned private report authoring, persisted human-bound Gates B-F validation, exact two-account-fixture claim assembly from stored evidence, next-state-only internal finding lifecycle, redacted receipt-chain export from server-held state, and structural refusal of posture above `LOCAL_FIXTURE` or any claim of execution.
 - an integrity-checked private report-case store that round-trips complete finding/claim-role/check-receipt state, refuses Git storage, persists atomically, audits changes, and protects draft edits with optimistic revisions;
 - a Windows-first local runtime and `greytheory-workbench` launcher with private-root enforcement, numeric `127.0.0.1` binding, strict Host/token/origin admission, bounded versioned JSON, optional same-origin static UI serving under a self-only content policy, and no target-network route.
+- a network-free `greytheory_intelligence` boundary that declares bounded
+  provider contracts for five public vulnerability sources, validates only CVE
+  or versioned-package identifiers, and cannot execute a request.
 - an offline Ubuntu 24.04 WSL2 primitive acceptance harness that creates a
   no-default-route loopback-only namespace, proves production numeric direct TLS
   without re-resolution, verifies explicit CA/hostname refusal and streamed
@@ -171,7 +174,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 - broader ready curriculum packs, governed model-backed coach conversation, visual and keyboard acceptance of the persisted learner flow, and installed clean-user learner workbench acceptance;
 - governed external Scope Watch collector, accepted Ubuntu passive worker/service and broker transport, isolated network workers, and live collectors;
-- API-bound, installed standalone graphical workbench and graphical Today/Learn surfaces;
+- installed standalone graphical workbench acceptance and a governed external
+  public-intelligence fetcher/cache; the graphical Today/Learn surfaces and
+  provider request-plan contracts are implemented;
 - live research proof and programme outcomes.
 
 ## Current stage

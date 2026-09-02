@@ -4,6 +4,19 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - interactive learning paths and public-intelligence contracts
+
+- Replaced passive Skill Trajectory marks with 24 accessible lesson nodes that
+  expose hover/focus details, honest preview fill, and selected-lesson context
+  without awarding mastery.
+- Added topic-owned focused notes, principles, traditional and AI lenses,
+  checkpoints, official resources, and beginner-to-transfer roadmaps.
+- Restored the complete thirteen-panel shell with working Programmes,
+  Hypotheses, Intelligence, Reports, and Settings journeys.
+- Added `greytheory_intelligence`, a network-free contract-only registry for
+  OSV, CISA KEV, FIRST EPSS, NVD, and GitHub Advisories. No provider fetcher,
+  account token, target input, or external request is enabled.
+
 ### Added - Case Pack and persisted learner foundation
 
 - Added three versioned Case Packs, one ready local Agent Tool Authorization

@@ -47,6 +47,10 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 - `greytheory/models/`: current governed roles, policies, citations, budgets,
   provenance, adversarial evaluations, and deterministic offline provider; any
   network provider remains future work.
+- `greytheory_intelligence/`: current network-free provider registry and
+  identifier-only request-plan contract for OSV, CISA KEV, FIRST EPSS, NVD,
+  and GitHub Advisories. It contains no HTTP client, credential store,
+  scheduler, target input, or execution entrypoint.
 - `greytheory_app/` and `greytheory_local/`: current UI-neutral application
   snapshots/commands, private runtime, and authenticated numeric-loopback API;
   the graphical workbench remains future work.
@@ -57,3 +61,10 @@ Zero dependencies remains a trust-surface choice for the core, not a prohibition
 ## Plugin contract
 
 Every future adapter declares its ID/version, binary digest, input/output schemas, minimum authority, network/filesystem/credential needs, side effects, data classes, determinism, maximum rate, emitted evidence, and supported stop conditions. A ticket cannot be issued when a plugin's declared capability exceeds the requested envelope.
+
+The public-intelligence registry is the pre-adapter subset of that contract. It
+validates only CVE identifiers or versioned package coordinates and always
+returns `CONTRACT_ONLY`, `executable = false`, and `target_interaction = false`.
+A future isolated fetcher must add immutable retrieval evidence, rate handling,
+response/schema limits, provenance, and operator acceptance before any external
+request is enabled.

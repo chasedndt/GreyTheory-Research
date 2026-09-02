@@ -234,6 +234,17 @@ defined in
 - [x] Build the selected learner-first graphical shell and remove document-level overflow at 390, 768, 1024, and 1440 pixels.
 - [x] Implement Today, Learn, Practise, Research, Prove, Readiness, and Library preview journeys with realistic local-fixture data.
 - [x] Add an inspectable recommendation explanation, six-stage learner loop, prerequisite/skill trajectory, agent-security track, case canvas, and evidence-quality visualisations.
+- [x] Make every trajectory node focusable/selectable with honest completed,
+  current, previewed, and future states plus lesson details that do not award
+  mastery.
+- [x] Give every current agent-security topic distinct focused notes,
+  principles, traditional/AI lenses, self-checks, official learning sources,
+  and a four-stage beginner-to-transfer roadmap.
+- [x] Restore the complete thirteen-panel navigation with working Programmes,
+  Hypotheses, Intelligence, Reports, and Settings journeys.
+- [x] Add a network-free public-intelligence contract for OSV, CISA KEV, FIRST
+  EPSS, NVD, and GitHub Advisories; authenticated bug-bounty connectors remain
+  dark and no fetcher is enabled.
 - [ ] Connect the bounded AI coach to the governed model gateway; its advisory-only presentation and explicit no-execution/no-mastery boundary are implemented.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
 - [x] Define versioned Case Pack contracts for guided, assisted, and independent transfer runs; ship Agent Tool Authorization as the first ready local pack and queue API ownership plus session/role transition packs.

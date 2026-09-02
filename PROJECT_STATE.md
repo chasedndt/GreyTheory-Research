@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Governed coach conversation, browser visual acceptance of the persisted flow, comprehensive keyboard acceptance, and installed Windows acceptance remain open.
+- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready, two queued), an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, and a deliberately dark live-programme compatibility layer are implemented. Governed coach conversation, accepted public-intelligence fetching, comprehensive keyboard acceptance, and installed Windows acceptance remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 670 repository tests passing on 2026-09-02, including the prior trust-kernel/worker baseline plus versioned Case Packs, immutable synthetic receipts, practise-stage command gating, and bounded same-origin UI serving. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
+- **Verified baseline:** 679 repository tests passing on 2026-09-02, including the prior trust-kernel/worker baseline plus versioned Case Packs, immutable synthetic receipts, practise-stage command gating, bounded same-origin UI serving, and network-free public-intelligence contracts. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
 
 ## What is built
 
@@ -36,6 +36,10 @@ The complete offline path from supplied authorisation to a validated report draf
 - hash-chained audit and provenance triple;
 - local-only lane runner with three static collectors (dependency, local-tree exposure, agent/MCP configuration);
 - offline OSV advisory import;
+- a separate network-free `greytheory_intelligence` registry that validates
+  contract-only CVE or versioned-package plans for OSV, CISA KEV, FIRST EPSS,
+  NVD, and GitHub Advisories while rejecting target-shaped inputs and exposing
+  no HTTP client or execution entrypoint;
 - raw/redacted evidence vault, validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI;
 - all ten Milestone 3 research records: workspace, session, typed asset/relationship, controlled identity, hypothesis, experiment plan, action request/receipt, and lesson;
 - integrity-checked, atomically persisted local research workspaces with referential validation, repository-storage refusal, explicit lifecycles, contract-bound scope classification, request/time/effect budgets, and optional audit writeback;
@@ -88,7 +92,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - broader curriculum packs beyond the first 12 cards;
 - governed model-backed coach conversation, broader ready case packs, browser visual acceptance of the persisted flow, comprehensive keyboard acceptance, and installed/clean-user Windows acceptance; the Guided Mission Control preview provides the learner shell, while same-origin commands and synthetic receipts now persist privately;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch collector, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
+- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions

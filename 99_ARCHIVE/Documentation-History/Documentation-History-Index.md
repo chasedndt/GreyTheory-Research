@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-02 - GreyTheory interactive learning paths](2026-09-02_greytheory-interactive-learning-paths.md) - complete trajectory and topic teaching interactions, thirteen-panel navigation, and contract-only public intelligence
+
 - [2026-09-01 - GreyTheory Guided Mission Control](2026-09-01_greytheory-guided-mission-control.md) - selected learner shell, deterministic authorization case, responsive proof, and corrected repository status
 
 - [2026-09-01 - GreyTheory AI-native dashboard direction](2026-09-01_greytheory-ai-native-dashboard-direction.md) - reopened learner-first visual direction, corrected responsive truth, and documented Windows-to-Ubuntu transition

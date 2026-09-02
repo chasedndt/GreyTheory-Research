@@ -36,16 +36,23 @@ import {
 } from "./workbenchApi";
 import { runAuthorizationSimulation } from "./learningCase";
 import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES } from "./casePacks";
+import { LEARNING_TOPICS, SKILL_TRACKS, topicById } from "./learningPaths";
+import { INTEGRATION_GUARDRAILS, PROGRAMME_CONNECTORS, PUBLIC_INTELLIGENCE_SOURCES } from "./intelligenceSources";
 
 const NAV_ITEMS = [
   { id: "mission", label: "Mission Control", icon: Compass, group: "Today" },
   { id: "learn", label: "Learn", icon: BookOpen, group: "Learn" },
   { id: "labs", label: "Safe Lab", icon: Flask, group: "Practise" },
+  { id: "programmes", label: "Programmes", icon: Target, group: "Research" },
   { id: "cases", label: "Cases", icon: FolderOpen, group: "Research" },
+  { id: "hypotheses", label: "Hypotheses", icon: Lightbulb, group: "Research" },
+  { id: "intelligence", label: "Intelligence", icon: MagnifyingGlass, group: "Research" },
   { id: "evidence", label: "Evidence", icon: Receipt, group: "Prove" },
+  { id: "reports", label: "Reports", icon: FileText, group: "Prove" },
   { id: "reviews", label: "Readiness", icon: GraduationCap, group: "Prove", badge: "2" },
   { id: "demos", label: "Demo Suite", icon: TrendUp, group: "Library" },
   { id: "library", label: "Library", icon: Notebook, group: "Library" },
+  { id: "settings", label: "Settings", icon: ShieldCheck, group: "System" },
 ];
 
 const LOOP_STEPS = [
@@ -55,33 +62,6 @@ const LOOP_STEPS = [
   { id: "reflect", label: "Reflect", helper: "Explain change", icon: Notebook },
   { id: "assess", label: "Assess", helper: "Human review", icon: UserCircle },
   { id: "transfer", label: "Transfer", helper: "Try independently", icon: TrendUp },
-];
-
-const TOPICS = [
-  {
-    id: "prompt-boundaries",
-    title: "Prompt-injection boundaries",
-    duration: "10 min",
-    level: "Intro",
-    icon: ShieldCheck,
-    copy: "Separate untrusted instructions from trusted system and tool context.",
-  },
-  {
-    id: "tool-authorization",
-    title: "Agent tool authorization",
-    duration: "15 min",
-    level: "Core",
-    icon: LockKey,
-    copy: "Decide which tools an agent may use, under which conditions, and with what scope.",
-  },
-  {
-    id: "mcp-abuse",
-    title: "MCP tool abuse patterns",
-    duration: "10 min",
-    level: "Applied",
-    icon: Warning,
-    copy: "Recognize risky tool schemas, broad grants, and confused-deputy behavior.",
-  },
 ];
 
 const CASE_STAGES = [
@@ -202,6 +182,47 @@ function LearnerLoop({ current = 1, onSelect }) {
   );
 }
 
+const TOPIC_ICONS = {
+  "prompt-boundaries": ShieldCheck,
+  "tool-authorization": LockKey,
+  "mcp-abuse": Warning,
+};
+
+const PRINCIPLE_ICONS = [Scales, UserCircle, ShieldCheck, Receipt];
+
+function SkillTrajectory({ navigate }) {
+  const [previewDepth, setPreviewDepth] = useState(() => Object.fromEntries(SKILL_TRACKS.map((track) => [track.id, track.completed])));
+  const [selected, setSelected] = useState(() => ({ track: SKILL_TRACKS[2], index: 1 }));
+  const chooseLesson = (track, index) => {
+    setSelected({ track, index });
+    setPreviewDepth((current) => ({ ...current, [track.id]: Math.max(current[track.id], index) }));
+  };
+  const lesson = selected.track.lessons[selected.index];
+  return (
+    <section className="surface trajectory">
+      <div className="section-heading"><div><span className="eyebrow">Skill trajectory</span><h2>Where today fits</h2></div><div className="legend"><span><i className="dot dot--done" />Completed</span><span><i className="dot dot--active" />Current</span><span><i className="dot dot--next" />Previewed</span></div></div>
+      <p className="trajectory-intro">Hover or focus a node for its lesson. Select one to reveal the path up to it; blue nodes are exploration, not earned mastery.</p>
+      <div className="trajectory-grid">
+        {SKILL_TRACKS.map((track) => <div className="trajectory-row" key={track.id}>
+          <div className="track-label"><strong>{track.title}</strong><span>{track.completed} / {track.lessons.length} practised</span></div>
+          <div className="skill-run" aria-label={`${track.title}: ${track.completed} of ${track.lessons.length} practised`}>
+            {track.lessons.map(([title, level, duration], index) => {
+              const state = index < track.completed ? "done" : index === track.completed ? "active" : index <= previewDepth[track.id] ? "previewed" : "future";
+              const isSelected = selected.track.id === track.id && selected.index === index;
+              return <button key={title} className={`trajectory-node trajectory-node--${state} ${isSelected ? "is-selected" : ""}`} onClick={() => chooseLesson(track, index)} aria-pressed={isSelected} aria-label={`${track.title}, lesson ${index + 1}: ${title}, ${level}, ${duration}`}>
+                <span>{index + 1}</span>
+                <span className="trajectory-tooltip" role="tooltip"><strong>{title}</strong><small>{level} · {duration}</small></span>
+              </button>;
+            })}
+          </div>
+        </div>)}
+      </div>
+      <div className="trajectory-detail" aria-live="polite"><div><Pill tone={selected.index < selected.track.completed ? "green" : selected.index === selected.track.completed ? "amber" : "blue"}>Lesson {selected.index + 1} · {lesson[1]}</Pill><strong>{lesson[0]}</strong><span>{selected.track.title} · {lesson[2]}</span></div><p>{selected.index < selected.track.completed ? "Practised in the local learning record." : selected.index === selected.track.completed ? "Your current recommended edge." : "Previewed next step. Complete its prerequisite evidence before claiming progress."}</p></div>
+      <footer className="trajectory-footer"><span>Path exploration is private preview state and cannot award mastery.</span><button className="text-button" onClick={() => navigate("learn")}>View learning path <ArrowRight /></button></footer>
+    </section>
+  );
+}
+
 function MissionControl({ navigate, startMission, journey, persistenceMode }) {
   return (
     <div className="page page--mission">
@@ -216,15 +237,7 @@ function MissionControl({ navigate, startMission, journey, persistenceMode }) {
           <div className="mission-actions"><button className="button button--primary" onClick={startMission}>{journey ? "Resume persisted mission" : "Start guided mission"} <ArrowRight /></button><button className="button button--secondary" onClick={() => navigate("cases")}>Preview case</button><span className={`persistence-note persistence-note--${persistenceMode}`}>{persistenceMode === "interactive" ? "Private progress persistence on" : "Preview progress only"}</span></div>
         </section>
         <LearnerLoop current={0} onSelect={(step) => navigate(step === "learn" ? "learn" : step === "practise" ? "labs" : step === "prove" ? "evidence" : "reviews")} />
-        <section className="surface trajectory">
-          <div className="section-heading"><div><span className="eyebrow">Skill trajectory</span><h2>Where today fits</h2></div><div className="legend"><span><i className="dot dot--done" />Completed</span><span><i className="dot dot--active" />In progress</span><span><i className="dot dot--next" />Next</span></div></div>
-          <div className="trajectory-grid">
-            <div className="track-label"><strong>Foundations</strong><span>3 / 8 skills</span></div><div className="skill-run" aria-label="Foundations: 3 of 8 skills"><i className="done" /><i className="done" /><i className="done" /><i className="active" /><i /><i /><i /><i /></div>
-            <div className="track-label"><strong>Web & API Security</strong><span>4 / 12 skills</span></div><div className="skill-run" aria-label="Web and API security: 4 of 12 skills"><i className="done" /><i className="done" /><i className="done" /><i className="done" /><i className="active" /><i className="next" /><i /><i /></div>
-            <div className="track-label"><strong>Agent Security</strong><span>1 / 8 skills</span></div><div className="skill-run" aria-label="Agent security: 1 of 8 skills"><i className="done" /><i className="active" /><i className="next" /><i /><i /><i /><i /><i /></div>
-          </div>
-          <button className="text-button trajectory-link" onClick={() => navigate("learn")}>View learning path <ArrowRight /></button>
-        </section>
+        <SkillTrajectory navigate={navigate} />
         <div className="metric-grid">
           <button className="metric-card" onClick={() => navigate("evidence")}><Receipt /><span>Evidence receipts</span><strong>7</strong><small>3 verified this week</small></button>
           <button className="metric-card" onClick={() => navigate("reviews")}><GraduationCap /><span>Reviews</span><strong>2</strong><small>Awaiting your response</small></button>
@@ -239,39 +252,44 @@ function MissionControl({ navigate, startMission, journey, persistenceMode }) {
 
 function LearnView({ openLab, journey }) {
   const [topic, setTopic] = useState(() => journey?.cardId === "indirect-prompt-injection" ? "prompt-boundaries" : "tool-authorization");
+  const [lessonIndex, setLessonIndex] = useState(0);
   const [checked, setChecked] = useState([true, false, false, false]);
-  const selected = TOPICS.find((item) => item.id === topic);
+  const selected = topicById(topic);
+  const selectTopic = (id) => {
+    if (id === topic) return;
+    setTopic(id);
+    setLessonIndex(0);
+    setChecked([false, false, false, false]);
+  };
   const toggle = (index) => setChecked((items) => items.map((value, itemIndex) => itemIndex === index ? !value : value));
   return (
     <div className="content-page learn-page">
       <header className="page-heading"><div><span className="eyebrow">Learn · Recommended for you</span><h1>Today’s learning brief</h1><p>A focused sequence that connects traditional access control to AI-native agent security.</p>{journey && <div className="tag-row"><Pill tone="violet">Assigned step: {journey.title}</Pill><Pill>{journey.dimension}</Pill></div>}</div><div className="time-chip"><BookOpen />35 min guided path</div></header>
       <div className="topic-grid">
-        {TOPICS.map(({ id, icon: Icon, title, copy, duration, level }) => <button key={id} className={`topic-card ${topic === id ? "is-selected" : ""}`} onClick={() => setTopic(id)}><div><Icon /><Pill tone={topic === id ? "amber" : "neutral"}>{topic === id ? "Current topic" : level}</Pill></div><strong>{title}</strong><p>{copy}</p><span>{duration} · {level}</span></button>)}
+        {LEARNING_TOPICS.map(({ id, title, copy, duration, level }) => { const Icon = TOPIC_ICONS[id]; return <button key={id} className={`topic-card ${topic === id ? "is-selected" : ""}`} onClick={() => selectTopic(id)} onMouseEnter={() => selectTopic(id)} onFocus={() => selectTopic(id)} aria-pressed={topic === id}><div><Icon /><Pill tone={topic === id ? "amber" : "neutral"}>{topic === id ? "Current topic" : level}</Pill></div><strong>{title}</strong><p>{copy}</p><span>{duration} · {level}</span></button>; })}
       </div>
       <div className="learning-layout">
         <main>
           <section className="surface lesson-card">
             <div className="section-heading"><div><span className="eyebrow">Focused note</span><h2>{selected.title}</h2></div><Pill tone="green">Ethical + technical</Pill></div>
-            <p className="lesson-lede">An agent having a tool in its runtime is not the same as having authority to use it. A safe decision joins identity, explicit consent, allowed purpose, minimal scope, context isolation, and an auditable result.</p>
+            <p className="lesson-lede">{selected.lede}</p>
             <div className="principle-grid">
-              <article><Scales /><strong>Least privilege</strong><p>Grant only the capability needed for the current purpose.</p></article>
-              <article><UserCircle /><strong>Explicit consent</strong><p>Require clear human intent for sensitive actions.</p></article>
-              <article><ShieldCheck /><strong>Context isolation</strong><p>Keep untrusted content outside authority-bearing instructions.</p></article>
-              <article><Receipt /><strong>Audit and observe</strong><p>Bind the decision, input, and result to evidence.</p></article>
+              {selected.principles.map(([title, copy], index) => { const Icon = PRINCIPLE_ICONS[index]; return <article key={title}><Icon /><strong>{title}</strong><p>{copy}</p></article>; })}
             </div>
             <div className="lens-compare">
-              <article><span className="eyebrow">Traditional lens</span><h3>Access control</h3><p>Ask who is acting, what resource is requested, and whether the policy permits it.</p><Pill>IDOR / BOLA prerequisite</Pill></article>
-              <article><span className="eyebrow">AI lens</span><h3>Delegated agency</h3><p>Also ask where the instruction came from, whether consent is current, and whether tool output can expand authority.</p><Pill tone="blue">Prompt injection aware</Pill></article>
+              <article><span className="eyebrow">Traditional lens</span><h3>{selected.traditional[0]}</h3><p>{selected.traditional[1]}</p><Pill>{selected.traditional[2]}</Pill></article>
+              <article><span className="eyebrow">AI lens</span><h3>{selected.ai[0]}</h3><p>{selected.ai[1]}</p><Pill tone="blue">{selected.ai[2]}</Pill></article>
             </div>
           </section>
-          <section className="surface knowledge-map">
-            <div className="section-heading"><div><span className="eyebrow">Skill map</span><h2>How this concept connects</h2></div></div>
-            <ol><li className="mastered"><span><Check /></span><strong>Web foundations</strong><small>Mastered</small></li><li className="mastered"><span><Check /></span><strong>API authorization</strong><small>Practised</small></li><li className="current"><span><LockKey /></span><strong>Agent tool authorization</strong><small>Current</small></li><li><span><ShieldCheck /></span><strong>Agent security boundaries</strong><small>Next</small></li><li><span><Receipt /></span><strong>Independent evidence</strong><small>Locked</small></li></ol>
+          <section className="surface topic-roadmap">
+            <div className="section-heading"><div><span className="eyebrow">Lesson roadmap</span><h2>From first look to independent transfer</h2></div><Pill tone="blue">{lessonIndex + 1} of {selected.lessons.length}</Pill></div>
+            <ol>{selected.lessons.map(([number, title, level, objective], index) => <li key={title} className={index < lessonIndex ? "is-visited" : index === lessonIndex ? "is-current" : ""}><button onClick={() => setLessonIndex(index)} aria-current={index === lessonIndex ? "step" : undefined}><span>{index < lessonIndex ? <Check /> : number}</span><div><small>{level}</small><strong>{title}</strong><p>{objective}</p></div></button></li>)}</ol>
+            <div className="lesson-media"><div><span className="eyebrow">Official learning material</span><p>Open trusted sources alongside the local lesson. External pages remain reading material and never gain authority over this workbench.</p></div>{selected.resources.map(([source, title, href]) => <a key={href} href={href} target="_blank" rel="noreferrer"><BookOpen /><span><small>{source}</small><strong>{title}</strong></span><ArrowRight /></a>)}</div>
           </section>
         </main>
         <aside className="surface lesson-checklist">
           <span className="eyebrow">Learning checkpoint</span><h2>Can you explain it?</h2><p>Mark each statement only when you can explain it in your own words.</p>
-          {["A tool grant is capability, not authority.", "Untrusted content cannot create consent.", "A negative control tests the boundary.", "A receipt proves integrity, not real-world impact."].map((label, index) => <label key={label}><input type="checkbox" checked={checked[index]} onChange={() => toggle(index)} /><span><i><Check /></i>{label}</span></label>)}
+          {selected.checkpoints.map((label, index) => <label key={label}><input type="checkbox" checked={checked[index]} onChange={() => toggle(index)} /><span><i><Check /></i>{label}</span></label>)}
           <Progress value={checked.filter(Boolean).length * 25} label="Concept readiness" />
           <button className="button button--primary button--full" onClick={openLab} disabled={checked.filter(Boolean).length < 3}>Open the safe lab <ArrowRight /></button>
           <small>Complete at least three checks to continue. This is self-attestation, not mastery.</small>
@@ -330,6 +348,66 @@ function LabView({ navigate, labState, setLabState, onRunFixture, onCaptureProof
         <aside className="surface lab-inspector"><span className="eyebrow">Experiment inspector</span><h2>What to notice</h2><div className="notice-card"><Info /><p>{activeStep < 2 ? "Authority and theory must be explicit before an experiment can be meaningful." : activeStep === 2 ? "Changing only the instruction origin makes the two outcomes comparable." : "A denial is evidence about this fixture and policy—not proof that every implementation is safe."}</p></div><Progress value={(Math.min(labState, 5) / 5) * 100} label="Case completion" tone="blue" /><h3>Evidence expected</h3><ul><li>Authority reference</li><li>Paired inputs</li><li>Policy decision</li><li>Tool-adapter outcome</li><li>Receipt hash</li></ul><div className="coach-footer"><Sparkle /><span>Coach prompts are educational guidance only.</span></div></aside>
       </div>
     </div>
+  );
+}
+
+function ProgrammesView() {
+  const programmes = [
+    { id: "gitlab", platform: "HackerOne", name: "GitLab public programme", status: "Bundle available", scope: "Snapshot requires human review", source: "2026-08-09 source bundle" },
+    { id: "ynab", platform: "Bugcrowd", name: "YNAB public programme", status: "Ambiguity blocked", scope: "Target-group conflict preserved", source: "2026-08-09 source bundle" },
+    { id: "mcp", platform: "Direct VDP", name: "MCP Python SDK", status: "Bundle available", scope: "Security policy source only", source: "2026-08-09 source bundle" },
+  ];
+  const [selected, setSelected] = useState(programmes[0]);
+  return (
+    <div className="content-page programmes-page">
+      <header className="page-heading"><div><span className="eyebrow">Research · Authority first</span><h1>Programme scope library</h1><p>Review versioned scope and policy sources before creating a hypothesis. Imported text cannot activate testing.</p></div><Pill tone="amber">3 offline bundles</Pill></header>
+      <div className="programme-layout"><main className="surface programme-list"><div className="section-heading"><div><span className="eyebrow">Available sources</span><h2>Programme bundles</h2></div></div>{programmes.map((programme) => <button key={programme.id} className={selected.id === programme.id ? "is-selected" : ""} onClick={() => setSelected(programme)}><Target /><div><small>{programme.platform}</small><strong>{programme.name}</strong><span>{programme.source}</span></div><Pill tone={programme.status.includes("blocked") ? "amber" : "green"}>{programme.status}</Pill></button>)}</main><aside className="surface programme-inspector"><span className="eyebrow">Selected programme</span><h2>{selected.name}</h2><p>{selected.scope}</p><dl><div><dt>Platform</dt><dd>{selected.platform}</dd></div><div><dt>Source state</dt><dd>{selected.status}</dd></div><div><dt>Network access</dt><dd>Unavailable</dd></div><div><dt>Authority</dt><dd>Human review required</dd></div></dl><div className="evidence-limit"><ShieldCheck /><p>This panel helps you understand policy and scope. It cannot contact, scan, or test any programme asset.</p></div></aside></div>
+    </div>
+  );
+}
+
+function HypothesesView({ navigate }) {
+  const [selectedId, setSelectedId] = useState("HYP-2026-09-01-001");
+  const [queued, setQueued] = useState(false);
+  const hypotheses = [
+    { id: "HYP-2026-09-01-001", title: "Untrusted context must not create tool authority", status: "Ready for local test", falsifier: "The negative control reaches the tool adapter." },
+    { id: "HYP-2026-09-01-002", title: "Broad tool schemas increase authorization ambiguity", status: "Needs theory review", falsifier: "A constrained and broad schema produce the same decision ambiguity." },
+    { id: "HYP-2026-09-01-003", title: "Tool output can become a second injection source", status: "Planned", falsifier: "Validated and raw output follow an identical trusted path." },
+  ];
+  const selected = hypotheses.find((item) => item.id === selectedId);
+  return (
+    <div className="content-page hypotheses-page"><header className="page-heading"><div><span className="eyebrow">Research · Falsifiable thinking</span><h1>Hypothesis workshop</h1><p>Turn observations into small, safe questions that a local fixture can actually disprove.</p></div><Pill tone="blue">3 candidate theories</Pill></header><div className="hypothesis-layout"><main className="surface hypothesis-list">{hypotheses.map((item) => <button key={item.id} className={selectedId === item.id ? "is-selected" : ""} onClick={() => { setSelectedId(item.id); setQueued(false); }}><Lightbulb /><div><small>{item.id}</small><strong>{item.title}</strong></div><Pill tone={item.status.includes("Ready") ? "green" : "neutral"}>{item.status}</Pill></button>)}</main><aside className="surface hypothesis-inspector"><span className="eyebrow">Theory card</span><h2>{selected.title}</h2><div className="hypothesis-box"><Lightbulb /><div><strong>Falsifier</strong><p>{selected.falsifier}</p></div></div><h3>Minimum safe experiment</h3><ol><li>Confirm LOCAL_FIXTURE authority.</li><li>Change one trust variable.</li><li>Run positive and negative controls.</li><li>Capture result and limitations.</li></ol><button className="button button--primary button--full" onClick={() => { setQueued(true); navigate("labs"); }}>{queued ? "Queued locally" : "Open in safe lab"}<ArrowRight /></button></aside></div></div>
+  );
+}
+
+function IntelligenceView() {
+  const [selectedId, setSelectedId] = useState(PUBLIC_INTELLIGENCE_SOURCES[0].id);
+  const [query, setQuery] = useState("CVE-2024-3094");
+  const [preview, setPreview] = useState(null);
+  const selected = PUBLIC_INTELLIGENCE_SOURCES.find((source) => source.id === selectedId);
+  const previewContract = () => setPreview({ source: selected.name, query: query.trim(), state: "No request sent", note: "The provider contract is mapped. A governed local fetcher and cache must be accepted before live retrieval is enabled." });
+  return (
+    <div className="content-page intelligence-page"><header className="page-heading"><div><span className="eyebrow">Research · Public intelligence</span><h1>Enrich evidence without expanding authority</h1><p>Use official vulnerability data to understand packages, CVEs, exploitation context, and prioritisation. External intelligence never proves a live finding.</p></div><Pill tone="green">Read-only design</Pill></header><section className="intelligence-grid" aria-label="Public intelligence sources">{PUBLIC_INTELLIGENCE_SOURCES.map((source) => <button key={source.id} className={selectedId === source.id ? "is-selected" : ""} onClick={() => { setSelectedId(source.id); setPreview(null); }}><MagnifyingGlass /><div><small>{source.access}</small><strong>{source.name}</strong><span>{source.use}</span></div><Pill tone={source.posture === "Contract ready" ? "green" : "blue"}>{source.posture}</Pill></button>)}</section><div className="integration-layout"><main className="surface lookup-panel"><div className="section-heading"><div><span className="eyebrow">Safe query contract</span><h2>{selected.name}</h2></div><Pill>{selected.endpoint}</Pill></div><p>{selected.mode}. Queries are restricted to vulnerability or package identifiers; hostnames and targets are rejected by design.</p><label><span>Preview identifier</span><input value={query} onChange={(event) => { setQuery(event.target.value); setPreview(null); }} placeholder="CVE-2024-3094" /></label><button className="button button--secondary" onClick={previewContract} disabled={!query.trim()}>Inspect adapter plan</button>{preview && <div className="adapter-preview" role="status"><ShieldCheck /><div><strong>{preview.state}</strong><p>{preview.source} · {preview.query}</p><small>{preview.note}</small></div></div>}</main><aside className="surface guardrail-panel"><span className="eyebrow">Non-negotiable guardrails</span><h2>What connection will not do</h2><ul>{INTEGRATION_GUARDRAILS.map((rule) => <li key={rule}><Check />{rule}</li>)}</ul></aside></div><section className="surface connector-panel"><div><span className="eyebrow">Bug-bounty platforms</span><h2>Account connectors stay deliberately dark</h2><p>These official APIs require account-specific credentials or approval. GreyTheory will import only data the signed-in operator is authorised to access.</p></div><div>{PROGRAMME_CONNECTORS.map((connector) => <article key={connector.id}><Target /><div><strong>{connector.name}</strong><span>{connector.access}</span><p>{connector.safeUse}</p></div><Pill tone="amber">{connector.posture}</Pill></article>)}</div></section></div>
+  );
+}
+
+function ReportsView({ navigate }) {
+  const [section, setSection] = useState("summary");
+  const sections = {
+    summary: ["Executive summary", "Local controls show that explicit user consent permits a narrow local write while identical text from an untrusted document is denied."],
+    evidence: ["Evidence and reproduction", "Authority, paired inputs, policy decisions, adapter outcomes, and the deterministic receipt remain linked to the LOCAL_FIXTURE case."],
+    limits: ["Limitations", "This result does not prove a live vulnerability, universal safety, exploitability, programme scope, or disclosure authority."],
+    remediation: ["Remediation guidance", "Bind tool use to trusted instruction origin, current consent, allowed purpose, minimal scope, and an auditable denial path."],
+  };
+  return (
+    <div className="content-page reports-page"><header className="page-heading"><div><span className="eyebrow">Prove · Private drafting</span><h1>Turn evidence into a responsible report</h1><p>Draft from linked receipts, preserve uncertainty, and re-check programme authority before any future disclosure.</p></div><Pill tone="amber">Export disabled</Pill></header><div className="report-layout"><aside className="surface report-outline"><span className="eyebrow">Report outline</span>{Object.entries(sections).map(([id, [title]]) => <button key={id} className={section === id ? "is-selected" : ""} onClick={() => setSection(id)}><FileText /><span>{title}</span><ArrowRight /></button>)}</aside><main className="surface report-editor"><div className="section-heading"><div><span className="eyebrow">Draft section</span><h2>{sections[section][0]}</h2></div><Pill tone="green">Source linked</Pill></div><p>{sections[section][1]}</p><div className="report-source"><Receipt /><div><strong>RCP-2026-09-01-015</strong><span>Verified local fixture receipt · SHA-256 integrity</span></div></div><div className="report-actions"><button className="button button--secondary" onClick={() => navigate("evidence")}>Inspect evidence</button><button className="button button--primary" disabled>Prepare disclosure packet</button></div><small>Disclosure remains unavailable until programme scope, report quality, identity, and human approval gates are satisfied.</small></main></div></div>
+  );
+}
+
+function SettingsView({ connection, openConnection }) {
+  const [lessonHints, setLessonHints] = useState(true);
+  return (
+    <div className="content-page settings-page"><header className="page-heading"><div><span className="eyebrow">System · Local preferences</span><h1>Workspace controls and capability truth</h1><p>Adjust learner presentation without weakening posture, authority, evidence, privacy, or approval gates.</p></div><Pill tone="green">Telemetry off</Pill></header><div className="settings-grid"><section className="surface settings-card"><ShieldCheck /><div><span className="eyebrow">Operating posture</span><h2>LOCAL_FIXTURE</h2><p>Synthetic local learning only. Live-target action is not available from this application.</p></div><Pill tone="green">Enforced</Pill></section><section className="surface settings-card"><UserCircle /><div><span className="eyebrow">Storage and privacy</span><h2>Private local state</h2><p>No product analytics, cloud sync, or remote telemetry is connected.</p></div><Pill>Local</Pill></section><section className="surface settings-card"><Target /><div><span className="eyebrow">Passive pilot</span><h2>Unavailable</h2><p>Ubuntu service, durable egress, key binding, programme review, and human posture approval remain gates.</p></div><Pill tone="amber">Blocked</Pill></section></div><section className="surface preference-panel"><div><span className="eyebrow">Learning preferences</span><h2>Presentation controls</h2><p>These settings change guidance visibility only. They cannot award mastery or change security policy.</p></div><label><input type="checkbox" checked={lessonHints} onChange={(event) => setLessonHints(event.target.checked)} /><span><i><Check /></i><strong>Show lesson hints</strong><small>{lessonHints ? "Context prompts are visible in guided lessons." : "Hints are hidden for independent practice."}</small></span></label></section><section className="surface connection-card"><div><span className="eyebrow">Local application</span><h2>{connection.mode === "interactive" ? "Same-origin persistence connected" : connection.state === "connected" ? "Read model connected" : "Preview mode"}</h2><p>The numeric-loopback application is the only route to persisted learner commands. A separate preview remains read-only.</p></div><button className="button button--secondary" onClick={openConnection}>Inspect local connection</button></section></div>
   );
 }
 
@@ -571,11 +649,16 @@ export function App() {
     mission: <MissionControl navigate={navigate} startMission={startMission} journey={journey} persistenceMode={persistenceMode} />,
     learn: <LearnView openLab={openLab} journey={journey} />,
     labs: <LabView navigate={navigate} labState={labState} setLabState={setLabState} onRunFixture={runFixture} onCaptureProof={captureProof} onSaveReflection={saveReflection} persistenceMode={persistenceMode} />,
+    programmes: <ProgrammesView />,
     cases: <CasesView navigate={navigate} labState={labState} />,
+    hypotheses: <HypothesesView navigate={navigate} />,
+    intelligence: <IntelligenceView />,
     evidence: <EvidenceView labState={labState} />,
+    reports: <ReportsView navigate={navigate} />,
     reviews: <ReviewsView />,
     demos: <DemosView navigate={navigate} startMission={startMission} persistenceMode={persistenceMode} />,
     library: <LibraryView navigate={navigate} />,
+    settings: <SettingsView connection={connection} openConnection={() => setModal("connection")} />,
   };
   const view = views[active];
 

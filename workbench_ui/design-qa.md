@@ -39,3 +39,33 @@ Full-view comparison was sufficient for the shell; focused captures were used fo
 **Follow-up polish:** preserve the current density while adding the server-persisted learner command path; do not turn the home screen into a record table.
 
 **final result: passed**
+
+## 2026-09-02 learning-path interaction follow-up
+
+The live in-app audit reproduced two functional P2 issues: Skill Trajectory
+used passive marks with no lesson detail, and changing topics updated only the
+Focused Note heading while leaving the authorization body in place. Both are
+fixed.
+
+- All 24 trajectory nodes are keyboard-focusable buttons with accessible lesson
+  names, hover/focus detail, selection, and honest preview fill.
+- `View learning path` now sits in a padded footer below a selected-lesson
+  summary instead of touching the trajectory grid.
+- Prompt Injection, Tool Authorization, and MCP Abuse now change the entire
+  lesson body, principles, lenses, checkpoints, roadmap, and official sources.
+- Navigation now exposes all thirteen journeys, including Programmes,
+  Hypotheses, Intelligence, Reports, and Settings.
+- Public-intelligence and bug-bounty panels expose truthful connection state;
+  no network request or account connection was made.
+- Browser geometry at the default viewport and 390 CSS pixels reported no
+  document overflow; the mobile drawer opened, exposed all thirteen panels,
+  navigated to Learn, and closed after selection.
+
+Evidence root:
+`E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-02-learning-path-interactions`.
+The current in-app browser capture path rasterised at device-pixel ratio 2 into
+a CSS-pixel-sized bitmap, so the saved full-page PNGs are useful state evidence
+but are not approved promotional media. Use the earlier DPR-1 campaign captures
+until a new DPR-1 media pass is recorded.
+
+**final result: functional pass; promotional recapture required**

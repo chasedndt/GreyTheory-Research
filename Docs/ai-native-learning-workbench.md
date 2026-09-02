@@ -170,6 +170,26 @@ The redesigned shell is not accepted until all of the following pass:
 | D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
 | D7 Acceptance | earlier responsive preview proof exists; current same-origin persisted flow, full keyboard, and clean-user Windows package | PARTIAL |
 
+The D4 learner surface now makes all 24 visible trajectory lessons selectable.
+Completed, current, previewed, and future states remain semantically separate;
+selecting a later node reveals the path but cannot award progress. The three
+current agent-security topics each own distinct instructional content,
+checkpoints, lenses, official resources, and a four-lesson progression from
+beginner orientation to independent transfer.
+
+## Public intelligence and programme connectors
+
+The workbench now exposes a read-only Intelligence journey for OSV, CISA KEV,
+FIRST EPSS, NVD, and GitHub Advisories. `greytheory_intelligence` validates CVE
+or versioned-package request plans, rejects target-shaped inputs, and contains
+no network client. This is integration architecture, not a live connection.
+
+HackerOne and Bugcrowd remain account connectors. Their official APIs require
+account credentials and permissions, so the preview shows their requirements
+without accepting tokens or making requests. A future local worker must keep
+credentials outside the browser, import only authorised account data, preserve
+source/retrieval evidence, and remain separate from target testing.
+
 ## Implemented reference case
 
 `CASE-AGENT-AUTH-001` teaches the Agent Tool Authorization Boundary through

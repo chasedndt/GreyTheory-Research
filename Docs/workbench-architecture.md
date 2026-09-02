@@ -270,11 +270,11 @@ but these journeys are required.
 
 ### Learner-first shell
 
-The primary navigation groups the required journeys as Today, Learn, Practise,
-Research, Prove, Library, and Readiness. Storage-shaped views such as
-Hypotheses, Experiments, Receipts, Claims, and Reflections remain available
-inside the relevant journey. The Research Ledger remains the chronological case
-view; it is no longer the default home screen.
+The primary navigation groups thirteen working journeys as Today, Learn,
+Practise, Research, Prove, Library, and System. Mission Control, Learn, Safe Lab,
+Programmes, Cases, Hypotheses, Intelligence, Evidence, Reports, Readiness, Demo
+Suite, Library, and Settings remain individually reachable. The Research Ledger
+remains the chronological case view; it is no longer the default home screen.
 
 The home surface presents one next safe mission and explains its prerequisites,
 reason, expected time, fixture, required evidence, and assessment. Agentic-

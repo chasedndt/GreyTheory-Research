@@ -33,3 +33,13 @@ traditional access control and ethical research alongside AI-native risks such
 as indirect prompt injection, excessive agency, consent, context isolation, and
 tool authorization. Guided completion is practice, not mastery; AI remains
 advisory and human assessment remains explicit.
+
+On 2026-09-02 the operator accepted the current shell and asked for a complete,
+interactive learning-path pass. Skill-trajectory nodes must be focusable and
+selectable, hover/focus must explain each lesson, and previewed nodes must never
+masquerade as earned mastery. Every topic must own distinct notes, principles,
+traditional/AI lenses, checkpoints, and a beginner-to-transfer roadmap. Keep all
+thirteen product panels represented in navigation. Public intelligence belongs
+in read-only, source-preserving contracts; authenticated bug-bounty connectors
+remain dark until credentials, account authority, and the external-worker gate
+are separately accepted.
