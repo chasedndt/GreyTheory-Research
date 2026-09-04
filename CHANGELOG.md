@@ -25,6 +25,9 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - Added bounded canonical root-manifest diagnostics to the byte-identity gate
   and removed `ldconfig`'s optional filesystem-specific auxiliary cache from
   the hardened root while preserving the runtime linker cache.
+- Corrected Ubuntu image-runtime composition to invoke the acceptance composer
+  as a repository-rooted Python module after the first clean image run exposed
+  the file-path import boundary.
 - Static and package-provenance checks pass, but an Ubuntu image/runtime record
   has not yet completed; hardened image, VM/reboot, transport, key, programme,
   VPS, posture, and live-operation gates remain open.

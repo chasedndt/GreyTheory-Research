@@ -26,4 +26,6 @@ minimal build-time `/dev` tmpfs while preserving the outer `nodev` root and the
 ban on host-device binds. A bounded canonical root-manifest comparison then
 isolated `ldconfig`'s optional filesystem-specific auxiliary cache as the only
 content difference; hardening now removes that cache without weakening the
-two-build byte-identity gate.
+two-build byte-identity gate. A clean release image then passed byte identity;
+its first runtime attempt exposed and repaired the outer composer's Python
+module boundary before any runtime-acceptance claim was emitted.

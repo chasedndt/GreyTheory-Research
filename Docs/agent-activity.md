@@ -20,6 +20,8 @@ Read this before changing anything that looks arbitrary. Several guards in this 
   ext4 build root remains `nodev`; host devices are never bound into staging.
 - A canonical root-manifest diff at reproducibility refusal and removal of
   `ldconfig`'s optional filesystem-specific auxiliary cache during hardening.
+- A clean two-build-identical release image and a corrected repository-rooted
+  module invocation for the outer image-runtime acceptance composer.
 
 ### What the next agent should not undo
 
@@ -32,9 +34,9 @@ human-posture gates independent.
 ### Verification
 
 21 focused and all 708 repository tests pass; all 18 packages match
-Canonical-signed indexes. The operator-approved Ubuntu
-restart restored process creation, device nodes, and supervised user services.
-No image/runtime acceptance record exists yet.
+Canonical-signed indexes. The operator-approved Ubuntu restart restored process
+creation, device nodes, and supervised user services. A clean release image
+exists; no image-runtime acceptance record exists yet.
 See `07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-worker-image-candidate.md`.
 
 ## 2026-09-04 - Codex - Ubuntu namespace-lifetime exact-egress candidate

@@ -205,7 +205,7 @@ chroot "$rootfs" /usr/bin/setpriv \
   > "$runtime_dir/runtime.json"
 
 LD_LIBRARY_PATH="$nft_lib" "$nft_bin" list ruleset > "$runtime_dir/ruleset.txt"
-python3 acceptance/compose_ubuntu_worker_image_acceptance.py \
+python3 -m acceptance.compose_ubuntu_worker_image_acceptance \
   "$manifest" \
   "$image" \
   "$runtime_dir/runtime.json" \

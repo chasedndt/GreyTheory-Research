@@ -109,6 +109,16 @@ Its manifest correctly records `dirty=true`, `runtime_accepted=false`, and
 `hardened_worker_image_accepted=false`; it is not a clean release build or
 runtime-acceptance record.
 
+Clean commit `bceaa13a4a547311a9e10a1cf2ec134e88b15e38` then produced a
+29,429,760-byte release SquashFS with SHA-256
+`15438d9ac0c0ad2a66ffef8c4c616522d719c644f7df1c7261ca8461782c65d1`,
+`dirty=false`, and two byte-identical independent builds. Runtime admission
+verified its digest and signed supply chain, executed the contained worker, and
+then exposed an outer-composer invocation defect: running the composer by file
+path omitted the repository root from Python's import path. The harness now
+invokes it as the `acceptance.compose_ubuntu_worker_image_acceptance` module;
+the failed run emitted no acceptance record.
+
 ## Verification
 
 ```text
@@ -116,7 +126,7 @@ python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
 21 passed
 
 python -m pytest -q
-708 passed in 17.73s
+708 passed in 24.91s
 
 python -m py_compile
 3 image/provenance modules passed
@@ -131,11 +141,11 @@ actual signed archive metadata
 3 suites verified; 18/18 locked packages matched
 ```
 
-There is no clean release image or image-runtime acceptance record yet. One
-dirty-tree development image exists only as the bounded reproducibility
-diagnostic described above. UI code was untouched; the prior 23 UI tests, 4
-Sites tests, production build, and rendered QA remain the UI baseline rather
-than new proof.
+A clean reproducible release image now exists, but no image-runtime acceptance
+record has passed yet. One dirty-tree development image also exists only as the
+bounded reproducibility diagnostic described above. UI code was untouched; the
+prior 23 UI tests, 4 Sites tests, production build, and rendered QA remain the
+UI baseline rather than new proof.
 
 ## Sources used
 

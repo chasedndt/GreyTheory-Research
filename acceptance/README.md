@@ -232,8 +232,8 @@ full receipt/replay evidence before the outer composer can accept it.
 
 **Current proof state:** implementation, static contracts, signed-metadata
 package matching, 21 focused tests, and the 708-test repository suite pass. A
-dirty-tree development build passes two-build byte identity but explicitly
-retains `runtime_accepted=false`; no clean release image or image-runtime
+dirty-tree development build and a clean release build pass two-build byte
+identity but explicitly retain `runtime_accepted=false`; no image-runtime
 acceptance record has completed yet. `image_runtime_accepted` is therefore not
 a current capability and `hardened_worker_image_accepted` remains false. WSL2 is
 only the construction/fixture host; isolated local-VM reboot conformance,

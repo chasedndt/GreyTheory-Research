@@ -496,6 +496,7 @@ def test_worker_image_runtime_mounts_only_bounded_owned_filesystems():
     assert 'provenance="$image_dir/package-provenance.json"' in shell
     assert "gpgv --status-fd 1" in shell
     assert "cmp --silent \"$provenance\"" in shell
+    assert "python3 -m acceptance.compose_ubuntu_worker_image_acceptance" in shell
     assert "$record.image_runtime_accepted -ne $true" in powershell
     assert "$record.hardened_worker_image_accepted -ne $false" in powershell
     assert not any(

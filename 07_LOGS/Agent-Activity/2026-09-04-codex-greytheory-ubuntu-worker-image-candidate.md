@@ -35,6 +35,9 @@ image boundary without raising posture or contacting a target.
 - Added bounded canonical root-manifest diagnostics after the byte-identity
   gate isolated `ldconfig`'s optional filesystem-specific auxiliary cache; the
   hardening pass now removes that cache without removing `/etc/ld.so.cache`.
+- Produced the first clean two-build-identical release image, then corrected
+  the outer acceptance composer to run as a repository-rooted Python module
+  after its initial file-path invocation could not import `acceptance`.
 
 ## Guardrails retained
 
@@ -48,8 +51,8 @@ scheduler, or a posture transition.
 21 focused tests and all 708 repository tests pass. Shell and PowerShell syntax
 checks pass. All 18 packages match three Canonical-signed Ubuntu archive
 indexes. Ubuntu process creation and device state are restored. A dirty-tree
-development build now passes two-build byte identity, but no clean release
-image or image-runtime acceptance record exists yet.
+development build and clean release build now pass two-build byte identity, but
+no image-runtime acceptance record exists yet.
 
 ## Handoff
 
