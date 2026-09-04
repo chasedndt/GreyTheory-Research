@@ -13,6 +13,8 @@ worker-service harness without enabling network posture.
   worker-service entrypoint.
 - Re-ran the full service successfully on Ubuntu 24.04.4.
 - Added durable JSON/error evidence plus wrapper-side invariant validation.
+- Updated the executable capability register and dashboard gate copy so Ubuntu
+  is accepted without making the passive pilot appear available.
 - Updated capability truth, roadmap, transition documentation, logs, and
   indexes from host-unaccepted to no-route local-fixture accepted.
 

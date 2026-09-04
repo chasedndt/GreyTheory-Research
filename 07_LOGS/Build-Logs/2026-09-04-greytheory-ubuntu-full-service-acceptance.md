@@ -67,7 +67,13 @@ python -m pytest -q tests/test_windows_user_install_contract.py tests/test_ubunt
 21 passed in 1.08s
 
 python -m pytest -q
-686 passed in 19.94s
+686 passed in 21.64s
+
+npm --prefix workbench_ui run test
+22 UI tests passed; 4 Sites tests passed
+
+npm --prefix workbench_ui run build
+production build passed
 ```
 
 ## Untouched boundaries

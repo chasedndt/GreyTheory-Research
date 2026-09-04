@@ -123,7 +123,7 @@ Accepted on the operator's Ubuntu 24.04 WSL2 host without external contact:
 - a real spawned resolver child deliberately blocks past its deadline and is
   terminated and reaped by the production resolver parent.
 
-Implemented harness but not yet accepted on the host:
+Accepted full-service local host harness:
 
 - `acceptance/ubuntu_worker_service.py` and its PowerShell wrapper construct a
   no-default-route namespace, temporary synthetic hosts view, non-root
@@ -138,19 +138,16 @@ Implemented harness but not yet accepted on the host:
   UID/GID 65534, starts the outer worker from a clean fork server, forks the
   cancellable resolver only inside the scrubbed authority-free worker, and
   bounds/stops only its owned Windows WSL clients on timeout;
-- no attempt emitted the required complete JSON evidence before unrelated
-  Hermes WSL clients again coincided with an unhealthy distro startup. No pass
-  is claimed, and the shared distro/service was not terminated.
-- a subsequent retry with no WSL clients present failed inside WSL before the
-  namespace command started (`CreateVm/0x800705b4`); the wrapper returned
-  nonzero and no GreyTheory-owned WSL client remained.
+- on 2026-09-04 the remaining Windows CRLF checkout defect was fixed by
+  enforcing LF for shell entrypoints; the Ubuntu 24.04.4 run then emitted a
+  complete durable JSON record with system resolution, broker recheck, exact
+  synthetic request, encrypted capture, verified receipt, completed replay,
+  non-root/zero-capability/no-new-privileges identity, and clean worker exit;
+- the wrapper validates that record, retains separate stderr evidence, and did
+  not terminate the shared distro or unrelated WSL clients.
 
 Still required before any network posture:
 
-- successful real system-resolution plus full adapter/capture/receipt
-  acceptance on a recovered or explicitly restart-approved isolated host; the
-  current accepted evidence still covers primitive cancellation and numeric
-  TLS only;
 - an approved OS secret-provider binding, backup/recovery procedure, and host
   acceptance for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker

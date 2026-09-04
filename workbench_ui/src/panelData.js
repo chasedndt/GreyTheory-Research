@@ -116,7 +116,7 @@ export const panelData = {
     rows: [
       { id: "GOV-POSTURE", title: "Operating posture", detail: "LOCAL_FIXTURE is the current ceiling for this workspace.", status: "Enforced", tone: "verified", kind: "Policy" },
       { id: "GOV-AUTH", title: "Authority package", detail: "Synthetic fixture scope confirmed; external systems excluded.", status: "Verified", tone: "verified", kind: "Authority" },
-      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Unavailable pending accepted worker, egress, secret-provider, and host proof.", status: "Blocked", tone: "blocked", kind: "Capability" },
+      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Ubuntu no-route proof passes; durable egress, OS key, hardened image, programme review, and human approval remain.", status: "Blocked", tone: "blocked", kind: "Capability" },
     ],
     boundary: "The UI displays policy state but cannot grant authority or execute a broker action directly.",
   },
@@ -127,7 +127,7 @@ export const panelData = {
     stats: [["Available", "1"], ["Active", "1"], ["Cloud", "0"], ["Live", "0"]],
     rows: [
       { id: "WS-LOCAL", title: "LOCAL_FIXTURE", detail: "Synthetic two-account workspace with local evidence and no external network.", status: "Active", tone: "verified", kind: "Local" },
-      { id: "WS-PASSIVE", title: "Passive research pilot", detail: "Reserved until Ubuntu worker/service acceptance and operator posture approval.", status: "Unavailable", tone: "blocked", kind: "Future" },
+      { id: "WS-PASSIVE", title: "Passive research pilot", detail: "Reserved until egress, OS key, hardened image, programme review, and operator posture approval.", status: "Unavailable", tone: "blocked", kind: "Future" },
     ],
     boundary: "Only LOCAL_FIXTURE can be selected. A workspace label never raises the operating posture.",
   },

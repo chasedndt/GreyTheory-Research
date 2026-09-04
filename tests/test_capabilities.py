@@ -61,22 +61,25 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert "ticket-bound" in broker.detail.lower()
     assert "provisioning/rotation/revocation/decryption" in broker.detail.lower()
     assert "owned-process" in broker.boundary.lower()
-    assert "full ubuntu service acceptance" in broker.boundary.lower()
+    assert "full ubuntu 24.04" in broker.boundary.lower()
+    assert "acceptance passes" in broker.boundary.lower()
     assert "os secret-provider" in broker.boundary.lower()
     adapter = capability("passive_adapter_contract")
     assert adapter.status is CapabilityStatus.PARTIAL
     assert "full-request-digest-bound" in adapter.detail.lower()
     assert "trusted parent assembly" in adapter.detail.lower()
-    assert "not passed ubuntu host acceptance" in adapter.boundary.lower()
+    assert "ubuntu 24.04" in adapter.boundary.lower()
+    assert "service path pass" in adapter.boundary.lower()
     primitives = capability("passive_worker_primitives")
     assert primitives.status is CapabilityStatus.PARTIAL
     assert "cancellable" in primitives.detail.lower()
     assert "two-command" in primitives.detail.lower()
     assert "capability-empty" in primitives.detail.lower()
-    assert "full service harness" in primitives.boundary.lower()
+    assert "full owned no-route service path" in primitives.boundary.lower()
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     passive = capability("passive_http_worker")
-    assert "no launcher" in passive.detail.lower()
+    assert "no durable egress" in passive.detail.lower()
+    assert "no-route" in passive.detail.lower()
     assert "passive_http remains dark" in passive.boundary.lower()
 
 
