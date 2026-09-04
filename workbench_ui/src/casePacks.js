@@ -40,7 +40,7 @@ export const CASE_PACKS = [
 export const LIVE_PROGRAMME_GATES = [
   "Installed Windows workbench accepted",
   "Full Ubuntu worker host proof accepted",
-  "Durable egress and OS key binding accepted",
+  "Durable egress and approved OS key/recovery accepted",
   "Programme bundle reviewed without ambiguity",
   "Operator explicitly raises the posture",
 ];

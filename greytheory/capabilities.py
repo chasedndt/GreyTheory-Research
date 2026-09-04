@@ -157,7 +157,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Guided learning orchestration",
         CapabilityStatus.PARTIAL,
         "Deterministic recommendations, prerequisite routing, transparent adaptive review intervals, standard/assisted/transfer tracks, staged journeys, reflection, private persistence, CLI flow, and workbench snapshot/command integration are live.",
-        "Assistance cannot evidence mastery above assisted; transfer requires independent test/prove foundations plus distinct-context evidence. Broader curricula and the graphical Learn surface are not built.",
+        "Assistance cannot evidence mastery above assisted; transfer requires independent test/prove foundations plus distinct-context evidence. One Case Pack is ready; broader ready curricula and a governed model-backed coach remain open.",
         (
             "greytheory.learning.journey",
             "Docs/decisions/ADR-0017-transparent-adaptive-learning-tracks.md",
@@ -208,8 +208,8 @@ CAPABILITIES: tuple[Capability, ...] = (
         "local_workbench_transport",
         "Local workbench transport",
         CapabilityStatus.PARTIAL,
-        "Private runtime assembly, strict versioned command decoding, authenticated numeric-loopback JSON snapshots/commands, and a Windows-first launch command are live.",
-        "No graphical shell, installed shortcut, Windows ACL acceptance, clean-user launch proof, or cross-origin API is shipped.",
+        "Private runtime assembly, strict versioned command decoding, authenticated numeric-loopback JSON snapshots/commands, bundled same-origin UI, Windows-first launch, and current-user shortcut/restart/upgrade/runtime-recovery acceptance are live.",
+        "Only exact local loopback is admitted; cross-origin writes and target clients remain absent. Whole-application first-entry keyboard traversal, a genuinely separate Windows-account run, signing, and uninstall acceptance remain open.",
         (
             "greytheory_local",
             "Docs/decisions/ADR-0012-authenticated-numeric-loopback-workbench.md",
@@ -218,10 +218,10 @@ CAPABILITIES: tuple[Capability, ...] = (
     Capability(
         "graphical_workbench",
         "Graphical workbench",
-        CapabilityStatus.PLANNED,
-        "Application architecture, versioned snapshot contract, and user journeys are defined.",
-        "No selected visual direction or interactive graphical application is implemented yet; only the local JSON launch boundary exists.",
-        ("Docs/workbench-architecture.md",),
+        CapabilityStatus.PARTIAL,
+        "Guided Mission Control provides thirteen working journeys, 24 interactive trajectory lessons, topic-owned roadmaps, three versioned Case Packs, a Demo Suite, and same-origin persisted learning commands.",
+        "One Case Pack is ready locally. Comprehensive first-entry keyboard acceptance, governed coach conversation, broader ready curricula, separate-account/signing acceptance, and external intelligence remain open; no live-target action is exposed.",
+        ("workbench_ui", "Docs/workbench-architecture.md"),
     ),
     Capability(
         "local_fixture_executor",
@@ -236,11 +236,22 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive broker foundation",
         CapabilityStatus.PARTIAL,
         "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, ticket-bound X25519/ChaCha20-Poly1305 capture envelopes, audited KEK-wrapped recipient provisioning/rotation/revocation/decryption, and signed receipt metadata.",
-        "An owned-process broker/worker assembly keeps signing keys, replay state, kill-switch authority, private capture keys, and research data out of the worker. Its full Ubuntu 24.04 no-route local-fixture service acceptance passes. Approved OS secret-provider binding, durable egress, a hardened image, VM/VPS acceptance, and every target action remain unverified or unavailable; PASSIVE_HTTP remains unavailable.",
+        "An owned-process broker/worker assembly keeps signing keys, replay state, kill-switch authority, private capture keys, and research data out of the worker. Its full Ubuntu 24.04 no-route local-fixture service acceptance passes. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart and protected-copy recovery, but operator approval, ACL hardening, independent recovery, durable egress, a hardened image, VM/VPS acceptance, and every target action remain unverified or unavailable; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_broker",
             "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
             "Docs/decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md",
+        ),
+    ),
+    Capability(
+        "windows_dpapi_root_kek_candidate",
+        "Windows root-key provider candidate",
+        CapabilityStatus.PARTIAL,
+        "An operator-side CurrentUser DPAPI provider protects a random 32-byte root KEK with UI forbidden, audited provision/lease operations, strict records, and a short-lived zeroing lease. Same-profile restart and protected-copy recovery pass on Windows.",
+        "This is candidate host proof only. Windows ACL hardening, a profile/system backup procedure, recovery independent of the same account/profile, and explicit operator approval remain open. The root KEK never enters the Ubuntu worker and no posture changes.",
+        (
+            "greytheory_broker.os_secrets",
+            "Docs/decisions/ADR-0019-windows-dpapi-root-kek-candidate.md",
         ),
     ),
     Capability(
@@ -269,7 +280,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,
-        "A dark owned-process assembly and accepted Ubuntu no-route fixture exist, but there is no durable egress, OS-bound key provider, hardened image, launcher, scheduler, programme route, or passive target action.",
+        "A dark owned-process assembly, accepted Ubuntu no-route fixture, and same-profile Windows DPAPI key-provider candidate exist, but there is no approved provider/recovery procedure, no durable egress, no hardened image, no launcher or scheduler, no programme route, and no passive target action.",
         "PASSIVE_HTTP remains dark until full host/image/egress/secret-provider controls, one reviewed programme, sustained operation, and explicit operator posture approval are proven.",
         (
             "Docs/roadmap.md",

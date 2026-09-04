@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 686 repository tests pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness also passes with strict unprivileged identity, encrypted capture return, signed receipt verification, completed replay state, and clean exit. This is still an owned local fixture; posture remains unchanged and durable egress, OS key, hardened image, programme, and human approval gates remain open.
+- 694 repository tests, 22 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness also passes with strict unprivileged identity, encrypted capture return, signed receipt verification, completed replay state, and clean exit. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, durable egress, hardened image, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -327,8 +327,14 @@ Offline broker foundation completed without enabling the posture:
   enforcing LF for shell entrypoints; Ubuntu 24.04.4 then emitted a complete
   durable JSON record while retaining `LOCAL_FIXTURE`, no route, and no external
   or programme contact.
+- [x] Implement and host-test a candidate Windows CurrentUser DPAPI root-KEK
+  provider without wiring it to posture: strict protected records, audited
+  provision/lease operations, same-profile restart and protected-copy recovery,
+  tamper refusal, capture decryption, and lease-buffer zeroing pass. This does
+  not close the key gate.
 - [ ] Prove durable egress enforcement in the hardened local image.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
+  hardened application-data ACLs plus independent cross-profile/bare-machine
   backup/recovery and host acceptance; no root KEK is stored by the repository.
 - [ ] Build and harden the unprivileged Ubuntu 24.04 worker image and broker transport.
 - [ ] Pass VM conformance, owned-canary, one-programme review, sustained clean

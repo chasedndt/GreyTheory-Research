@@ -25,6 +25,10 @@ Model inputs must use credential handles, identity handles, hashes, and redacted
   reclassify it. The offline key store refuses Git paths, persists only
   authenticated KEK-wrapped X25519 private keys, and never persists its
   caller-supplied root KEK.
+- The proposed Windows CurrentUser DPAPI provider persists only a protected
+  root-KEK record outside Git. Its same-profile recovery proof does not approve
+  the inherited filesystem ACL, cross-profile recovery, backup policy, or the
+  provider itself; the Ubuntu worker receives no decryption key material.
 - Only redacted evidence is exportable, and export remains all-or-nothing.
 
 ## Evidence deletion

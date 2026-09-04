@@ -4,6 +4,29 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - Windows DPAPI root-key provider candidate
+
+- Added an operator-side Windows CurrentUser DPAPI provider for the external
+  32-byte root KEK, with UI forbidden, strict protected records, Git-storage
+  refusal, audited provision/lease operations, and a short-lived zeroing lease.
+- Added a real Windows candidate harness proving same-profile restart and
+  protected-copy recovery, capture decryption, tamper refusal, plaintext-tree
+  scanning, and audit verification without exercising the Ubuntu worker.
+- Kept the provider unapproved: inherited application-data ACL hardening,
+  independent cross-profile/bare-machine recovery, profile/system backup,
+  operator approval, and every `PASSIVE_HTTP` gate remain open.
+
+### Fixed - executable workbench capability truth
+
+- Reclassified the implemented Guided Mission Control graphical workbench from
+  planned to partial and recorded its thirteen journeys, 24 interactive lesson
+  nodes, same-origin commands, Demo Suite, and current-user lifecycle proof.
+- Retained the open comprehensive first-entry keyboard, separate-account,
+  signing, uninstall, broader-curriculum, coach, and external-intelligence
+  boundaries.
+- Declared the existing GreyTheory mark as the preview favicon after rendered
+  QA found the only console error was a missing browser icon request.
+
 ### Fixed - Ubuntu full-service host acceptance
 
 - Enforced LF checkout for Linux shell entrypoints after the Windows worktree

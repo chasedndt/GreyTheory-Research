@@ -410,6 +410,10 @@ Implemented now:
   capped two-command spawned-process assembly, unit-verified with strict child
   identity/environment/lifecycle rules plus the earlier bounded Ubuntu
   primitive host proof;
+- an operator-side Windows CurrentUser DPAPI root-KEK candidate with strict
+  records, audited provision/lease operations, a zeroing lease, and real
+  same-profile restart/protected-copy recovery, tamper-refusal, capture, and
+  audit proof; it is not approved and never gives key authority to the worker;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -424,9 +428,10 @@ Not implemented now:
 - broader ready curricula beyond the first local Case Pack and governed
   model-backed coach conversation;
 - a general local fixture process broker;
-- approved OS secret-provider binding for the root KEK, durable egress policy,
-  hardened image, launcher/scheduler, or any `PASSIVE_HTTP` action; the full
-  Ubuntu no-route local-fixture worker-service harness now passes.
+- operator approval, hardened application-data ACLs, and independent recovery
+  for the candidate root-KEK provider; durable egress policy, hardened image,
+  launcher/scheduler, or any `PASSIVE_HTTP` action; the full Ubuntu no-route
+  local-fixture worker-service harness now passes.
 
 The current Research Ledger remains a first-class Research case view. Guided
 Mission Control is the selected shell. Current browser visual, same-origin

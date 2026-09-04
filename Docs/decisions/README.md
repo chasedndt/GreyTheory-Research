@@ -20,3 +20,4 @@ Accepted decisions governing GreyTheory's productisation. Earlier trust-kernel d
 - [ADR-0016 - Accept Ubuntu primitives in an offline network namespace](ADR-0016-offline-ubuntu-primitive-host-acceptance.md)
 - [ADR-0017 - Keep adaptive learning transparent and assistance bounded](ADR-0017-transparent-adaptive-learning-tracks.md)
 - [ADR-0018 - Keep broker authority outside the passive worker process](ADR-0018-keep-broker-authority-outside-passive-worker.md)
+- [ADR-0019 - Evaluate Windows CurrentUser DPAPI as the operator root-KEK provider](ADR-0019-windows-dpapi-root-kek-candidate.md)

@@ -263,7 +263,8 @@ class TestCapabilityPanel:
         assert ["Lane 4 - agent configuration", "live"] in panel.rows
         assert ["Scope Watch - offline comparison", "live"] in panel.rows
         assert ["Scope Watch - governed collector", "unavailable"] in panel.rows
-        assert ["Graphical workbench", "planned"] in panel.rows
+        assert ["Graphical workbench", "partial"] in panel.rows
+        assert ["Windows root-key provider candidate", "partial"] in panel.rows
         assert ["Passive HTTP worker", "unavailable"] in panel.rows
 
     def test_capability_panel_names_status_as_code_not_runtime_health(self):

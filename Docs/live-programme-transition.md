@@ -62,6 +62,11 @@ evidence:
    Ubuntu 24.04.4 local fixture as of 2026-09-04; it grants no egress or posture.
 3. **Egress and key-provider acceptance** — durable network constraints and an
    approved OS-bound key provider are proven independently of application UI.
+   A Windows CurrentUser DPAPI candidate now passes same-profile restart,
+   protected-copy recovery, tamper refusal, capture decryption, and audit
+   checks. This gate remains open because application-data ACL hardening,
+   independent cross-profile/bare-machine recovery, a profile/system backup
+   procedure, and explicit operator approval have not passed.
 4. **One verified programme review** — one current programme bundle has no
    unresolved scope, rate, data, or disclosure conflict and permits only the
    proposed passive action.
@@ -82,7 +87,7 @@ stateDiagram-v2
     LocalFixture: LOCAL_FIXTURE\nsynthetic case packs only
     LocalFixture --> CompatibilityReady: case schema and dark adapter validated
     CompatibilityReady --> HostAccepted: Windows app plus Ubuntu worker accepted
-    HostAccepted --> ProgrammeReady: egress, keys, and one programme reviewed
+    HostAccepted --> ProgrammeReady: egress, approved key recovery, and one programme reviewed
     ProgrammeReady --> AwaitingHuman: complete transition packet produced
     AwaitingHuman --> PassivePilot: explicit posture approval
     AwaitingHuman --> LocalFixture: declined, stale, or changed evidence

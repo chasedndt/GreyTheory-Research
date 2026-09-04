@@ -86,11 +86,11 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified, and the full Ubuntu 24.04 no-route service harness passes; no OS-bound KEK provider, durable egress, hardened image, launcher, or passive action exists |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service and Windows CurrentUser DPAPI same-profile candidate harnesses pass; provider approval, ACL hardening, independent recovery, durable egress, hardened image, launcher, and every passive action remain open |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
-| 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, and bounded assisted/transfer journeys live; broader curriculum and graphical learning loop planned |
-| 10 | Workbench and Integrations | PARTIAL; CLI, read models, bounded application handlers, private runtime assembly, authenticated numeric-loopback transport, optional bounded same-origin UI serving, the retained Research Ledger, Guided Mission Control, and a working Demo Suite exist. The shell can persist Learn -> Practise -> Prove -> Reflect commands and synthetic receipts through the same-origin application; a separate preview origin remains read-only. Browser visual acceptance of this persisted flow, comprehensive keyboard acceptance, governed coach conversation, and installed packaging remain open |
+| 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, bounded assisted/transfer journeys, and the graphical learning loop are live for one ready Case Pack; broader ready curriculum remains open |
+| 10 | Workbench and Integrations | PARTIAL; CLI, read models, bounded application handlers, private runtime assembly, authenticated numeric-loopback transport, bundled same-origin UI serving, the retained Research Ledger, Guided Mission Control, and a working Demo Suite exist. The shell persists Learn -> Practise -> Prove -> Reflect commands and synthetic receipts through the same-origin application; a separate preview origin remains read-only. Browser visual/reload/route-focus/mobile-focus acceptance and current-user shortcut/restart/upgrade/runtime-recovery pass; comprehensive first-entry keyboard, governed coach conversation, genuinely separate-account acceptance, signing, and uninstall remain open |
 
 Planes define trust boundaries. Layers define the capabilities a researcher uses. A layer may never weaken a plane.
 
@@ -137,6 +137,12 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   without re-resolution, verifies explicit CA/hostname refusal and streamed
   bounded-header cleanup, and reaps a deliberately blocked spawned resolver
   child without making an external request or enabling `PASSIVE_HTTP`.
+- a candidate operator-side Windows CurrentUser DPAPI root-KEK provider with
+  strict versioned records, audited provision/lease operations, a short-lived
+  zeroing lease, Git-storage refusal, and real same-profile restart,
+  protected-copy recovery, tamper-refusal, and capture-decryption proof. The
+  candidate is not operator-approved and does not satisfy ACL or independent
+  disaster-recovery acceptance.
 
 ### PARTIAL / NOT PROVEN AGAINST REAL OPERATION
 
@@ -146,10 +152,10 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - Milestone 2's three-source implementation proof is complete; individual bundle review and conflict states remain authoritative and unchanged;
 - approvals have local and ChaseOS stores, but the provider boundary needs one explicit protocol;
 - promotion of existing observed/inferred claims uses registry-issued receipts, while legacy static collectors still originate their own deterministic `checked` claims pending persisted receipt artifacts;
-- the dashboard is not yet an installed standalone workbench; Guided Mission Control can now bind bounded learner commands to the same-origin local service, while the retained Research Ledger and separate development preview may read authenticated server-owned snapshots through an explicit loopback-origin exception. Visual acceptance of the same-origin persisted flow is still pending;
+- the dashboard is not yet a signed standalone release; Guided Mission Control binds bounded learner commands to the same-origin local service, while the retained Research Ledger and separate development preview may read authenticated server-owned snapshots through an explicit loopback-origin exception. Current-user lifecycle and same-origin visual/reload/focus acceptance pass; first-entry keyboard, genuinely separate-account, signing, and uninstall acceptance remain open;
 - general/passive claim-role assembly remains a later application use case; the exact local two-account fixture can assemble seven roles from stored evidence and advance one internal state only after explicit human acknowledgement, while submission and programme-owned outcomes remain unavailable;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
-- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, ticket-bound X25519/HKDF/ChaCha20-Poly1305 envelopes, an external-KEK-wrapped operator key store with authorised provision/rotation/revocation, and signed receipt metadata. It has no DNS/HTTP/process adapter, approved OS secret-provider binding, worker image, or live action.
+- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, ticket-bound X25519/HKDF/ChaCha20-Poly1305 envelopes, an external-KEK-wrapped operator key store with authorised provision/rotation/revocation, signed receipt metadata, and a Windows CurrentUser DPAPI provider candidate. The candidate passes only same-profile host recovery; provider approval, ACL hardening, independent recovery, durable egress, hardened image, launcher, and every live action remain absent.
 - `greytheory_worker_contract` is network-free. It proves orchestration against
   injected conformance doubles: one complete DNS result, one exact numeric
   address, matching TLS name, full request digest, no proxy or followed
@@ -164,22 +170,22 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   environment and is refused unless Linux is non-root, capability-empty, and
   no-new-privileges. Ubuntu 24.04.4 WSL2 acceptance now covers the full no-route
   local service chain and emits a successful JSON record; durable egress, a
-  hardened image, OS-bound KEK,
+  hardened image, approved key-provider/recovery policy,
   scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, an offline programme-to-local-case readiness view, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
 
 ### PLANNED / NOT BUILT
 
 - broader ready curriculum packs, governed model-backed coach conversation, complete first-entry keyboard acceptance, genuinely separate-account learner workbench acceptance, and signed/uninstallable release packaging; current-user shortcut/restart/upgrade/runtime recovery is accepted;
-- governed external Scope Watch collector, accepted Ubuntu passive worker/service and broker transport, isolated network workers, and live collectors;
-- installed standalone graphical workbench acceptance and a governed external
+- governed external Scope Watch collector, hardened Ubuntu passive worker/image and broker transport, isolated network workers, and live collectors;
+- signed standalone graphical workbench release acceptance and a governed external
   public-intelligence fetcher/cache; the graphical Today/Learn surfaces and
   provider request-plan contracts are implemented;
 - live research proof and programme outcomes.
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol exists only as a dark offline foundation. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, a working Demo Suite, and accepted current-user shortcut/restart/upgrade/runtime-recovery behavior. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Complete first-entry keyboard acceptance, genuinely separate-account and signed-release acceptance, broader ready packs, and governed coach conversation remain open. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, capture, worker-service, Ubuntu no-route host, and Windows same-profile DPAPI-candidate proof exist only as a dark local foundation. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, a working Demo Suite, and accepted current-user shortcut/restart/upgrade/runtime-recovery behavior. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Complete first-entry keyboard acceptance, genuinely separate-account and signed-release acceptance, broader ready packs, and governed coach conversation remain open. The key-provider gate also remains open pending ACL hardening, independent recovery, and operator approval. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

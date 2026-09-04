@@ -146,10 +146,26 @@ Accepted full-service local host harness:
 - the wrapper validates that record, retains separate stderr evidence, and did
   not terminate the shared distro or unrelated WSL clients.
 
+Candidate Windows operator-key host proof:
+
+- a real CurrentUser DPAPI provider generates and protects the external
+  32-byte root KEK with UI forbidden, refuses Git storage and replacement, and
+  audits bound provision/lease operations;
+- a short-lived mutable lease opens the existing operator capture-key store and
+  overwrites its owned buffer on close; the worker receives neither the root
+  KEK nor recipient private keys;
+- same-profile restart and protected-record copy recovery, encrypted-capture
+  decryption, tamper refusal, plaintext-tree scanning, and audit-chain checks
+  pass on Windows; and
+- this is not provider approval: the observed evidence root inherits broad
+  local ACLs, cross-profile/bare-machine recovery is absent, and Python cannot
+  guarantee erasure of every interpreter or OS-level temporary copy.
+
 Still required before any network posture:
 
-- an approved OS secret-provider binding, backup/recovery procedure, and host
-  acceptance for the external root KEK; the repository does not persist it;
+- operator approval of the candidate OS secret-provider binding, hardened
+  application-data ACLs, and an independent profile/system backup and recovery
+  procedure for the external root KEK; the repository does not persist it;
 - isolated unprivileged Ubuntu worker image, OS egress constraints, broker
   transport/authentication, conformance acceptance, owned canary, one reviewed
   programme, sustained clean operation, and explicit operator posture approval.

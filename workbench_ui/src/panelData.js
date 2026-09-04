@@ -112,11 +112,11 @@ export const panelData = {
     title: "Governance",
     subtitle: "Posture, authority, gate, and capability truth remain visible before any research decision.",
     action: "Inspect capability truth",
-    stats: [["Posture", "LOCAL"], ["Authority", "Verified"], ["Live actions", "0"], ["Open gates", "0"]],
+    stats: [["Posture", "LOCAL"], ["Authority", "Verified"], ["Live actions", "0"], ["Pilot gates", "4 open"]],
     rows: [
       { id: "GOV-POSTURE", title: "Operating posture", detail: "LOCAL_FIXTURE is the current ceiling for this workspace.", status: "Enforced", tone: "verified", kind: "Policy" },
       { id: "GOV-AUTH", title: "Authority package", detail: "Synthetic fixture scope confirmed; external systems excluded.", status: "Verified", tone: "verified", kind: "Authority" },
-      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Ubuntu no-route proof passes; durable egress, OS key, hardened image, programme review, and human approval remain.", status: "Blocked", tone: "blocked", kind: "Capability" },
+      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Ubuntu no-route proof and same-profile DPAPI candidate pass; durable egress, approved recovery/ACLs, hardened image, programme review, and human approval remain.", status: "Blocked", tone: "blocked", kind: "Capability" },
     ],
     boundary: "The UI displays policy state but cannot grant authority or execute a broker action directly.",
   },
@@ -127,7 +127,7 @@ export const panelData = {
     stats: [["Available", "1"], ["Active", "1"], ["Cloud", "0"], ["Live", "0"]],
     rows: [
       { id: "WS-LOCAL", title: "LOCAL_FIXTURE", detail: "Synthetic two-account workspace with local evidence and no external network.", status: "Active", tone: "verified", kind: "Local" },
-      { id: "WS-PASSIVE", title: "Passive research pilot", detail: "Reserved until egress, OS key, hardened image, programme review, and operator posture approval.", status: "Unavailable", tone: "blocked", kind: "Future" },
+      { id: "WS-PASSIVE", title: "Passive research pilot", detail: "Reserved until egress, approved OS key/recovery and ACLs, hardened image, programme review, and operator posture approval.", status: "Unavailable", tone: "blocked", kind: "Future" },
     ],
     boundary: "Only LOCAL_FIXTURE can be selected. A workspace label never raises the operating posture.",
   },
@@ -137,7 +137,7 @@ export const panelData = {
     action: "Confirm local settings",
     stats: [["Storage", "Local"], ["Telemetry", "Off"], ["Sharing", "Off"], ["Theme", "Dark"]],
     rows: [
-      { id: "SET-PRIVACY", title: "Private local storage", detail: "Prototype session data stays inside the current browser session.", status: "On", tone: "verified", kind: "Privacy" },
+      { id: "SET-PRIVACY", title: "Private local storage", detail: "Persisted workbench data stays in the operator's private root outside Git; preview-only state remains browser-local.", status: "On", tone: "verified", kind: "Privacy" },
       { id: "SET-TELEMETRY", title: "Product telemetry", detail: "No analytics or remote product telemetry is connected.", status: "Off", tone: "verified", kind: "Privacy" },
       { id: "SET-MOTION", title: "Reduced motion", detail: "The interface follows the operating-system motion preference.", status: "System", tone: "verified", kind: "Accessibility" },
     ],

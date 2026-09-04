@@ -4,6 +4,34 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Windows DPAPI root-KEK candidate
+
+### What was built
+
+- A strict operator-side CurrentUser DPAPI root-KEK provider candidate with
+  audited provision/lease operations, exclusive first publication, bounded
+  records, and a short-lived zeroing lease.
+- Real same-profile restart/protected-copy recovery, tamper refusal, capture
+  decryption, plaintext-tree scanning, and audit-chain host proof.
+- Corrected executable/UI capability truth for the implemented graphical
+  workbench, plus clean desktop and 390-pixel rendered evidence.
+
+### What the next agent should not undo
+
+Do not mark the key-provider gate complete. The observed application-data ACL
+is not accepted, recovery is bound to the same Windows profile, and the
+operator has not approved this provider or backup policy. Do not move the root
+KEK or recipient private key into the Ubuntu worker, wire the provider to a
+posture switch, or describe `PARTIAL` Mission Control as a signed standalone
+release.
+
+### Verification
+
+694 repository tests, 22 UI tests, 4 Sites tests, and the production build pass.
+The accepted host record is
+`E:\Projects\GreyTheory\acceptance\windows-dpapi-root-kek-20260904-095757-20740\acceptance.json`.
+See `07_LOGS/Build-Logs/2026-09-04-greytheory-windows-dpapi-root-kek-candidate.md`.
+
 ## 2026-09-04 - Codex - Ubuntu full-service no-route acceptance
 
 ### What was built

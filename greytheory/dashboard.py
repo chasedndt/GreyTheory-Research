@@ -489,6 +489,7 @@ def _capability_panel() -> Panel:
             "dashboard_read_model",
             "graphical_workbench",
             "local_fixture_executor",
+            "windows_dpapi_root_kek_candidate",
             "passive_http_worker",
         }
     ]

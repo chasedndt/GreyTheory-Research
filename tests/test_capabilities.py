@@ -34,11 +34,11 @@ def test_learning_core_keeps_graphical_and_curriculum_boundaries_explicit():
     assert guided.status is CapabilityStatus.PARTIAL
     assert "adaptive review" in guided.detail.lower()
     assert "assisted/transfer" in guided.detail.lower()
-    assert "graphical learn" in guided.boundary.lower()
-    assert "broader curricula" in guided.boundary.lower()
+    assert "one case pack is ready" in guided.boundary.lower()
+    assert "broader ready curricula" in guided.boundary.lower()
 
 
-def test_application_service_is_partial_while_ui_and_passive_http_remain_unimplemented():
+def test_application_ui_and_passive_boundaries_remain_explicit():
     application = capability("workbench_application_service")
     assert application.status is CapabilityStatus.PARTIAL
     assert "fixture action intent" in application.detail.lower()
@@ -54,8 +54,13 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     transport = capability("local_workbench_transport")
     assert transport.status is CapabilityStatus.PARTIAL
     assert "numeric-loopback" in transport.detail.lower()
-    assert "no graphical shell" in transport.boundary.lower()
-    assert capability("graphical_workbench").status is CapabilityStatus.PLANNED
+    assert "current-user" in transport.detail.lower()
+    assert "separate windows-account" in transport.boundary.lower()
+    graphical = capability("graphical_workbench")
+    assert graphical.status is CapabilityStatus.PARTIAL
+    assert "guided mission control" in graphical.detail.lower()
+    assert "24 interactive" in graphical.detail.lower()
+    assert "no live-target action" in graphical.boundary.lower()
     broker = capability("passive_broker_foundation")
     assert broker.status is CapabilityStatus.PARTIAL
     assert "ticket-bound" in broker.detail.lower()
@@ -63,7 +68,13 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert "owned-process" in broker.boundary.lower()
     assert "full ubuntu 24.04" in broker.boundary.lower()
     assert "acceptance passes" in broker.boundary.lower()
-    assert "os secret-provider" in broker.boundary.lower()
+    assert "dpapi root-kek candidate" in broker.boundary.lower()
+    key_provider = capability("windows_dpapi_root_kek_candidate")
+    assert key_provider.status is CapabilityStatus.PARTIAL
+    assert "same-profile restart" in key_provider.detail.lower()
+    assert "acl hardening" in key_provider.boundary.lower()
+    assert "never enters the ubuntu worker" in key_provider.boundary.lower()
+    assert "no posture changes" in key_provider.boundary.lower()
     adapter = capability("passive_adapter_contract")
     assert adapter.status is CapabilityStatus.PARTIAL
     assert "full-request-digest-bound" in adapter.detail.lower()
@@ -79,7 +90,7 @@ def test_application_service_is_partial_while_ui_and_passive_http_remain_unimple
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     passive = capability("passive_http_worker")
     assert "no durable egress" in passive.detail.lower()
-    assert "no-route" in passive.detail.lower()
+    assert "dpapi" in passive.detail.lower()
     assert "passive_http remains dark" in passive.boundary.lower()
 
 

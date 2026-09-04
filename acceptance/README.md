@@ -54,6 +54,34 @@ It does not require administrator access, place secrets in the shortcut or
 manifest, or enable target networking. The acceptance still does not prove a
 different Windows account, uninstall, signing, Ubuntu, VPS, or `PASSIVE_HTTP`.
 
+## Windows DPAPI root-KEK candidate acceptance
+
+From PowerShell at the repository root:
+
+```powershell
+& .\acceptance\run-windows-dpapi-root-kek.ps1
+```
+
+This provisions a random 32-byte operator root KEK under Windows CurrentUser
+DPAPI with UI forbidden, opens the existing capture-recipient key store through
+a short-lived zeroing lease, and proves encrypted-capture decryption after
+restart and protected-record backup/restore inside the same Windows profile.
+It also refuses a tampered DPAPI record, verifies the audit chain, scans its
+private acceptance root for plaintext key leakage, and writes a durable JSON
+record under E:.
+
+This is a candidate-provider host proof, not posture approval. DPAPI is bound
+to the Windows account/profile; a copied encrypted record is not independent
+disaster recovery. Cross-profile recovery, operator approval, operational ACL
+review, and an approved profile/system backup procedure remain open. The root
+KEK never enters the Ubuntu worker. The accepted 2026-09-04 evidence root
+inherited `Users` read/execute and `Authenticated Users` modify access, so ACL
+hardening is explicitly not accepted even though DPAPI protects the root-key
+payload from those identities.
+
+Accepted candidate record:
+`E:\Projects\GreyTheory\acceptance\windows-dpapi-root-kek-20260904-095757-20740\acceptance.json`.
+
 ## Ubuntu 24.04 passive primitive acceptance
 
 From PowerShell at the repository root:
@@ -126,6 +154,7 @@ Accepted record:
 `E:\Projects\GreyTheory\acceptance\ubuntu-worker-service-20260904-092741-23640\acceptance.json`.
 
 This remains an owned no-route local acceptance fixture. It does not prove
-durable egress, a hardened image, OS-bound root KEK, authorised programme
-operation, VPS suitability, or posture approval, and it does not enable
-`PASSIVE_HTTP`.
+durable egress, a hardened image, an approved OS-bound root-KEK provider and
+independent recovery, authorised programme operation, VPS suitability, or
+posture approval, and it does not enable `PASSIVE_HTTP`. The separate Windows
+DPAPI candidate harness proves only same-profile key recovery.

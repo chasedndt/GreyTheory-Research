@@ -235,9 +235,10 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
 | Transparent research queue | 3 | **Live (offline)** — versioned nine-factor policy, explained ordinal scores, scope-review partition, integrity-bound private output, no execution authority |
 | Vulnerability cards / skill graph | 3 | **Live (offline)** — 12 versioned cards, 12 synthetic fixtures, acyclic prerequisites, and six evidence-bound mastery dimensions |
-| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, and bounded standard/assisted/transfer journeys exist; broader curricula and graphical Learn do not |
+| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, bounded standard/assisted/transfer journeys, 24 interactive lessons, topic roadmaps, and one ready Case Pack exist; broader ready curricula and governed coach conversation remain open |
 | Model gateway | cross-cutting | **Live offline** — governed roles, citations, budgets, provenance, adversarial evaluation, and deterministic local provider; no network provider configured |
-| Standalone graphical workbench | 1/3 | **Partial / planned surface** — CLI, dashboard read model, application service, private runtime, and authenticated numeric-loopback transport are live; graphical shell and installed acceptance are not |
+| Standalone graphical workbench | 1/3 | **Partial / implemented preview** — Guided Mission Control, thirteen journeys, same-origin persisted learner commands, a bundled wheel, and current-user shortcut/restart/upgrade/runtime-recovery acceptance pass; comprehensive first-entry keyboard, separate-account, signing, and uninstall acceptance remain open |
+| Passive broker / worker | cross-cutting | **Partial / dark local foundation** — Ubuntu 24.04.4 no-route full-service proof and a Windows CurrentUser DPAPI same-profile root-KEK candidate pass; approved recovery/ACLs, durable egress, hardened image, programme review, and posture approval remain open |
 | Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
 | Scope Watch | 1/3 | **Partial** — offline captured-source comparison and invalidation are live; governed external collection is unavailable |
 
@@ -253,7 +254,7 @@ Definitions: **Live** = exists and passes current tests. **Partial** = a useful 
 
 ### chasintech.com
 
-> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, complete in-memory two-account slice, governed 12-card learning catalogue, and transparent unproven-hypothesis queue are live; training orchestration, models, network workers, and the standalone workbench remain in development.
+> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, complete in-memory two-account slice, governed 12-card learning catalogue, transparent unproven-hypothesis queue, and interactive Windows-first learning workbench are implemented as a research preview. Passive networking remains dark pending every host, recovery, programme, and human-approval gate.
 
 ### The line that does the work
 

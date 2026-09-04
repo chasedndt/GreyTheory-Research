@@ -64,11 +64,10 @@ ephemeral no-default-route namespace and does not enable `PASSIVE_HTTP`.
   reject private, metadata, mixed, or otherwise invalid answers before TCP.
 - A crash consumes rather than replays the ticket, and the parent terminates
   and reaps only the exact owned worker process on timeout or protocol failure.
-- The implementation and unit contract do not prove Ubuntu host behavior.
-  Recovered attempts fixed multiple wrapper/fixture/startup defects but shared
-  WSL/Hermes startup instability prevented a complete JSON record, so
-  successful real system DNS, full-path host acceptance, durable egress,
-  hardened image,
-  approved root-KEK provider, and VM/VPS acceptance remain open.
+- The full owned no-route service path now passes on Ubuntu 24.04.4 with real
+  system DNS against the synthetic hosts view, broker recheck, exact request,
+  encrypted capture, verified receipt, completed replay, and clean exit. This
+  remains local-fixture host evidence; durable egress, hardened image,
+  approved root-KEK provider/recovery, and VM/VPS acceptance remain open.
 - `PASSIVE_HTTP` remains unavailable and operating posture remains
   `LOCAL_FIXTURE`.
