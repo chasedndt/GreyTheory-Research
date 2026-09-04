@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-04 - GreyTheory authenticated worker-session foundation](2026-09-04_greytheory-authenticated-worker-session-foundation.md) - executable carrier-neutral mutual authentication and encrypted framing without carrier, reboot, or posture overclaim
+
 - [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04_greytheory-ubuntu-worker-image-candidate.md) - accepted the clean WSL2 image-runtime candidate while preserving hardened local-VM/reboot and activation boundaries
 
 - [2026-09-04 - GreyTheory Ubuntu exact-egress candidate](2026-09-04_greytheory-ubuntu-exact-egress-candidate.md) - accepted namespace-lifetime egress proof while preserving the hardened-image and posture gates

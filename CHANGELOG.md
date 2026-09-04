@@ -4,6 +4,25 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - authenticated passive-worker session foundation
+
+- Added a carrier-neutral mutual handshake with pinned Ed25519 broker/worker
+  identities, fresh X25519 agreement, transcript-bound HKDF-SHA-256, and
+  separate directional session keys.
+- Added ChaCha20-Poly1305 encrypted frames that bind session, transcript,
+  direction, sequence, and message type while enforcing the existing exact
+  resolve/resolution/head/transport exchange.
+- Added strict canonical JSON, duplicate-key refusal, 30-second expiry, the
+  existing 196,608-byte ceiling, terminal key-buffer clearing, and a mandatory
+  injected replay guard.
+- Added six network-free tests covering typed worker-record compatibility,
+  mutual identity, confidentiality, tamper, replay, reflection, order, expiry,
+  and oversize refusal.
+- Kept the protocol launch-dark. It has no carrier, socket, listener, launcher,
+  worker identity provisioning, durable reboot replay store, target route, or
+  posture switch; transport security review and local-VM/reboot acceptance
+  remain open.
+
 ### Added - read-only Ubuntu worker-image candidate
 
 - Added signed Ubuntu Base and signed archive-metadata verification for 18

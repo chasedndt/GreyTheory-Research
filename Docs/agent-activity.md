@@ -4,6 +4,35 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Authenticated worker-session foundation
+
+### What was built
+
+- A carrier-neutral signed two-hello protocol with separately pinned Ed25519
+  broker and worker identities.
+- Fresh X25519 plus transcript-salted HKDF directional keys and
+  ChaCha20-Poly1305 frames bound to role, session, transcript, sequence, and
+  message type.
+- Strict no-0-RTT, 30-second, canonical-JSON, fixed-size, two-phase, replay,
+  tamper, reflection, and terminal-key-lifecycle boundaries.
+- Lossless encrypted round trips for the existing resolution, direct-request,
+  and transport-result records.
+
+### What the next agent should not undo
+
+Do not call this an accepted broker transport. It has no carrier, listener,
+VM peer binding, provisioned identity keys, or durable reboot replay state, and
+it has not passed independent cryptographic or rebooted-host review. Do not
+embed a static worker private key in the image, make the replay guard optional,
+add a zero-round-trip command path, or enable `PASSIVE_HTTP`.
+
+### Verification
+
+Six focused protocol tests and all 714 repository tests pass. The protocol
+package imports no socket, SSL, HTTP client, multiprocessing, subprocess, or
+asynchronous carrier module. See
+`07_LOGS/Build-Logs/2026-09-04-greytheory-authenticated-worker-session-foundation.md`.
+
 ## 2026-09-04 - Codex - Ubuntu worker-image candidate
 
 ### What was built

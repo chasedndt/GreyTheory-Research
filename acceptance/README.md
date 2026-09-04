@@ -231,7 +231,7 @@ admits the mount, environment, identity, device, immutable-path, egress, and
 full receipt/replay evidence before the outer composer can accept it.
 
 **Current proof state:** implementation, static contracts, signed-metadata
-package matching, 21 focused tests, the 708-test repository suite, a clean
+package matching, 21 focused tests, the 714-test repository suite, a clean
 two-build-identical release image, and WSL2 image-runtime admission pass. The
 runtime record proves the read-only image/mount contract, exact device and
 environment sets, UID/GID 65534 with no capabilities or new privileges,
@@ -239,7 +239,24 @@ default-drop exact egress, three bypass denials, refused route/firewall
 mutation, encrypted capture, signed receipt, completed replay, and cleanup. It
 also explicitly records `hardened_worker_image_accepted=false`,
 `reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`. WSL2 remains the
-construction/fixture host; isolated local-VM reboot conformance, broker
-transport authentication, key-provider approval/recovery, programme review,
-sustained operation, VPS acceptance, and human posture approval remain separate
-open gates.
+construction/fixture host; isolated local-VM reboot conformance, accepted broker
+transport, key-provider approval/recovery, programme review, sustained
+operation, VPS acceptance, and human posture approval remain separate open
+gates.
+
+## Authenticated worker-session protocol foundation
+
+The future VM carrier now has an executable network-free protocol contract in
+`greytheory_worker_transport`. Its six focused tests prove pinned mutual
+Ed25519 identities, a signed two-hello transcript, fresh X25519 and
+HKDF-SHA-256 directional keys, ChaCha20-Poly1305 encrypted frames, exact
+resolve/head sequencing, expiry, tamper/replay/reflection refusal, the fixed
+frame ceiling, and lossless existing worker-record round trips.
+
+This is not a host acceptance harness. The package imports no carrier or
+listener and cannot launch a worker or contact a target. Its in-memory replay
+guard is only suitable for a test or one-shot process. A future acceptance
+harness must provision distinct broker/worker transport identities outside the
+image, use a local-only VM carrier, persist replay state across reboot, bind the
+peer to the admitted VM, and pass negative cold-boot/reboot tests plus security
+review. `PASSIVE_HTTP` remains unavailable.

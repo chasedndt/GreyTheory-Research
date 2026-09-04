@@ -193,14 +193,35 @@ Accepted WSL2 image-runtime candidate:
   `reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`; it is not
   hardened-image, local-VM, posture, programme, or live-target evidence.
 
+Implemented authenticated-session protocol foundation:
+
+- pinned Ed25519 broker and worker identities sign a complete two-hello
+  transcript before either side can send a command;
+- fresh X25519 agreement plus transcript-salted HKDF-SHA-256 produces separate
+  broker-to-worker and worker-to-broker keys;
+- ChaCha20-Poly1305 frames authenticate session, transcript, direction,
+  sequence, and message type while encrypting the existing exact worker record;
+- strict canonical JSON, a 196,608-byte ceiling, a 30-second lifetime, the
+  fixed two-phase exchange, and an injected atomic replay guard fail closed;
+  and
+- the module contains no carrier, socket, listener, process, launcher,
+  scheduler, key provisioning, programme route, or posture switch. Its bounded
+  in-memory replay guard is test/one-shot evidence only, not reboot acceptance.
+
+This foundation reduces transport design ambiguity but is not accepted broker
+transport. Worker identity-key provisioning, durable replay across reboot,
+carrier and VM peer binding, cryptographic review, and negative host
+conformance remain open.
+
 Still required before any network posture:
 
 - operator approval of the candidate OS secret-provider binding, hardened
   application-data ACLs, and an independent profile/system backup and recovery
   procedure for the external root KEK; the repository does not persist it;
 - hardened isolated local-VM/reboot acceptance for the reproducible
-  unprivileged Ubuntu image, broker transport/authentication, owned canary, one
-  reviewed programme, sustained clean operation, and explicit operator posture
-  approval.
+  unprivileged Ubuntu image; accepted carrier/VM binding, worker identity-key
+  provisioning, durable replay state, and review for the authenticated-session
+  protocol; owned canary; one reviewed programme; sustained clean operation;
+  and explicit operator posture approval.
 
 The foundation is therefore `PARTIAL`; `PASSIVE_HTTP` remains unavailable.

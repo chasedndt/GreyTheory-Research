@@ -185,6 +185,19 @@ acceptance, authenticated broker transport, key-provider/recovery approval,
 authorised programme evidence, sustained operation, and explicit human posture
 approval remain mandatory before any posture change.
 
+The separate `greytheory_worker_transport` package now supplies the launch-dark
+authenticated-session protocol for the future VM boundary. Pinned Ed25519
+identities sign a complete two-hello exchange; fresh X25519 agreement and
+transcript-bound HKDF derive distinct directional keys; ChaCha20-Poly1305
+encrypts and authenticates the existing resolve/head records with exact role,
+sequence, and session binding. The handshake has no zero-round-trip command
+path, lasts at most 30 seconds, requires an injected atomic replay guard, and
+retains the 196,608-byte canonical-JSON ceiling. It imports no carrier,
+listener, process, or launcher. Its in-memory replay implementation is only a
+network-free one-shot fixture; provisioned worker identity, durable replay,
+carrier/VM peer binding, security review, and rebooted-host acceptance remain
+open.
+
 ## 4. Stable application contract
 
 Every workbench snapshot must include:
@@ -412,6 +425,10 @@ Implemented now:
   capped two-command spawned-process assembly, unit-verified with strict child
   identity/environment/lifecycle rules plus the earlier bounded Ubuntu
   primitive host proof;
+- `greytheory_worker_transport` carrier-neutral, mutually authenticated,
+  encrypted two-phase session protocol with network-free replay, tamper,
+  expiry, framing, and typed worker-record conformance; no carrier, provisioned
+  identity, or host acceptance is claimed;
 - an operator-side Windows CurrentUser DPAPI root-KEK candidate with strict
   records, audited provision/lease operations, a zeroing lease, and real
   same-profile restart/protected-copy recovery, tamper-refusal, capture, and

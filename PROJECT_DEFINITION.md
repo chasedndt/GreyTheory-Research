@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile candidate, and clean read-only WSL2 image-runtime candidate harnesses pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, authenticated broker transport, launcher, and every passive action remain open |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, two-phase owned-process worker assembly, and carrier-neutral authenticated-session protocol are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile candidate, and clean read-only WSL2 image-runtime candidate harnesses pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, worker identity-key provisioning, durable transport replay state, carrier/host acceptance, launcher, and every passive action remain open |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, bounded assisted/transfer journeys, and the graphical learning loop are live for one ready Case Pack; broader ready curriculum remains open |
@@ -195,7 +195,8 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 - broader ready curriculum packs, governed model-backed coach conversation, complete first-entry keyboard acceptance, genuinely separate-account learner workbench acceptance, and signed/uninstallable release packaging; current-user shortcut/restart/upgrade/runtime recovery is accepted;
 - governed external Scope Watch collector, accepted hardened Ubuntu passive
-  worker/image and broker transport, isolated network workers, and live collectors;
+  worker/image and broker transport carrier, isolated network workers, and live
+  collectors; the authenticated session protocol alone is implemented and dark;
 - signed standalone graphical workbench release acceptance and a governed external
   public-intelligence fetcher/cache; the graphical Today/Learn surfaces and
   provider request-plan contracts are implemented;

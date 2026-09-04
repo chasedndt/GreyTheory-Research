@@ -44,6 +44,10 @@ Approvals are not mirrored between providers. GreyTheory records provider identi
 - `greytheory_worker/`: current dark lower-trust DNS/direct-TLS process boundary
   behind one-use tickets; its trusted parent retains broker authority and no
   launcher, scheduler, accepted image, or posture route exists.
+- `greytheory_worker_transport/`: current launch-dark, carrier-neutral mutual
+  authentication and encrypted framing contract for the future isolated VM
+  worker; no socket/listener, key provisioning, durable reboot replay state,
+  accepted carrier, or posture route exists.
 - `greytheory/models/`: current governed roles, policies, citations, budgets,
   provenance, adversarial evaluations, and deterministic offline provider; any
   network provider remains future work.
