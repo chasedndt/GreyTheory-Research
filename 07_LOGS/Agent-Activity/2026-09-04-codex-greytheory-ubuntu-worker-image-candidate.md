@@ -41,6 +41,8 @@ image boundary without raising posture or contacting a target.
 - Accepted the corrected clean image inside the private WSL2 mount/network
   namespace with its read-only, identity, exact-egress, capture, receipt,
   replay, and cleanup invariants intact.
+- Reconciled the canonical threat model and architecture narrative with the
+  accepted evidence while preserving hardened-image and activation limits.
 
 ## Guardrails retained
 

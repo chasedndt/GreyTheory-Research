@@ -178,10 +178,12 @@ no-new-privileges Linux identity. Earlier offline Ubuntu 24.04 WSL2 acceptance
 proves production numeric TLS and spawned-child cancellation only. The new full
 service harness now has an owned Linux script, bounded Windows-side process
 cleanup, isolated synthetic hosts view, clean fork-server worker start, and an
-in-worker forked resolver. Recovered attempts still produced no complete JSON
-record before shared WSL/Hermes startup became unreliable; successful full-path
-host acceptance, durable OS egress controls, hardened image, and authorised
-programme evidence remain mandatory before any posture change.
+in-worker forked resolver. The full no-route service, namespace-lifetime
+default-drop exact-egress candidate, and clean read-only WSL2 image-runtime
+candidate now pass with durable JSON evidence. Hardened local-VM/reboot
+acceptance, authenticated broker transport, key-provider/recovery approval,
+authorised programme evidence, sustained operation, and explicit human posture
+approval remain mandatory before any posture change.
 
 ## 4. Stable application contract
 
@@ -433,11 +435,11 @@ Not implemented now:
   model-backed coach conversation;
 - a general local fixture process broker;
 - operator approval, hardened application-data ACLs, and independent recovery
-  for the candidate root-KEK provider; host acceptance and VM/reboot conformance
-  for the reproducible image candidate that makes the accepted
+  for the candidate root-KEK provider; hardened local-VM/reboot conformance for
+  the reproducible image candidate whose WSL2 runtime now makes the accepted
   namespace-lifetime nftables policy mandatory,
   launcher/scheduler, or any `PASSIVE_HTTP` action; the full Ubuntu no-route
-  service and exact-egress local-fixture candidates now pass.
+  service, exact-egress, and WSL2 image-runtime local-fixture candidates pass.
 
 The current Research Ledger remains a first-class Research case view. Guided
 Mission Control is the selected shell. Current browser visual, same-origin

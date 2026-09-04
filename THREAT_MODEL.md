@@ -174,11 +174,11 @@ Accepted namespace-lifetime Ubuntu egress candidate:
   signed receipt, and replay completion still pass;
 - after UID/GID 65534, zero capabilities, and no-new-privileges are applied,
   both route mutation and firewall flush are denied; and
-- this proves an OS-enforced boundary for the owned namespace lifetime. It does
-  not prove that a reproducible read-only worker image always installs/applies
-  the policy, survives VM reboot, or has passed VM/VPS conformance.
+- this first proved an OS-enforced boundary for the owned namespace lifetime;
+  the same policy now also passes inside the reproducible read-only WSL2 image
+  candidate, but not across a local-VM reboot or VM/VPS conformance boundary.
 
-Source-implemented, not yet host-accepted image candidate:
+Accepted WSL2 image-runtime candidate:
 
 - Canonical image and archive signing fingerprints are pinned; the staging
   chain binds signed image checksums and signed `InRelease` metadata through
@@ -188,17 +188,19 @@ Source-implemented, not yet host-accepted image candidate:
 - runtime admission requires a read-only root, bounded tmpfs/device view,
   UID/GID 65534, zero capabilities, no-new-privileges, immutable code/config,
   default-drop exact egress, denied mutations, and a completed encrypted worker
-  receipt. No host build/runtime record has passed, so none of these are yet
-  accepted image controls.
+  receipt. The clean WSL2 record passes those checks and explicitly retains
+  `hardened_worker_image_accepted=false`,
+  `reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`; it is not
+  hardened-image, local-VM, posture, programme, or live-target evidence.
 
 Still required before any network posture:
 
 - operator approval of the candidate OS secret-provider binding, hardened
   application-data ACLs, and an independent profile/system backup and recovery
   procedure for the external root KEK; the repository does not persist it;
-- host-accepted isolated reproducible unprivileged Ubuntu worker image with mandatory
-  namespace egress admission, broker transport/authentication, conformance
-  acceptance, owned canary, one reviewed programme, sustained clean operation,
-  and explicit operator posture approval.
+- hardened isolated local-VM/reboot acceptance for the reproducible
+  unprivileged Ubuntu image, broker transport/authentication, owned canary, one
+  reviewed programme, sustained clean operation, and explicit operator posture
+  approval.
 
 The foundation is therefore `PARTIAL`; `PASSIVE_HTTP` remains unavailable.
