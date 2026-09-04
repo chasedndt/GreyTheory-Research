@@ -93,7 +93,7 @@ from pathlib import Path
 lock = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
 prefix = sys.argv[2]
 if (
-    lock.get("schema_version") != 1
+    lock.get("schema_version") != 2
     or lock.get("release") != "24.04.4"
     or lock.get("architecture") != "amd64"
     or lock.get("archive_signing_fingerprint")
@@ -105,6 +105,21 @@ if (
 packages = lock.get("packages")
 if not isinstance(packages, list) or not packages:
     raise SystemExit("Ubuntu worker-image package lock is empty")
+install_groups = lock.get("install_groups")
+if (
+    not isinstance(install_groups, list)
+    or not install_groups
+    or len(install_groups) != 4
+    or any(not isinstance(group, list) or not group for group in install_groups)
+    or any(not isinstance(name, str) for group in install_groups for name in group)
+    or install_groups[:3]
+    != [
+        ["libexpat1", "libpython3.12-minimal"],
+        ["python3.12-minimal"],
+        ["python3-minimal"],
+    ]
+):
+    raise SystemExit("Ubuntu worker-image install groups are invalid")
 seen_names: set[str] = set()
 seen_files: set[str] = set()
 for package in packages:
@@ -131,6 +146,9 @@ for package in packages:
     seen_names.add(name)
     seen_files.add(filename)
     print("\t".join((name, version, architecture, filename, url, digest)))
+ordered_names = [name for group in install_groups for name in group]
+if len(ordered_names) != len(set(ordered_names)) or set(ordered_names) != seen_names:
+    raise SystemExit("Ubuntu worker-image install groups do not match the package set")
 PY
 )
 

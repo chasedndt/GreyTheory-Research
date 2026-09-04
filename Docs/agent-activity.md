@@ -14,6 +14,8 @@ Read this before changing anything that looks arbitrary. Several guards in this 
   execution, exact egress, immutable paths, and full receipt/replay evidence.
 - Linked Windows-worktree normalization for Linux-side Git identity, clean-tree,
   source-digest, and archive checks.
+- Four complete lock-bound package install groups that preserve `dpkg`
+  pre-dependency enforcement.
 
 ### What the next agent should not undo
 

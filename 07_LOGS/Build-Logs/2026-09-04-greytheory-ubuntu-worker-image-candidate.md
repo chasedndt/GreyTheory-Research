@@ -81,6 +81,12 @@ build and runtime entrypoints now resolve that pointer with `wslpath`, bind
 explicit `GIT_DIR`/`GIT_WORK_TREE`, and apply Windows checkout line-ending and
 file-mode semantics. A focused regression test covers both entrypoints.
 
+The next build reached the ext4-backed root and failed closed because an
+alphabetical `.deb` glob presented `python3-minimal` before its configured
+`python3.12-minimal` pre-dependency. Package-lock schema 2 now names four
+complete install groups. The builder unpacks and configures each group in order;
+no `--force-*` flag or dependency bypass is used.
+
 ## Verification
 
 ```text
@@ -88,7 +94,7 @@ python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
 21 passed
 
 python -m pytest -q
-708 passed in 28.21s
+708 passed in 30.78s
 
 python -m py_compile
 3 image/provenance modules passed

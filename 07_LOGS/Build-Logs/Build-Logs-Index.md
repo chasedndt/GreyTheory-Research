@@ -1,6 +1,6 @@
 # Build Logs Index
 
-- [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04-greytheory-ubuntu-worker-image-candidate.md) - signed-input image/runtime implementation with 707 tests; host acceptance blocked pending controlled Ubuntu restart
+- [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04-greytheory-ubuntu-worker-image-candidate.md) - signed-input image/runtime implementation with 708 tests; restart gate resolved and host-build defects under repair before acceptance
 
 - [2026-09-04 - GreyTheory Ubuntu exact-egress candidate](2026-09-04-greytheory-ubuntu-exact-egress-candidate.md) - hash-locked default-drop nftables proof, counted bypass denials, and repaired mobile capability visibility
 

@@ -308,7 +308,7 @@ def test_worker_image_staging_is_signed_pinned_and_never_binds_host_dev():
     assert base_checksum.startswith(
         "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58  "
     )
-    assert package_lock["schema_version"] == 1
+    assert package_lock["schema_version"] == 2
     assert package_lock["release"] == "24.04.4"
     assert package_lock["architecture"] == "amd64"
     assert package_lock["archive_signing_fingerprint"] == (
@@ -321,6 +321,14 @@ def test_worker_image_staging_is_signed_pinned_and_never_binds_host_dev():
     ]
     assert len(package_lock["packages"]) == 18
     assert len({item["name"] for item in package_lock["packages"]}) == 18
+    assert package_lock["install_groups"][:3] == [
+        ["libexpat1", "libpython3.12-minimal"],
+        ["python3.12-minimal"],
+        ["python3-minimal"],
+    ]
+    assert {
+        name for group in package_lock["install_groups"] for name in group
+    } == {item["name"] for item in package_lock["packages"]}
     assert all(
         item["url"].startswith("https://archive.ubuntu.com/ubuntu/pool/main/")
         for item in package_lock["packages"]
@@ -364,7 +372,9 @@ def test_worker_image_builder_requires_two_identical_read_only_builds():
     assert "-all-time 0" in shell
     assert "-mkfs-time 0" in shell
     assert "-no-xattrs" in shell
-    assert "/bin/sh -c '/usr/bin/dpkg --unpack /packages/*.deb'" in shell
+    assert 'for batch in "${install_batches[@]}"' in shell
+    assert '/usr/bin/dpkg --unpack "${batch_packages[@]}"' in shell
+    assert shell.count("/usr/bin/dpkg --configure -a") == 1
     assert "dpkg --configure -a" in shell
     assert "verify_locked_packages" in shell
     assert "git archive --format=tar HEAD" in shell
@@ -770,11 +780,12 @@ def test_worker_package_provenance_binds_lock_to_signed_index_hashes(tmp_path):
     lock.write_text(
         json.dumps(
             {
-                "schema_version": 1,
+                "schema_version": 2,
                 "release": "24.04.4",
                 "architecture": "amd64",
                 "archive_signing_fingerprint": EXPECTED_FINGERPRINT,
                 "archive_suites": EXPECTED_SUITES,
+                "install_groups": [["fixture"]],
                 "packages": [
                     {
                         "name": "fixture",

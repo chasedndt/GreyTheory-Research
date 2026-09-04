@@ -27,6 +27,8 @@ image boundary without raising posture or contacting a target.
   were unmounted and not loop-device backing.
 - Reproduced and fixed Linux Git's handling of the linked Windows worktree
   pointer before any image construction was accepted.
+- Replaced alphabetical package unpacking with complete lock-bound install
+  groups after `dpkg` correctly refused an unmet Python pre-dependency.
 
 ## Guardrails retained
 

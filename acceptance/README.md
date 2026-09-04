@@ -209,7 +209,8 @@ Staging downloads the exact Ubuntu Base 24.04.4 archive, verifies Canonical's
 signed image checksums under the pinned CD-image key, and verifies every locked
 `.deb` through the Ubuntu archive chain: pinned 2018 archive key -> signed
 `InRelease` -> hashed `Packages.xz` -> exact package/version/architecture/path
-and SHA-256. The build installs nothing into the shared WSL distribution. It
+and SHA-256. Four lock-bound install groups satisfy Python's `Pre-Depends`
+chain without disabling dependency checks. The build installs nothing into the shared WSL distribution. It
 constructs two independent ext4-backed roots, copies only the committed worker
 inputs for a release build, strips package-management entrypoints and set-id
 bits, normalises timestamps, emits two SquashFS images, and refuses unless they
@@ -225,7 +226,7 @@ admits the mount, environment, identity, device, immutable-path, egress, and
 full receipt/replay evidence before the outer composer can accept it.
 
 **Current proof state:** implementation, static contracts, signed-metadata
-package matching, 20 focused tests, and the 707-test repository suite pass. No
+package matching, 21 focused tests, and the 708-test repository suite pass. No
 image build or image-runtime acceptance record has completed yet, so
 `image_runtime_accepted` is not a
 current capability and `hardened_worker_image_accepted` remains false. WSL2 is

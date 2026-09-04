@@ -164,8 +164,27 @@ trap cleanup EXIT
 
 install_packages() {
   local rootfs="$1"
+  local batch
+  local -a batch_packages
+  local -a install_batches
   mkdir -p "$rootfs/packages"
   cp -- "$cache/packages/"*.deb "$rootfs/packages/"
+  mapfile -t install_batches < <(
+    python3 - "$package_lock" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+lock = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+packages = {item["name"]: item["filename"] for item in lock["packages"]}
+for group in lock["install_groups"]:
+    print(" ".join(f"/packages/{packages[name]}" for name in group))
+PY
+  )
+  if test "${#install_batches[@]}" -ne 4; then
+    printf 'Ubuntu worker-image package install groups are invalid.\n' >&2
+    exit 1
+  fi
   mknod -m 666 "$rootfs/dev/null" c 1 3
   mknod -m 666 "$rootfs/dev/zero" c 1 5
   mknod -m 666 "$rootfs/dev/full" c 1 7
@@ -173,12 +192,15 @@ install_packages() {
   mknod -m 666 "$rootfs/dev/urandom" c 1 9
   mknod -m 666 "$rootfs/dev/tty" c 5 0
   mount -t proc -o nosuid,nodev,noexec proc "$rootfs/proc"
-  chroot "$rootfs" /usr/bin/env \
-    DEBIAN_FRONTEND=noninteractive TZ=UTC \
-    /bin/sh -c '/usr/bin/dpkg --unpack /packages/*.deb'
-  chroot "$rootfs" /usr/bin/env \
-    DEBIAN_FRONTEND=noninteractive TZ=UTC \
-    /usr/bin/dpkg --configure -a
+  for batch in "${install_batches[@]}"; do
+    read -r -a batch_packages <<< "$batch"
+    chroot "$rootfs" /usr/bin/env \
+      DEBIAN_FRONTEND=noninteractive TZ=UTC \
+      /usr/bin/dpkg --unpack "${batch_packages[@]}"
+    chroot "$rootfs" /usr/bin/env \
+      DEBIAN_FRONTEND=noninteractive TZ=UTC \
+      /usr/bin/dpkg --configure -a
+  done
   chroot "$rootfs" /usr/bin/python3 - <<'PY'
 import cryptography
 import sqlite3

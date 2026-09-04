@@ -195,7 +195,7 @@ def _validate_supply_chain(
     if (
         inputs.get("package_lock_sha256") != _sha256(package_lock_path)
         or inputs.get("archive_provenance_sha256") != _sha256(provenance_path)
-        or package_lock.get("schema_version") != 1
+        or package_lock.get("schema_version") != 2
         or package_lock.get("release") != "24.04.4"
         or package_lock.get("architecture") != "amd64"
         or package_lock.get("archive_signing_fingerprint") != fingerprint
@@ -228,6 +228,26 @@ def _validate_supply_chain(
         or provenance.get("archive_keyring_sha256") != _sha256(keyring_path)
     ):
         raise CompositionError("worker image supply-chain evidence is invalid")
+    install_groups = package_lock.get("install_groups")
+    install_names = (
+        [name for group in install_groups for name in group]
+        if isinstance(install_groups, list)
+        and all(isinstance(group, list) for group in install_groups)
+        else []
+    )
+    locked_names = [item["name"] for item in packages]
+    if (
+        len(install_names) != 18
+        or len(set(install_names)) != 18
+        or set(install_names) != set(locked_names)
+        or install_groups[:3]
+        != [
+            ["libexpat1", "libpython3.12-minimal"],
+            ["python3.12-minimal"],
+            ["python3-minimal"],
+        ]
+    ):
+        raise CompositionError("Ubuntu package install order is invalid")
     suite_evidence = provenance.get("suites")
     if (
         not isinstance(suite_evidence, list)

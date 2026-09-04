@@ -87,7 +87,7 @@ def verify(
         raise ArchiveVerificationError("package lock is invalid") from exc
     suites = lock.get("archive_suites")
     if (
-        lock.get("schema_version") != 1
+        lock.get("schema_version") != 2
         or lock.get("release") != "24.04.4"
         or lock.get("architecture") != "amd64"
         or fingerprint != EXPECTED_FINGERPRINT
@@ -98,6 +98,24 @@ def verify(
     packages = lock.get("packages")
     if not isinstance(packages, list) or not packages:
         raise ArchiveVerificationError("package lock is empty")
+    install_groups = lock.get("install_groups")
+    if (
+        not isinstance(install_groups, list)
+        or not install_groups
+        or any(not isinstance(group, list) or not group for group in install_groups)
+        or any(
+            not isinstance(name, str) for group in install_groups for name in group
+        )
+    ):
+        raise ArchiveVerificationError("package install groups are invalid")
+    package_names = [item.get("name") for item in packages if isinstance(item, dict)]
+    install_names = [name for group in install_groups for name in group]
+    if (
+        len(package_names) != len(packages)
+        or len(install_names) != len(set(install_names))
+        or set(install_names) != set(package_names)
+    ):
+        raise ArchiveVerificationError("package install groups do not match the lock")
     try:
         keyring = keyring_path.read_bytes()
     except OSError as exc:
