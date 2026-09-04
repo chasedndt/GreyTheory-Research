@@ -64,7 +64,9 @@ evidence:
    approved OS-bound key provider are proven independently of application UI.
    A namespace-lifetime Ubuntu nftables candidate now passes exact-address/port
    allowlisting, default-drop chains, counted bypass denials, and mutation
-   refusal; it is not yet bound to a reproducible hardened image. A Windows
+   refusal. Signed-input read-only image construction/runtime-admission code
+   now exists but has no passed host record, so durable image binding remains
+   unaccepted. A Windows
    CurrentUser DPAPI candidate passes same-profile restart,
    protected-copy recovery, tamper refusal, capture decryption, and audit
    checks. This gate remains open because application-data ACL hardening,

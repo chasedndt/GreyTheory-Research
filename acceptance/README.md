@@ -1,8 +1,8 @@
 # Host acceptance
 
 These checks exercise operating-system behavior that syscall-injected unit
-tests cannot prove. They do not enable `PASSIVE_HTTP`, launch a worker service,
-or contact a target.
+tests cannot prove. Some launch only the owned synthetic worker service; none
+enables `PASSIVE_HTTP` or contacts a target.
 
 ## Windows packaged-workbench acceptance
 
@@ -195,3 +195,41 @@ image identity/provenance, mandatory policy admission, reboot/VM conformance,
 broker transport authentication, key-provider approval/recovery, programme
 review, sustained operation, VPS acceptance, and human posture approval remain
 open. No external packet or target action occurred.
+
+## Ubuntu 24.04 read-only worker-image candidate
+
+The source-implemented next gate has two separate steps:
+
+```powershell
+& .\acceptance\build-ubuntu-worker-image.ps1
+& .\acceptance\run-ubuntu-worker-image.ps1
+```
+
+Staging downloads the exact Ubuntu Base 24.04.4 archive, verifies Canonical's
+signed image checksums under the pinned CD-image key, and verifies every locked
+`.deb` through the Ubuntu archive chain: pinned 2018 archive key -> signed
+`InRelease` -> hashed `Packages.xz` -> exact package/version/architecture/path
+and SHA-256. The build installs nothing into the shared WSL distribution. It
+constructs two independent ext4-backed roots, copies only the committed worker
+inputs for a release build, strips package-management entrypoints and set-id
+bits, normalises timestamps, emits two SquashFS images, and refuses unless they
+are byte-identical.
+
+Runtime acceptance requires a clean HEAD-bound image. Inside a private mount
+and network namespace it mounts that SquashFS `ro,nodev,nosuid`, creates only
+bounded `/tmp`, `/run`, and `/dev` tmpfs mounts, creates an exact six-device
+allowlist, mounts read-only procfs, applies the existing default-drop nftables
+policy, proves route/firewall mutation denial, then runs the owned canary as
+UID/GID 65534 with zero capabilities and no-new-privileges. The image itself
+admits the mount, environment, identity, device, immutable-path, egress, and
+full receipt/replay evidence before the outer composer can accept it.
+
+**Current proof state:** implementation, static contracts, signed-metadata
+package matching, 20 focused tests, and the 707-test repository suite pass. No
+image build or image-runtime acceptance record has completed yet, so
+`image_runtime_accepted` is not a
+current capability and `hardened_worker_image_accepted` remains false. WSL2 is
+only the construction/fixture host; isolated local-VM reboot conformance,
+broker transport authentication, key-provider approval/recovery, programme
+review, sustained operation, VPS acceptance, and human posture approval remain
+separate open gates.

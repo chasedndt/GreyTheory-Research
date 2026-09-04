@@ -4,6 +4,30 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Ubuntu worker-image candidate
+
+### What was built
+
+- Canonical-signed base and archive-index verification for 18 exact packages.
+- Two-build read-only SquashFS construction sourced from committed runtime code.
+- Clean-HEAD image admission for bounded mounts/devices, non-root zero-capability
+  execution, exact egress, immutable paths, and full receipt/replay evidence.
+
+### What the next agent should not undo
+
+Do not bind or recursively mount the host `/dev` into a temporary root. Do not
+call the candidate accepted until a real image/runtime record passes. Keep
+`hardened_worker_image_accepted=false`, retain the clean-source and two-build
+requirements, and leave VM/reboot, broker transport, key, programme, VPS, and
+human-posture gates independent.
+
+### Verification
+
+20 focused and 707 full repository tests pass; all 18 packages match
+Canonical-signed indexes. Ubuntu process creation is blocked pending an
+operator-approved distro restart, so no image/runtime acceptance record exists.
+See `07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-worker-image-candidate.md`.
+
 ## 2026-09-04 - Codex - Ubuntu namespace-lifetime exact-egress candidate
 
 ### What was built

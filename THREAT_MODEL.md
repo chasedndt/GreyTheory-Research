@@ -178,12 +178,25 @@ Accepted namespace-lifetime Ubuntu egress candidate:
   not prove that a reproducible read-only worker image always installs/applies
   the policy, survives VM reboot, or has passed VM/VPS conformance.
 
+Source-implemented, not yet host-accepted image candidate:
+
+- Canonical image and archive signing fingerprints are pinned; the staging
+  chain binds signed image checksums and signed `InRelease` metadata through
+  the hashed Packages index to 18 exact `.deb` identities and SHA-256 values;
+- two independent ext4-backed builds must produce one byte-identical SquashFS
+  from committed runtime source before a release manifest is emitted; and
+- runtime admission requires a read-only root, bounded tmpfs/device view,
+  UID/GID 65534, zero capabilities, no-new-privileges, immutable code/config,
+  default-drop exact egress, denied mutations, and a completed encrypted worker
+  receipt. No host build/runtime record has passed, so none of these are yet
+  accepted image controls.
+
 Still required before any network posture:
 
 - operator approval of the candidate OS secret-provider binding, hardened
   application-data ACLs, and an independent profile/system backup and recovery
   procedure for the external root KEK; the repository does not persist it;
-- isolated reproducible unprivileged Ubuntu worker image with mandatory
+- host-accepted isolated reproducible unprivileged Ubuntu worker image with mandatory
   namespace egress admission, broker transport/authentication, conformance
   acceptance, owned canary, one reviewed programme, sustained clean operation,
   and explicit operator posture approval.

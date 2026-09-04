@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 698 repository tests, 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness passes, and a new namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, reproducible hardened-image binding, programme, and human approval gates remain open.
+- 707 repository tests pass on 2026-09-04. The unchanged UI baseline remains 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image build/runtime candidate has 20 focused static/provenance tests but no host acceptance record. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, accepted hardened-image binding, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -338,11 +338,15 @@ Offline broker foundation completed without enabling the posture:
   counted wrong-port/decoy-address/IPv6 denials, denied unprivileged route and
   firewall mutation, and successful full encrypted worker completion. No
   external packet, programme, posture raise, or WSL system install is involved.
-- [ ] Prove durable egress enforcement in the hardened local image.
+- [ ] Prove durable egress enforcement in the hardened local image. Signed
+  base/archive staging, two-build read-only SquashFS construction, and strict
+  runtime-admission code now exist; no host image/runtime record has passed.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   hardened application-data ACLs plus independent cross-profile/bare-machine
   backup/recovery and host acceptance; no root KEK is stored by the repository.
-- [ ] Build and harden the unprivileged Ubuntu 24.04 worker image and broker transport.
+- [ ] Accept and harden the unprivileged Ubuntu 24.04 worker image and broker
+  transport; the image candidate is source-implemented, while runtime and
+  transport acceptance remain open.
 - [ ] Pass VM conformance, owned-canary, one-programme review, sustained clean
   operation, and explicit human posture approval.
 

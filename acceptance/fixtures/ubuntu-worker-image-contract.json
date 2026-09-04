@@ -1,0 +1,118 @@
+{
+  "schema_version": 1,
+  "image": {
+    "name": "greytheory-passive-worker",
+    "platform": "linux",
+    "architecture": "amd64",
+    "format": "squashfs",
+    "base": {
+      "product": "Ubuntu Base",
+      "release": "24.04.4",
+      "archive": "ubuntu-base-24.04.4-base-amd64.tar.gz",
+      "sha256": "c1e67ef7b17a6300e136118bd1dc04725009cb376c1aad10abcf8cd453628d58",
+      "signing_fingerprint": "843938DF228D22F7B3742BC0D94AA3F0EFE21092"
+    }
+  },
+  "rootfs": {
+    "read_only": true,
+    "required_mount_options": [
+      "ro",
+      "nodev",
+      "nosuid"
+    ],
+    "writable_mounts": [
+      {
+        "path": "/tmp",
+        "type": "tmpfs",
+        "options": [
+          "nodev",
+          "nosuid",
+          "noexec",
+          "size=64M"
+        ]
+      },
+      {
+        "path": "/run",
+        "type": "tmpfs",
+        "options": [
+          "nodev",
+          "nosuid",
+          "noexec",
+          "size=8M"
+        ]
+      },
+      {
+        "path": "/dev",
+        "type": "tmpfs",
+        "options": [
+          "nosuid",
+          "noexec",
+          "size=1M"
+        ],
+        "device_allowlist": [
+          "full",
+          "null",
+          "random",
+          "tty",
+          "urandom",
+          "zero"
+        ]
+      }
+    ]
+  },
+  "process": {
+    "uid": 65534,
+    "gid": 65534,
+    "supplementary_groups": [],
+    "no_new_privileges": true,
+    "effective_capabilities": 0,
+    "bounding_capabilities": 0,
+    "environment_allowlist": [
+      "HOME",
+      "LANG",
+      "PATH",
+      "PYTHONDONTWRITEBYTECODE",
+      "PYTHONPATH",
+      "TMPDIR"
+    ]
+  },
+  "network": {
+    "engine": "nftables",
+    "policy": "acceptance/fixtures/ubuntu-egress-policy.nft",
+    "default_input": "drop",
+    "default_forward": "drop",
+    "default_output": "drop",
+    "allowed_fixture": {
+      "interface": "lo",
+      "family": "ipv4",
+      "address": "8.8.8.8",
+      "protocol": "tcp",
+      "port": 443
+    },
+    "required_denials": [
+      "allowed-address-wrong-port",
+      "decoy-address-allowed-port",
+      "ipv6-loopback-allowed-port",
+      "route-mutation",
+      "firewall-mutation"
+    ]
+  },
+  "admission": {
+    "verify_base_signature": true,
+    "verify_base_sha256": true,
+    "verify_package_archive_signature": true,
+    "verify_package_lock": true,
+    "verify_image_sha256": true,
+    "verify_read_only_root": true,
+    "verify_network_policy": true,
+    "verify_process_identity": true,
+    "verify_worker_receipt": true
+  },
+  "authority": {
+    "posture": "LOCAL_FIXTURE",
+    "external_network_contact": false,
+    "programme_contacted": false,
+    "passive_http_enabled": false,
+    "vps_used": false
+  }
+}

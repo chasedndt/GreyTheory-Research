@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, and Windows CurrentUser DPAPI same-profile candidate harnesses pass; provider approval, ACL hardening, independent recovery, hardened-image egress binding, launcher, and every passive action remain open |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, and Windows CurrentUser DPAPI same-profile candidate harnesses pass; a signed-input read-only image build/runtime-admission candidate is implemented but not host-accepted; provider approval, ACL hardening, independent recovery, accepted hardened-image egress binding, launcher, and every passive action remain open |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, bounded assisted/transfer journeys, and the graphical learning loop are live for one ready Case Pack; broader ready curriculum remains open |
@@ -144,6 +144,13 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   unprivileged route and firewall mutation, and completes the full encrypted
   worker service without external contact. It is namespace-lifetime proof, not
   a reproducible hardened-image acceptance.
+- a source-implemented Ubuntu image candidate that verifies the signed base and
+  signed archive metadata for 18 exact packages, demands two byte-identical
+  SquashFS builds, and defines clean-HEAD runtime admission for a read-only
+  root, bounded writable mounts, exact devices, non-root zero-capability
+  identity, mandatory nftables policy, write denials, and the full owned worker
+  receipt path. Static/provenance tests pass; no image runtime record has passed,
+  so this is not accepted hardened-image or posture evidence.
 - a candidate operator-side Windows CurrentUser DPAPI root-KEK provider with
   strict versioned records, audited provision/lease operations, a short-lived
   zeroing lease, Git-storage refusal, and real same-profile restart,
@@ -185,7 +192,8 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 ### PLANNED / NOT BUILT
 
 - broader ready curriculum packs, governed model-backed coach conversation, complete first-entry keyboard acceptance, genuinely separate-account learner workbench acceptance, and signed/uninstallable release packaging; current-user shortcut/restart/upgrade/runtime recovery is accepted;
-- governed external Scope Watch collector, hardened Ubuntu passive worker/image and broker transport, isolated network workers, and live collectors;
+- governed external Scope Watch collector, accepted hardened Ubuntu passive
+  worker/image and broker transport, isolated network workers, and live collectors;
 - signed standalone graphical workbench release acceptance and a governed external
   public-intelligence fetcher/cache; the graphical Today/Learn surfaces and
   provider request-plan contracts are implemented;
@@ -193,7 +201,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, capture, worker-service, Ubuntu no-route host, and Windows same-profile DPAPI-candidate proof exist only as a dark local foundation. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, a working Demo Suite, and accepted current-user shortcut/restart/upgrade/runtime-recovery behavior. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Complete first-entry keyboard acceptance, genuinely separate-account and signed-release acceptance, broader ready packs, and governed coach conversation remain open. The key-provider gate also remains open pending ACL hardening, independent recovery, and operator approval. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, capture, worker-service, Ubuntu no-route host, namespace-lifetime exact egress, and Windows same-profile DPAPI-candidate proof exist only as a dark local foundation. The read-only Ubuntu image construction/admission candidate is implemented but has no host acceptance record. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, a working Demo Suite, and accepted current-user shortcut/restart/upgrade/runtime-recovery behavior. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Complete first-entry keyboard acceptance, genuinely separate-account and signed-release acceptance, broader ready packs, and governed coach conversation remain open. The key-provider gate also remains open pending ACL hardening, independent recovery, and operator approval. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

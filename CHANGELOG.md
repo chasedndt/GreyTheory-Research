@@ -4,6 +4,21 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - read-only Ubuntu worker-image candidate
+
+- Added signed Ubuntu Base and signed archive-metadata verification for 18
+  exact runtime packages, plus a reproducibility manifest that remains
+  explicitly non-activating.
+- Added two-build SquashFS construction from committed runtime inputs and a
+  clean-HEAD image acceptance harness with read-only root, bounded tmpfs,
+  exact devices, UID/GID 65534, zero capabilities, no-new-privileges, and the
+  existing default-drop exact-egress policy.
+- Added fail-closed composition of mount, identity, write-denial, network,
+  mutation, encrypted-capture, signed-receipt, replay, and cleanup evidence.
+- Static and package-provenance checks pass, but an Ubuntu image/runtime record
+  has not yet completed; hardened image, VM/reboot, transport, key, programme,
+  VPS, posture, and live-operation gates remain open.
+
 ### Added - Ubuntu exact-egress policy candidate
 
 - Added an Ubuntu 24.04 namespace-lifetime nftables acceptance path that

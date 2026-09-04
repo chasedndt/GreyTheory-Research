@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04_greytheory-ubuntu-worker-image-candidate.md) - separated source implementation and signed provenance from still-pending host image/runtime acceptance
+
 - [2026-09-04 - GreyTheory Ubuntu exact-egress candidate](2026-09-04_greytheory-ubuntu-exact-egress-candidate.md) - accepted namespace-lifetime egress proof while preserving the hardened-image and posture gates
 
 - [2026-09-04 - GreyTheory Windows DPAPI root-KEK candidate](2026-09-04_greytheory-windows-dpapi-root-kek-candidate.md) - host-tested same-profile candidate with ACL/recovery gates retained and rendered workbench truth repaired

@@ -414,6 +414,9 @@ Implemented now:
   records, audited provision/lease operations, a zeroing lease, and real
   same-profile restart/protected-copy recovery, tamper-refusal, capture, and
   audit proof; it is not approved and never gives key authority to the worker;
+- a signed-input, two-build read-only Ubuntu image and strict clean-HEAD runtime
+  admission candidate; static/provenance checks pass, but no host image/runtime
+  record has completed and the capability remains unavailable;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.
@@ -429,8 +432,9 @@ Not implemented now:
   model-backed coach conversation;
 - a general local fixture process broker;
 - operator approval, hardened application-data ACLs, and independent recovery
-  for the candidate root-KEK provider; a reproducible hardened image that makes
-  the accepted namespace-lifetime nftables policy mandatory,
+  for the candidate root-KEK provider; host acceptance and VM/reboot conformance
+  for the reproducible image candidate that makes the accepted
+  namespace-lifetime nftables policy mandatory,
   launcher/scheduler, or any `PASSIVE_HTTP` action; the full Ubuntu no-route
   service and exact-egress local-fixture candidates now pass.
 
