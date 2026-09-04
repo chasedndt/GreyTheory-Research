@@ -216,8 +216,10 @@ required device nodes and is unmounted before image creation. The host `/dev`
 is never bound. The build installs nothing into the shared WSL distribution. It
 constructs two independent ext4-backed roots, copies only the committed worker
 inputs for a release build, strips package-management entrypoints and set-id
-bits, normalises timestamps, emits two SquashFS images, and refuses unless they
-are byte-identical.
+bits, removes `ldconfig`'s optional filesystem-specific auxiliary cache while
+retaining `/etc/ld.so.cache`, normalises timestamps, emits two SquashFS images,
+and refuses unless they are byte-identical. A bounded canonical root-manifest
+diff identifies content differences when that identity gate refuses a build.
 
 Runtime acceptance requires a clean HEAD-bound image. Inside a private mount
 and network namespace it mounts that SquashFS `ro,nodev,nosuid`, creates only
@@ -229,10 +231,11 @@ admits the mount, environment, identity, device, immutable-path, egress, and
 full receipt/replay evidence before the outer composer can accept it.
 
 **Current proof state:** implementation, static contracts, signed-metadata
-package matching, 21 focused tests, and the 708-test repository suite pass. No
-image build or image-runtime acceptance record has completed yet, so
-`image_runtime_accepted` is not a
-current capability and `hardened_worker_image_accepted` remains false. WSL2 is
+package matching, 21 focused tests, and the 708-test repository suite pass. A
+dirty-tree development build passes two-build byte identity but explicitly
+retains `runtime_accepted=false`; no clean release image or image-runtime
+acceptance record has completed yet. `image_runtime_accepted` is therefore not
+a current capability and `hardened_worker_image_accepted` remains false. WSL2 is
 only the construction/fixture host; isolated local-VM reboot conformance,
 broker transport authentication, key-provider approval/recovery, programme
 review, sustained operation, VPS acceptance, and human posture approval remain

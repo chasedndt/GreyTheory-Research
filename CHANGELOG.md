@@ -22,6 +22,9 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - Kept the ext4 build root `nodev` while mounting an owned 1-MiB temporary
   `/dev` containing only required character devices during package setup; the
   host `/dev` is never bound into the image build.
+- Added bounded canonical root-manifest diagnostics to the byte-identity gate
+  and removed `ldconfig`'s optional filesystem-specific auxiliary cache from
+  the hardened root while preserving the runtime linker cache.
 - Static and package-provenance checks pass, but an Ubuntu image/runtime record
   has not yet completed; hardened image, VM/reboot, transport, key, programme,
   VPS, posture, and live-operation gates remain open.

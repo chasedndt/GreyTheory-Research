@@ -32,6 +32,9 @@ image boundary without raising posture or contacting a target.
 - Kept the ext4 build root `nodev` while giving package scripts an exact,
   owned temporary `/dev` tmpfs after the clean retry proved device access was
   otherwise denied. No host-device bind was reintroduced.
+- Added bounded canonical root-manifest diagnostics after the byte-identity
+  gate isolated `ldconfig`'s optional filesystem-specific auxiliary cache; the
+  hardening pass now removes that cache without removing `/etc/ld.so.cache`.
 
 ## Guardrails retained
 
@@ -44,8 +47,9 @@ scheduler, or a posture transition.
 
 21 focused tests and all 708 repository tests pass. Shell and PowerShell syntax
 checks pass. All 18 packages match three Canonical-signed Ubuntu archive
-indexes. Ubuntu process creation and device state are restored; no image
-build/runtime record exists yet.
+indexes. Ubuntu process creation and device state are restored. A dirty-tree
+development build now passes two-build byte identity, but no clean release
+image or image-runtime acceptance record exists yet.
 
 ## Handoff
 

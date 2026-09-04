@@ -377,6 +377,8 @@ def test_worker_image_builder_requires_two_identical_read_only_builds():
     assert shell.count("/usr/bin/dpkg --configure -a") == 1
     assert "dpkg --configure -a" in shell
     assert "verify_locked_packages" in shell
+    assert "write_rootfs_manifest" in shell
+    assert "Canonical root filesystem manifest differences follow" in shell
     assert "git archive --format=tar HEAD" in shell
     assert 'if test "$build_mode" = "release"' in shell
     assert 'final_provenance="$final_root/package-provenance.json"' in shell
@@ -385,6 +387,7 @@ def test_worker_image_builder_requires_two_identical_read_only_builds():
     assert "Refusing an invalid supply-chain bundle" in shell
     assert "refusing to replace a build manifest for the same source identity" in shell
     assert "rm -rf -- \"$rootfs/etc/apt\"" in shell
+    assert 'rm -f -- "$rootfs/var/cache/ldconfig/aux-cache"' in shell
     assert "find \"$rootfs\" -xdev -perm /6000 -exec chmod a-s" in shell
     assert 'mount -o loop,nodev,nosuid "$disk" "$rootfs"' in shell
     assert (

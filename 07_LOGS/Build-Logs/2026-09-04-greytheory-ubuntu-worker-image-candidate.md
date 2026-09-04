@@ -95,6 +95,20 @@ the staged `/dev`, creates the six required devices there, and unmounts it after
 package configuration. It never binds or copies the host `/dev`; recursive
 failure cleanup already owns the nested mount.
 
+That retry completed both image roots and reached the byte-identity gate. The
+gate correctly refused the pair, and the new canonical root-manifest diagnostic
+isolated the only content difference to `/var/cache/ldconfig/aux-cache`. That
+optional future-`ldconfig` acceleration cache embeds filesystem-specific state;
+the hardening pass now removes it while retaining the runtime linker cache at
+`/etc/ld.so.cache`. The two-build digest check remains mandatory.
+
+A development-mode diagnostic build then produced two byte-identical
+29,429,760-byte SquashFS images with SHA-256
+`cd754ea9f2cbe3647fd95131f1ee1797dae18b7ffa57e6e208be74b595596834`.
+Its manifest correctly records `dirty=true`, `runtime_accepted=false`, and
+`hardened_worker_image_accepted=false`; it is not a clean release build or
+runtime-acceptance record.
+
 ## Verification
 
 ```text
@@ -102,7 +116,7 @@ python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
 21 passed
 
 python -m pytest -q
-708 passed in 40.34s
+708 passed in 17.73s
 
 python -m py_compile
 3 image/provenance modules passed
@@ -117,9 +131,11 @@ actual signed archive metadata
 3 suites verified; 18/18 locked packages matched
 ```
 
-There is no image artifact, image build record, or image-runtime acceptance
-record yet. UI code was untouched; the prior 23 UI tests, 4 Sites tests,
-production build, and rendered QA remain the UI baseline rather than new proof.
+There is no clean release image or image-runtime acceptance record yet. One
+dirty-tree development image exists only as the bounded reproducibility
+diagnostic described above. UI code was untouched; the prior 23 UI tests, 4
+Sites tests, production build, and rendered QA remain the UI baseline rather
+than new proof.
 
 ## Sources used
 

@@ -287,6 +287,7 @@ harden_rootfs() {
   : > "$rootfs/etc/machine-id"
   rm -rf -- "$rootfs/etc/apt" "$rootfs/usr/lib/apt" \
     "$rootfs/var/cache/apt" "$rootfs/var/lib/apt" "$rootfs/var/log"/*
+  rm -f -- "$rootfs/var/cache/ldconfig/aux-cache"
   rm -f -- "$rootfs/usr/bin/apt" "$rootfs/usr/bin/apt-cache" \
     "$rootfs/usr/bin/apt-cdrom" "$rootfs/usr/bin/apt-config" \
     "$rootfs/usr/bin/apt-get" "$rootfs/usr/bin/apt-mark" \
@@ -304,6 +305,50 @@ harden_rootfs() {
   find "$rootfs" -xdev -exec touch -h -d '@0' {} +
 }
 
+write_rootfs_manifest() {
+  local rootfs="$1"
+  local manifest="$2"
+  python3 - "$rootfs" "$manifest" <<'PY'
+import hashlib
+import json
+import os
+import stat
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+output = Path(sys.argv[2])
+paths = sorted(root.rglob("*"), key=lambda item: item.relative_to(root).as_posix())
+hardlinks: dict[tuple[int, int], str] = {}
+with output.open("w", encoding="utf-8", newline="\n") as stream:
+    for path in paths:
+        relative = path.relative_to(root).as_posix()
+        item = path.lstat()
+        record: dict[str, object] = {
+            "gid": item.st_gid,
+            "mode": item.st_mode,
+            "mtime_ns": item.st_mtime_ns,
+            "path": relative,
+            "uid": item.st_uid,
+        }
+        if stat.S_ISREG(item.st_mode):
+            record["bytes"] = item.st_size
+            digest = hashlib.sha256()
+            with path.open("rb") as source:
+                for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                    digest.update(chunk)
+            record["sha256"] = digest.hexdigest()
+            if item.st_nlink > 1:
+                key = (item.st_dev, item.st_ino)
+                record["hardlink_to"] = hardlinks.setdefault(key, relative)
+        elif stat.S_ISLNK(item.st_mode):
+            record["target"] = os.readlink(path)
+        elif stat.S_ISCHR(item.st_mode) or stat.S_ISBLK(item.st_mode):
+            record["device"] = [os.major(item.st_rdev), os.minor(item.st_rdev)]
+        stream.write(json.dumps(record, sort_keys=True, separators=(",", ":")) + "\n")
+PY
+}
+
 build_one() {
   local slot="$1"
   local disk="$build_root/$slot.ext4"
@@ -319,6 +364,7 @@ build_one() {
   install_packages "$rootfs"
   verify_locked_packages "$rootfs"
   harden_rootfs "$rootfs"
+  write_rootfs_manifest "$rootfs" "$build_root/$slot.manifest.jsonl"
   (cd "$rootfs" && find . -xdev -mindepth 1 -printf '%P 0\n' | LC_ALL=C sort) > "$sort_file"
   mksquashfs "$rootfs" "$output" -noappend -comp xz -b 1M \
     -all-time 0 -mkfs-time 0 -no-xattrs -no-progress -sort "$sort_file"
@@ -333,6 +379,13 @@ digest_a="$(sha256sum "$image_a" | awk '{print $1}')"
 digest_b="$(sha256sum "$image_b" | awk '{print $1}')"
 if test "$digest_a" != "$digest_b"; then
   printf 'Independent image builds were not byte-for-byte reproducible.\n' >&2
+  if cmp --silent "$build_root/a.manifest.jsonl" "$build_root/b.manifest.jsonl"; then
+    printf 'Canonical root filesystem manifests were identical.\n' >&2
+  else
+    printf 'Canonical root filesystem manifest differences follow (bounded to 200 lines).\n' >&2
+    diff -u "$build_root/a.manifest.jsonl" "$build_root/b.manifest.jsonl" \
+      | head -n 200 >&2 || true
+  fi
   exit 1
 fi
 

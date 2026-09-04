@@ -18,6 +18,8 @@ Read this before changing anything that looks arbitrary. Several guards in this 
   pre-dependency enforcement.
 - An owned, minimal temporary `/dev` tmpfs for package configuration while the
   ext4 build root remains `nodev`; host devices are never bound into staging.
+- A canonical root-manifest diff at reproducibility refusal and removal of
+  `ldconfig`'s optional filesystem-specific auxiliary cache during hardening.
 
 ### What the next agent should not undo
 

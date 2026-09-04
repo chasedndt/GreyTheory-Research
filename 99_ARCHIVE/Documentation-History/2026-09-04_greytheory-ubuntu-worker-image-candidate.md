@@ -23,4 +23,7 @@ host observation added linked Windows-worktree normalization to both Linux
 image entrypoints before build or runtime acceptance was claimed. Later clean
 build observations added explicit package pre-dependency groups and an owned
 minimal build-time `/dev` tmpfs while preserving the outer `nodev` root and the
-ban on host-device binds.
+ban on host-device binds. A bounded canonical root-manifest comparison then
+isolated `ldconfig`'s optional filesystem-specific auxiliary cache as the only
+content difference; hardening now removes that cache without weakening the
+two-build byte-identity gate.
