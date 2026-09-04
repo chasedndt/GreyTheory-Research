@@ -28,9 +28,11 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 - Corrected Ubuntu image-runtime composition to invoke the acceptance composer
   as a repository-rooted Python module after the first clean image run exposed
   the file-path import boundary.
-- Static and package-provenance checks pass, but an Ubuntu image/runtime record
-  has not yet completed; hardened image, VM/reboot, transport, key, programme,
-  VPS, posture, and live-operation gates remain open.
+- A clean two-build-identical release image and WSL2 image-runtime record now
+  pass the read-only mount, identity, exact-egress, encrypted-capture, receipt,
+  replay, and cleanup contract. The record deliberately retains
+  `hardened_worker_image_accepted=false`, VM/reboot, transport, key, programme,
+  VPS, posture, and live-operation gates as open.
 
 ### Added - Ubuntu exact-egress policy candidate
 

@@ -126,7 +126,7 @@ python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
 21 passed
 
 python -m pytest -q
-708 passed in 24.91s
+708 passed in 27.81s
 
 python -m py_compile
 3 image/provenance modules passed
@@ -141,11 +141,24 @@ actual signed archive metadata
 3 suites verified; 18/18 locked packages matched
 ```
 
-A clean reproducible release image now exists, but no image-runtime acceptance
-record has passed yet. One dirty-tree development image also exists only as the
-bounded reproducibility diagnostic described above. UI code was untouched; the
-prior 23 UI tests, 4 Sites tests, production build, and rendered QA remain the
-UI baseline rather than new proof.
+Clean commit `d792eb11db991b805b68f8c5ba72c9335cb70ef6` reproduced the same
+29,429,760-byte image and SHA-256, then passed WSL2 image-runtime admission. The
+durable record is
+`E:\Projects\GreyTheory\acceptance\ubuntu-worker-image-20260904-133447-2000\acceptance.json`.
+It proves `image_runtime_accepted=true`, read-only/bounded mounts, the exact six
+devices and environment allowlist, UID/GID 65534, zero capabilities,
+no-new-privileges, default-drop input/forward/output, three counted bypass
+denials, refused route/firewall mutation, an exact synthetic request, encrypted
+capture, signed receipt, completed replay, and cleanup. It explicitly records
+`hardened_worker_image_accepted=false`,
+`reboot_vm_conformance_accepted=false`, `external_network_contact=false`,
+`programme_contacted=false`, `passive_http_enabled=false`, `vps_used=false`,
+and `posture=LOCAL_FIXTURE`.
+
+One dirty-tree development image remains only as the bounded reproducibility
+diagnostic described above. UI code was untouched; the prior 23 UI tests, 4
+Sites tests, production build, and rendered QA remain the UI baseline rather
+than new proof.
 
 ## Sources used
 
@@ -165,7 +178,8 @@ UI baseline rather than new proof.
 
 ## Next safe action
 
-Commit the linked-worktree compatibility fix, build the clean-commit image, run
-image acceptance, and repair any observed host defect. Do not close the
-hardened-image milestone until the emitted JSON and later local-VM reboot
-conformance both pass.
+Move the accepted WSL2 image-runtime candidate into an isolated local-VM/reboot
+conformance design and define authenticated broker transport. Do not close the
+hardened-image milestone until those independent gates pass, and do not change
+posture before key/recovery, programme review, sustained operation, and explicit
+human approval also pass.

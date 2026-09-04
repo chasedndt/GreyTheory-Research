@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 708 repository tests pass on 2026-09-04. The unchanged UI baseline remains 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image build/runtime candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded root-manifest reproducibility diagnostic that removes `ldconfig`'s filesystem-specific auxiliary cache, and a clean two-build-identical release artifact; runtime acceptance has not passed. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, accepted hardened-image binding, programme, and human approval gates remain open.
+- 708 repository tests pass on 2026-09-04. The unchanged UI baseline remains 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded reproducibility diagnostic, a clean two-build-identical release artifact, and accepted WSL2 runtime evidence for the read-only mounts, exact egress, worker identity, encrypted capture, receipt, and replay contract. The record retains `hardened_worker_image_accepted=false` and `reboot_vm_conformance_accepted=false`. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, authenticated broker transport, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -340,14 +340,15 @@ Offline broker foundation completed without enabling the posture:
   external packet, programme, posture raise, or WSL system install is involved.
 - [ ] Prove durable egress enforcement in the hardened local image. Signed
   base/archive staging, a clean two-build-identical read-only SquashFS artifact,
-  and strict runtime-admission code now exist; image runtime acceptance has not
-  passed.
+  and WSL2 runtime admission now pass with the exact default-drop policy. The
+  record still marks hardened-image and local-VM/reboot conformance false, so
+  this gate remains open.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   hardened application-data ACLs plus independent cross-profile/bare-machine
   backup/recovery and host acceptance; no root KEK is stored by the repository.
 - [ ] Accept and harden the unprivileged Ubuntu 24.04 worker image and broker
-  transport; the image candidate is source-implemented, while runtime and
-  transport acceptance remain open.
+  transport; WSL2 image-runtime acceptance passes, while hardened local-VM/
+  reboot conformance and authenticated broker transport remain open.
 - [ ] Pass VM conformance, owned-canary, one-programme review, sustained clean
   operation, and explicit human posture approval.
 

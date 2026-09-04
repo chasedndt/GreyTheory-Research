@@ -38,24 +38,28 @@ image boundary without raising posture or contacting a target.
 - Produced the first clean two-build-identical release image, then corrected
   the outer acceptance composer to run as a repository-rooted Python module
   after its initial file-path invocation could not import `acceptance`.
+- Accepted the corrected clean image inside the private WSL2 mount/network
+  namespace with its read-only, identity, exact-egress, capture, receipt,
+  replay, and cleanup invariants intact.
 
 ## Guardrails retained
 
-`LOCAL_FIXTURE` remains the ceiling. Source implementation is not image
+`LOCAL_FIXTURE` remains the ceiling. WSL2 image-runtime acceptance is not
+hardened-image, local-VM/reboot, programme, posture, VPS, or live-target
 acceptance. The operator-approved Ubuntu restart did not install a WSL system
-package or enable target/programme contact, key activation, VPS, launcher,
-scheduler, or a posture transition.
+package or enable target/programme contact, key activation, launcher, scheduler,
+or a posture transition.
 
 ## Verification
 
 21 focused tests and all 708 repository tests pass. Shell and PowerShell syntax
 checks pass. All 18 packages match three Canonical-signed Ubuntu archive
-indexes. Ubuntu process creation and device state are restored. A dirty-tree
-development build and clean release build now pass two-build byte identity, but
-no image-runtime acceptance record exists yet.
+indexes. Ubuntu process creation and device state are restored. The clean
+release image and WSL2 image-runtime record pass; the record explicitly retains
+`hardened_worker_image_accepted=false`, reboot/VM false, and `LOCAL_FIXTURE`.
 
 ## Handoff
 
-Commit the linked-worktree compatibility fix, run a clean release build and
-image acceptance, and retain VM/reboot, broker transport, key-provider/recovery,
-programme review, sustained operation, and human posture as independent gates.
+Advance to isolated local-VM/reboot conformance and authenticated broker
+transport, retaining key-provider/recovery, programme review, sustained
+operation, and human posture as independent gates.

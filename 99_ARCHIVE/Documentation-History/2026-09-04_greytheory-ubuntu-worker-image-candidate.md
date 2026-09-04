@@ -1,12 +1,12 @@
 # Documentation history - GreyTheory Ubuntu worker-image candidate
 
 On 2026-09-04 repository truth changed from an accepted namespace-lifetime
-exact-egress proof with no image path to a source-implemented, not-yet-accepted
-Ubuntu worker-image candidate.
+exact-egress proof with no image path to an accepted clean read-only Ubuntu
+WSL2 image-runtime candidate.
 
-Documentation now distinguishes signed base/package provenance, deterministic
-SquashFS construction, and strict runtime-admission code from an actual host
-image/runtime record. It continues to mark local-VM reboot conformance, broker
+Documentation now records signed base/package provenance, deterministic
+SquashFS construction, strict runtime admission, and a passing host record. It
+continues to mark hardened-image and local-VM/reboot conformance, broker
 transport authentication, OS key-provider approval and recovery, programme
 review, sustained operation, VPS acceptance, and human posture approval open.
 
@@ -28,4 +28,7 @@ isolated `ldconfig`'s optional filesystem-specific auxiliary cache as the only
 content difference; hardening now removes that cache without weakening the
 two-build byte-identity gate. A clean release image then passed byte identity;
 its first runtime attempt exposed and repaired the outer composer's Python
-module boundary before any runtime-acceptance claim was emitted.
+module boundary before any runtime-acceptance claim was emitted. The corrected
+clean run then accepted the WSL2 image-runtime contract while its evidence kept
+hardened-image, reboot/VM, programme, posture, external contact, passive HTTP,
+and VPS acceptance false.

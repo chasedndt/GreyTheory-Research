@@ -414,9 +414,10 @@ Implemented now:
   records, audited provision/lease operations, a zeroing lease, and real
   same-profile restart/protected-copy recovery, tamper-refusal, capture, and
   audit proof; it is not approved and never gives key authority to the worker;
-- a signed-input, two-build read-only Ubuntu image and strict clean-HEAD runtime
-  admission candidate; static/provenance checks pass, but no host image/runtime
-  record has completed and the capability remains unavailable;
+- a signed-input, two-build read-only Ubuntu image and strict clean-HEAD WSL2
+  runtime-admission candidate that passes mount, identity, exact-egress,
+  encrypted-capture, receipt, and replay checks while explicitly retaining
+  `hardened_worker_image_accepted=false` and reboot/VM conformance as open;
 - deterministic learning recommendations, prerequisite routing, review
   intervals, Learn/Practise/Prove/Reflect/Assess journey state, private
   integrity-checked journey persistence, optimistic revisions, and CLI flow.

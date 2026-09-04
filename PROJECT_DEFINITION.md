@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, and Windows CurrentUser DPAPI same-profile candidate harnesses pass; a signed-input read-only image build/runtime-admission candidate is implemented but not host-accepted; provider approval, ACL hardening, independent recovery, accepted hardened-image egress binding, launcher, and every passive action remain open |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile candidate, and clean read-only WSL2 image-runtime candidate harnesses pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, authenticated broker transport, launcher, and every passive action remain open |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, bounded assisted/transfer journeys, and the graphical learning loop are live for one ready Case Pack; broader ready curriculum remains open |
@@ -144,13 +144,15 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   unprivileged route and firewall mutation, and completes the full encrypted
   worker service without external contact. It is namespace-lifetime proof, not
   a reproducible hardened-image acceptance.
-- a source-implemented Ubuntu image candidate that verifies the signed base and
-  signed archive metadata for 18 exact packages, demands two byte-identical
-  SquashFS builds, and defines clean-HEAD runtime admission for a read-only
-  root, bounded writable mounts, exact devices, non-root zero-capability
-  identity, mandatory nftables policy, write denials, and the full owned worker
-  receipt path. Static/provenance tests pass; no image runtime record has passed,
-  so this is not accepted hardened-image or posture evidence.
+- a host-accepted Ubuntu 24.04 WSL2 image-runtime candidate that verifies the
+  signed base and signed archive metadata for 18 exact packages, demands two
+  byte-identical SquashFS builds, and admits a clean-HEAD read-only root with
+  bounded writable mounts, exact devices, non-root zero-capability identity,
+  mandatory nftables policy, write denials, encrypted capture, signed receipt,
+  and completed replay evidence. Its record explicitly retains
+  `hardened_worker_image_accepted=false`,
+  `reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`; it is not
+  hardened-image, local-VM, posture, programme, or live-target evidence.
 - a candidate operator-side Windows CurrentUser DPAPI root-KEK provider with
   strict versioned records, audited provision/lease operations, a short-lived
   zeroing lease, Git-storage refusal, and real same-profile restart,
@@ -183,9 +185,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   worker performs one bound direct TLS request before exiting. It scrubs its
   environment and is refused unless Linux is non-root, capability-empty, and
   no-new-privileges. Ubuntu 24.04.4 WSL2 acceptance now covers the full no-route
-  local service chain plus a default-drop exact-egress namespace candidate and
-  emits successful JSON records; a reproducible hardened image and policy
-  binding, approved key-provider/recovery policy,
+  local service chain, a default-drop exact-egress namespace candidate, and a
+  clean read-only WSL2 image-runtime candidate with successful JSON records; a
+  hardened local-VM/reboot image acceptance, approved key-provider/recovery policy,
   scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, an offline programme-to-local-case readiness view, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
 

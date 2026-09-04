@@ -1,6 +1,6 @@
 # Documentation History Index
 
-- [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04_greytheory-ubuntu-worker-image-candidate.md) - separated source implementation and signed provenance from still-pending host image/runtime acceptance
+- [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04_greytheory-ubuntu-worker-image-candidate.md) - accepted the clean WSL2 image-runtime candidate while preserving hardened local-VM/reboot and activation boundaries
 
 - [2026-09-04 - GreyTheory Ubuntu exact-egress candidate](2026-09-04_greytheory-ubuntu-exact-egress-candidate.md) - accepted namespace-lifetime egress proof while preserving the hardened-image and posture gates
 

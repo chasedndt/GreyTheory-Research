@@ -231,12 +231,15 @@ admits the mount, environment, identity, device, immutable-path, egress, and
 full receipt/replay evidence before the outer composer can accept it.
 
 **Current proof state:** implementation, static contracts, signed-metadata
-package matching, 21 focused tests, and the 708-test repository suite pass. A
-dirty-tree development build and a clean release build pass two-build byte
-identity but explicitly retain `runtime_accepted=false`; no image-runtime
-acceptance record has completed yet. `image_runtime_accepted` is therefore not
-a current capability and `hardened_worker_image_accepted` remains false. WSL2 is
-only the construction/fixture host; isolated local-VM reboot conformance,
-broker transport authentication, key-provider approval/recovery, programme
-review, sustained operation, VPS acceptance, and human posture approval remain
-separate open gates.
+package matching, 21 focused tests, the 708-test repository suite, a clean
+two-build-identical release image, and WSL2 image-runtime admission pass. The
+runtime record proves the read-only image/mount contract, exact device and
+environment sets, UID/GID 65534 with no capabilities or new privileges,
+default-drop exact egress, three bypass denials, refused route/firewall
+mutation, encrypted capture, signed receipt, completed replay, and cleanup. It
+also explicitly records `hardened_worker_image_accepted=false`,
+`reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`. WSL2 remains the
+construction/fixture host; isolated local-VM reboot conformance, broker
+transport authentication, key-provider approval/recovery, programme review,
+sustained operation, VPS acceptance, and human posture approval remain separate
+open gates.

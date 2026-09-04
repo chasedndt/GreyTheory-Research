@@ -25,18 +25,20 @@ Read this before changing anything that looks arbitrary. Several guards in this 
 
 ### What the next agent should not undo
 
-Do not bind or recursively mount the host `/dev` into a temporary root. Do not
-call the candidate accepted until a real image/runtime record passes. Keep
+Do not bind or recursively mount the host `/dev` into a temporary root. The
+WSL2 image-runtime candidate is accepted, but do not promote that to hardened
+image, local-VM/reboot, posture, programme, or live-target acceptance. Keep
 `hardened_worker_image_accepted=false`, retain the clean-source and two-build
-requirements, and leave VM/reboot, broker transport, key, programme, VPS, and
-human-posture gates independent.
+requirements, and leave broker transport, key, programme, VPS, and human
+posture gates independent.
 
 ### Verification
 
 21 focused and all 708 repository tests pass; all 18 packages match
 Canonical-signed indexes. The operator-approved Ubuntu restart restored process
-creation, device nodes, and supervised user services. A clean release image
-exists; no image-runtime acceptance record exists yet.
+creation, device nodes, and supervised user services. A clean release image and
+WSL2 image-runtime acceptance record pass while hardened-image and reboot/VM
+acceptance remain false.
 See `07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-worker-image-candidate.md`.
 
 ## 2026-09-04 - Codex - Ubuntu namespace-lifetime exact-egress candidate
