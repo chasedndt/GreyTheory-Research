@@ -443,9 +443,9 @@ Implemented now:
 
 Not implemented now:
 
-- whole-application first-entry keyboard traversal of the same-origin persisted
-  learner path, a genuinely separate-account install run, release signing, and
-  uninstall acceptance; current-user shortcut/upgrade/recovery already pass;
+- a genuinely separate-account install run, platform screen-reader checks,
+  release signing, and uninstall acceptance; repeatable whole-application
+  first-entry keyboard plus current-user shortcut/upgrade/recovery already pass;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
 - broader ready curricula beyond the first local Case Pack and governed
@@ -460,7 +460,7 @@ Not implemented now:
 
 The current Research Ledger remains a first-class Research case view. Guided
 Mission Control is the selected shell. Current browser visual, same-origin
-persistence, route-focus, mobile-drawer/modal focus, isolated wheel-install,
-and current-user lifecycle checks pass. Whole-application first-entry keyboard
-traversal plus a genuinely separate-account and signed-release run remain
+persistence, route-focus, whole-application first-entry keyboard,
+mobile-drawer/modal focus, isolated wheel-install, and current-user lifecycle
+checks pass. A genuinely separate-account and signed-release run remain
 before the Windows pilot exit condition is met.

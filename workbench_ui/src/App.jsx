@@ -465,12 +465,36 @@ function SettingsView({ connection, openConnection }) {
 
 function CasesView({ navigate, labState, activePack }) {
   const [mode, setMode] = useState("canvas");
+  const tabRefs = useRef({});
   const ledgerRecords = activePack.ledgerRecords;
+
+  function selectCaseView(nextMode, moveFocus = false) {
+    setMode(nextMode);
+    if (moveFocus) tabRefs.current[nextMode]?.focus();
+  }
+
+  function handleCaseTabKeyDown(event) {
+    const tabs = ["canvas", "ledger"];
+    const currentIndex = tabs.indexOf(mode);
+    let nextIndex;
+    if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+    else if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+    else if (event.key === "Home") nextIndex = 0;
+    else if (event.key === "End") nextIndex = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    selectCaseView(tabs[nextIndex], true);
+  }
+
   return (
     <div className="content-page cases-page">
       <header className="page-heading"><div><span className="eyebrow">Research · Case Pack {activePack.number}</span><h1>Build a defensible chain of reasoning</h1><p>Every stage links authority, theory, experiment, evidence, and reflection.</p></div><button className="button button--primary" onClick={() => navigate("labs")}>Continue {activePack.shortTitle.toLowerCase()} <ArrowRight /></button></header>
-      <div className="view-tabs" role="tablist" aria-label="Case view"><button role="tab" aria-selected={mode === "canvas"} className={mode === "canvas" ? "is-active" : ""} onClick={() => setMode("canvas")}><Compass />Case canvas</button><button role="tab" aria-selected={mode === "ledger"} className={mode === "ledger" ? "is-active" : ""} onClick={() => setMode("ledger")}><Notebook />Research ledger</button></div>
+      <div className="view-tabs" role="tablist" aria-label="Case view">
+        <button ref={(node) => { tabRefs.current.canvas = node; }} id="case-tab-canvas" role="tab" aria-controls="case-panel-canvas" aria-selected={mode === "canvas"} tabIndex={mode === "canvas" ? 0 : -1} className={mode === "canvas" ? "is-active" : ""} onClick={() => selectCaseView("canvas")} onKeyDown={handleCaseTabKeyDown}><Compass />Case canvas</button>
+        <button ref={(node) => { tabRefs.current.ledger = node; }} id="case-tab-ledger" role="tab" aria-controls="case-panel-ledger" aria-selected={mode === "ledger"} tabIndex={mode === "ledger" ? 0 : -1} className={mode === "ledger" ? "is-active" : ""} onClick={() => selectCaseView("ledger")} onKeyDown={handleCaseTabKeyDown}><Notebook />Research ledger</button>
+      </div>
       <section className="case-overview surface"><div><Pill tone="amber">LOCAL_FIXTURE</Pill><h2>{activePack.title}</h2><p>{activePack.caseQuestion}</p></div><Progress value={labState * 20} label="Case completion" /></section>
+      <div id={`case-panel-${mode}`} role="tabpanel" aria-labelledby={`case-tab-${mode}`} tabIndex={0}>
       {mode === "canvas" ? <>
         <section className="case-canvas" aria-label="Research case stages">{CASE_STAGES.map(({ id, label, icon: Icon, prompt }, index) => <article key={id} className={`case-stage case-stage--${index < labState ? "complete" : index === labState ? "current" : "future"}`}><div><Icon /><span>{index + 1}</span></div><h2>{label}</h2><p>{prompt}</p><small>{index < labState ? "Evidence linked" : index === labState ? "Current stage" : "Not started"}</small></article>)}</section>
         <div className="research-grid">
@@ -478,6 +502,7 @@ function CasesView({ navigate, labState, activePack }) {
           <section className="surface next-sessions"><span className="eyebrow">Next sessions</span><h2>Transfer the skill</h2>{activePack.nextSessions.map(([title, detail], index) => <article key={title}><span>{index + 1}</span><div><strong>{title}</strong><p>{detail}</p></div></article>)}</section>
         </div>
       </> : <section className="surface ledger-view" aria-label="Chronological research ledger"><header><div><span className="eyebrow">Chronological evidence record</span><h2>{activePack.caseId}</h2></div><Pill tone="green">Local only</Pill></header><div>{ledgerRecords.map(([time, label, title, id], index) => { const Icon = CASE_STAGES[index].icon; const complete = index < labState; return <article key={id} className={complete ? "is-complete" : ""}><span className="ledger-step">{index + 1}</span><Icon /><div><small>{label} · {time}</small><strong>{title}</strong><code>{id}</code></div><Pill tone={complete ? "green" : "neutral"}>{complete ? "Recorded" : index === labState ? "Current" : "Pending"}</Pill></article>; })}</div><footer><ShieldCheck /><p>This ledger records the local learning case. It does not prove a live vulnerability or create permission to test one.</p></footer></section>}
+      </div>
       <section className="surface programme-bridge" aria-labelledby="programme-bridge-title"><div className="programme-bridge__copy"><span className="eyebrow">Future compatibility · deliberately dark</span><h2 id="programme-bridge-title">Live programme bridge</h2><p>The case format already reserves verified scope, rate, data, and disclosure inputs. Those fields cannot activate target access.</p><div className="tag-row"><Pill tone="amber">Not connected</Pill><Pill>Human posture decision</Pill></div></div><ol>{LIVE_PROGRAMME_GATES.map((gate, index) => <li key={gate}><span>{index + 1}</span><div><strong>{gate}</strong><small>{index === 0 ? "Product acceptance" : index === LIVE_PROGRAMME_GATES.length - 1 ? "Final authority gate" : "Safety acceptance"}</small></div></li>)}</ol></section>
     </div>
   );
@@ -493,7 +518,7 @@ function EvidenceView({ labState, activePack }) {
     <div className="content-page evidence-page">
       <header className="page-heading"><div><span className="eyebrow">Prove · Evidence workbench</span><h1>Evidence before confidence</h1><p>Receipts preserve what happened, where it happened, and what the evidence cannot prove.</p></div><Pill tone="green">{evidence.length} verified receipts</Pill></header>
       <div className="evidence-layout">
-        <main className="surface receipt-list"><div className="section-heading"><div><span className="eyebrow">Current case</span><h2>{activePack.title}</h2></div><button className="text-button">Export disabled <LockKey /></button></div>{evidence.map((receipt) => <button key={receipt.id} className={selected.id === receipt.id ? "is-selected" : ""} onClick={() => setSelectedId(receipt.id)}><Receipt /><div><strong>{receipt.title}</strong><span>{receipt.id} · {receipt.kind}</span></div><div><Pill tone="green">{receipt.status}</Pill><small>{receipt.time}</small></div></button>)}</main>
+        <main className="surface receipt-list"><div className="section-heading"><div><span className="eyebrow">Current case</span><h2>{activePack.title}</h2></div><button className="text-button" disabled aria-label="Evidence export is disabled in the research preview">Export disabled <LockKey /></button></div>{evidence.map((receipt) => <button key={receipt.id} className={selected.id === receipt.id ? "is-selected" : ""} onClick={() => setSelectedId(receipt.id)}><Receipt /><div><strong>{receipt.title}</strong><span>{receipt.id} · {receipt.kind}</span></div><div><Pill tone="green">{receipt.status}</Pill><small>{receipt.time}</small></div></button>)}</main>
         <aside className="surface receipt-inspector"><span className="eyebrow">Selected receipt</span><h2>{selected.id}</h2><p>{selected.title}</p><dl><div><dt>Environment</dt><dd>LOCAL_FIXTURE</dd></div><div><dt>Authority</dt><dd>{activePack.evidence.authority}</dd></div><div><dt>Validator</dt><dd>{activePack.evidence.validator}</dd></div><div><dt>Integrity</dt><dd>SHA-256 verified</dd></div><div><dt>External action</dt><dd>None</dd></div></dl><div className="hash-block"><span>Receipt digest</span><code>{activePack.evidence.digest}</code></div><div className="evidence-limit"><Info /><p>{activePack.evidence.limit}</p></div></aside>
       </div>
       <section className="surface quality-panel"><div className="section-heading"><div><span className="eyebrow">Evidence quality</span><h2>Why this receipt is useful</h2></div><strong className="quality-score">{selected.quality}<small>/100</small></strong></div><div className="quality-grid"><Progress value={100} label="Authority anchored" /><Progress value={92} label="Reproducible" tone="blue" /><Progress value={88} label="Minimal and safe" tone="green" /><Progress value={84} label="Well documented" tone="violet" /></div><p className="quality-note">Quality scores are rubric summaries, not probabilities of vulnerability or truth.</p></section>
@@ -504,17 +529,19 @@ function EvidenceView({ labState, activePack }) {
 function ReviewsView({ activePack }) {
   const [choice, setChoice] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [packetPrepared, setPacketPrepared] = useState(false);
   const assessment = activePack.assessment;
   const correct = choice === assessment.answer;
-  useEffect(() => { setChoice(""); setSubmitted(false); }, [activePack.id]);
+  useEffect(() => { setChoice(""); setSubmitted(false); setPacketPrepared(false); }, [activePack.id]);
   return (
     <div className="content-page reviews-page">
       <header className="page-heading"><div><span className="eyebrow">Assess · Human reviewed</span><h1>Readiness, not gamified completion</h1><p>Guided work creates practice evidence. Transfer requires an independent explanation and human assessment.</p></div><Pill tone="amber">2 reviews due</Pill></header>
       <div className="review-grid">
         <section className="surface competency"><span className="eyebrow">Competency matrix</span><h2>{assessment.competency}</h2>{assessment.values.map(([label,value]) => <Progress key={label} value={value} label={label} tone={value > 70 ? "green" : value > 40 ? "amber" : "blue"} />)}<small>Based on local learning evidence. No score automatically grants authority.</small></section>
-        <section className="surface assessment"><span className="eyebrow">Independent check · Case Pack {activePack.number}</span><h2>Which conclusion is defensible?</h2><p>{assessment.question}</p><div className="answer-list">{assessment.options.map(([value, label]) => <label key={value}><input type="radio" name="answer" value={value} checked={choice === value} onChange={(e) => { setChoice(e.target.value); setSubmitted(false); }} /><span>{label}</span></label>)}</div><button className="button button--primary" onClick={() => setSubmitted(true)} disabled={!choice}>Check reasoning</button>{submitted && <div className={`answer-feedback ${correct ? "is-correct" : "is-wrong"}`}>{correct ? <CheckCircle /> : <Warning />}<div><strong>{correct ? assessment.correctTitle : "Revisit the evidence boundary"}</strong><p>{correct ? assessment.correctCopy : assessment.wrongCopy}</p></div></div>}</section>
+        <section className="surface assessment"><span className="eyebrow">Independent check · Case Pack {activePack.number}</span><h2>Which conclusion is defensible?</h2><p>{assessment.question}</p><div className="answer-list">{assessment.options.map(([value, label]) => <label key={value}><input type="radio" name="answer" value={value} checked={choice === value} onChange={(e) => { setChoice(e.target.value); setSubmitted(false); setPacketPrepared(false); }} /><span>{label}</span></label>)}</div><button className="button button--primary" onClick={() => { setSubmitted(true); setPacketPrepared(false); }} disabled={!choice}>Check reasoning</button>{submitted && <div className={`answer-feedback ${correct ? "is-correct" : "is-wrong"}`} role="status" aria-live="polite">{correct ? <CheckCircle /> : <Warning />}<div><strong>{correct ? assessment.correctTitle : "Revisit the evidence boundary"}</strong><p>{correct ? assessment.correctCopy : assessment.wrongCopy}</p></div></div>}</section>
       </div>
-      <section className="surface review-note"><UserCircle /><div><span className="eyebrow">Human assessment gate</span><h2>What happens next</h2><p>When your case, reflection, and independent check are ready, a human reviewer can assess the evidence against the competency rubric. AI feedback can support the review but cannot approve it.</p></div><button className="button button--secondary">Prepare review packet</button></section>
+      <section className="surface review-note"><UserCircle /><div><span className="eyebrow">Human assessment gate</span><h2>What happens next</h2><p>When your case, reflection, and independent check are ready, a human reviewer can assess the evidence against the competency rubric. AI feedback can support the review but cannot approve it.</p></div><button className="button button--secondary" onClick={() => setPacketPrepared(true)} disabled={!submitted || !correct}>{packetPrepared ? "Packet preview ready" : "Preview review packet"}</button></section>
+      {packetPrepared && <section className="surface review-packet" role="status" aria-live="polite"><ShieldCheck /><div><span className="eyebrow">Local preview only</span><h2>Review packet checklist</h2><p>{activePack.title} is ready to organise for human assessment: case record, reflection, evidence receipts, and the completed independent check. No file was exported, no reviewer was contacted, and no approval was granted.</p></div></section>}
     </div>
   );
 }
@@ -806,7 +833,7 @@ export function App() {
         <div className="release-lockup"><Pill tone="amber">Research Preview</Pill><span>Apache-2.0</span></div>
         <div className="topbar-spacer" />
         <button className="safety-chip" onClick={() => setModal("connection")}><i className={connection.state === "connected" ? "is-connected" : ""} /><span>{connection.mode === "interactive" ? "APP CONNECTED" : connection.state === "connected" ? "READ MODEL" : "LOCAL_FIXTURE"}</span><b>no live targets</b><ShieldCheck /></button>
-        <button className="profile-button" onClick={() => setNotice("Local learner profile. Identity and cloud sync are not connected in this preview.")}><UserCircle /><span>GT</span></button>
+        <button className="profile-button" aria-label="Open local learner profile" onClick={() => setNotice("Local learner profile. Identity and cloud sync are not connected in this preview.")}><UserCircle /><span>GT</span></button>
       </header>
       <aside ref={mobileNavRef} id="primary-sidebar" className={`sidebar ${mobileNav ? "is-open" : ""}`} inert={isMobile && !mobileNav} aria-hidden={isMobile && !mobileNav ? "true" : undefined} role={isMobile && mobileNav ? "dialog" : undefined} aria-modal={isMobile && mobileNav ? "true" : undefined} aria-label={isMobile && mobileNav ? "Navigation drawer" : undefined}>
         <div className="sidebar-mobile"><Brand /><button ref={mobileNavCloseRef} className="icon-button" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X /></button></div>

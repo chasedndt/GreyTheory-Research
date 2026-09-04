@@ -1,5 +1,7 @@
 # Documentation History Index
 
+- [2026-09-04 - GreyTheory whole-application keyboard acceptance](2026-09-04_greytheory-whole-app-keyboard-acceptance.md) - accepted first-entry browser traversal while retaining platform AT and release gates
+
 - [2026-09-04 - GreyTheory API Object Ownership Case Pack](2026-09-04_greytheory-api-object-ownership-case-pack.md) - promoted the second local mission and synchronized curriculum, product, verification, and media truth
 
 - [2026-09-04 - GreyTheory authenticated worker-session foundation](2026-09-04_greytheory-authenticated-worker-session-foundation.md) - executable carrier-neutral mutual authentication and encrypted framing without carrier, reboot, or posture overclaim

@@ -4,6 +4,30 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Whole-application keyboard acceptance
+
+### What was built
+
+- Added a reusable owned-preview browser gate covering the first Tab, all
+  thirteen navigation routes, Cases tab semantics, modal/mobile focus, the
+  Readiness packet preview, positive-tabindex refusal, and console errors.
+- Fixed the desktop mobile-trigger cascade and the Cases arrow-key failure.
+- Converted the Evidence export placeholder to a true disabled control and the
+  Readiness packet placeholder to an honest local-only interaction.
+
+### What the next agent should not undo
+
+Do not make disabled actions focusable merely to look interactive, remove the
+roving `tabIndex` contract from ARIA tabs, or turn a review-packet preview into
+an export/approval claim. Platform screen-reader checks remain separate.
+
+### Verification
+
+The final browser record reports `accepted=true`, all thirteen routes, no
+positive `tabindex`, and no console error. All 29 UI tests, 4 Sites tests, the
+production build, and 716 Python tests pass. See
+`07_LOGS/Build-Logs/2026-09-04-greytheory-whole-app-keyboard-acceptance.md`.
+
 ## 2026-09-04 - Codex - API Object Ownership Case Pack
 
 ### What was built

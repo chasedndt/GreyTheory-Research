@@ -12,7 +12,7 @@ Tracked unknowns. No item is resolved by discussion alone; each names a resoluti
 | R4 | Current external-testing posture? | `LOCAL_FIXTURE`; external interaction remains blocked. |
 | R5 | Standalone or ChaseOS-dependent? | Standalone first. ChaseOS is optional and cannot bypass authority. |
 | R6 | Where does raw evidence live? | Outside every repository, enforced by the evidence-vault guard. |
-| R7 | Dashboard state? | The dashboard read model/renderers and the structured local workbench are LIVE offline under `LOCAL_FIXTURE`; broader curricula, governed coach conversation, and whole-application first-entry keyboard acceptance remain partial. |
+| R7 | Dashboard state? | The dashboard read model/renderers and the structured local workbench are LIVE offline under `LOCAL_FIXTURE`; whole-application first-entry keyboard acceptance passes, while broader curricula and governed coach conversation remain partial. |
 | R8 | Approval ownership? | Exactly one provider per deployment; local is default, ChaseOS optional. Migration is planned. |
 | R9 | Which direct-policy source completes Milestone 2? | The official `modelcontextprotocol/python-sdk` `SECURITY.md` at immutable commit `d82ed88e`; it is independently maintained and contains the observed scope table. |
 | R10 | Does the source model survive a direct policy with no platform target table? | Yes. One verbatim programme-policy source, one-item precedence, exact field citations, and a strict Markdown supported-version derivation compile cleanly to `PENDING_REVIEW`. |

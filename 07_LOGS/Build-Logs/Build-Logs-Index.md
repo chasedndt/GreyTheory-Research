@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-04 - GreyTheory whole-application keyboard acceptance](2026-09-04-greytheory-whole-app-keyboard-acceptance.md) - first-Tab and thirteen-route browser proof, Cases tab repair, and truthful preview actions
+
 - [2026-09-04 - GreyTheory API Object Ownership Case Pack](2026-09-04-greytheory-api-object-ownership-case-pack.md) - exact 50-minute second local mission, three-control ownership lab, pack-bound panels, and responsive release media
 
 - [2026-09-04 - GreyTheory authenticated worker-session foundation](2026-09-04-greytheory-authenticated-worker-session-foundation.md) - launch-dark mutual identity and encrypted framing protocol; carrier, durable replay, VM/reboot, and posture gates remain open

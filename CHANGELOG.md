@@ -4,6 +4,19 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - whole-application keyboard acceptance
+
+- Added a repeatable Playwright acceptance harness that builds and launches an
+  owned numeric-loopback preview, traverses all thirteen panels from first
+  entry, records JSON evidence, captures current visual QA, and stops only its
+  own preview process.
+- Added correct roving-tab behavior for the Case canvas and Research ledger,
+  fixed the desktop cascade that exposed the mobile menu trigger, and made the
+  Evidence export state natively disabled.
+- Replaced the dead Readiness packet action with a bounded local checklist that
+  unlocks only after the correct independent check and explicitly performs no
+  export, contact, review, or approval.
+
 ### Added - API Object Ownership learning mission
 
 - Promoted Case Pack 02 from queued metadata to a complete, exact 50-minute

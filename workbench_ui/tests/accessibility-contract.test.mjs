@@ -25,6 +25,11 @@ test("closed mobile navigation leaves the keyboard and accessibility trees", () 
   assert.match(appSource, /aria-expanded=\{mobileNav\} aria-controls="primary-sidebar"/);
 });
 
+test("desktop hides the mobile trigger while the mobile breakpoint restores it", () => {
+  assert.match(styles, /\.icon-button\.mobile-menu\{display:none\}/);
+  assert.match(styles, /@media\(max-width:760px\)\{[\s\S]*\.icon-button\.mobile-menu\{display:grid\}/);
+});
+
 test("mobile navigation owns focus while open and restores its trigger", () => {
   assert.match(appSource, /mobileNavCloseRef\.current\?\.focus\(\)/);
   assert.match(appSource, /if \(event\.key === "Escape"\)/);
@@ -61,4 +66,21 @@ test("guided learning exposes accessible mission stages and scenario checks", ()
   assert.match(appSource, /<legend>\{checkIndex \+ 1\}\. \{item\.question\}<\/legend>/);
   assert.match(appSource, /disabled=\{!labReady\}/);
   assert.match(appSource, /This unlocks practice only; it does not award mastery\./);
+});
+
+test("case views implement roving keyboard tabs and labelled tab panels", () => {
+  assert.match(appSource, /if \(event\.key === "ArrowRight"\)/);
+  assert.match(appSource, /else if \(event\.key === "ArrowLeft"\)/);
+  assert.match(appSource, /else if \(event\.key === "Home"\)/);
+  assert.match(appSource, /else if \(event\.key === "End"\)/);
+  assert.match(appSource, /aria-controls="case-panel-canvas"[\s\S]*tabIndex=\{mode === "canvas" \? 0 : -1\}/);
+  assert.match(appSource, /id=\{`case-panel-\$\{mode\}`\} role="tabpanel" aria-labelledby=\{`case-tab-\$\{mode\}`\} tabIndex=\{0\}/);
+});
+
+test("truthful preview actions expose their state to assistive technology", () => {
+  assert.match(appSource, /disabled aria-label="Evidence export is disabled in the research preview"/);
+  assert.match(appSource, /role="status" aria-live="polite"/);
+  assert.match(appSource, /Preview review packet/);
+  assert.match(appSource, /No file was exported, no reviewer was contacted, and no approval was granted\./);
+  assert.match(appSource, /aria-label="Open local learner profile"/);
 });

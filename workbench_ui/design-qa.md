@@ -1,5 +1,32 @@
 # Guided Mission Control design QA
 
+## Whole-application keyboard acceptance - 2026-09-04
+
+The current desktop and 390-pixel shell has been inspected across all thirteen
+panels and exercised from the browser's first Tab stop.
+
+- Desktop now hides the mobile-only menu trigger while preserving the complete
+  sidebar and themed scroll rail.
+- The skip link is visibly focused first and transfers focus to the named main
+  workspace.
+- Every navigation destination is reachable from first entry and exposes the
+  expected focus ring without clipping or layout drift.
+- Case canvas/ledger tabs respond to ArrowLeft, ArrowRight, Home, and End with
+  matching selection, focus, and labelled panel state.
+- The connection modal and mobile drawer retain/restore focus; the closed
+  drawer is inert and selecting Learn hands focus to the Learn workspace.
+- The local Review packet preview is legible and keeps export, contact, review,
+  and approval explicitly absent.
+
+Evidence root:
+`E:\Visual QA\GreyTheory Visual QA\Current Reviews\2026-09-04-whole-app-keyboard`.
+
+Machine record:
+`E:\Projects\GreyTheory\acceptance\workbench-keyboard-20260904-160220-20968\acceptance.json`.
+
+**final result: browser keyboard and current rendered-state pass; platform
+screen-reader/assistive-technology checks remain open**
+
 ## Navigation scrollbar and keyboard follow-up - 2026-09-02
 
 The mobile navigation rail now uses the accepted Guided Mission Control navy,

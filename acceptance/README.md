@@ -4,6 +4,28 @@ These checks exercise operating-system behavior that syscall-injected unit
 tests cannot prove. Some launch only the owned synthetic worker service; none
 enables `PASSIVE_HTTP` or contacts a target.
 
+## Whole-application keyboard acceptance
+
+From PowerShell at the repository root:
+
+```powershell
+& .\acceptance\run-workbench-keyboard.ps1
+```
+
+The wrapper builds the current UI, launches only an owned Vite preview on a
+numeric-loopback ephemeral port, and stops only that process. A Playwright
+browser then proves first-Tab skip navigation, named focus transfer across all
+13 panels, desktop/mobile navigation behavior, Cases tab-list arrow keys,
+connection-dialog focus trapping and restoration, the local-only Readiness
+packet preview, absence of positive `tabindex`, and a clean browser console.
+It writes a machine-readable record under `E:\Projects\GreyTheory\acceptance`
+and current-run screenshots under the GreyTheory visual-QA home.
+
+Playwright must be available in `workbench_ui/node_modules`, through
+`NODE_PATH`, or in the bundled Codex workspace runtime. This is UI acceptance
+only: it does not prove screen-reader output, Windows packaging, Ubuntu worker
+behavior, live-programme authority, external target access, or deployment.
+
 ## Windows packaged-workbench acceptance
 
 From PowerShell at the repository root:

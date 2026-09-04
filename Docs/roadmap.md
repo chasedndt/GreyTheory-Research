@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 716 repository tests, 26 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel Case Pack 02 QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded reproducibility diagnostic, a clean two-build-identical release artifact, and accepted WSL2 runtime evidence for the read-only mounts, exact egress, worker identity, encrypted capture, receipt, and replay contract. The record retains `hardened_worker_image_accepted=false` and `reboot_vm_conformance_accepted=false`. A separate carrier-neutral authenticated-session foundation passes six network-free mutual-identity, key-derivation, encrypted-framing, replay, expiry, size, and existing worker-record tests; carrier/VM binding, identity-key provisioning, durable replay across reboot, and security/host acceptance remain open. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, accepted authenticated broker transport, programme, and human approval gates remain open.
+- 716 repository tests, 29 UI tests, 4 Sites tests, the production UI build, fresh desktop/390-pixel Case Pack 02 QA, and repeatable whole-application keyboard acceptance pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded reproducibility diagnostic, a clean two-build-identical release artifact, and accepted WSL2 runtime evidence for the read-only mounts, exact egress, worker identity, encrypted capture, receipt, and replay contract. The record retains `hardened_worker_image_accepted=false` and `reboot_vm_conformance_accepted=false`. A separate carrier-neutral authenticated-session foundation passes six network-free mutual-identity, key-derivation, encrypted-framing, replay, expiry, size, and existing worker-record tests; carrier/VM binding, identity-key provisioning, durable replay across reboot, and security/host acceptance remain open. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, accepted authenticated broker transport, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -262,11 +262,12 @@ defined in
 - [x] Persist immutable synthetic fixture receipts and bind the graphical Learn -> Practise -> Prove -> Reflect path to same-origin, revision-safe application commands.
 - [x] Serve the built learner UI from the numeric-loopback application under a self-only content policy while keeping separate preview origins read-only.
 - [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
-- [ ] Complete accessibility acceptance; responsive geometry, reload persistence,
-  route focus, compact navigation names, inert closed mobile navigation, and
-  mobile-drawer/modal focus containment and restoration pass. The themed
-  navigation scrollbar and runtime focusable-order inventory now pass too,
-  while a complete first-entry and whole-application keyboard sweep remains open.
+- [x] Complete whole-application keyboard acceptance: the first Tab reveals
+  skip navigation; all thirteen routes transfer focus to a named workspace;
+  Cases supports ArrowLeft/ArrowRight/Home/End tabs; modal and mobile drawer
+  focus contains/restores; no positive `tabindex` or console error remains.
+  Screen-reader output and platform-specific assistive-technology checks remain
+  release QA rather than claims from this browser-only pass.
 - [x] Build a reproducible wheel that bundles the learner UI and all learning
   resources, then accept it from an empty Windows install prefix through its
   console launcher, numeric-loopback UI, health endpoint, and authenticated
@@ -282,8 +283,7 @@ defined in
 bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
 
-Current next product gate: finish first-entry and whole-application keyboard
-traversal, promote the queued Session and Role Transitions Case Pack, then
+Current next product gate: promote the queued Session and Role Transitions Case Pack, then
 repeat the accepted shortcut/install/recovery lifecycle from a genuinely
 separate Windows account. The governed model-backed coach remains a separate
 application boundary. See [`live-programme-transition.md`](live-programme-transition.md)
