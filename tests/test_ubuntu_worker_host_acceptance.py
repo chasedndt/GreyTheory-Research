@@ -386,6 +386,12 @@ def test_worker_image_builder_requires_two_identical_read_only_builds():
     assert "refusing to replace a build manifest for the same source identity" in shell
     assert "rm -rf -- \"$rootfs/etc/apt\"" in shell
     assert "find \"$rootfs\" -xdev -perm /6000 -exec chmod a-s" in shell
+    assert 'mount -o loop,nodev,nosuid "$disk" "$rootfs"' in shell
+    assert (
+        'mount -t tmpfs -o nosuid,noexec,mode=0755,size=1m tmpfs "$rootfs/dev"'
+        in shell
+    )
+    assert 'umount "$rootfs/dev"' in shell
     assert "mount --rbind /dev" not in shell
     assert "umount --recursive \"$root\"" in shell
     assert '"unshare", "-m", "--propagation", "private"' in powershell

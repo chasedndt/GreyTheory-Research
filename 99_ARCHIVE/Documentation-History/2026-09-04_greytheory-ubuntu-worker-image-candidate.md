@@ -20,4 +20,7 @@ incident and the explicit controlled-restart gate so a later agent does not
 repeat the unsafe host `/dev` bind or misreport static tests as runtime proof.
 The approved restart restored devtmpfs and supervised user services; the next
 host observation added linked Windows-worktree normalization to both Linux
-image entrypoints before build or runtime acceptance was claimed.
+image entrypoints before build or runtime acceptance was claimed. Later clean
+build observations added explicit package pre-dependency groups and an owned
+minimal build-time `/dev` tmpfs while preserving the outer `nodev` root and the
+ban on host-device binds.

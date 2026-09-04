@@ -16,6 +16,8 @@ Read this before changing anything that looks arbitrary. Several guards in this 
   source-digest, and archive checks.
 - Four complete lock-bound package install groups that preserve `dpkg`
   pre-dependency enforcement.
+- An owned, minimal temporary `/dev` tmpfs for package configuration while the
+  ext4 build root remains `nodev`; host devices are never bound into staging.
 
 ### What the next agent should not undo
 

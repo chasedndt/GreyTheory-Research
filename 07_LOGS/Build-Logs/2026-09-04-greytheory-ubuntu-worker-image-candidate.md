@@ -87,6 +87,14 @@ alphabetical `.deb` glob presented `python3-minimal` before its configured
 complete install groups. The builder unpacks and configures each group in order;
 no `--force-*` flag or dependency bypass is used.
 
+The clean grouped-install retry then reached package configuration and exposed
+the ext4 build mount's intentional `nodev` boundary: character nodes created
+inside that filesystem could not service `/dev/null`. The builder now keeps the
+outer ext4 root `nodev` and mounts an owned 1-MiB `nosuid,noexec` tmpfs only at
+the staged `/dev`, creates the six required devices there, and unmounts it after
+package configuration. It never binds or copies the host `/dev`; recursive
+failure cleanup already owns the nested mount.
+
 ## Verification
 
 ```text
@@ -94,7 +102,7 @@ python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
 21 passed
 
 python -m pytest -q
-708 passed in 30.78s
+708 passed in 40.34s
 
 python -m py_compile
 3 image/provenance modules passed

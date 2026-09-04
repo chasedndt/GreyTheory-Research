@@ -29,6 +29,9 @@ image boundary without raising posture or contacting a target.
   pointer before any image construction was accepted.
 - Replaced alphabetical package unpacking with complete lock-bound install
   groups after `dpkg` correctly refused an unmet Python pre-dependency.
+- Kept the ext4 build root `nodev` while giving package scripts an exact,
+  owned temporary `/dev` tmpfs after the clean retry proved device access was
+  otherwise denied. No host-device bind was reintroduced.
 
 ## Guardrails retained
 

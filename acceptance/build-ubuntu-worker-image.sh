@@ -185,6 +185,7 @@ PY
     printf 'Ubuntu worker-image package install groups are invalid.\n' >&2
     exit 1
   fi
+  mount -t tmpfs -o nosuid,noexec,mode=0755,size=1m tmpfs "$rootfs/dev"
   mknod -m 666 "$rootfs/dev/null" c 1 3
   mknod -m 666 "$rootfs/dev/zero" c 1 5
   mknod -m 666 "$rootfs/dev/full" c 1 7
@@ -211,8 +212,7 @@ assert sqlite3.sqlite_version
 assert ssl.OPENSSL_VERSION
 PY
   umount "$rootfs/proc"
-  rm -f -- "$rootfs/dev/null" "$rootfs/dev/zero" "$rootfs/dev/full" \
-    "$rootfs/dev/random" "$rootfs/dev/urandom" "$rootfs/dev/tty"
+  umount "$rootfs/dev"
   rm -rf -- "$rootfs/packages"
 }
 

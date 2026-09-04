@@ -19,6 +19,9 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
   source-digest, archive, and exact-revision checks.
 - Added a complete four-group package installation order so Python's
   `Pre-Depends` chain is satisfied without force flags or disabled checks.
+- Kept the ext4 build root `nodev` while mounting an owned 1-MiB temporary
+  `/dev` containing only required character devices during package setup; the
+  host `/dev` is never bound into the image build.
 - Static and package-provenance checks pass, but an Ubuntu image/runtime record
   has not yet completed; hardened image, VM/reboot, transport, key, programme,
   VPS, posture, and live-operation gates remain open.

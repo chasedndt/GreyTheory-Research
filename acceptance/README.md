@@ -210,7 +210,10 @@ signed image checksums under the pinned CD-image key, and verifies every locked
 `.deb` through the Ubuntu archive chain: pinned 2018 archive key -> signed
 `InRelease` -> hashed `Packages.xz` -> exact package/version/architecture/path
 and SHA-256. Four lock-bound install groups satisfy Python's `Pre-Depends`
-chain without disabling dependency checks. The build installs nothing into the shared WSL distribution. It
+chain without disabling dependency checks. During configuration, the ext4 root
+remains `nodev`; an owned 1-MiB `nosuid,noexec` tmpfs supplies only the six
+required device nodes and is unmounted before image creation. The host `/dev`
+is never bound. The build installs nothing into the shared WSL distribution. It
 constructs two independent ext4-backed roots, copies only the committed worker
 inputs for a release build, strips package-management entrypoints and set-id
 bits, normalises timestamps, emits two SquashFS images, and refuses unless they
