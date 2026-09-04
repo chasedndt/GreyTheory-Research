@@ -119,6 +119,10 @@ def test_full_worker_wrapper_drops_identity_and_capabilities_in_no_route_namespa
     assert "$ownedProcessHandle = $process.Handle" in powershell
     assert "Get-OwnedWslDescendantIds" in powershell
     assert "Stop-Process -Id $ownedWslId" in powershell
+    assert "-RedirectStandardOutput $recordPath" in powershell
+    assert "ConvertFrom-Json" in powershell
+    assert "$record.external_network_contact -ne $false" in powershell
+    assert "$record.worker_service.receipt_signature_verified -ne $true" in powershell
     assert "--map-user=65534" in source
     assert "--map-group=65534" in source
     assert "--kill-child=KILL" in source
@@ -141,3 +145,11 @@ def test_full_worker_wrapper_drops_identity_and_capabilities_in_no_route_namespa
     assert not any(
         token in source.lower() for token in ("curl ", "wget ", "invoke-webrequest")
     )
+
+
+def test_full_worker_shell_entrypoint_is_lf_on_windows_checkouts():
+    shell_path = ACCEPTANCE / "run-ubuntu-worker-service.sh"
+    attributes = (ACCEPTANCE.parent / ".gitattributes").read_text(encoding="utf-8")
+
+    assert b"\r\n" not in shell_path.read_bytes()
+    assert "*.sh text eol=lf" in attributes

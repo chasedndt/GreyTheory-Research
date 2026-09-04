@@ -1,2 +1,5 @@
 # Public programme evidence is hashed byte-for-byte; do not rewrite line endings.
 fixtures/programmes/public/** text eol=lf
+
+# Linux acceptance entrypoints are invoked from Windows DrvFS by WSL.
+*.sh text eol=lf

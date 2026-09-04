@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 665 repository tests pass on 2026-08-26 with the unit-verified two-phase owned-process worker assembly, clean Linux fork-server start boundary, in-worker cancellable forked resolver, strict unprivileged identity/environment contract, transparent adaptive review, bounded assisted/transfer journeys, executable capability truth, revision-safe workbench research planning/report authoring, persisted human-bound report validation, stored-evidence two-account claim assembly, internal-only finding lifecycle, private receipt-chain export, server-derived local-fixture action intent, authenticated local transport, rate-bound authority fingerprints, the offline passive-broker foundation, ticket-bound capture encryption with governed recipient-key lifecycle, the network-free passive adapter contract, injected primitive conformance, and earlier Ubuntu 24.04 WSL2 primitive proof; the new full service remains host-unaccepted and posture remains unchanged.
+- 686 repository tests pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness also passes with strict unprivileged identity, encrypted capture return, signed receipt verification, completed replay state, and clean exit. This is still an owned local fixture; posture remains unchanged and durable egress, OS key, hardened image, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -266,17 +266,20 @@ defined in
   resources, then accept it from an empty Windows install prefix through its
   console launcher, numeric-loopback UI, health endpoint, and authenticated
   snapshot without enabling live targets.
-- [ ] Complete the broader Windows host gate with a separate user account,
-  installed shortcut or signed installer, persisted-journey restart, upgrade,
-  and recovery acceptance.
+- [x] Add and accept a current-user installer with a Start Menu-shaped shortcut,
+  real same-origin learner persistence, application restart, same-wheel
+  upgrade, and replaceable-runtime recovery. The evidence explicitly records
+  that it is not a separate-account or signed-installer acceptance.
+- [ ] Repeat the install/shortcut lifecycle from a genuinely separate Windows
+  account and complete release signing/uninstall acceptance.
 
 **Exit:** an operator can install and launch GreyTheory locally, resume a
 bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
 
 Current next product gate: finish first-entry and whole-application keyboard
-traversal, then exercise the accepted wheel through a separate Windows user and
-shortcut/install/recovery path. See [`live-programme-transition.md`](live-programme-transition.md)
+traversal, then repeat the accepted shortcut/install/recovery lifecycle from a
+genuinely separate Windows account. See [`live-programme-transition.md`](live-programme-transition.md)
 for the later five-gate transition; no VPS or programme connection is part of
 this product gate.
 
@@ -317,14 +320,13 @@ Offline broker foundation completed without enabling the posture:
   signed receipt, exact-once replay completion, environment scrubbing, and
   strict non-root/zero-capability/no-new-privileges identity evidence. Unit and
   static acceptance tests pass; no launcher or posture route exists.
-- [ ] Run the implemented full-service harness to completion and prove
+- [x] Run the implemented full-service harness to completion and prove
   successful real system DNS, broker recheck, unprivileged process behavior,
   encrypted evidence return, signed receipt, and cleanup on the isolated Ubuntu
-  host. Recovered runs exposed and fixed wrapper quoting, WSL `/etc/hosts`,
-  absolute-name fixture, exception-masking, and nested-process startup issues,
-  but shared WSL/Hermes startup instability prevented a complete JSON record;
-  a later no-client retry failed inside WSL at `CreateVm/0x800705b4` before the
-  namespace started. This remains explicitly unverified.
+  host. On 2026-09-04 the remaining Windows checkout defect was fixed by
+  enforcing LF for shell entrypoints; Ubuntu 24.04.4 then emitted a complete
+  durable JSON record while retaining `LOCAL_FIXTURE`, no route, and no external
+  or programme contact.
 - [ ] Prove durable egress enforcement in the hardened local image.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   backup/recovery and host acceptance; no root KEK is stored by the repository.

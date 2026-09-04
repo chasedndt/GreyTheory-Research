@@ -1,5 +1,9 @@
 # Documentation History Index
 
+- [2026-09-04 - GreyTheory Ubuntu full-service acceptance](2026-09-04_greytheory-ubuntu-full-service-acceptance.md) - accepted no-route host proof without egress, key, image, programme, or posture overclaim
+
+- [2026-09-04 - GreyTheory Windows current-user install lifecycle](2026-09-04_greytheory-windows-user-install-lifecycle.md) - accepted local lifecycle and preserved separate-user/Ubuntu/live-posture boundaries
+
 - [2026-09-02 - GreyTheory navigation scrollbar and keyboard](2026-09-02_greytheory-navigation-scrollbar-and-keyboard.md) - matched navigation scroll chrome, responsive evidence, and explicit keyboard and Figma limits
 
 - [2026-09-02 - GreyTheory keyboard and Windows package](2026-09-02_greytheory-keyboard-and-windows-package.md) - repaired focus boundaries, bundled-wheel truth, and remaining Windows host gate

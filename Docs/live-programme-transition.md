@@ -51,12 +51,15 @@ evidence:
 
 1. **Installed Windows workbench acceptance** — a clean user can install,
    launch, reconnect, persist a complete learner journey, and recover safely.
-   The bundled wheel and an empty-prefix launcher/UI/snapshot check pass; the
-   separate-user shortcut/installer, restart, upgrade, and recovery portions do
-   not yet pass, so this activation gate remains open.
+   The bundled wheel, empty-prefix launcher/UI/snapshot check, and isolated
+   current-user shortcut/restart/upgrade/runtime-recovery lifecycle pass. The
+   evidence explicitly records `separate_user_accepted=false`; a genuinely
+   separate account, release signing, and uninstall still do not pass, so this
+   activation gate remains open.
 2. **Full Ubuntu worker-host acceptance** — the owned-process service completes
    its no-route harness with unprivileged identity, encrypted evidence return,
-   signed receipt, and deterministic cleanup.
+   signed receipt, and deterministic cleanup. This gate passes for the owned
+   Ubuntu 24.04.4 local fixture as of 2026-09-04; it grants no egress or posture.
 3. **Egress and key-provider acceptance** — durable network constraints and an
    approved OS-bound key provider are proven independently of application UI.
 4. **One verified programme review** — one current programme bundle has no

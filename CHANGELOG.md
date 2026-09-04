@@ -4,6 +4,30 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Fixed - Ubuntu full-service host acceptance
+
+- Enforced LF checkout for Linux shell entrypoints after the Windows worktree
+  caused Bash to read `pipefail\r` and stop before namespace setup.
+- Added durable E:-hosted JSON/error records and invariant validation to the
+  bounded Windows-to-WSL acceptance wrapper.
+- Accepted the full Ubuntu 24.04.4 no-route local service chain: non-root,
+  capability-empty, no-new-privileges worker; exact synthetic TLS `HEAD`;
+  encrypted capture round trip; verified signed receipt; completed replay; and
+  clean exit. Durable egress, OS key, hardened image, programme, human posture,
+  VPS, and `PASSIVE_HTTP` remain unavailable.
+
+### Added - Windows current-user install lifecycle
+
+- Added a user-mode Windows installer that creates an isolated runtime,
+  keeps private research state outside that replaceable runtime, writes a
+  `LOCAL_FIXTURE` capability manifest, and creates a Start Menu shortcut.
+- Added a launcher that waits for a verified local-only health response before
+  opening the bundled dashboard; browser convenience remains outside the
+  trusted Python package.
+- Added lifecycle acceptance proving a real persisted learning command survives
+  restart, same-wheel upgrade, and runtime recovery. Separate-account, signing,
+  uninstall, hardened Ubuntu image, VPS, and live-target acceptance remain open.
+
 ### Changed - navigation scrollbar polish
 
 - Replaced the bright native navigation scrollbar with a slim, visible

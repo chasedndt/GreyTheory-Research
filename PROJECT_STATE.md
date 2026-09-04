@@ -18,9 +18,9 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 
 - **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
-- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready as an exact 30-minute guided mission, two queued), scenario practice checks, an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, an offline programme-to-local-case readiness view, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence, route focus, named compact navigation, inert closed mobile navigation, themed navigation-scrollbar geometry, mobile drawer focus containment/return, and modal focus containment/return. A reproducible wheel with bundled UI has passed empty-prefix Windows installation and loopback application checks. Governed coach conversation, accepted public-intelligence fetching, whole-application first-entry keyboard traversal, and separate-user shortcut/installer acceptance remain open.
+- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready as an exact 30-minute guided mission, two queued), scenario practice checks, an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, an offline programme-to-local-case readiness view, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence, route focus, named compact navigation, inert closed mobile navigation, themed navigation-scrollbar geometry, mobile drawer focus containment/return, and modal focus containment/return. A reproducible wheel with bundled UI has passed empty-prefix Windows installation plus an isolated current-user shortcut/restart/upgrade/recovery lifecycle with real persisted learner state. Governed coach conversation, accepted public-intelligence fetching, whole-application first-entry keyboard traversal, a genuinely separate-account run, and signed release packaging remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 682 repository tests passing on 2026-09-02, plus 22 UI and 4 Sites tests, a production UI build, interactive keyboard/browser checks, and one accepted isolated Windows wheel installation. The full worker service still has not passed Ubuntu host acceptance; its test module is network-free acceptance logic, not a posture or live-host claim.
+- **Verified baseline:** 686 repository tests passing on 2026-09-04, plus the previously accepted 22 UI and 4 Sites tests, production UI build, and interactive keyboard/browser checks. Both empty-prefix wheel acceptance and current-user install lifecycle acceptance pass on Windows; the latter proves shortcut configuration, a real same-origin learner command, restart, same-wheel upgrade, and replaceable-runtime recovery while explicitly recording `separate_user_accepted=false`. The full worker-service no-route harness now passes on Ubuntu 24.04.4 with a non-root, capability-empty, no-new-privileges worker, exact synthetic `HEAD`, encrypted capture round trip, verified receipt, completed replay state, and clean exit. This remains a local fixture, not a posture or live-host claim.
 
 ## What is built
 
@@ -80,19 +80,21 @@ The complete offline path from supplied authorisation to a validated report draf
   keys, replay/kill-switch state, capture private key, or research store; it
   scrubs its environment and must report non-root, zero-capability,
   no-new-privileges Linux identity before its evidence is accepted. Earlier
-  Ubuntu namespace proof covers the primitive path only. The full service host
-  harness now has bounded Windows-side cleanup, isolated hosts setup, and a
-  lower-overhead authority-free process topology, but has not completed
-  acceptance or emitted its required JSON record. The latest clean retry
-  failed inside WSL at `CreateVm/0x800705b4` before namespace setup.
+  Earlier Ubuntu namespace proof covered the primitive path. The full service
+  host harness now also passes on Ubuntu 24.04.4 and emits a durable JSON record:
+  it proves no-route namespace isolation, non-root/zero-capability/no-new-
+  privileges worker identity, exact synthetic TLS `HEAD`, encrypted capture,
+  receipt verification, completed replay state, and clean exit. It still uses
+  only an owned local canary and supplies no durable egress, OS key, image,
+  scheduler, programme, VPS, or posture proof.
 
 ## What is not built
 
 - human resolution of the two recorded YNAB policy conflicts;
 - broader curriculum packs beyond the first 12 cards;
-- governed model-backed coach conversation, broader ready case packs, whole-application first-entry keyboard traversal, and separate-user shortcut/signed-installer Windows acceptance; the Guided Mission Control shell has passed current visual QA, same-origin reload/persistence, mobile-drawer/modal focus, and empty-prefix wheel acceptance, while its commands and synthetic receipts persist privately;
+- governed model-backed coach conversation, broader ready case packs, whole-application first-entry keyboard traversal, genuinely separate-user and signed-installer Windows acceptance; the Guided Mission Control shell has passed current visual QA, same-origin reload/persistence, mobile-drawer/modal focus, empty-prefix wheel acceptance, and current-user shortcut/restart/upgrade/runtime-recovery acceptance, while its commands and synthetic receipts persist privately;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, successful full Ubuntu worker-service host acceptance, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors;
+- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, approved OS secret-provider binding for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors; the full Ubuntu no-route local-fixture service harness now passes;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -120,7 +122,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Finish whole-application first-entry keyboard traversal, then exercise the accepted wheel through a separate Windows user plus shortcut/install/recovery path. After that, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. Passive work still needs the full Ubuntu no-route host acceptance, approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
+Finish whole-application first-entry keyboard traversal and repeat the now-accepted current-user lifecycle from a genuinely separate Windows account. In parallel, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. The Ubuntu no-route full-service fixture now passes; passive work still needs approved local KEK binding, durable egress/image acceptance, one verified programme review, and explicit human posture approval—not a VPS shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

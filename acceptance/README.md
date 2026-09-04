@@ -25,6 +25,35 @@ yet prove a separate Windows user account, shortcut or signed installer,
 persisted-journey restart, upgrade, uninstall, recovery, Ubuntu worker, VPS, or
 live-programme posture.
 
+## Windows current-user install lifecycle acceptance
+
+From PowerShell at the repository root:
+
+```powershell
+& .\acceptance\run-windows-user-install.ps1
+```
+
+The harness builds one release wheel, installs it into a user-owned virtual
+environment, creates and inspects a Start Menu-shaped `.lnk`, launches the
+resolved shortcut target, persists a bounded learning journey through the real
+same-origin command transport, and proves that journey survives application
+restart, same-wheel upgrade, and replaceable-runtime recovery. Recovery moves
+the old runtime aside inside the unique E: acceptance directory and leaves the
+private data root untouched. The installed shortcut opens the numeric-loopback
+dashboard in the user's default browser; the harness suppresses that UI side
+effect while exercising the same installed target and arguments.
+
+For a normal current-user installation, run:
+
+```powershell
+& .\scripts\install-windows-user.ps1
+```
+
+This is a user-mode research-preview installer, not an MSI or signed release.
+It does not require administrator access, place secrets in the shortcut or
+manifest, or enable target networking. The acceptance still does not prove a
+different Windows account, uninstall, signing, Ubuntu, VPS, or `PASSIVE_HTTP`.
+
 ## Ubuntu 24.04 passive primitive acceptance
 
 From PowerShell at the repository root:
@@ -77,31 +106,26 @@ ephemerally to map `greytheory-canary.invalid` to the synthetic local
 all effective/bounding/inheritable/ambient capabilities and enables
 no-new-privileges before Python starts.
 
-The intended acceptance chain is one successful production system resolution,
+The accepted chain is one successful production system resolution,
 broker validation of the complete answer, one exact worker TLS `HEAD`, encrypted
 capture round trip, signed receipt verification, exact-once replay completion,
 and terminal worker cleanup. The worker child receives no broker or private-key
 authority.
 
-**Current proof state:** the harness and static contracts are implemented and
-the wrapper now owns a separate Linux script, an exact 120-second Windows-side
-process ceiling, and leaf-to-parent cleanup of only its WSL clients. Recovered
-runs exposed and fixed native quoting, WSL's nested `/etc/hosts` mount, the
-resolver's absolute trailing-dot name, masked worker errors, and nested spawn
-overhead. The outer worker now starts from a clean fork server and only that
-scrubbed authority-free worker forks its cancellable resolver. No run has yet
-emitted the required complete JSON record; unrelated Hermes WSL clients again
-coincided with an unhealthy distro startup, and the shared distro/service was
-not terminated. Do not describe the full worker service as host-accepted until
-this command finishes with its JSON evidence.
+**Current proof state:** accepted on Ubuntu 24.04.4 WSL2 on 2026-09-04. The
+remaining host defect was Windows CRLF checkout of the Linux entrypoint; shell
+scripts are now repository-enforced LF. The wrapper retains an exact 120-second
+Windows-side ceiling, cleans only its own WSL descendants, validates every
+local-only invariant, and writes the complete JSON output plus a separate error
+log to a unique E: directory. The accepted worker ran as UID/GID 65534 with no
+effective or bounding capabilities, no-new-privileges, only loopback, and no
+default route. Capture encryption/round trip, signed receipt, completed replay,
+and terminal cleanup all passed.
 
-A later clean retry began with no WSL clients present but failed inside WSL
-before `unshare` started: `CreateVm/0x800705b4` reported that its own timeout
-expired. The wrapper exited nonzero and left no GreyTheory-owned WSL client.
-The wrapper retains the native process handle before waiting so Windows
-PowerShell reports the real nonzero exit code rather than an empty value.
+Accepted record:
+`E:\Projects\GreyTheory\acceptance\ubuntu-worker-service-20260904-092741-23640\acceptance.json`.
 
-Even a successful run would remain an owned no-route local acceptance fixture.
-It would not prove durable egress, a hardened image, OS-bound root KEK,
-authorised programme operation, VPS suitability, or posture approval, and it
-would not enable `PASSIVE_HTTP`.
+This remains an owned no-route local acceptance fixture. It does not prove
+durable egress, a hardened image, OS-bound root KEK, authorised programme
+operation, VPS suitability, or posture approval, and it does not enable
+`PASSIVE_HTTP`.

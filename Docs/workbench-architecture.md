@@ -393,6 +393,10 @@ Implemented now:
   installed console launcher, loopback UI, health posture, authenticated
   snapshot, exact-process cleanup, and a non-echoed ephemeral environment
   token;
+- a current-user installer that keeps the replaceable application runtime
+  separate from private research data, creates a Start Menu shortcut, and has
+  passed real same-origin journey persistence, restart, same-wheel upgrade,
+  and runtime-recovery acceptance without enabling target networking;
 - three versioned Case Packs, an immutable private synthetic-receipt store, one
   practise-stage fixture command, and the graphical Learn -> Practise -> Prove
   -> Reflect binding; the live-programme adapter remains dark and disabled;
@@ -413,20 +417,20 @@ Implemented now:
 Not implemented now:
 
 - whole-application first-entry keyboard traversal of the same-origin persisted
-  learner path, a separate-user installed shortcut or signed installer, and
-  upgrade/recovery Windows host acceptance;
+  learner path, a genuinely separate-account install run, release signing, and
+  uninstall acceptance; current-user shortcut/upgrade/recovery already pass;
 - general/passive claim-role assembly and later research operations beyond the
   exact local fixture; external submission/programme outcomes stay unavailable;
 - broader ready curricula beyond the first local Case Pack and governed
   model-backed coach conversation;
 - a general local fixture process broker;
-- successful full Ubuntu worker-service acceptance, approved OS secret-provider
-  binding for the root KEK, durable egress policy, hardened image,
-  launcher/scheduler, or any `PASSIVE_HTTP` action.
+- approved OS secret-provider binding for the root KEK, durable egress policy,
+  hardened image, launcher/scheduler, or any `PASSIVE_HTTP` action; the full
+  Ubuntu no-route local-fixture worker-service harness now passes.
 
 The current Research Ledger remains a first-class Research case view. Guided
 Mission Control is the selected shell. Current browser visual, same-origin
-persistence, route-focus, mobile-drawer/modal focus, and isolated wheel-install
-checks pass. Whole-application first-entry keyboard traversal and a separate
-Windows-user shortcut/installer and recovery run remain before the Windows
-pilot exit condition is met.
+persistence, route-focus, mobile-drawer/modal focus, isolated wheel-install,
+and current-user lifecycle checks pass. Whole-application first-entry keyboard
+traversal plus a genuinely separate-account and signed-release run remain
+before the Windows pilot exit condition is met.

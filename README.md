@@ -23,7 +23,7 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; primitive-only Ubuntu WSL2 proof exists, but the new full service harness has not passed host acceptance and there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with one ready local pack, immutable synthetic fixture receipts, 24 interactive trajectory lessons, topic-owned roadmaps, and explicit human-assessed completion exist; broader ready curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, optional same-origin UI serving, Guided Mission Control, thirteen visible journeys, working Demo Suite, retained Research Ledger, and a contract-only public-intelligence panel exist; comprehensive keyboard acceptance, installed packaging, clean-user acceptance, and any external intelligence fetcher remain open). |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, and a two-phase owned-process worker assembly; the full Ubuntu 24.04 no-route service harness now passes, but there is no OS-bound KEK provider, durable egress, hardened image, launcher, or enabled passive action), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with one ready local pack, immutable synthetic fixture receipts, 24 interactive trajectory lessons, topic-owned roadmaps, and explicit human-assessed completion exist; broader ready curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, optional same-origin UI serving, Guided Mission Control, thirteen visible journeys, working Demo Suite, retained Research Ledger, and a contract-only public-intelligence panel exist; comprehensive keyboard acceptance, signed/separate-user packaging, and any external intelligence fetcher remain open). |
 | **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, complete curriculum packs, installed learner-first application shell, and accepted Ubuntu passive worker. |
 | **PLANNED** | Governed Scope Watch and public-intelligence collectors, network workers/live collectors, bug-bounty account connectors, and live research proof. |
 
@@ -65,10 +65,13 @@ visible focus into the selected workspace. Mobile navigation and the connection
 dialog now own, wrap, dismiss, and restore keyboard focus; compact navigation
 keeps accessible names, and a closed mobile drawer is inert. A separate
 development preview remains read-only. A reproducible wheel with the bundled UI
-has passed an empty-prefix Windows install, launcher, loopback UI, health, and
-authenticated-snapshot check. Whole-application first-entry keyboard traversal,
-a separate Windows-user shortcut/installer run, and Ubuntu passive-worker
-acceptance remain open. The selected composition and acceptance evidence are documented in
+has passed an empty-prefix Windows install plus a current-user lifecycle run
+covering shortcut configuration, real same-origin learning persistence,
+restart, same-wheel upgrade, and replaceable-runtime recovery. Whole-application
+first-entry keyboard traversal, a genuinely separate Windows-account run, and
+release signing remain open. Ubuntu full-service no-route host acceptance now
+passes without enabling passive operation. The selected
+composition and acceptance evidence are documented in
 [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
 
 ### Quickstart
@@ -110,14 +113,17 @@ into a unique E: evidence directory, or run the isolated install acceptance:
 ```powershell
 & .\scripts\build-windows-package.ps1
 & .\acceptance\run-windows-packaged-workbench.ps1
+& .\scripts\install-windows-user.ps1
+& .\acceptance\run-windows-user-install.ps1
 ```
 
-The acceptance uses an empty install prefix and private data root, verifies the
-installed console launcher and authenticated loopback application, supplies the
-ephemeral token only through the child process environment, keeps it out of
-stdout, restores the parent environment after stopping the exact process, and
-never enables a target-network posture. It is not yet proof of a separate user account,
-shortcut, signed installer, upgrade, or recovery flow.
+The first acceptance uses an empty install prefix. The second creates a
+current-user virtual environment and Start Menu-shaped shortcut, sends a real
+bounded learning command, and proves its private state survives restart,
+same-wheel upgrade, and application-runtime recovery. Both retain exact-process
+ownership, keep acceptance tokens out of stdout, and never enable a
+target-network posture. This is not yet proof from a genuinely separate user
+account, a signed installer, uninstall, Ubuntu, or live-programme operation.
 
 The future live-programme adapter remains dark. Its required authority fields
 and five activation gates are documented in

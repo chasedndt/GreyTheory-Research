@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified, with earlier offline Ubuntu primitive proof; the full service has not passed host acceptance and no OS-bound KEK provider, durable egress, hardened image, launcher, or passive action exists |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified, and the full Ubuntu 24.04 no-route service harness passes; no OS-bound KEK provider, durable egress, hardened image, launcher, or passive action exists |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, and bounded assisted/transfer journeys live; broader curriculum and graphical learning loop planned |
@@ -162,17 +162,15 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   the worker resolves once, the broker rechecks the complete answer, and the
   worker performs one bound direct TLS request before exiting. It scrubs its
   environment and is refused unless Linux is non-root, capability-empty, and
-  no-new-privileges. Earlier Ubuntu 24.04 WSL2 proof covers primitive numeric
-  TLS and spawned-child cancellation only. The hardened full-service wrapper
-  and authority-free Linux fork-server/fork topology are source-verified but
-  have not produced a successful host JSON record; durable egress, a hardened
-  image, OS-bound KEK,
+  no-new-privileges. Ubuntu 24.04.4 WSL2 acceptance now covers the full no-route
+  local service chain and emits a successful JSON record; durable egress, a
+  hardened image, OS-bound KEK,
   scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, an offline programme-to-local-case readiness view, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
 
 ### PLANNED / NOT BUILT
 
-- broader ready curriculum packs, governed model-backed coach conversation, visual and keyboard acceptance of the persisted learner flow, and installed clean-user learner workbench acceptance;
+- broader ready curriculum packs, governed model-backed coach conversation, complete first-entry keyboard acceptance, genuinely separate-account learner workbench acceptance, and signed/uninstallable release packaging; current-user shortcut/restart/upgrade/runtime recovery is accepted;
 - governed external Scope Watch collector, accepted Ubuntu passive worker/service and broker transport, isolated network workers, and live collectors;
 - installed standalone graphical workbench acceptance and a governed external
   public-intelligence fetcher/cache; the graphical Today/Learn surfaces and
@@ -181,7 +179,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 
 ## Current stage
 
-Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol exists only as a dark offline foundation. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, and a working Demo Suite. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Visual and sequential-keyboard acceptance, clean-user Windows packaging, broader ready packs, and governed coach conversation remain open. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
+Milestones 1 through 7 are complete and Milestone 8 is complete for its offline portion at their documented implementation/evidence exit conditions. Milestone 9 remains the next research milestone and is gated on the posture decision and remaining worker controls; its ticket, policy, replay, kill-switch, and receipt protocol exists only as a dark offline foundation. In parallel, the product workbench is progressing under `LOCAL_FIXTURE`: Guided Mission Control now has three versioned Case Packs, one complete server-persisted synthetic learning flow, immutable receipts, same-origin UI hosting, a working Demo Suite, and accepted current-user shortcut/restart/upgrade/runtime-recovery behavior. The future live-programme adapter is represented only as a disabled compatibility contract with five mandatory gates. Complete first-entry keyboard acceptance, genuinely separate-account and signed-release acceptance, broader ready packs, and governed coach conversation remain open. The ranking queue remains decision support only: its ordinal scores are not probability, severity, proof, vulnerability status, or authority to execute. The Milestone 4 IDOR/BOLA proposal is represented by `idor-bola` v1.0.0 as a test-fixture-sourced revision; it does not claim a real session or human mastery.
 
 The operating posture remains `LOCAL_FIXTURE`. No external scanning or live-target interaction is authorised or implemented.
 

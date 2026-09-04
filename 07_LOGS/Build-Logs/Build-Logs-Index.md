@@ -1,5 +1,9 @@
 # Build Logs Index
 
+- [2026-09-04 - GreyTheory Ubuntu full-service acceptance](2026-09-04-greytheory-ubuntu-full-service-acceptance.md) - CRLF portability fix, durable JSON evidence, and accepted no-route Ubuntu 24.04.4 service chain
+
+- [2026-09-04 - GreyTheory Windows current-user install lifecycle](2026-09-04-greytheory-windows-user-install-lifecycle.md) - user-mode shortcut, persisted restart/upgrade/recovery, and explicit separate-user limit
+
 - [2026-09-02 - GreyTheory navigation scrollbar and keyboard](2026-09-02-greytheory-navigation-scrollbar-and-keyboard.md) - themed navigation scroll rail, responsive QA, and explicit first-entry harness limit
 
 - [2026-09-02 - GreyTheory keyboard and Windows package](2026-09-02-greytheory-keyboard-and-windows-package.md) - compact/mobile focus repair, bundled wheel, and isolated Windows launcher acceptance

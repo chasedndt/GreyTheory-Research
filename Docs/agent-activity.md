@@ -4,6 +4,53 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Ubuntu full-service no-route acceptance
+
+### What was built
+
+- An enforced LF line-ending contract for Linux entrypoints used through WSL.
+- Durable JSON/error output and local-only invariant validation in the bounded
+  Windows-to-Ubuntu wrapper.
+- A successful Ubuntu 24.04.4 full worker-service acceptance record covering
+  non-root identity, zero capabilities, no-new-privileges, exact synthetic
+  request, encrypted capture, receipt verification, replay, and cleanup.
+
+### What the next agent should not undo
+
+Do not infer durable egress, a hardened image, OS-bound KEK, programme
+permission, VPS suitability, or posture approval from the no-route fixture.
+Do not remove the LF attribute; Bash failed before namespace setup when the
+entrypoint was checked out as CRLF.
+
+### Verification
+
+Accepted record:
+`E:\Projects\GreyTheory\acceptance\ubuntu-worker-service-20260904-092741-23640\acceptance.json`.
+See `07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-full-service-acceptance.md`.
+
+## 2026-09-04 - Codex - Windows current-user install lifecycle
+
+### What was built
+
+- A non-admin installer with separate application/runtime and private-data
+  roots, a capability-truth manifest, and a Start Menu-shaped shortcut.
+- A launcher that opens the dashboard only after local-only health succeeds.
+- Lifecycle acceptance for a real persisted learning command across restart,
+  same-wheel upgrade, and replaceable-runtime recovery.
+
+### What the next agent should not undo
+
+Do not put browser/process convenience inside `greytheory_local`; its import
+guard intentionally keeps the trusted local package free of browser, subprocess,
+and target-client adapters. Do not describe current-user isolated-path
+acceptance as a genuinely separate-user or signed-installer result.
+
+### Verification
+
+686 repository tests pass. The accepted lifecycle record is
+`E:\Projects\GreyTheory\acceptance\windows-user-install-20260904-092039-9220\acceptance.json`.
+See `07_LOGS/Build-Logs/2026-09-04-greytheory-windows-user-install-lifecycle.md`.
+
 ## 2026-09-02 - Codex - Guided mission and programme readiness
 
 ### What was built
