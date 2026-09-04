@@ -1,0 +1,54 @@
+{
+  "id": "sql-injection",
+  "version": "1.0.0",
+  "name": "SQL injection",
+  "aliases": ["SQLi"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-89", "url": "https://cwe.mitre.org/data/definitions/89.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-INPV-05", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/07-Input_Validation_Testing/05-Testing_for_SQL_Injection"}
+  ],
+  "mental_model": "Untrusted data changes the structure or meaning of a database command instead of remaining a bound value.",
+  "security_property": "User-controlled values must not alter database command structure, authorization, or selected result boundaries.",
+  "root_causes": ["String construction of SQL commands", "Unsafe dynamic identifiers or clauses", "Database permissions broader than the application requires"],
+  "application_shapes": ["Search and filtering", "Authentication and lookup", "Reporting and administrative query builders"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["Relational query semantics", "Parameter binding", "Application-to-database trust boundaries"],
+  "signals": ["Input changes query shape or row count", "Database errors correlate with controlled structure changes", "A query builder concatenates untrusted values"],
+  "hypothesis_templates": [
+    {
+      "id": "query-structure-boundary",
+      "statement": "When {actor} controls {input}, {query_boundary} may treat the value as query structure and expose {controlled_result} beyond the intended lookup.",
+      "variables": ["actor", "input", "query_boundary", "controlled_result"],
+      "preconditions": ["Only a local synthetic dataset is used", "The experiment has a strict row and effect budget"],
+      "expected_safe_behaviour": "The value is bound as data and the intended result set is preserved.",
+      "expected_vulnerable_behaviour": "The value changes query structure or the controlled result set.",
+      "falsifier": "Parameter binding preserves structure and every controlled variation returns only the intended rows.",
+      "stop_conditions": ["The test would modify data", "The query touches non-synthetic records", "The database boundary is not explicitly authorised"]
+    }
+  ],
+  "safe_test_pattern": "Use a read-only in-memory dataset, a neutral structural marker, strict result-count limits, and a parameterized negative control.",
+  "positive_controls": ["A valid named lookup returns exactly its synthetic row"],
+  "negative_controls": ["The same untrusted value is bound as data and cannot change the result set"],
+  "falsifiers": ["The structure is fixed and values are parameterized", "Observed variation is ordinary application validation rather than database interpretation"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact synthetic query inputs and bounded result-set difference.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "The intended query and row-access boundary for the controlled actor.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Parameterized negative control and intended-query positive control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Fresh in-memory database repeat with identical synthetic rows.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated synthetic row boundary.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["Generic validation errors", "Result differences caused by application filtering", "Database errors without controlled query influence"],
+  "impact_boundaries": ["An error does not prove injection", "Read influence does not prove write, file, command, or administrative capability"],
+  "minimum_impact_rules": ["Use read-only synthetic data", "Do not enumerate beyond the single controlled contrast", "Never attempt destructive or out-of-band behaviour"],
+  "remediation": ["Use parameterized queries", "Allowlist dynamic identifiers", "Constrain database privileges and error exposure"],
+  "programme_policy_considerations": ["Confirm injection testing and automation limits", "Avoid time, load, or out-of-band techniques unless explicitly permitted", "Stop at the smallest controlled result difference"],
+  "local_fixture": {"id": "fixture-sql-injection", "relative_path": "labs/sql-injection.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial query-structure card and read-only synthetic fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-89", "OWASP-WSTG:WSTG-INPV-05"]}
+  ]
+}

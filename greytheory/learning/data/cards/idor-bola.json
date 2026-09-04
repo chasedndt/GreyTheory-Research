@@ -1,0 +1,55 @@
+{
+  "id": "idor-bola",
+  "version": "1.0.0",
+  "name": "Insecure direct object reference / broken object-level authorization",
+  "aliases": ["IDOR", "BOLA", "broken object authorization"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-639", "url": "https://cwe.mitre.org/data/definitions/639.html"},
+    {"framework": "OWASP API Security", "reference": "API1:2023", "url": "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"}
+  ],
+  "mental_model": "An authenticated actor can name an object, but the server fails to prove that this actor may perform this action on that object.",
+  "security_property": "Every object access must authorize the exact actor-object-action tuple on the server, independent of identifier shape.",
+  "root_causes": ["Object lookup without ownership or policy enforcement", "Client-supplied ownership trusted by the server", "Authorization applied to the function but not the selected object"],
+  "application_shapes": ["REST and GraphQL object APIs", "Multi-tenant records and files", "Account, invoice, ticket, and message objects"],
+  "prerequisite_card_ids": [],
+  "prerequisite_skills": ["Authentication versus authorization", "Object ownership modelling", "Controlled multi-account testing"],
+  "signals": ["Object identifiers are accepted from the client", "Two controlled accounts expose parallel object shapes", "A cross-owner response differs from a clean denial"],
+  "hypothesis_templates": [
+    {
+      "id": "actor-object-action-boundary",
+      "statement": "Under {preconditions}, {actor} may perform {action} on {object} owned by {owner}, producing {controlled_consequence} without object-level authorization.",
+      "variables": ["preconditions", "actor", "action", "object", "owner", "controlled_consequence"],
+      "preconditions": ["Both identities and the object are controlled", "The exact object action is explicitly permitted", "Only synthetic data is present"],
+      "expected_safe_behaviour": "The server denies the cross-owner action without returning or changing object data.",
+      "expected_vulnerable_behaviour": "The cross-owner action succeeds against the controlled object.",
+      "falsifier": "The same actor-object-action tuple is denied while the owner control succeeds.",
+      "stop_conditions": ["Any object is not researcher-controlled", "The test would enumerate identifiers", "The action would exceed the minimum controlled effect"]
+    }
+  ],
+  "safe_test_pattern": "Use exactly two controlled identities and one synthetic object per identity; prove the owner positive control, one cross-owner attempt, and a safe denial control.",
+  "positive_controls": ["The owner can perform the permitted action on its own synthetic object"],
+  "negative_controls": ["The non-owner receives a clean denial with no object data or state change"],
+  "falsifiers": ["The non-owner is denied for the exact object action", "The apparent object belongs to a shared or intentionally accessible scope"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact cross-owner response or state difference for one synthetic object.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Controlled identity and ownership manifest binding actor, owner, object, and action.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Owner positive control and safe cross-owner denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Clean two-account repeat with the same ownership oracle and receipt-bound inputs.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement bounded to the exact controlled confidentiality, integrity, or availability effect.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["The object is intentionally shared", "Only public metadata is returned", "The tested identity actually holds an inherited or delegated permission"],
+  "impact_boundaries": ["Identifier predictability is not evidence of broken authorization", "One controlled read does not prove broad enumeration, modification, or account takeover"],
+  "minimum_impact_rules": ["Use two owned identities and synthetic objects only", "Perform one exact cross-owner action", "Do not enumerate or access third-party objects"],
+  "remediation": ["Enforce server-side actor-object-action authorization on every object operation", "Derive tenant and ownership constraints from trusted server state", "Test horizontal and vertical authorization paths"],
+  "programme_policy_considerations": ["Confirm multi-account testing is allowed", "Mark researcher-owned accounts as required", "Never strengthen proof with third-party data"],
+  "local_fixture": {"id": "fixture-idor-bola", "relative_path": "labs/idor-bola.json"},
+  "completed_lab_refs": ["test-fixture:milestone4-local-two-account"],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": ["The ownership oracle, safe denial control, and receipt-bound evidence must be evaluated together; a response alone is insufficient."],
+  "revisions": [
+    {"version": "0.9.0", "date": "2026-08-09", "summary": "Initial curated object-authorization contract.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-639", "OWASP-API:API1-2023"]},
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Applied the Milestone 4 proposal: two-account ownership oracle, safe denial control, and receipt-backed evidence pattern.", "source_kind": "test_fixture", "source_refs": ["milestone4:card-update-local-bola-v1", "test:tests/test_vertical_slice.py", "validator:local.two_account.cross_owner_read"]}
+  ]
+}

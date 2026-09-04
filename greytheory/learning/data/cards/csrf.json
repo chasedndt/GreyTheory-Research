@@ -1,0 +1,54 @@
+{
+  "id": "csrf",
+  "version": "1.0.0",
+  "name": "Cross-site request forgery",
+  "aliases": ["CSRF", "session riding"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-352", "url": "https://cwe.mitre.org/data/definitions/352.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-SESS-05", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/06-Session_Management_Testing/05-Testing_for_Cross_Site_Request_Forgery"}
+  ],
+  "mental_model": "A server accepts ambient authentication as if it also proved that the user intended a state-changing request.",
+  "security_property": "Every sensitive state change must bind authenticated identity to fresh, application-verifiable request intent.",
+  "root_causes": ["Missing anti-CSRF intent token or origin validation", "State change exposed through requests accepted from a cross-site context"],
+  "application_shapes": ["Cookie-authenticated forms", "Account and preference changes", "Administrative actions"],
+  "prerequisite_card_ids": ["session-management"],
+  "prerequisite_skills": ["Browser same-origin behaviour", "Cookie authentication", "State-transition modelling"],
+  "signals": ["A state-changing request succeeds with ambient credentials alone", "Intent token is absent, static, or not validated", "Origin context is ignored where it is a required control"],
+  "hypothesis_templates": [
+    {
+      "id": "request-intent-boundary",
+      "statement": "A cross-context request by {actor} to {action} may be accepted for {identity} without valid {intent_control}, changing {synthetic_state}.",
+      "variables": ["actor", "action", "identity", "intent_control", "synthetic_state"],
+      "preconditions": ["The identity and changed object are controlled", "The action and cross-context method are explicitly permitted"],
+      "expected_safe_behaviour": "The state change is rejected without a valid bound intent proof.",
+      "expected_vulnerable_behaviour": "Ambient credentials alone cause the controlled state change.",
+      "falsifier": "The server requires and validates a fresh bound token or equivalent origin proof.",
+      "stop_conditions": ["The action affects another person", "The state change cannot be reversed", "Social interaction or delivery is required"]
+    }
+  ],
+  "safe_test_pattern": "Use one reversible synthetic state value and a controlled identity; compare a valid-intent request with a missing-intent request and immediately restore state.",
+  "positive_controls": ["The same controlled action succeeds with valid intent proof"],
+  "negative_controls": ["The missing or invalid intent proof is rejected without state change"],
+  "falsifiers": ["A valid per-request control is enforced", "The request is not authenticated in the cross-context condition"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Before-and-after synthetic state plus exact request-intent condition.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Why authentication did not constitute user intent for the state change.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Valid-intent positive control and missing-intent denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Reversible repeat from restored synthetic state.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the exact reversible state change.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["An unauthenticated request that changes nothing", "A token omitted by the client but enforced through another bound mechanism", "A read-only request"],
+  "impact_boundaries": ["Missing token syntax alone does not prove CSRF", "One reversible preference change does not prove account takeover"],
+  "minimum_impact_rules": ["Use only an owned identity and reversible synthetic state", "Do not send links or forms to another person", "Restore state and record the restoration"],
+  "remediation": ["Require fresh bound anti-CSRF tokens", "Validate origin context where appropriate", "Use SameSite cookies as defence in depth, not the sole universal control"],
+  "programme_policy_considerations": ["Confirm cross-origin testing is permitted", "Avoid social engineering and external delivery", "Use only controlled identities"],
+  "local_fixture": {"id": "fixture-csrf", "relative_path": "labs/csrf.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial request-intent card with reversible synthetic-state controls.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-352", "OWASP-WSTG:WSTG-SESS-05"]}
+  ]
+}

@@ -10,6 +10,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 | [`greytheory/audit.py`](../greytheory/audit.py) | Append-only hash-chained JSONL. Detects edits, reorders and deletions. | Access control on the log file itself; that is the filesystem's job. |
 | [`greytheory/authority/scope.py`](../greytheory/authority/scope.py) | `ScopeContract`, pattern matching, staleness, fingerprinting. | DNS resolution. A hostname is not an address and will not be resolved to match a CIDR. |
 | [`greytheory/authority/compiler.py`](../greytheory/authority/compiler.py) | Programme source → contract. Fails closed on ambiguity. Hashes the source. | Fetching programme pages. Input arrives as a local record. |
+| [`greytheory/authority/sources.py`](../greytheory/authority/sources.py) | Saved `ProgrammeSourceBundle` loading, integrity, capture modes, precedence, field citations, human resolutions, semantic snapshots, and offline compilation. | Fetching sources, interpreting prose, or granting review. |
 | [`greytheory/authority/approvals.py`](../greytheory/authority/approvals.py) | Binding, expiry and single-use enforcement over whatever store is in play. | Storing approvals when a platform already owns them. Deciding *whether* to approve — that is the operator's. |
 | [`greytheory/authority/gate.py`](../greytheory/authority/gate.py) | The single execution decision. Posture ceiling, approval threshold, kill switch, mandatory audit. | Performing the permitted action. It answers *may this happen*, nothing more. |
 | [`greytheory/registry.py`](../greytheory/registry.py) | Versioned programme records, source snapshots, scope drift detection, the attention queue. | Fetching programme pages. Deciding a contract is trustworthy — that is the gate's. |
@@ -38,7 +39,7 @@ What exists, what each module is responsible for, and what it is deliberately *n
 cli ──▶ authority.gate ──▶ authority.scope
  │           │         └──▶ authority.approvals
  │           └──▶ audit
- ├──▶ registry ──▶ authority.compiler ──▶ authority.scope
+ ├──▶ registry ──▶ authority.sources ──▶ authority.compiler ──▶ authority.scope
  │        └──▶ evidence (repository guard only)
  ├──▶ evidence ──▶ audit
  └──▶ validation ──▶ evidence, findings, report
@@ -56,18 +57,52 @@ Each one ships a self-sufficient default beside it, so nothing external is ever 
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` reading OSRIL records |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-evidence` |
 | Ledger root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-ledger` |
+| Research root | Platform user-data directory | `CHASEOS_VAULT_ROOT` → `<vault>/07_LOGS/greytheory-research` |
+| Mastery root | Platform user-data directory | `GREYTHEORY_LEARNING_ROOT`; personal assessment state is refused inside Git |
 
 Integrations read foreign **filesystem contracts**, never foreign Python packages. That keeps `greytheory` dependency-free and means an upstream refactor breaks a test here rather than the runtime.
 
+## Implemented research domain
+
+`greytheory/research/` contains the ten Milestone 3 records, typed asset graph,
+hypothesis/experiment lifecycle, action request/receipt binding, structured
+lessons, and the integrity-checked local store. `greytheory/execution.py`,
+`greytheory/checks.py`, `greytheory/lab/`, and `greytheory/vertical_slice.py`
+complete the Milestone 4 in-memory path through the gate, observation,
+deterministic check, evidence, validation, report, and postmortem. They expose
+no network client or submission path.
+
+## Implemented knowledge and skill system
+
+`greytheory/learning/` owns the 12 versioned vulnerability cards, their
+falsifiable hypothesis templates and minimum-evidence contracts, 12 distinct
+synthetic local fixtures, fixture/runner-digested receipts, the acyclic card
+prerequisite graph, and six-dimensional mastery state. `MasteryStore` keeps
+personal evidence-bound assessments outside repositories and binds them to the
+catalogue digest. Only explicit human assessments credit mastery; card
+completion, model output, and test-fixture records do not. The CLI exposes
+catalogue, fixture verification, status, and explicit assessment commands.
+
+## Implemented transparent hypothesis ranking
+
+`greytheory/hypothesis/` owns the versioned nine-factor policy, explicit
+assessment contract, deterministic ranking engine, integrity-bound queue,
+private atomic writeback, and synthetic verification fixture. It derives scope,
+evidence quantity, cost, and side-effect risk from existing records; requires
+rationale/provenance/uncertainty for the other five factors; and explains every
+score contribution. It does not execute, invoke a model, create a finding, or
+promote a claim. The CLI exposes offline verification and private-workspace
+ranking commands.
+
 ## Designed, not built
 
-| Module | Plane | Blocked on |
+| Module / package | Layer | Blocked on |
 |---|---|---|
-| Lane 3 (web) collectors | 2 | The posture ceiling being raised above `LOCAL_FIXTURE` |
-
-## Aspirational
-
-The curriculum and skill graph, Scope Watch, and Lane 3's web collectors. Architected in `README.md` and `Docs/architecture.md`; none are specified to build-ready detail.
+| Guided/assisted/assessment/transfer training orchestration | 4 | Stable learning events and review-scheduling policy |
+| Model gateway | cross-cutting | Research objects and evaluation harness |
+| Scope Watch | 1/3 | Network worker and Milestone 8 posture gate |
+| Lane 3 and live collectors | 7 | Broker/worker controls and later posture milestones |
+| Standalone graphical workbench | 10 | Stable structured domain and query layer |
 
 ## Constraints on every module
 

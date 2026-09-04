@@ -2,13 +2,17 @@
 
 ## What this repository is
 
-GreyTheory AI is a security research control plane. It is **defensive tooling**: it decides whether research activity is authorised, records what happened, and refuses actions that fall outside a verified scope contract.
+GreyTheory is a human-governed Security Research Operating System whose trust kernel is a security research control plane. It decides whether research activity is authorised, records what happened, and refuses actions that fall outside a verified scope contract.
 
-It contains no exploit code, no scanner, and no network client. The core package has no runtime dependencies and does not open sockets — enforced in CI by the `no-network-in-core` job.
+It contains no exploit code or general scanner. The core package has no runtime
+dependencies and does not open sockets — enforced in CI by the
+`no-network-in-core` job. Separate dark passive-worker primitives exist for
+bounded DNS/direct-TLS acceptance, but no passive action is enabled and the
+current posture remains `LOCAL_FIXTURE`.
 
 ## Reporting a vulnerability in GreyTheory itself
 
-Open a [security advisory](https://github.com/) on this repository, or contact the maintainer privately. Please do not open a public issue for a vulnerability report.
+Open a [private repository security advisory](https://github.com/chasedndt/GreyTheory-Research/security/advisories/new), or contact the maintainer privately. Please do not open a public issue for a vulnerability report. Repository administrators should keep GitHub private vulnerability reporting enabled so external researchers can reach this route.
 
 Findings of particular interest, because they undermine the system's whole purpose:
 

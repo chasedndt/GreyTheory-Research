@@ -35,9 +35,26 @@ Name tests for the behaviour, not the method: `test_out_of_scope_beats_in_scope_
 
 The fixtures in `fixtures/programmes/` use the reserved `.test` TLD (RFC 6761) and the `192.0.2.0/24` documentation range (RFC 5737). Keep it that way — no fixture may name a host that could resolve.
 
+The built-in card labs under `greytheory/learning/data/labs/` are synthetic
+security-property simulations, not exploit examples. Keep them payload-free,
+credential-free, model-free, browser-free, process-free, and network-free. A
+fixture receipt must continue to say that it proves no real vulnerability and
+awards no mastery.
+
+Hypothesis ranking is prioritisation, not classification. Every factor must
+remain inspectable and carry provenance, rationale, uncertainty, raw level,
+weight, and exact contribution. Do not add a hidden score, probability claim,
+severity promotion, model-only source, or route from queue order to execution.
+Missing or stale scope evidence must remain in the `scope_review_required`
+partition, and target-specific queue output must stay outside Git.
+
 ## Comments
 
-Comment the *why*, not the *what*. The codebase leans on this: `promote_to_checked(could_have_failed=...)` is unremarkable until you know it exists to stop a model laundering inference into proof. If a rule is there to prevent a specific mistake, name the mistake.
+Comment the *why*, not the *what*. The codebase leans on this: a
+`ValidatorRegistry` receipt is single-use and assertion-bound because a caller
+must never be able to launder model inference into proof by asserting that its
+own check could have failed. If a rule prevents a specific mistake, name the
+mistake.
 
 ## Reporting a security issue
 

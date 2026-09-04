@@ -1,7 +1,8 @@
-"""GreyTheory AI — a proof-first security research control plane.
+"""GreyTheory — a local-first Security Research Operating System.
 
-This package implements **Plane 1, the Authority Plane**: the root of the system.
-Nothing in the Signal or Judgement planes may execute except through it.
+This package implements the offline trust kernel. The Authority Plane remains
+the root: nothing in the Signal or Judgement planes may execute except through
+it.
 
 The invariants enforced here are defined in `Docs/definition.md` section 3:
 
@@ -31,6 +32,26 @@ from greytheory.authority.scope import (
     ScopeClassification,
     ScopeContract,
 )
+from greytheory.capabilities import (
+    CAPABILITIES,
+    Capability,
+    CapabilityStatus,
+    capabilities_with_status,
+    capability,
+)
+from greytheory.authority.sources import (
+    BundleCompilationResult,
+    BundleError,
+    CaptureMode,
+    DerivationKind,
+    HumanResolution,
+    ProgrammeSource,
+    ProgrammeSourceBundle,
+    ResolutionStatus,
+    SourceDerivation,
+    SourceKind,
+    compile_source_bundle,
+)
 from greytheory.evidence import (
     EvidenceArtifact,
     EvidenceError,
@@ -52,6 +73,55 @@ from greytheory.ledger import (
     TriageEvent,
     TriageOutcome,
 )
+from greytheory.learning import (
+    AssessorKind,
+    CardUpdateProposal,
+    EvidenceRequirement,
+    FixtureRunReceipt,
+    GuidedLearningPlanner,
+    HypothesisTemplate,
+    JourneyStatus,
+    LearningCheckpoint,
+    LearningError,
+    LearningJourney,
+    LearningJourneyStore,
+    LearningMode,
+    LearningRecommendation,
+    LearningStage,
+    LearningStoreError,
+    LocalTrainingFixture,
+    MasteryAssessment,
+    MasteryDimension,
+    MasteryLevel,
+    MasteryState,
+    MasteryStore,
+    ReviewPolicy,
+    SkillGraph,
+    TrainingFixtureRunner,
+    VulnerabilityCard,
+    VulnerabilityCatalogue,
+    load_builtin_catalogue,
+    abandon_learning_journey,
+    advance_learning_journey,
+    start_learning_journey,
+)
+from greytheory.hypothesis import (
+    AssessmentSource,
+    FactorAssessment,
+    FactorDirection,
+    FactorExplanation,
+    FactorWeight,
+    HypothesisRanker,
+    HypothesisRankingError,
+    HypothesisRankingInput,
+    QueuePartition,
+    RankedHypothesis,
+    RankingFactor,
+    RankingPolicy,
+    ResearchQueue,
+    conservative_local_policy,
+    parse_ranking_inputs,
+)
 from greytheory.registry import (
     Attention,
     ContractVersion,
@@ -59,7 +129,50 @@ from greytheory.registry import (
     RegistryError,
     ScopeDiff,
 )
+from greytheory.models import (
+    ContextFragment,
+    DataClass,
+    ModelGateway,
+    ModelRole,
+    ProviderPolicy,
+    TrustLabel,
+)
 from greytheory.report import ReportDraft
+from greytheory.report_store import (
+    ReportCase,
+    ReportRevisionConflict,
+    ReportStore,
+    ReportStoreError,
+)
+from greytheory.scopewatch import (
+    LocalSourceFetcher,
+    ScopeWatch,
+    SourceState,
+    WatchedSource,
+)
+from greytheory.research import (
+    ActionReceipt,
+    ActionRequest,
+    AssetKind,
+    AssetRelationship,
+    EffectBudget,
+    ExperimentPlan,
+    ExperimentStatus,
+    Hypothesis,
+    HypothesisStatus,
+    Lesson,
+    RelationshipKind,
+    ResearchDomainError,
+    ResearchIdentity,
+    ResearchSession,
+    ResearchStore,
+    ResearchStoreError,
+    ResearchWorkspace,
+    SessionStatus,
+    TargetAsset,
+    WorkspaceSnapshot,
+    WorkspaceStatus,
+)
 from greytheory.validation import (
     Attestation,
     GateId,
@@ -72,6 +185,21 @@ from greytheory.validation import (
 __version__ = "0.1.0"
 
 __all__ = [
+    "CAPABILITIES",
+    "Capability",
+    "CapabilityStatus",
+    "capabilities_with_status",
+    "capability",
+    "WatchedSource",
+    "TrustLabel",
+    "SourceState",
+    "ScopeWatch",
+    "ProviderPolicy",
+    "ModelRole",
+    "ModelGateway",
+    "LocalSourceFetcher",
+    "DataClass",
+    "ContextFragment",
     "Advisory",
     "AdvisorySet",
     "Version",
@@ -96,6 +224,10 @@ __all__ = [
     "AuditRecord",
     "AuditVerificationError",
     "AuthorityLevel",
+    "BundleCompilationResult",
+    "BundleError",
+    "CaptureMode",
+    "DerivationKind",
     "ChaseOSApprovalStore",
     "Claim",
     "ContractStatus",
@@ -109,20 +241,112 @@ __all__ = [
     "GateId",
     "GateResult",
     "GateStatus",
+    "HumanResolution",
     "LocalApprovalStore",
     "ProgrammeRegistry",
+    "ProgrammeSource",
+    "ProgrammeSourceBundle",
     "ProvenanceError",
     "Reason",
     "RegistryError",
     "ReportDraft",
+    "ReportCase",
+    "ReportRevisionConflict",
+    "ReportStore",
+    "ReportStoreError",
+    "ResolutionStatus",
     "ScopeClassification",
     "ScopeContract",
     "ScopeDiff",
+    "SourceKind",
+    "SourceDerivation",
     "Tag",
     "Taxonomy",
     "TransitionError",
     "ValidationReport",
     "VaultLocationError",
     "__version__",
+    "compile_source_bundle",
     "validate",
 ]
+
+__all__.extend(
+    [
+        "ActionReceipt",
+        "ActionRequest",
+        "AssetKind",
+        "AssetRelationship",
+        "EffectBudget",
+        "ExperimentPlan",
+        "ExperimentStatus",
+        "Hypothesis",
+        "HypothesisStatus",
+        "Lesson",
+        "RelationshipKind",
+        "ResearchDomainError",
+        "ResearchIdentity",
+        "ResearchSession",
+        "ResearchStore",
+        "ResearchStoreError",
+        "ResearchWorkspace",
+        "SessionStatus",
+        "TargetAsset",
+        "WorkspaceSnapshot",
+        "WorkspaceStatus",
+    ]
+)
+
+__all__.extend(
+    [
+        "AssessmentSource",
+        "FactorAssessment",
+        "FactorDirection",
+        "FactorExplanation",
+        "FactorWeight",
+        "HypothesisRanker",
+        "HypothesisRankingError",
+        "HypothesisRankingInput",
+        "QueuePartition",
+        "RankedHypothesis",
+        "RankingFactor",
+        "RankingPolicy",
+        "ResearchQueue",
+        "conservative_local_policy",
+        "parse_ranking_inputs",
+    ]
+)
+
+__all__.extend(
+    [
+        "AssessorKind",
+        "CardUpdateProposal",
+        "EvidenceRequirement",
+        "FixtureRunReceipt",
+        "GuidedLearningPlanner",
+        "HypothesisTemplate",
+        "JourneyStatus",
+        "LearningCheckpoint",
+        "LearningError",
+        "LearningJourney",
+        "LearningJourneyStore",
+        "LearningMode",
+        "LearningRecommendation",
+        "LearningStage",
+        "LearningStoreError",
+        "LocalTrainingFixture",
+        "MasteryAssessment",
+        "MasteryDimension",
+        "MasteryLevel",
+        "MasteryState",
+        "MasteryStore",
+        "ReviewPolicy",
+        "SkillGraph",
+        "TrainingFixtureRunner",
+        "VulnerabilityCard",
+        "VulnerabilityCatalogue",
+        "load_builtin_catalogue",
+        "abandon_learning_journey",
+        "advance_learning_journey",
+        "start_learning_journey",
+    ]
+)

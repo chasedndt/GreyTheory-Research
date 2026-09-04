@@ -38,6 +38,11 @@ from greytheory.audit import AuditLog
 from greytheory.authority.compiler import compile_contract, mark_reviewed, source_hash
 from greytheory.authority.gate import DEFAULT_MAX_CONTRACT_AGE
 from greytheory.authority.scope import AssetPattern, ContractStatus, ScopeContract
+from greytheory.authority.sources import (
+    BundleError,
+    ProgrammeSourceBundle,
+    compile_source_bundle,
+)
 from greytheory.evidence import find_repository_root
 
 SAFE_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$")
@@ -315,23 +320,7 @@ class ProgrammeRegistry:
             )
         return path.read_text(encoding="utf-8")
 
-    def register(
-        self, programme: dict[str, Any], *, raw_source: str
-    ) -> RegistrationResult:
-        """Compile and store a new version of a programme.
-
-        A raw source snapshot is required. Registering without the text the
-        rules came from would leave nothing to compare against later, which is
-        the whole point of the registry.
-        """
-        if not raw_source or not raw_source.strip():
-            raise RegistryError(
-                "a source snapshot is required; without the text the rules came "
-                "from there is nothing to detect drift against"
-            )
-
-        programme_id = _validate_id(str(programme.get("id") or ""))
-
+    def _guard_storage(self, programme_id: str, programme: dict[str, Any]) -> None:
         if programme.get("confidential") and not self._allow_confidential_in_repo:
             repository = find_repository_root(self.root)
             if repository is not None:
@@ -343,10 +332,17 @@ class ProgrammeRegistry:
                     "one, or pass allow_confidential_in_repository=True."
                 )
 
+    def _store_compilation(
+        self,
+        *,
+        programme_id: str,
+        contract: ScopeContract,
+        raw_source: str,
+        blocked: bool,
+        audit_detail: dict[str, Any] | None = None,
+    ) -> RegistrationResult:
         previous = self.latest(programme_id)
         incoming_hash = source_hash(raw_source)
-        result = compile_contract(programme, raw_source=raw_source, now=self._clock())
-        contract = result.contract
 
         # The rule that carries this module: review attaches to the text a
         # person actually read. Different text, no review.
@@ -354,7 +350,7 @@ class ProgrammeRegistry:
         if previous is not None and not source_changed:
             # Identical source. Carry the earlier review forward rather than
             # making the operator re-read text they have already read.
-            if previous.contract.human_reviewed and not result.blocked:
+            if previous.contract.human_reviewed and not blocked:
                 mark_reviewed(contract, reviewer=f"carried from v{previous.version}")
 
         version_number = 1 if previous is None else previous.version + 1
@@ -390,6 +386,7 @@ class ProgrammeRegistry:
                     "source_changed": source_changed,
                     "ambiguities": contract.ambiguities,
                     "diff": diff.to_dict() if diff else None,
+                    **(audit_detail or {}),
                 },
             )
 
@@ -398,6 +395,66 @@ class ProgrammeRegistry:
             is_new_programme=previous is None,
             source_changed=source_changed,
             diff=diff,
+        )
+
+    def register(
+        self, programme: dict[str, Any], *, raw_source: str
+    ) -> RegistrationResult:
+        """Compile and store a new version of a single-source programme.
+
+        A raw source snapshot is required. Registering without the text the
+        rules came from would leave nothing to compare against later, which is
+        the whole point of the registry.
+        """
+        if not raw_source or not raw_source.strip():
+            raise RegistryError(
+                "a source snapshot is required; without the text the rules came "
+                "from there is nothing to detect drift against"
+            )
+
+        programme_id = _validate_id(str(programme.get("id") or ""))
+        self._guard_storage(programme_id, programme)
+        result = compile_contract(programme, raw_source=raw_source, now=self._clock())
+        return self._store_compilation(
+            programme_id=programme_id,
+            contract=result.contract,
+            raw_source=raw_source,
+            blocked=result.blocked,
+            audit_detail={"source_kind": "single"},
+        )
+
+    def register_bundle(
+        self, bundle: ProgrammeSourceBundle | str | Path
+    ) -> RegistrationResult:
+        """Compile and store the complete saved authority source set.
+
+        The operation is local-only. ``ProgrammeSourceBundle`` records public
+        URLs as provenance but neither this method nor the bundle compiler
+        fetches them.
+        """
+        try:
+            loaded = (
+                bundle
+                if isinstance(bundle, ProgrammeSourceBundle)
+                else ProgrammeSourceBundle.load(bundle)
+            )
+            result = compile_source_bundle(loaded, now=self._clock())
+        except BundleError as exc:
+            raise RegistryError(f"invalid programme source bundle: {exc}") from exc
+
+        programme_id = _validate_id(loaded.programme_id)
+        self._guard_storage(programme_id, loaded.programme)
+        return self._store_compilation(
+            programme_id=programme_id,
+            contract=result.contract,
+            raw_source=result.snapshot,
+            blocked=result.blocked,
+            audit_detail={
+                "source_kind": "bundle",
+                "bundle_id": loaded.id,
+                "bundle_hash": loaded.bundle_hash,
+                "source_count": len(loaded.sources),
+            },
         )
 
     def review(self, programme_id: str, *, reviewer: str) -> ScopeContract:

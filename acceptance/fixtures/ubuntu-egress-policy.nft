@@ -1,0 +1,29 @@
+#!/usr/sbin/nft -f
+
+# LOCAL_FIXTURE only. The public-looking addresses are assigned to loopback
+# inside an isolated network namespace and never leave the host.
+flush ruleset
+
+table inet greytheory {
+    counter denied_output {
+    }
+
+    chain input {
+        type filter hook input priority filter; policy drop;
+
+        ct state established,related accept
+        iifname "lo" ip daddr 8.8.8.8 tcp dport 443 ct state new accept
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+    }
+
+    chain output {
+        type filter hook output priority filter; policy drop;
+
+        ct state established,related accept
+        oifname "lo" ip daddr 8.8.8.8 tcp dport 443 ct state new accept
+        counter name denied_output reject
+    }
+}

@@ -4,6 +4,374 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - whole-application keyboard acceptance
+
+- Added a repeatable Playwright acceptance harness that builds and launches an
+  owned numeric-loopback preview, traverses all thirteen panels from first
+  entry, records JSON evidence, captures current visual QA, and stops only its
+  own preview process.
+- Added correct roving-tab behavior for the Case canvas and Research ledger,
+  fixed the desktop cascade that exposed the mobile menu trigger, and made the
+  Evidence export state natively disabled.
+- Replaced the dead Readiness packet action with a bounded local checklist that
+  unlocks only after the correct independent check and explicitly performs no
+  export, contact, review, or approval.
+
+### Added - API Object Ownership learning mission
+
+- Promoted Case Pack 02 from queued metadata to a complete, exact 50-minute
+  `LOCAL_FIXTURE` mission spanning Learn, Practise, Prove, Reflect, and Assess.
+- Added an object-authorization lesson, two scored reasoning checks, a
+  four-step beginner-to-transfer roadmap, and official OWASP/PortSwigger
+  reading links.
+- Added deterministic own-object, deliberately vulnerable cross-owner, and
+  server-enforced denial controls. Every result declares
+  `externalAction: false` and separates synthetic evidence from live impact,
+  scope, and disclosure authority.
+- Bound Mission Control, Safe Lab, Cases, Hypotheses, Evidence, Reports,
+  Readiness, Demo Suite, and Library to the selected ready Case Pack while
+  keeping Session and Role Transitions disabled and queued.
+- Added server acceptance for the complete persisted Case Pack 02 journey and
+  fail-closed refusal of queued packs.
+- Added clean repository release media plus matching desktop/mobile comparison
+  evidence in the central GreyTheory Visual QA registry.
+
+### Added - authenticated passive-worker session foundation
+
+- Added a carrier-neutral mutual handshake with pinned Ed25519 broker/worker
+  identities, fresh X25519 agreement, transcript-bound HKDF-SHA-256, and
+  separate directional session keys.
+- Added ChaCha20-Poly1305 encrypted frames that bind session, transcript,
+  direction, sequence, and message type while enforcing the existing exact
+  resolve/resolution/head/transport exchange.
+- Added strict canonical JSON, duplicate-key refusal, 30-second expiry, the
+  existing 196,608-byte ceiling, terminal key-buffer clearing, and a mandatory
+  injected replay guard.
+- Added six network-free tests covering typed worker-record compatibility,
+  mutual identity, confidentiality, tamper, replay, reflection, order, expiry,
+  and oversize refusal.
+- Kept the protocol launch-dark. It has no carrier, socket, listener, launcher,
+  worker identity provisioning, durable reboot replay store, target route, or
+  posture switch; transport security review and local-VM/reboot acceptance
+  remain open.
+
+### Added - read-only Ubuntu worker-image candidate
+
+- Added signed Ubuntu Base and signed archive-metadata verification for 18
+  exact runtime packages, plus a reproducibility manifest that remains
+  explicitly non-activating.
+- Added two-build SquashFS construction from committed runtime inputs and a
+  clean-HEAD image acceptance harness with read-only root, bounded tmpfs,
+  exact devices, UID/GID 65534, zero capabilities, no-new-privileges, and the
+  existing default-drop exact-egress policy.
+- Added fail-closed composition of mount, identity, write-denial, network,
+  mutation, encrypted-capture, signed-receipt, replay, and cleanup evidence.
+- Normalised linked Windows worktree Git metadata for Linux-side clean-tree,
+  source-digest, archive, and exact-revision checks.
+- Added a complete four-group package installation order so Python's
+  `Pre-Depends` chain is satisfied without force flags or disabled checks.
+- Kept the ext4 build root `nodev` while mounting an owned 1-MiB temporary
+  `/dev` containing only required character devices during package setup; the
+  host `/dev` is never bound into the image build.
+- Added bounded canonical root-manifest diagnostics to the byte-identity gate
+  and removed `ldconfig`'s optional filesystem-specific auxiliary cache from
+  the hardened root while preserving the runtime linker cache.
+- Corrected Ubuntu image-runtime composition to invoke the acceptance composer
+  as a repository-rooted Python module after the first clean image run exposed
+  the file-path import boundary.
+- A clean two-build-identical release image and WSL2 image-runtime record now
+  pass the read-only mount, identity, exact-egress, encrypted-capture, receipt,
+  replay, and cleanup contract. The record deliberately retains
+  `hardened_worker_image_accepted=false`, VM/reboot, transport, key, programme,
+  VPS, posture, and live-operation gates as open.
+
+### Added - Ubuntu exact-egress policy candidate
+
+- Added an Ubuntu 24.04 namespace-lifetime nftables acceptance path that
+  defaults input/forward/output to drop and permits only the owned synthetic
+  `8.8.8.8:443` fixture.
+- Added counted negative probes for wrong port, separately routed decoy
+  address, and IPv6, plus route/firewall mutation refusal after UID/GID 65534,
+  zero capabilities, and no-new-privileges are applied.
+- Hash-locked the five Ubuntu userspace packages, staged them only under E:,
+  and reconstructed the executed tool in the owned temporary runtime without a
+  WSL system install.
+- Kept `hardened_worker_image_accepted=false`; reproducible read-only image
+  binding, VM/reboot conformance, keys, programme review, posture approval,
+  external contact, and `PASSIVE_HTTP` remain open.
+- Updated visible Settings/roadmap truth and changed the mobile boundary footer
+  to follow content after rendered QA found it obscuring the Passive Pilot card.
+
+### Added - Windows DPAPI root-key provider candidate
+
+- Added an operator-side Windows CurrentUser DPAPI provider for the external
+  32-byte root KEK, with UI forbidden, strict protected records, Git-storage
+  refusal, audited provision/lease operations, and a short-lived zeroing lease.
+- Added a real Windows candidate harness proving same-profile restart and
+  protected-copy recovery, capture decryption, tamper refusal, plaintext-tree
+  scanning, and audit verification without exercising the Ubuntu worker.
+- Kept the provider unapproved: inherited application-data ACL hardening,
+  independent cross-profile/bare-machine recovery, profile/system backup,
+  operator approval, and every `PASSIVE_HTTP` gate remain open.
+
+### Fixed - executable workbench capability truth
+
+- Reclassified the implemented Guided Mission Control graphical workbench from
+  planned to partial and recorded its thirteen journeys, 24 interactive lesson
+  nodes, same-origin commands, Demo Suite, and current-user lifecycle proof.
+- Retained the open comprehensive first-entry keyboard, separate-account,
+  signing, uninstall, broader-curriculum, coach, and external-intelligence
+  boundaries.
+- Declared the existing GreyTheory mark as the preview favicon after rendered
+  QA found the only console error was a missing browser icon request.
+
+### Fixed - Ubuntu full-service host acceptance
+
+- Enforced LF checkout for Linux shell entrypoints after the Windows worktree
+  caused Bash to read `pipefail\r` and stop before namespace setup.
+- Added durable E:-hosted JSON/error records and invariant validation to the
+  bounded Windows-to-WSL acceptance wrapper.
+- Accepted the full Ubuntu 24.04.4 no-route local service chain: non-root,
+  capability-empty, no-new-privileges worker; exact synthetic TLS `HEAD`;
+  encrypted capture round trip; verified signed receipt; completed replay; and
+  clean exit. Durable egress, OS key, hardened image, programme, human posture,
+  VPS, and `PASSIVE_HTTP` remain unavailable.
+
+### Added - Windows current-user install lifecycle
+
+- Added a user-mode Windows installer that creates an isolated runtime,
+  keeps private research state outside that replaceable runtime, writes a
+  `LOCAL_FIXTURE` capability manifest, and creates a Start Menu shortcut.
+- Added a launcher that waits for a verified local-only health response before
+  opening the bundled dashboard; browser convenience remains outside the
+  trusted Python package.
+- Added lifecycle acceptance proving a real persisted learning command survives
+  restart, same-wheel upgrade, and runtime recovery. Separate-account, signing,
+  uninstall, hardened Ubuntu image, VPS, and live-target acceptance remain open.
+
+### Changed - navigation scrollbar polish
+
+- Replaced the bright native navigation scrollbar with a slim, visible
+  mission-control rail using the existing navy, muted-blue, and amber tokens.
+- Added a stable scrollbar gutter and overscroll containment so navigation
+  labels do not shift or sit beneath the thumb.
+- Added focused visual and contract QA; the complete first-entry keyboard gate
+  remains open.
+
+### Added - keyboard boundaries and packaged Windows workbench
+
+- Added accessible names for compact navigation, removed the closed mobile
+  drawer from interaction, and added focus entry, containment, Escape close,
+  and trigger restoration for the mobile drawer.
+- Added a reproducible wheel build that bundles the production learner UI and
+  complete learning resources; installed launches use the bundled UI by default
+  while `--no-ui` preserves an explicit API-only option.
+- Added empty-prefix Windows acceptance for the installed launcher, loopback UI,
+  `LOCAL_FIXTURE` health, authenticated snapshot, exact-process cleanup, and a
+  non-echoed ephemeral environment token. Separate-user shortcut/installer
+  acceptance remains open.
+
+### Added - release media and persisted-flow acceptance
+
+- Replaced the earlier dashboard preview media with current Mission Control,
+  topic-learning, roadmap, and public-intelligence captures suitable for the
+  repository and ChaseInTech project page.
+- Verified in the in-app browser that a bounded assigned lesson persists across
+  a full reload of the same-origin local application.
+- Added route-level focus management with reduced-motion support and static
+  accessibility contract tests. Full sequential-keyboard and installed Windows
+  acceptance remain open.
+
+### Added - interactive learning paths and public-intelligence contracts
+
+- Replaced passive Skill Trajectory marks with 24 accessible lesson nodes that
+  expose hover/focus details, honest preview fill, and selected-lesson context
+  without awarding mastery.
+- Added topic-owned focused notes, principles, traditional and AI lenses,
+  checkpoints, official resources, and beginner-to-transfer roadmaps.
+- Restored the complete thirteen-panel shell with working Programmes,
+  Hypotheses, Intelligence, Reports, and Settings journeys.
+- Added `greytheory_intelligence`, a network-free contract-only registry for
+  OSV, CISA KEV, FIRST EPSS, NVD, and GitHub Advisories. No provider fetcher,
+  account token, target input, or external request is enabled.
+
+### Added - Case Pack and persisted learner foundation
+
+- Added three versioned Case Packs, one ready local Agent Tool Authorization
+  pack, immutable synthetic fixture receipts, and a working guided/full/transfer
+  Demo Suite.
+- Added exact same-origin learner commands and optional bounded UI serving to
+  the numeric-loopback local application while retaining read-only cross-origin
+  previews and the `LOCAL_FIXTURE` ceiling.
+- Added a deliberately dark live-programme compatibility contract, five
+  mandatory transition gates, and two Mermaid diagrams for the learner and
+  passive-pilot boundaries.
+
+### Added - AI-native learner dashboard direction
+
+- Added the learner-first Today/Learn/Practise/Research/Prove/Library product contract, inspectable recommendation rules, agent-security learning track, bounded AI-coach boundary, visualisation system, and responsive acceptance criteria.
+- Added two Mermaid diagrams for the evidence-bound learner loop and the Windows-local to Ubuntu-worker/VPS transition.
+- Added a live desktop/390 visual audit, three modern dashboard concepts, and an editable Figma direction board. Guided Mission Control is recommended; production UI selection remains operator-owned.
+
+### Changed - responsive workbench truth
+
+- Reclassified the current Research Ledger from the accepted dashboard shell to a partial first-class Research case view after current captures exposed desktop overflow and 390-pixel clipping.
+- Removed the temporary Figma capture script after capture so the local-first application retains no external Figma runtime dependency.
+
+### Added - governed local-fixture claim assembly and lifecycle
+
+- Added a human-acknowledged, revision-bound handler that assembles all seven claim roles for the exact two-account fixture by rerunning five deterministic validators over raw evidence already in the private vault and deriving two judgement roles from persisted operator attestations. It performs no new fixture or target action.
+- Added atomic finding/report-matrix persistence with strict field-change boundaries. Claim assembly invalidates the prior validation pass; `report_ready` requires a fresh passing Gates B-F run and advances exactly one internal state.
+- Added a lifecycle handler that cannot cross `report_ready` into submission or any programme-owned outcome. Private exports now include a digest-bound `finding.json` containing the claim-role and validator-receipt chain.
+
+### Added - persisted human-bound report validation
+
+- Added a fresh human-acknowledged workbench handler that reruns Gates B–F from the persisted finding/draft, the private evidence vault, and three operator-authored attestations. Attester identity is derived locally; every cited reference must already belong to the case.
+- Added complete attestation/gate/validation-report deserialisation and append-only revision-bound validation runs inside the private report case. The report read model distinguishes `not_run`, `blocked`, and `passed`, and a later case edit invalidates current status without deleting history.
+- A passing validation records eligibility evidence only: it does not bind missing claim roles, promote the finding lifecycle, export, submit, contact, or execute anything. Stale validation commands conflict before running or auditing a second validation.
+
+### Added - persistent private report authoring
+
+- Added an integrity-checked private `ReportStore` for complete finding/draft cases with atomic writes, Git-worktree refusal, audit records, optimistic revisions, and full claim-role/check-receipt round trips.
+- Added workbench handlers to create an informational report case from a persisted testing/supported hypothesis and save revisioned draft prose. Authority, programme, asset, finding state, and claim matrix remain server-owned; cited evidence must already exist in the private vault, incomplete drafts remain visibly incomplete, and saving never promotes a claim, exports, or submits.
+- Wired the report store into the default local runtime so reports now start as a measured empty state and survive restart instead of depending on an injected in-memory source.
+
+### Added - bounded local-fixture action intent
+
+- Added the final typed workbench handler for recording a `LOCAL_FIXTURE` action intent without evaluating the Gate or executing anything. The handler requires fresh explicit acknowledgement and derives the workspace, active session/experiment, hypothesis target and identity, authority fingerprint, and stop conditions from persisted state.
+- Restricted the first action-intent path to a server-held experiment action and an in-scope target with a `fixture.*` action type. Request/effect budgets remain store-enforced; accepted results create no approval, Gate decision, receipt, subprocess, fixture call, or network action.
+
+### Added - private redacted report export
+
+- Added a human-acknowledged workbench report-export handler over server-held findings and drafts. It requires `report_ready`, re-runs Gate F quality checks, verifies that cited evidence exists in the complete redacted-only evidence package, and remains non-executing.
+- Added an immutable private export writer that atomically emits Markdown, structured JSON, copied redacted artifacts, and a digest manifest outside Git. It accepts no UI path or draft content, audits `submission_performed: false`, and performs no submission, contact, disclosure, or network action.
+
+### Added - human-governed mastery assessment handler
+
+- Added the workbench application handler for one explicit evidence-bound human mastery assessment. It requires a fresh human-acknowledged command, derives the assessor from the configured local operator, accepts no UI-supplied assessor identity, persists to the private integrity-checked mastery store, and remains non-executing.
+- Added exact field admission, duplicate-record conflict handling, operator binding, command freshness checks, and idempotent replay. Fixture completion, model output, and journey progression still cannot award mastery.
+
+### Added - authenticated local workbench launch boundary
+
+- Added `greytheory_local` and the `greytheory-workbench` launcher. The runtime assembles real private stores outside Git and exposes versioned snapshots/commands only on numeric `127.0.0.1`; it contains no target client, file server, model, worker, subprocess, CORS surface, or posture-changing route.
+- Added exact Host validation, an in-memory high-entropy bearer token, exact-origin POST admission, no-store defensive responses, a 64-KiB body ceiling, read timeout, duplicate-header/JSON-key refusal, strict command decoding, and no CORS permission. ADR-0012 records why a local browser boundary still requires authentication.
+
+### Added - governed research-planning application handlers
+
+- Added workbench handlers for create-only unproven hypotheses, explicit human scope review, and atomic experiment planning. Authority and workspace fingerprints are derived from persisted state, every changed hypothesis carries an optimistic revision, and stale UI commands conflict rather than overwrite newer decisions.
+- Added store-level scope-review and planning transactions so a failed plan cannot leave an orphan experiment or partially advance a hypothesis. These commands mutate only private offline research records and always report `executed: false`; action intent and report export were implemented by the later entries above.
+
+### Added - dark passive broker foundation
+
+- Added the separate `greytheory_broker` package and optional `passive-broker` crypto dependency. Its `passive-head-v1` policy binds one short-lived Ed25519 ticket to the exact hash-chain-verified Gate audit record, canonical HTTPS target, programme rate, authority fingerprint, and one unauthenticated `HEAD` request. Workers receive only the public ticket-verification key and cannot mint broker tickets.
+- Added public-address-only DNS-answer validation, zero-redirect policy, default-engaged digest-protected kill switch, atomic SQLite exact-once ticket reservation, strict time/rate/capture limits, and signed completed/stopped receipt metadata requiring capture and encrypted-envelope digests.
+- Kept the broker dark: no DNS query, HTTP client, socket, subprocess, capture encryption implementation, provisioned key, worker image, target action, or posture change exists. ADR-0011 records the remaining boundary.
+
+### Added - workbench foundation and executable capability truth
+
+- Added `greytheory_app`, a separate transport-neutral application layer with a versioned workbench snapshot across programmes, research, hypotheses, learning, evidence, reports, approvals, audit readiness, and executable capability truth.
+- Added idempotent, optimistic-revision learning command handlers and explicit non-executing typed refusals for commands whose dedicated use cases are not implemented. The contract structurally rejects posture above `LOCAL_FIXTURE` and never represents a UI action as execution authority.
+- Added `greytheory.capabilities`, a typed register shared by the dashboard and future workbench. It separates shipped-code status from runtime health and explicitly keeps Lane 3, external Scope Watch collection, and `PASSIVE_HTTP` unavailable.
+- Corrected the dashboard's stale claim that no Signal Plane lane or learning graph existed. It now reports the three static offline lanes, the live learning core, offline model gateway, offline Scope Watch, and the still-unbuilt graphical workbench and network worker.
+- Accepted ADR-0010: the graphical workbench is a separate local application layer around the offline core, never a direct collector or execution path.
+- Added the workbench architecture covering Windows-first launch, private local storage, required Today/Learn/Research/Evidence journeys, typed command boundaries, UX truth rules, and the future isolated Ubuntu worker boundary.
+- Added deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, and explainable recommendations.
+- Added ordered Learn/Practise/Prove/Reflect/Assess journeys, stage-specific evidence requirements, abandonment, serialisation, and integrity-checked private persistence with optimistic revisions.
+- Added `learning plan`, `journey-start`, `journey-status`, `journey-advance`, and `journey-abandon` CLI commands. Journey completion requires an already persisted matching human assessment and never awards mastery itself.
+
+### Changed — portfolio security hardening
+
+- `ScopeWatch` now accepts only the exact rooted `LocalSourceFetcher`. The former `allow_network_fetcher=True` switch was a Boolean authority bypass: any caller could inject code that performed network I/O without a durable posture decision or broker receipt. Future external collection must be separately governed, capture bytes outside the core, and hand local evidence inward.
+- Historical local demonstration fixtures now bind their stores and CLI runs to their fixture timestamps. This restores reproducibility without weakening stale-contract rejection for real contracts.
+- GitHub Actions dependencies are pinned to exact upstream commits while retaining version comments for maintainers.
+
+### Added — model gateway and Scope Watch (Milestones 7 and 8)
+
+- `greytheory.models` -- the only route by which a model is ever called. Nothing in it touches a network: `ModelProvider` is a protocol and the core ships one deterministic local stub, so a real provider is supplied from outside. Classification is enforced at assembly rather than at send, so no window exists in which an unclassified string is appended to a checked prompt. A remote provider can never be approved for `RAW_RESTRICTED`. Nine role contracts each carry a ceiling below the provider's. A response citing context that was never supplied is refused, not flagged -- an unresolvable citation is an invented source. Every output enters as `inferred`, with no code path to `checked`. Prompts are audited by digest, never by content. An exhausted budget refuses.
+- Evaluation harness: eight adversarial cases covering fabricated citations, missing citations, raw-capture leakage, role ceilings, impact overstatement, stated uncertainty, and indirect prompt injection in both compliant and non-compliant forms. Two are negative fixtures asserting the detector fires, so a clean run distinguishes a working harness from a well-behaved model.
+- `greytheory.scopewatch` -- re-reads recorded programme sources and reports what moved. A source that could not be read is `UNREACHABLE`, never `UNCHANGED`: a source nobody could check has not been shown to be the same. It needs attention but does not by itself invalidate review, because "could not read it" is not "it changed". Changed and removed sources do invalidate it. A source without a comparable hash is skipped rather than guessed at.
+- **The network fetcher is deliberately absent.** `SourceFetcher` remains an integration-shape protocol, but the core `ScopeWatch` accepts only the exact `LocalSourceFetcher`; arbitrary implementations and subclasses are refused. Fetching a programme page is still a request to somebody's server. ADR-0009.
+
+### Changed — trust-kernel hardening
+
+- **`report_ready` now requires a claim in each of seven roles**, not a count of checked claims. The old guard was satisfiable by proving a request returned 200 -- true, checked, receipted, and silent on whether anything was wrong. Five roles are settled by validator receipts derived from artifacts already held; `impact` and `reproduction` are judgement roles requiring a stated uncertainty. One claim cannot answer two roles -- the shortcut a count invited. ADR-0008.
+- **Submission now requires a `ScopeRecheck`.** Evidence gathered Monday, scope narrowed Wednesday, report sent Friday: nothing earlier in the lifecycle would notice. A mismatch blocks rather than warns, and a recheck cannot authorise a finding it does not belong to.
+- The Milestone 4 vertical slice now proves five things instead of one, with no additional fixture interaction.
+
+### Added — claim roles
+
+- `greytheory.claims` -- seven claim roles, `RoleBinding`, and the claim-evidence matrix that reports should be generated from. A binding cannot be constructed unsoundly: checked roles reject non-checked claims, demand the receipt that promoted them, and refuse a receipt whose id does not match the claim.
+- `greytheory.validators` -- four reusable validators settling the checked roles offline: ownership boundary, synthetic target, contract currency and evidence integrity. None performs any interaction, which is what keeps the stricter guard compatible with minimum-impact proof. An empty evidence manifest is `invalid_input`, never `supported`.
+- `Docs/agent-activity.md` -- why each session deviated from the roadmap, and what the next agent should not undo.
+
+### Added — transparent hypothesis ranking
+
+- Added a deterministic nine-factor research-queue engine over existing,
+  contract-bound hypotheses and the 12-card catalogue.
+- Added the versioned `conservative-local` policy with exact weights,
+  direction-aware basis-point contributions, stable ordering, and fail-closed
+  scope partitioning.
+- Added provenance, rationale, uncertainty, derivation, and observed inputs for
+  every factor. Four factors are system-derived; five require an explicit
+  `operator` or `test_fixture` estimate. Model scoring remains refused.
+- Added integrity-checked private queue output and CLI `hypothesis verify` and
+  `hypothesis rank` commands. Every item remains `unproven`, decision-support
+  only, and carries no execution authority.
+- Added a three-theory synthetic proof with nine explanations per item and zero
+  action requests, receipts, model calls, network actions, or external targets.
+
+### Added — vulnerability cards and skill graph
+
+- Added exactly 12 versioned first-class vulnerability cards with framework
+  classifications, falsifiable hypothesis templates, explicit controls,
+  minimum-evidence roles, impact boundaries, safe-test rules, remediation,
+  policy constraints, review dates, and revision provenance.
+- Added 12 distinct synthetic, network-free property fixtures. Their
+  fixture/runner-digested receipts prove both controls and the deliberately
+  vulnerable local path while explicitly proving no real vulnerability and
+  awarding no mastery.
+- Added an acyclic card-prerequisite graph and independent `explain`,
+  `recognise`, `test`, `prove`, `remediate`, and `transfer` dimensions.
+- Added an integrity-checked private mastery store. Only explicit,
+  evidence-bound human assessments credit mastery; labelled test-fixture
+  assessments remain visible but non-crediting.
+- Applied the Milestone 4 BOLA proposal to `idor-bola` v1.0.0 with explicit
+  `test_fixture` revision provenance and no real-session or human-mastery claim.
+- Added offline CLI commands for catalogue inspection, fixture verification,
+  mastery status, and explicit assessments.
+
+### Added — direct-policy programme-source proof
+
+- Added an independently maintained `modelcontextprotocol/python-sdk` bundle from the immutable public `SECURITY.md` at commit `d82ed88e`, captured byte-for-byte as a verbatim programme-policy source.
+- Added `markdown_supported_versions_v1` derivation validation. The observed Version/Line/Support table must derive exactly two supported release lines and one unsupported class; malformed tables, unclassified support semantics, duplicates, or record drift fail closed.
+- Made each observed derivation enforce its source kind and capture mode: HackerOne requires a structured scope export, Bugcrowd an operator-extracted scope table, and the direct policy a verbatim programme-policy source.
+- Completed Milestone 2's three-source implementation proof without target contact. The direct bundle reaches `PENDING_REVIEW` under `LOCAL_FIXTURE`; existing HackerOne and Bugcrowd review/block states remain unchanged.
+
+### Added — Bugcrowd programme-source proof
+
+- Added a public Bugcrowd/YNAB bundle with an operator-structured extract of two rendered target groups, a bounded programme-policy extract, and Bugcrowd's linked platform-default extract.
+- Added `bugcrowd_target_groups_json_v1` derivation validation. The 3 in-scope and 5 out-of-scope target rows must match the normalized record exactly; malformed groups, duplicates, cross-group conflicts, or record drift fail closed.
+- Preserved two real policy conflicts as pending human resolutions. The bundle intentionally compiles to `BLOCKED` under `LOCAL_FIXTURE`; broad owned-host and production-API wording never become executable scope.
+- Added LF-only Git attributes for hashed public programme evidence so source hashes remain reproducible across Windows and Linux checkouts.
+
+### Added — first real programme-source bundle
+
+- `greytheory.authority.sources` implements offline `ProgrammeSourceBundle` loading and compilation with explicit source kinds/capture modes, safe local paths, public provenance URLs, retrieval/update times, per-source hashes, high-to-low precedence, per-field citations, structured-export derivation checks, human-resolution gates, and a semantic whole-bundle snapshot/hash.
+- `ProgrammeRegistry.register_bundle()` stores the complete bundle snapshot, audits its identity/hash/source count, carries review only across identical bundles, and invalidates review when any source or governing metadata changes.
+- CLI command `greytheory programme register-bundle` registers a saved bundle without network I/O.
+- First real proof: a 2026-08-09 HackerOne/GitLab bundle containing the official 44-row public scope CSV plus bounded programme and platform-policy extracts. It compiles to `PENDING_REVIEW` under `LOCAL_FIXTURE`; it is not human-reviewed and grants no live-target authority.
+
+### Added — Security Research Operating System foundation
+
+- Canonical product identity, research-domain model, bounded-autonomy model, threat model, data policy, integration boundaries, and four architecture decision records.
+- Thirteen-milestone roadmap from real programme source bundles through the first operator-submitted research outcome.
+
+### Changed — product framing and truth surfaces
+
+- GreyTheory is now framed as a standalone, local-first, human-governed Security Research Operating System; the existing three-plane control plane remains its trust kernel.
+- README, project state, documentation map, system overview, capability register, public positioning, and historical handover labels now distinguish the verified offline kernel from designed product layers.
+- Corrected stale capability claims: the gate has seventeen denial reasons, Lane 2 is live offline, the dashboard read model exists, and no live-target lane exists.
+
 ### Added — Authority Plane V0 (first code in the repository)
 
 - `greytheory.provenance` — the observed/checked/inferred triple, with promotion gated on a falsifiable check.

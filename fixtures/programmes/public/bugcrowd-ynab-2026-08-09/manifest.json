@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "id": "bugcrowd-ynab-2026-08-09",
+  "programme_id": "bugcrowd-ynab-public",
+  "retrieved_at": "2026-08-09T11:30:16Z",
+  "programme_record": "programme.json",
+  "sources": [
+    {
+      "id": "ynab-target-groups",
+      "kind": "scope_table",
+      "capture_mode": "operator_extract",
+      "url": "https://bugcrowd.com/engagements/ynab",
+      "retrieved_at": "2026-08-09T11:30:16Z",
+      "last_modified_at": "2026-03-05T21:41:59Z",
+      "path": "sources/ynab-target-groups.json",
+      "sha256": "sha256:db1d0590b1f5fb5c4bc2c5000d57e8b4ff1afc2f7db57687cb9542351b2f0964"
+    },
+    {
+      "id": "ynab-programme-brief",
+      "kind": "programme_policy",
+      "capture_mode": "operator_extract",
+      "url": "https://bugcrowd.com/engagements/ynab",
+      "retrieved_at": "2026-08-09T11:30:16Z",
+      "last_modified_at": "2026-03-05T21:41:59Z",
+      "path": "sources/ynab-programme-brief.md",
+      "sha256": "sha256:357d16587b79ecf806109bd3c245b4b72d0f35b020b16a395f2f9ecfd6eeb1dc"
+    },
+    {
+      "id": "bugcrowd-standard-disclosure",
+      "kind": "platform_default",
+      "capture_mode": "operator_extract",
+      "url": "https://www.bugcrowd.com/resources/hacker-resources/standard-disclosure-terms/",
+      "retrieved_at": "2026-08-09T11:30:16Z",
+      "path": "sources/bugcrowd-standard-disclosure.md",
+      "sha256": "sha256:799f15fa2c29b3429ec13d307b72cf798abe7b1f2457cf65ebc013385e940bf9"
+    }
+  ],
+  "precedence": [
+    "ynab-target-groups",
+    "ynab-programme-brief",
+    "bugcrowd-standard-disclosure"
+  ],
+  "field_sources": {
+    "in_scope": ["ynab-target-groups", "ynab-programme-brief"],
+    "out_of_scope": ["ynab-target-groups", "ynab-programme-brief"],
+    "prohibited_techniques": [
+      "ynab-programme-brief",
+      "bugcrowd-standard-disclosure"
+    ],
+    "max_authority": ["ynab-programme-brief"],
+    "policy_summary": [
+      "ynab-target-groups",
+      "ynab-programme-brief",
+      "bugcrowd-standard-disclosure"
+    ]
+  },
+  "derivations": [
+    {
+      "id": "ynab-target-group-record",
+      "kind": "bugcrowd_target_groups_json_v1",
+      "source_id": "ynab-target-groups",
+      "target_fields": ["in_scope", "out_of_scope"]
+    }
+  ],
+  "human_resolutions": [
+    {
+      "id": "owned-host-wildcard-vs-listed-targets",
+      "issue": "The programme prose describes YNAB-owned hosts broadly but later limits authorization to listed targets and excludes unlisted subdomains.",
+      "decision": "",
+      "source_ids": ["ynab-target-groups", "ynab-programme-brief"],
+      "status": "pending"
+    },
+    {
+      "id": "production-api-vs-production-exclusion",
+      "issue": "The public API prose mentions a production server while the target table lists only staging and the brief excludes production environments.",
+      "decision": "",
+      "source_ids": ["ynab-target-groups", "ynab-programme-brief"],
+      "status": "pending"
+    }
+  ]
+}

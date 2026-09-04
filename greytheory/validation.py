@@ -83,13 +83,24 @@ class Attestation:
     evidence_refs: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
+        if self.gate not in {
+            GateId.B_REPRODUCIBILITY,
+            GateId.C_IMPACT,
+            GateId.E_DUPLICATE_RISK,
+        }:
+            raise ValueError("only Gates B, C, and E may be human-attested")
         if not self.actor.strip():
             raise ValueError("an attestation must name who made it")
+        actor = self.actor.strip().lower()
+        if any(marker in actor for marker in ("model", "llm", "assistant", "claude", "openai")):
+            raise ValueError("a model may draft an attestation but cannot be its attester")
         if len(self.statement.strip()) < 20:
             raise ValueError(
                 "an attestation must describe what was actually done; a few "
                 "words is a checkbox, not a statement"
             )
+        if self.attested_at.tzinfo is None:
+            raise ValueError("an attestation time must be timezone-aware")
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -99,6 +110,16 @@ class Attestation:
             "attested_at": self.attested_at.isoformat(),
             "evidence_refs": list(self.evidence_refs),
         }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> Attestation:
+        return cls(
+            gate=GateId(data["gate"]),
+            actor=data["actor"],
+            statement=data["statement"],
+            attested_at=datetime.fromisoformat(data["attested_at"]),
+            evidence_refs=list(data.get("evidence_refs", [])),
+        )
 
 
 @dataclass(frozen=True)
@@ -125,12 +146,33 @@ class GateResult:
             "warnings": list(self.warnings),
         }
 
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> GateResult:
+        return cls(
+            gate=GateId(data["gate"]),
+            status=GateStatus(data["status"]),
+            kind=GateKind(data["kind"]),
+            reasons=list(data.get("reasons", [])),
+            warnings=list(data.get("warnings", [])),
+        )
+
 
 @dataclass
 class ValidationReport:
     finding_id: str
     results: list[GateResult]
     checked_at: datetime
+
+    def __post_init__(self) -> None:
+        if not self.finding_id.strip():
+            raise ValueError("a validation report must identify its finding")
+        gates = [result.gate for result in self.results]
+        if len(gates) != len(set(gates)):
+            raise ValueError("a validation report contains duplicate gates")
+        if set(gates) != set(GateId):
+            raise ValueError("a validation report must contain Gates B through F")
+        if self.checked_at.tzinfo is None:
+            raise ValueError("a validation report check time must be timezone-aware")
 
     @property
     def submission_ready(self) -> bool:
@@ -152,6 +194,14 @@ class ValidationReport:
             "submission_ready": self.submission_ready,
             "results": [r.to_dict() for r in self.results],
         }
+
+    @classmethod
+    def from_dict(cls, data: dict[str, Any]) -> ValidationReport:
+        return cls(
+            finding_id=data["finding_id"],
+            results=[GateResult.from_dict(item) for item in data.get("results", [])],
+            checked_at=datetime.fromisoformat(data["checked_at"]),
+        )
 
 
 def _attestation_for(
@@ -351,6 +401,15 @@ def gate_f_report_quality(draft: ReportDraft) -> GateResult:
 
     if not draft.authority_ref:
         reasons.append("no authority reference on the draft (I2)")
+
+    evidence_ids = set(draft.evidence_index)
+    for index, item in enumerate(draft.claim_matrix):
+        unknown = set(item.evidence_refs) - evidence_ids
+        if unknown:
+            reasons.append(
+                f"claim_matrix[{index}] cites evidence absent from the evidence index: "
+                + ", ".join(sorted(unknown))
+            )
 
     warnings: list[str] = []
     absolutes = draft.absolute_claims()

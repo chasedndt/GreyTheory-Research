@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-csrf",
+  "card_id": "csrf",
+  "title": "Request-intent boundary",
+  "description": "A synthetic state transition distinguishes authenticated context from explicit request intent.",
+  "mechanism": "request_intent_binding",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "same-context-with-intent", "role": "positive_control", "expected_property_held": true},
+    {"id": "cross-context-without-intent", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "missing-intent-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

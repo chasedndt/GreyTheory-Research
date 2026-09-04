@@ -1,6 +1,6 @@
 # ChaseOS Reconciliation
 
-Answers open question **O2** — does ChaseOS already own an approval layer, audit log, or knowledge graph that GreyTheory should import rather than duplicate?
+Historical reconciliation from 2026-08-06: does ChaseOS already own an approval layer, audit log, or knowledge graph that GreyTheory can adapt to rather than duplicate?
 
 **Answer: yes to all three.** Read on 2026-08-06 against `C:/Users/chaseos/Documents/Projects/chaseos-core`.
 
@@ -8,7 +8,7 @@ Answers open question **O2** — does ChaseOS already own an approval layer, aud
 
 | Capability | ChaseOS status | Location | GreyTheory decision |
 |---|---|---|---|
-| Approval request/response | **LIVE** | `runtime/operator_surface/approvals.py` — `ApprovalRequest`, `ApprovalResponse`, `ApprovalDenied`, `ApprovalTimeout` | **Import.** GreyTheory stores no approvals. |
+| Approval request/response | **LIVE** | `runtime/operator_surface/approvals.py` — `ApprovalRequest`, `ApprovalResponse`, `ApprovalDenied`, `ApprovalTimeout` | **Adapt.** Optional ChaseOS provider; standalone local provider remains first-class. |
 | Durable approval records | **LIVE** | `runtime/osril/approvals.py` — writes `<vault>/runtime/osril/approvals/<id>.response.json`, with duplicate-response rejection and pending-event matching | **Import.** Read via `ChaseOSApprovalStore`. |
 | Immutable approval record type | **LIVE** | `runtime/operator_surface/contracts.py` — `ApprovalRecord` | **Import.** Field names mirrored. |
 | Approval packets for subagents | **LIVE** | `runtime/subagents/approval_packet.py` | Not needed yet. |
@@ -25,7 +25,7 @@ Answers open question **O2** — does ChaseOS already own an approval layer, aud
 
 ## What GreyTheory did as a result
 
-It does **not** store approvals. `greytheory/authority/approvals.py` reads ChaseOS's OSRIL responses and adds three enforcement properties the decision record alone does not provide:
+In a ChaseOS-backed deployment, `greytheory/authority/approvals.py` reads ChaseOS OSRIL responses and adds three enforcement properties the decision record alone does not provide:
 
 - **Binding** — an approval covers one `action_type` on one `target`. Approval to read is not approval to delete, and an approval against one asset does not carry to another. An unbound approval covers nothing.
 - **Expiry** — 8-hour default window. Consent from last week is not consent now.
@@ -33,7 +33,9 @@ It does **not** store approvals. `greytheory/authority/approvals.py` reads Chase
 
 ### Coupling choice
 
-The ChaseOS store is read through its **filesystem contract**, not by importing `runtime.osril`. GreyTheory declares `ApprovalStore` as a `Protocol` and ships two implementations: `ChaseOSApprovalStore` and a `LocalApprovalStore` for standalone use.
+The ChaseOS store is read through its **filesystem contract**, not by importing `runtime.osril`. GreyTheory currently declares `ApprovalStore` as a `Protocol` and ships `ChaseOSApprovalStore` and `LocalApprovalStore`.
+
+The accepted 2026-08-09 product boundary is an explicit `ApprovalProvider` protocol with exactly one active provider per deployment. The current stores remain LIVE until that migration. Approvals must never be mirrored between providers. See [`../INTEGRATION_BOUNDARIES.md`](../INTEGRATION_BOUNDARIES.md) and ADR-0003.
 
 This keeps `greytheory` dependency-free and usable outside a ChaseOS vault, and means a ChaseOS refactor breaks a test here rather than the runtime. The cost is that the path and JSON field names are duplicated knowledge — `test_approvals.py::TestChaseOSStore` writes the format ChaseOS writes, so drift surfaces as a failing test.
 
@@ -49,5 +51,5 @@ This is logged as an internal trust-engineering transfer, exactly the Mission B 
 
 ## Still open
 
-- ~~O1 — Grapevine AI~~ **Cut.** No implementation was found and the source document admitted it had never seen one. Restated as Scope Watch in `roadmap.md` Phase 5.
-- **O3** — evidence storage location. ChaseOS uses `07_LOGS/` and a vault-root convention (`CHASEOS_VAULT_ROOT`, or the nearest ancestor containing `CLAUDE.md`). GreyTheory should probably follow the same convention for raw evidence rather than inventing a path.
+- ~~O1 — Grapevine AI~~ **Cut.** No implementation was found and the source document admitted it had never seen one. Restated as Scope Watch in roadmap Milestone 8.
+- ~~O3 — evidence storage location~~ **Resolved.** Standalone platform data root or optional `CHASEOS_VAULT_ROOT`, always outside repositories; see `evidence-policy.md`.

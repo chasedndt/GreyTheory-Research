@@ -1,34 +1,145 @@
 ﻿<p align="center">
-  <img src="assets/social/banner.png" alt="GreyTheory AI - proof-first security research control plane" width="100%">
+  <img src="assets/social/banner.png" alt="GreyTheory - research under authority, evidence by construction" width="100%">
 </p>
 
-# GreyTheory AI
-## Proof-First Security Research
-### GreyTheory AI × ChaseOS — Security Research Product Lane
+# GreyTheory
+## Security Research Operating System
+### From scope to proof.
 
-> **Status:** Incubation · local-only · proof-gated  
-> **Revision:** ChaseOS Security Research Product Lane foundation  
-> **Design philosophy:** The LLM reasons, triages, and explains. Deterministic tools gather signals and validate. Humans decide before anything consequential fires.
+> **Status:** Research · offline trust kernel live · productisation in progress · local-only
+>
+> **Operating posture:** `LOCAL_FIXTURE`; no live-target capability
+>
+> **Design philosophy:** AI creates and challenges theories. Deterministic checks and human judgement create proof.
 
-> **GreyTheory AI is a proof-first security research control plane. It converts authorisation into evidence — and refuses to move without either.**
+> **GreyTheory is a standalone, local-first, human-governed security research operating system for bug bounty and authorised security testing.**
 
-The canonical definition of this system lives in [`Docs/definition.md`](Docs/definition.md). **Where this README conflicts with it, the definition wins.** The sections below describe the Signal Plane (the four lanes) in detail; they are design material, not shipped capability.
+GreyTheory compiles programme rules into enforceable research boundaries, turns observations into falsifiable hypotheses and controlled experiments, and makes every session end in evidence, a defensible report, or reusable knowledge. Its three-plane control plane is the working trust kernel, not the entire product.
+
+The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md). [`Docs/scope-policy.md`](Docs/scope-policy.md) always wins on what may happen now.
 
 ### Capability status — read this before anything else
 
 | | |
 |---|---|
-| **Live** | The full path from authorisation to a validated report draft: programme registry, scope contract compiler, execution gate, operator approvals, hash-chained audit log, provenance triple, finding lifecycle, evidence vault, validation gates B–F, report studio, triage and earnings ledger, operator dashboard, and three static offline collectors (Lane 1 dependency manifests, Lane 2 local-tree exposure, Lane 4 agent/MCP config), offline OSV advisory import. 347 tests. |
-| **Designed** (build-ready, not built) | Dashboard read model |
-| **Aspirational** (architected, not build-ready) | Lane 3 collectors; curriculum and skill graph |
+| **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, two-phase owned-process worker assembly, and a launch-dark mutually authenticated encrypted-session protocol; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile key-provider candidate, and clean read-only WSL2 image-runtime candidate pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, worker identity-key provisioning, durable handshake replay state, carrier binding/security review, launcher, and every passive action remain open), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with two ready local packs, immutable synthetic fixture receipts, 24 interactive trajectory lessons, topic-owned roadmaps, and explicit human-assessed completion exist; the session/role pack and broader curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, bundled same-origin UI, Guided Mission Control, thirteen visible journeys, working Demo Suite, retained Research Ledger, contract-only public intelligence, accepted whole-application keyboard traversal, and accepted current-user lifecycle exist; signed/separate-account packaging and external intelligence fetching remain open). |
+| **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, remaining curriculum packs, accepted local-VM/reboot image conformance, and the VM carrier/key-provisioning layer for the passive worker's authenticated session protocol. |
+| **PLANNED** | Governed Scope Watch and public-intelligence collectors, network workers/live collectors, bug-bounty account connectors, and live research proof. |
 
-The full register is in [`Docs/definition.md`](Docs/definition.md#6-capability-register). No public claim may describe an Aspirational component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target. Network collectors need the posture ceiling raised above `LOCAL_FIXTURE`, and the runner refuses any lane declaring network I/O until they move outside the core package.
+The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
+
+### Workbench prototype
+
+![GreyTheory Case Pack 02 mission control research preview](Docs/assets/api-object-ownership-mission-current.png)
+
+| Object-authorization learning path | Three-control safe lab |
+| --- | --- |
+| ![API object authorization learning path with an exact 50-minute route](Docs/assets/api-object-ownership-learning-current.png) | ![Synthetic own-object, vulnerable teaching, and safe-denial controls](Docs/assets/api-object-ownership-lab-current.png) |
+
+| Agent-tool learning path | Read-only public intelligence |
+| --- | --- |
+| ![Prompt-injection learning path with focused note and checkpoint](Docs/assets/guided-learning-path-current.png) | ![Public intelligence contracts and query guardrails](Docs/assets/public-intelligence-current.png) |
+
+The operator selected **Guided Mission Control** as the learner shell. The
+preview now includes inspectable recommendations, a six-stage learner loop,
+two complete Learn/Practise/Prove/Reflect/Assess missions, scored practice
+checks that unlock practice without awarding mastery, focused ethical and
+technical lessons, an agent-security skill map, a
+deterministic local authorization lab, a case canvas, evidence-quality views,
+reflection, an independent readiness check, and a contract-only public
+intelligence catalogue. The 30-minute agent-tool case
+compares a consented local tool request with an indirect prompt-injection
+control; the injected instruction is denied before the tool adapter and neither
+path can contact a live target. The 50-minute API object-ownership case uses two
+synthetic accounts to compare an own-object read, a deliberately vulnerable
+cross-owner teaching path, and the same request denied by server-side ownership
+policy. It records actor, owner, object, action, result, and limitations without
+enumeration or external action.
+
+The Programmes journey also demonstrates how a versioned HackerOne, Bugcrowd,
+or direct-policy snapshot may become a human-reviewed synthetic learning case.
+Ambiguity remains blocked, imported text cannot grant authority, and the bridge
+does not fetch, contact, scan, or test programme assets.
+
+The earlier Research Ledger remains a first-class Research case view. The local
+service can now serve the built UI from its exact origin, accept bounded learner
+commands, run only the network-free synthetic fixture runner, and persist
+immutable receipts outside Git. Browser acceptance now proves that an assigned
+learning step survives a full same-origin reload and that route changes move
+visible focus into the selected workspace. Mobile navigation and the connection
+dialog now own, wrap, dismiss, and restore keyboard focus; compact navigation
+keeps accessible names, and a closed mobile drawer is inert. A separate
+development preview remains read-only. A reproducible wheel with the bundled UI
+has passed an empty-prefix Windows install plus a current-user lifecycle run
+covering shortcut configuration, real same-origin learning persistence,
+  restart, same-wheel upgrade, and replaceable-runtime recovery. A repeatable
+  browser gate now accepts first-Tab skip navigation, all thirteen routes,
+  Cases tabs, modal/mobile focus boundaries, and a no-error console. A genuinely
+  separate Windows-account run and release signing remain open. Ubuntu full-service no-route host acceptance now
+passes without enabling passive operation. The selected
+composition and acceptance evidence are documented in
+[`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md).
 
 ### Quickstart
 
 ```bash
 pip install -e ".[dev]" && python -m pytest -q
 ```
+
+Launch the Windows-first local application foundation. Its default private root
+is under the current user's local app-data
+directory and it binds only to `127.0.0.1`:
+
+```bash
+greytheory-workbench
+```
+
+The launcher prints a one-process session token. To permit the local preview to
+read snapshots, opt in to its exact numeric-loopback origin:
+
+```bash
+greytheory-workbench --ui-origin http://127.0.0.1:4173
+```
+
+This exception admits authenticated `GET /api/v1/snapshot` only. Cross-origin
+commands remain disabled, the token is held in browser memory only, and no
+target-network capability is enabled.
+
+To serve the built learner UI from the same numeric-loopback origin and enable
+only its bounded local learner commands:
+
+```bash
+npm --prefix workbench_ui run build
+greytheory-workbench --ui-root workbench_ui/dist/client
+```
+
+Release-oriented Windows builds include that UI automatically. Build a wheel
+into a unique E: evidence directory, or run the isolated install acceptance:
+
+```powershell
+& .\scripts\build-windows-package.ps1
+& .\acceptance\run-windows-packaged-workbench.ps1
+& .\scripts\install-windows-user.ps1
+& .\acceptance\run-windows-user-install.ps1
+& .\acceptance\run-windows-dpapi-root-kek.ps1
+```
+
+The first acceptance uses an empty install prefix. The second creates a
+current-user virtual environment and Start Menu-shaped shortcut, sends a real
+bounded learning command, and proves its private state survives restart,
+same-wheel upgrade, and application-runtime recovery. Both retain exact-process
+ownership, keep acceptance tokens out of stdout, and never enable a
+target-network posture. The DPAPI harness separately proves a candidate
+operator-side root-key provider across restart and protected-copy recovery in
+the same Windows profile. It does not approve the provider, ACL hardening,
+cross-profile disaster recovery, a posture change, or live-programme operation.
+The workbench lifecycle is also not yet proof from a genuinely separate user
+account, a signed installer, or uninstall.
+
+The future live-programme adapter remains dark. Its required authority fields
+and five activation gates are documented in
+[`Docs/live-programme-transition.md`](Docs/live-programme-transition.md).
 
 Compile a deliberately broken programme and watch it fail closed:
 
@@ -56,6 +167,43 @@ python -m greytheory.cli review contract.json --reviewer chase
 python -m greytheory.cli check contract.json --asset app.mock-verified.test    # ALLOW
 ```
 
+Compile the first real saved public programme bundle entirely offline:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/hackerone-gitlab-2026-08-09
+```
+
+This records the HackerOne platform exclusions, GitLab programme-policy extract,
+and official 44-row scope CSV as one semantic source set. It finishes at
+`PENDING_REVIEW`, carries a `LOCAL_FIXTURE` ceiling, and performs no network I/O.
+
+The second proof captures YNAB's public Bugcrowd target groups and policy extracts:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/bugcrowd-ynab-2026-08-09
+```
+
+This command intentionally exits blocked. The saved target rows derive exactly,
+but broad-owned-host and production-API wording conflict with narrower target and
+production exclusions. Only a human can record those decisions.
+
+The third proof captures the MCP Python SDK's independently maintained security policy:
+
+```bash
+python -m greytheory.cli --audit build/audit.jsonl programme \
+  --registry build/contracts register-bundle \
+  fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09
+```
+
+Its immutable verbatim `SECURITY.md` derives two supported release lines and one
+unsupported class from the observed Markdown table. It finishes at
+`PENDING_REVIEW`, carries a `LOCAL_FIXTURE` ceiling, and grants no authority to
+test the SDK or any deployed service.
+
 Scope is not inherited, and the operating posture caps what any contract can grant:
 
 ```bash
@@ -74,21 +222,107 @@ python -m greytheory.cli audit-verify
 
 Every one of those decisions — allows and denials alike — is in the audit log, chained so a later edit is detectable.
 
+Run the first complete research slice against the deliberately vulnerable,
+in-memory two-account fixture. The run directory must be private and outside a
+Git working tree because it contains raw evidence:
+
+```bash
+python -m greytheory.cli demo local-two-account \
+  --root <private-directory-outside-git> \
+  --attestations <explicit-operator-statements.json>
+```
+
+This compiles saved training rules, requires an explicit operator review and
+attestation record, creates two
+controlled identities and synthetic objects, admits one read through the gate,
+issues action and deterministic check receipts, stores raw/redacted evidence,
+passes validation gates B-F, and produces a `report_ready` draft, postmortem,
+and proposed card update. It performs no network I/O and does not submit.
+The shipped `test-attestations.json` is labelled `test_fixture`; it exercises
+the contract but is not evidence that a human made those judgements.
+
+Inspect and verify the Milestone 5 learning catalogue entirely offline:
+
+```bash
+python -m greytheory.cli learning catalogue
+python -m greytheory.cli learning verify
+python -m greytheory.cli learning status --root <private-directory-outside-git>
+python -m greytheory.cli learning plan --root <private-directory-outside-git>
+python -m greytheory.cli learning journey-start --root <private-directory-outside-git> --journey-id <safe-id>
+```
+
+The catalogue contains reflected/stored/DOM XSS, SQL injection, CSRF, SSRF,
+IDOR/BOLA, BFLA, session-management, business-logic authorisation, indirect
+prompt-injection, and tool-authorisation cards. Every card has a falsifiable
+hypothesis template, minimum evidence roles, and a distinct synthetic fixture
+with positive and negative controls. Fixture receipts explicitly prove no real
+vulnerability and award no mastery. Mastery changes only through an explicit,
+evidence-bound human assessment across `explain`, `recognise`, `test`, `prove`,
+`remediate`, and `transfer`; personal mastery state is refused inside Git by
+default.
+
+The planner routes unmet prerequisites, prioritises due evidence-bound reviews,
+and guides one private journey through Learn, Practise, Prove, Reflect, and
+Assess. Human assessments default to the inspectable adaptive review policy;
+`--review-due` remains an explicit override. `--track standard`, `assisted`, or
+`transfer` selects the bounded journey contract. Assisted guidance cannot
+evidence mastery above assisted; transfer requires independent test/prove
+foundations plus `--transfer-context-ref` evidence from a distinct local
+context. Stage progression requires a synthetic fixture receipt, evidence
+references, a written reflection, and finally an already persisted human
+`MasteryAssessment`. Journey completion itself awards no mastery. Use
+`learning journey-status`, `learning journey-advance`, and
+`learning journey-abandon` to operate the same contract without a graphical UI.
+
+Verify the Milestone 6 ranking contract against a synthetic local workspace:
+
+```bash
+python -m greytheory.cli hypothesis verify
+```
+
+Rank an existing private workspace with its bound contract and explicit
+operator assessments:
+
+```bash
+python -m greytheory.cli hypothesis rank \
+  --root <private-research-root-outside-git> \
+  --workspace <workspace-id> \
+  --contract <verified-contract.json> \
+  --assessments <ranking-inputs.json> \
+  --out <private-queue.json>
+```
+
+The engine derives scope confidence, evidence quantity, test cost, and
+side-effect risk from stored records. Likelihood, potential impact, duplicate
+risk, skill value, and target-specific novelty require explicit
+operator/test-fixture assessments with rationale, provenance, and uncertainty.
+Every factor is explained. Scores are ordinal decision support—not
+probabilities, severity, proof, findings, or execution authority—and hypotheses
+needing scope review are partitioned behind planning candidates.
+
 ### Diagrams
 
-Eight Mermaid diagrams — three planes, gate decision flow, contract compilation, finding lifecycle, provenance, authority levels, approvals, evidence — in [`Docs/diagrams.md`](Docs/diagrams.md).
+Twenty Mermaid diagrams — the trust-kernel flows plus the learning, transparent-ranking, learner-loop, public-intelligence, and launch-transition boundaries — are in [`Docs/diagrams.md`](Docs/diagrams.md). The current UI panel map and Windows-to-Ubuntu transition boundary are documented in [`Docs/workbench-architecture.md`](Docs/workbench-architecture.md).
 
 ### Documentation
 
+- [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md) — canonical identity and capability truth
+- [`DOMAIN_MODEL.md`](DOMAIN_MODEL.md) — research workspace, session, asset, identity, hypothesis, experiment, and receipt model
+- [`AUTONOMY_MODEL.md`](AUTONOMY_MODEL.md) — bounded autonomy and AI limits
+- [`THREAT_MODEL.md`](THREAT_MODEL.md) / [`DATA_POLICY.md`](DATA_POLICY.md) — pre-network threats and data handling
+- [`INTEGRATION_BOUNDARIES.md`](INTEGRATION_BOUNDARIES.md) — standalone, ChaseOS, worker, and provider boundaries
+- [`Docs/roadmap.md`](Docs/roadmap.md) — thirteen milestones and exit conditions
+- [`Docs/ai-native-learning-workbench.md`](Docs/ai-native-learning-workbench.md) — learner-first dashboard, agent-security track, visualisations, and launch transition
+
 [`Docs/system-overview.md`](Docs/system-overview.md) explains the whole architecture and why each part is shaped as it is — start there.
 
-[`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`Docs/definition.md`](Docs/definition.md) is canonical and outranks this file.
+[`Docs/README.md`](Docs/README.md) is the map, including which document wins when two disagree. The short version: [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md) is canonical for product truth, and [`Docs/scope-policy.md`](Docs/scope-policy.md) is authoritative for what may happen now.
 
 ### Standalone, with optional integration
 
 **GreyTheory runs on its own.** Zero runtime dependencies, standard library only, no external system required. `pip install` and it works.
 
-It also integrates. Where an approval system already exists, GreyTheory reads from it rather than keeping a parallel set of records — approvals recorded in one place and invisible to another are worse than either alone. `ChaseOSApprovalStore` is the first such adapter and reads ChaseOS's OSRIL records through their filesystem contract, not a Python import. Set `CHASEOS_VAULT_ROOT` and the evidence vault co-locates too.
+It also integrates. Today `ChaseOSApprovalStore` can read ChaseOS OSRIL records through their filesystem contract, while `LocalApprovalStore` supports standalone use. The accepted migration is one explicit `ApprovalProvider` protocol with exactly one active provider per deployment; approvals will not be mirrored. Set `CHASEOS_VAULT_ROOT` and the evidence vault co-locates too.
 
 Every integration point ships a self-sufficient default beside it: `LocalApprovalStore`, and a platform user-data evidence root. See [`Docs/chaseos-reconciliation.md`](Docs/chaseos-reconciliation.md).
 
@@ -103,6 +337,14 @@ Mark, wordmark, icons and social preview are in [`assets/`](assets/README.md), w
 ### Licence
 
 Apache-2.0. See [`LICENSE`](LICENSE) and [`NOTICE`](NOTICE).
+
+The recommended product boundary is an open, auditable trust kernel and local
+workbench, with operator evidence, credentials, programme-specific private
+state, signing material, and deployment secrets kept outside the repository.
+Before a wider public release, apply the current
+[OpenSSF OSPS Baseline](https://baseline.openssf.org/),
+enforce reviewed CI and dependency policy, and provide a tested private
+vulnerability-reporting route alongside [`SECURITY.md`](SECURITY.md).
 
 Nothing in this repository grants authority to test anything — see [`SECURITY.md`](SECURITY.md).
 
@@ -137,6 +379,10 @@ See:
 - [`Docs/discord-lane-map.md`](Docs/discord-lane-map.md)
 
 ---
+
+## Historical signal-lane design appendix
+
+The material below predates the implemented trust kernel and the 2026-08-09 productisation foundation. It is retained for lane-level research detail. Where it describes planned implementations, opt-in live validation, phases, or capability status, it is **HISTORICAL**, not authority to act and not evidence of shipped capability. Current truth is defined above and in `PROJECT_DEFINITION.md`.
 
 ## TABLE OF CONTENTS
 

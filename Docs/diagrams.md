@@ -57,7 +57,7 @@ flowchart TB
     style OP fill:#065f46,stroke:#10b981,color:#fff
 ```
 
-Scope Watch is dashed because it does not exist yet (`roadmap.md` Phase 5). The crossed link to Plane 2 is its boundary made visible: external intelligence informs what we *look at* and what we *ask*, never what we *touch*.
+Scope Watch is dashed because it does not exist yet (roadmap Milestone 8). The crossed link to Plane 2 is its boundary made visible: external intelligence informs what we *look at* and what we *ask*, never what we *touch*.
 
 ---
 
@@ -200,10 +200,12 @@ Two guards sit on that boundary:
 
 ```mermaid
 flowchart LR
-    OBS[observed<br/>a tool saw it] --> Q{Falsifiable<br/>check ran?}
-    INF[inferred<br/>a model believes it] --> Q
-    Q -->|yes, it could<br/>have failed| CHK[checked<br/>proven]
-    Q -->|no| REJ[ProvenanceError<br/>promotion refused]
+    OBS[observed<br/>a tool saw it] --> REG{Registered validator<br/>runs on exact bytes}
+    INF[inferred<br/>a model or human believes it] --> REG
+    REG -->|supported receipt<br/>matches assertion| USE{Receipt issued here<br/>and unused?}
+    REG -->|refuted or invalid| REJ[CheckError<br/>promotion refused]
+    USE -->|yes, consume once| CHK[checked<br/>proven]
+    USE -->|forged, changed,<br/>mismatched or replayed| REJ
 
     CHK --> RPT[eligible for<br/>report_ready]
     OBS -.->|never alone| RPT
@@ -213,7 +215,10 @@ flowchart LR
     style REJ fill:#7f1d1d,stroke:#ef4444,color:#fff
 ```
 
-A check that cannot fail proves nothing, so promotion demands `could_have_failed=True`. This is what stops model output from laundering itself into evidence.
+A check that cannot fail proves nothing. Promotion therefore consumes a
+successful, matching `CheckReceipt` issued by a registered validator whose
+declared outcomes include failure. Caller-created, modified, refuted,
+mismatched, and replayed receipts are refused.
 
 ---
 
@@ -498,3 +503,227 @@ flowchart TB
 Two things this shape prevents. **The rate has no other version** — there is no parameter to divide by only the hours that produced something, because that is exactly how bug bounty starts looking like a good hourly rate. And **months with no payout stay in the distribution**; dropping them is how a zero-income month becomes invisible and the median starts describing a fantasy.
 
 Income concentration is reported because when one payout dominates, the median is describing luck rather than a rate.
+
+---
+
+## 13. Vulnerability cards and the skill graph
+
+Implemented in [`greytheory/learning/`](../greytheory/learning/). Reference
+knowledge ships with the package; personal mastery state does not.
+
+```mermaid
+flowchart LR
+    CAT[(12-card catalogue<br/>versioned reference data)]
+    CARD[VulnerabilityCard<br/>hypothesis template<br/>minimum evidence<br/>review + revisions]
+    FIX[LocalTrainingFixture<br/>positive · vulnerable · negative]
+    RECEIPT[FixtureRunReceipt<br/>fixture + runner digests]
+    GRAPH[SkillGraph<br/>acyclic prerequisites]
+    DIMS[Six independent dimensions<br/>explain · recognise · test<br/>prove · remediate · transfer]
+    HUMAN[Explicit human assessment<br/>evidence · rationale · review date]
+    TEST[Test-fixture assessment]
+    STORE[(Private MasteryStore<br/>integrity + catalogue digest)]
+    NONE[No real-vulnerability proof<br/>No automatic mastery]
+
+    CAT --> CARD
+    CARD --> FIX
+    CARD --> GRAPH
+    FIX --> RECEIPT
+    RECEIPT --> NONE
+    GRAPH --> DIMS
+    HUMAN --> STORE
+    TEST -->|visible, non-crediting| STORE
+    STORE --> DIMS
+
+    style NONE fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style HUMAN fill:#065f46,stroke:#10b981,color:#fff
+    style STORE fill:#1e3a8a,stroke:#60a5fa,color:#fff
+```
+
+This shape prevents three silent promotions: a taxonomy mapping becoming
+evidence, a synthetic lab becoming a real finding, and task completion becoming
+mastery. Only a named, evidence-bound human assessment credits one dimension;
+the other five remain unchanged.
+
+---
+
+## 14. Transparent hypothesis ranking boundary
+
+Implemented in [`greytheory/hypothesis/`](../greytheory/hypothesis/). Ranking
+orders existing theories for human planning; it cannot plan or execute them.
+
+```mermaid
+flowchart LR
+    H[Existing Hypothesis<br/>draft · scoped · planned]
+    C[Verified ScopeContract<br/>current fingerprint]
+    W[ResearchWorkspace<br/>evidence + budgets + effects]
+    A[Explicit assessments<br/>likelihood · impact · duplicate risk<br/>skill value · novelty]
+    P[Versioned RankingPolicy<br/>nine factors · directions · weights]
+    E[Deterministic ranker<br/>explain every contribution]
+    SR[Scope-review partition<br/>fail closed]
+    Q[Private ResearchQueue<br/>unproven · integrity bound]
+    OP[Human selects next planning work]
+    NO[No action request<br/>No receipt · No finding<br/>No execution authority]
+
+    H --> E
+    C --> E
+    W --> E
+    A --> E
+    P --> E
+    E -->|scope basis incomplete| SR
+    E -->|scope basis current| Q
+    SR --> Q
+    Q --> OP
+    Q --> NO
+
+    style SR fill:#78350f,stroke:#f59e0b,color:#fff
+    style Q fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style NO fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style OP fill:#065f46,stroke:#10b981,color:#fff
+```
+
+The four record-derived factors are scope confidence, evidence quantity, test
+cost, and side-effect risk. The five explicit factors must identify their source
+and uncertainty. The resulting number is an ordinal queue score only: it cannot
+be reinterpreted as likelihood of a vulnerability, severity, proof, or
+permission to act.
+
+---
+
+## 15. AI-native learner loop
+
+The learner-facing workbench begins with one next safe mission and makes every
+transition inspectable. AI can explain and critique; it cannot execute, check
+evidence, or award mastery.
+
+```mermaid
+flowchart LR
+    TODAY["Today: one next safe mission"] --> LEARN["Learn: concept and boundaries"]
+    LEARN --> PRACTISE["Practise: synthetic local fixture"]
+    PRACTISE --> PROVE["Prove: evidence and receipt"]
+    PROVE --> REFLECT["Reflect: limits and lesson"]
+    REFLECT --> ASSESS["Assess: explicit human judgement"]
+    ASSESS --> TRANSFER["Transfer: distinct local context"]
+    TRANSFER --> TODAY
+
+    AUTH["Authority envelope\nLOCAL_FIXTURE · no live targets"] --> TODAY
+    AUTH --> PRACTISE
+    AUTH --> PROVE
+    COACH["AI coach\nexplain · question · critique"] -. advisory .-> LEARN
+    COACH -. advisory .-> REFLECT
+    COACH -. "cannot execute or award mastery" .-> ASSESS
+
+    style AUTH fill:#78350f,stroke:#f59e0b,color:#fff
+    style COACH fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style ASSESS fill:#065f46,stroke:#10b981,color:#fff
+```
+
+---
+
+## 16. Pilot launch and worker transition
+
+The learner pilot starts on the Windows operator workstation. Ubuntu becomes an
+isolated worker only after local acceptance; a VPS is a later availability
+choice, not a shortcut around host, key, egress, receipt, or posture gates.
+
+```mermaid
+flowchart LR
+    WIN["Windows operator workstation\nWorkbench + local service + offline core"]
+    FIX["Controlled local fixtures\nLOCAL_FIXTURE"]
+    VM["Ubuntu 24.04 local VM\nacceptance only"]
+    VPS["Ubuntu VPS\nscheduled passive availability"]
+    LIVE["PASSIVE_HTTP\none ticket · one target · one receipt"]
+
+    WIN --> FIX
+    FIX -->|"learner pilot accepted"| VM
+    VM -->|"host, egress, key and receipt gates pass"| VPS
+    VPS -->|"explicit posture approval"| LIVE
+    LIVE -. "receipt + encrypted capture" .-> WIN
+
+    style FIX fill:#065f46,stroke:#10b981,color:#fff
+    style VM fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style VPS fill:#78350f,stroke:#f59e0b,color:#fff
+    style LIVE fill:#7f1d1d,stroke:#ef4444,color:#fff
+```
+## 17. Case-pack learner loop and live-programme boundary
+
+```mermaid
+flowchart LR
+    Goal["Learner goal"] --> Planner["Inspectable recommendation"]
+    Planner --> Pack["Versioned case pack"]
+    Pack --> Learn["Learn"]
+    Learn --> Practise["Practise in LOCAL_FIXTURE"]
+    Practise --> Receipt["Immutable synthetic receipt"]
+    Receipt --> Prove["Prove with limitations"]
+    Prove --> Reflect["Reflect"]
+    Reflect --> Assess["Human assessment"]
+    Assess --> Transfer["Independent transfer"]
+    Pack -. "dark compatibility fields" .-> Live["Future programme adapter"]
+    Live -. "requires all five gates" .-> Worker["Ubuntu passive worker"]
+```
+
+## 18. Five-gate transition to a passive pilot
+
+```mermaid
+flowchart TB
+    Current["LOCAL_FIXTURE research preview"] --> W["1. Windows installed acceptance"]
+    W --> U["2. Ubuntu full-worker acceptance"]
+    U --> E["3. Durable egress and key-provider acceptance"]
+    E --> P["4. One verified programme review"]
+    P --> H["5. Explicit human posture approval"]
+    H --> Pilot["PASSIVE_HTTP pilot: one programme, one action type"]
+    VPS["Optional VPS deployment"] -. "only after local image acceptance" .-> Pilot
+```
+
+## 19. Interactive topic progression
+
+```mermaid
+flowchart LR
+    Topic["Selected topic"] --> Note["Topic-owned focused note"]
+    Note --> Lens["Traditional + AI lenses"]
+    Lens --> L1["1 · Beginner orientation"]
+    L1 --> L2["2 · Foundation mapping"]
+    L2 --> L3["3 · Applied local controls"]
+    L3 --> L4["4 · Independent transfer"]
+    L3 --> Receipt["Synthetic evidence receipt"]
+    Receipt --> Review["Human assessment"]
+    Click["Trajectory click"] -. "previews path only" .-> L4
+    Click -. "cannot award" .-> Review
+
+    style Topic fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style Receipt fill:#065f46,stroke:#10b981,color:#fff
+    style Review fill:#78350f,stroke:#f59e0b,color:#fff
+```
+
+## 20. Public intelligence boundary
+
+```mermaid
+flowchart LR
+    UI["Workbench Intelligence panel"] --> Plan["CONTRACT_ONLY request plan"]
+    Plan --> Validate["CVE or versioned package validation"]
+    Validate --> Registry["OSV · CISA KEV · EPSS · NVD · GitHub Advisories"]
+    Registry -. "future accepted worker" .-> Fetch["Read-only fetch + bounded cache"]
+    Fetch --> Source["Immutable source + retrieval evidence"]
+    Source --> Offline["Offline enrichment and learning"]
+    Offline -. "never becomes" .-> Proof["Live finding proof"]
+    Target["Hostname · target · scan · exploit input"] --> Deny["Fail closed"]
+    Account["HackerOne / Bugcrowd credentials"] -. "server-side gate only" .-> Fetch
+
+    style Plan fill:#1e3a8a,stroke:#60a5fa,color:#fff
+    style Source fill:#065f46,stroke:#10b981,color:#fff
+    style Deny fill:#7f1d1d,stroke:#ef4444,color:#fff
+    style Proof fill:#7f1d1d,stroke:#ef4444,color:#fff
+```
+
+## 21. Ubuntu exact-egress candidate and remaining image gate
+
+```mermaid
+flowchart LR
+    Packages["Hash-locked Ubuntu nftables packages\nE: tool cache"] --> Temp["Owned temporary tool root\nno WSL install"]
+    Temp --> Policy["Fresh network namespace\ndefault drop: input · forward · output"]
+    Policy --> Exact["Only 8.8.8.8:443 TCP\nowned synthetic canary"]
+    Exact --> Worker["UID/GID 65534\nzero caps · no-new-privileges"]
+    Worker --> Proof["Encrypted capture · signed receipt\nreplay complete · clean exit"]
+    Wrong["Wrong port · decoy address · IPv6"] --> Deny["Counted OS deny rule"]
+    Deny --> Proof
+    Proof -. "candidate only" .-> Image["Reproducible read-only Ubuntu image\nmandatory policy admission · still open"]
+```

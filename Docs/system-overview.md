@@ -1,8 +1,8 @@
 # System Overview
 
-The whole architecture in one document, written at the point where the path runs end to end: authorisation in, evidence out, with a human gate at every consequential step.
+The implemented trust kernel in one document: authorisation in, evidence out, with a human gate at every consequential step.
 
-For the canonical definition read [`definition.md`](definition.md). This explains how the parts actually fit together and *why they are shaped the way they are*.
+For canonical product identity and capability truth read [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md). This document explains how the currently implemented kernel fits together and *why it is shaped this way*.
 
 ---
 
@@ -35,6 +35,12 @@ AUTHORITY  (root, fail-closed)  — may this happen at all?
 
 Authority is the root because it is the only plane whose failure is unrecoverable. A missed vulnerability is a lost opportunity; an unauthorised request is a legal and reputational event. So the plane that can cause the worse failure sits above the ones that can cause the lesser.
 
+### Product category and layers
+
+GreyTheory is now defined as a **Security Research Operating System**. The planes remain its ranked trust architecture. Product layers — programme intelligence, research workspaces, asset graphs, knowledge, hypotheses/experiments, execution, evidence/reporting, outcomes/learning, and the workbench — describe what the researcher will use around those planes.
+
+Planes answer what may be trusted. Layers answer what the product can do. No layer may weaken a plane. See [`../DOMAIN_MODEL.md`](../DOMAIN_MODEL.md) and [`roadmap.md`](roadmap.md).
+
 **Signal is deliberately demoted.** The four lanes — known-vuln, exposure, web, AI-app — are collectors, not the product. Anyone can run a scanner. What is defensible is the authority, provenance and judgement wrapped around it. A lane observes and emits; it may not promote its own output past `contextual`.
 
 **Judgement is where the human sits.** This is what stops the system being a scanner with a chat interface: a finding cannot leave without a person having understood it well enough to attest to it.
@@ -52,13 +58,17 @@ Everything else is an implementation detail. These are not.
 | I5 | The system records programme outcomes; it never asserts them | A tool congratulating itself on a finding nobody accepted |
 | I6 | Zero-yield hours are recorded at the same fidelity as payouts | A ledger that only counts wins, and the false hourly rate that follows |
 
-I1 is the load-bearing one. `promote_to_checked(check_ref, could_have_failed=True)` looks unremarkable until you notice that a check which cannot fail proves nothing — and that this is the exact shape of every "the model reviewed it and agreed" workflow.
+I1 is the load-bearing one. A registered validator declares real failure
+outcomes, runs on exact byte artifacts, and issues a single-use `CheckReceipt`.
+Only that registry can consume the successful receipt to promote its exact
+assertion. This blocks the exact shape of every “the model reviewed it and
+agreed” workflow.
 
 ## 5. The path, end to end
 
 ```
-Programme rules (read by a human)
-  → Scope Compiler        fails closed on ambiguity; hashes the source
+Programme source bundle (saved locally; read by a human)
+  → Scope Compiler        fails closed on ambiguity; hashes every source and the bundle
   → PENDING_REVIEW        a clean compile grants nothing
   → Human review          → VERIFIED
   → Gate                  17 denial paths, 1 allow, every outcome audited
@@ -82,7 +92,7 @@ It does not try to parse programme prose intelligently. It looks for reasons to 
 
 A clean compile produces `PENDING_REVIEW`, never `VERIFIED`. **The compiler cannot grant authority — only a human can.** And review cannot rescue a blocked contract; that requires fixing the source and recompiling. Review confirms a clean compile was read. It does not resolve ambiguity.
 
-The source hash means a later re-read proves whether the rules changed, without storing the page.
+The single-source path retains its original source hash. The multi-source path records capture mode, public URL, retrieval/source-update time, an integrity hash per saved source, high-to-low precedence, per-field citations, any human conflict resolutions, and one semantic whole-bundle snapshot/hash. Registry review attaches to that complete snapshot, so changing any source or governing metadata invalidates review. Bundle loading and compilation perform no network I/O.
 
 ### The Gate — seventeen ways to say no
 
@@ -138,6 +148,8 @@ Integrations read foreign **filesystem contracts**, never foreign Python package
 |---|---|---|
 | Approvals | `LocalApprovalStore` | `ChaseOSApprovalStore` (OSRIL records) |
 | Evidence root | Platform user-data directory | `CHASEOS_VAULT_ROOT` |
+| Research root | Platform user-data directory | `GREYTHEORY_RESEARCH_ROOT` or `CHASEOS_VAULT_ROOT` |
+| Mastery root | Platform user-data directory | `GREYTHEORY_LEARNING_ROOT` |
 
 So an upstream refactor breaks a test here, not the runtime.
 
@@ -153,13 +165,16 @@ This is why the provenance triple is worth its cost. With it, an LLM can touch e
 
 Stated plainly, because the failure mode of an architecture document is implying completeness:
 
-- **No lane is implemented.** The system currently detects nothing. What works is the part that decides whether anything may run.
+- **No live-target lane is implemented.** Three static collectors read local dependency manifests, local trees, and agent/MCP configuration. They do not establish reachability or touch a target.
 - **No submission path.** By design. Submitting, contacting triage, and disclosing are operator acts.
-- **No programme registry, curriculum, skill graph, earnings ledger, or dashboard.**
-- **Scope Watch does not exist.** Nothing notices a programme edit until you re-register it.
+- **The only complete research execution vertical slice is local and synthetic.** The deliberately vulnerable in-memory two-account fixture connects structured research records to an audited gate allow, one action/receipt, observation, validator-issued proof, evidence, validation, reporting, postmortem, and a card proposal. Its BOLA learning pattern is now represented by a labelled `test_fixture` card revision. It is not a network broker or live research proof.
+- **The knowledge/skill core and transparent ranking engine are live offline.** Twelve versioned cards, twelve synthetic fixtures, an acyclic skill graph, evidence-bound six-dimensional mastery records, deterministic guidance, transparent adaptive review, bounded standard/assisted/transfer journeys, a graphical 24-lesson Learn flow, and an explained nine-factor unproven-hypothesis queue exist. Fixture completion and journeys award no mastery; assisted work is capped at assisted mastery; transfer requires independent foundations and distinct-context evidence; ranking grants no proof or execution authority. Broader ready curricula and governed model-backed coach conversation remain open.
+- **Scope Watch comparison is offline only.** It compares captured local programme sources and invalidates review when they change or disappear, but nothing fetches an external programme edit. All three Milestone 2 source shapes exist offline: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB remains blocked on human policy decisions.
+- **The governed model gateway is offline only.** Its roles, citations, budgets, provenance, and adversarial evaluation are live through a deterministic local provider; no network model provider is configured.
+- **The passive broker is a dark foundation, not a network capability.** Ticket, policy, replay, rate, kill-switch, encrypted-capture, adapter-contract, primitive, and two-phase owned-process assembly layers exist. The bounded no-route Ubuntu 24.04.4 full-service harness passes. A namespace-lifetime nftables candidate now also defaults input/forward/output to drop, permits one exact owned synthetic address/port, counts denied bypass probes, and refuses unprivileged route/firewall mutation. Signed-input, two-build read-only image construction and strict runtime-admission code now exist without a passed host record. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile recovery but not hardened ACLs or independent recovery. There is still no accepted reproducible image-bound egress, launcher, scheduler, programme action, or `PASSIVE_HTTP` route.
 - **The posture ceiling is `LOCAL_FIXTURE`.** No external interaction is permitted at all right now.
 
-The capability register in [`definition.md`](definition.md#6-capability-register) governs every public claim.
+The capability truth in [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md#current-capability-truth) governs every public claim.
 
 ## 10. What the shape is for
 

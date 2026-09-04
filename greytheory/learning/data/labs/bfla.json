@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-bfla",
+  "card_id": "bfla",
+  "title": "Role-to-function boundary",
+  "description": "Two synthetic roles exercise one privileged function through allowed, missing-check, and denied paths.",
+  "mechanism": "function_role_authorization",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "privileged-role-function", "role": "positive_control", "expected_property_held": true},
+    {"id": "basic-role-privileged-function", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "basic-role-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

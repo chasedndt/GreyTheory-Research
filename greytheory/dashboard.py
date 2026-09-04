@@ -35,6 +35,7 @@ from typing import Any, Callable, Sequence
 
 from greytheory.audit import AuditLog
 from greytheory.authority.gate import AuthorityLevel, Reason
+from greytheory.capabilities import CAPABILITIES, CapabilityStatus
 from greytheory.evidence import EvidenceVault
 from greytheory.findings import Finding, Taxonomy
 from greytheory.ledger import InsufficientData, Ledger
@@ -455,9 +456,9 @@ def _capability_panel() -> Panel:
     panel.metrics.append(
         Metric(
             "Detection",
-            "none",
+            "offline static",
             Status.INFO,
-            "no Signal Plane lane is implemented; the system detects nothing",
+            "three local-file collectors are implemented; no web or network collector exists",
         )
     )
     panel.metrics.append(
@@ -465,19 +466,40 @@ def _capability_panel() -> Panel:
     )
     panel.columns = ["Component", "Status"]
     panel.rows = [
-        ["Programme registry", "live"],
-        ["Scope compiler", "live"],
-        ["Execution gate", "live"],
-        ["Operator approvals", "live"],
-        ["Audit log", "live"],
-        ["Evidence vault", "live"],
-        ["Validation gates B-F", "live"],
-        ["Report studio", "live"],
-        ["Triage + earnings ledger", "live"],
-        ["Lane 1-4 collectors", "not built"],
-        ["Curriculum / skill graph", "not built"],
-        ["Scope Watch", "roadmap"],
+        [item.label, item.status.value]
+        for item in CAPABILITIES
+        if item.id
+        in {
+            "programme_registry",
+            "scope_compiler",
+            "execution_gate",
+            "operator_approvals",
+            "audit_log",
+            "evidence_vault",
+            "validation_reporting",
+            "lane_1_dependency",
+            "lane_2_exposure",
+            "lane_3_web",
+            "lane_4_agent_config",
+            "learning_core",
+            "guided_learning",
+            "model_gateway",
+            "scope_watch_offline",
+            "scope_watch_collector",
+            "dashboard_read_model",
+            "graphical_workbench",
+            "local_fixture_executor",
+            "windows_dpapi_root_kek_candidate",
+            "passive_http_worker",
+        }
     ]
+    unavailable = sum(
+        1 for item in CAPABILITIES if item.status is CapabilityStatus.UNAVAILABLE
+    )
+    panel.note = (
+        f"{unavailable} capability boundaries are explicitly unavailable; "
+        "status describes shipped code, not configured runtime health."
+    )
     return panel
 
 

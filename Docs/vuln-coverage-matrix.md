@@ -1,79 +1,98 @@
 # Vulnerability Coverage Matrix
 
-**Coverage today: three static, offline collectors.** Everything else is a plan, not a capability claim.
+**Detection coverage today: three static, offline collectors. Learning coverage:
+twelve synthetic local fixtures.** A learning fixture is not a target collector,
+real-session example, or vulnerability claim.
 
-The implemented lanes read local files only. Nothing here touches a target: every network-based class below needs the operating posture ceiling raised above `LOCAL_FIXTURE`, which is an explicit operator decision.
+The implemented lanes read local files only. The card fixtures execute distinct
+in-memory security-property simulations with synthetic data and no network,
+browser, model, process, credential, or target. Every network-based class below
+still needs an explicit posture decision above `LOCAL_FIXTURE`.
 
-Read alongside the capability register in [`definition.md`](definition.md#6-capability-register).
+Read alongside the capability register in
+[`definition.md`](definition.md#6-capability-register).
 
 ## Legend
 
-| Mark | Meaning |
+| Status | Meaning |
 |---|---|
-| ⬛ | Not built |
-| ◐ | Designed to build-ready detail |
-| ✅ | Implemented and tested |
+| `NOT BUILT` | No current implementation |
+| `DESIGNED` | Specified to build-ready detail |
+| `STATIC` | Implemented local-file signal collector; no reachability claim |
+| `LOCAL LAB` | Synthetic card fixture implemented and tested; no target detection |
 
-Implemented: `lane1_dependency_manifest`, `lane2_exposure`, `lane4_agent_config`. All static and offline.
+Implemented collectors: `lane1_dependency_manifest`, `lane2_exposure`, and
+`lane4_agent_config`. Implemented labs: one distinct fixture for each of the 12
+Milestone 5 cards.
 
 ## Lane 1 — Known vulnerability
 
 | Class | Status | Deterministic check it would need | Notes |
 |---|---|---|---|
-| Version-matched CVE | ⬛ | Version string → CVE range match | Match alone is `contextual` at best; reachability is a separate proof |
-| Exposed known-vulnerable component | ⬛ | Fingerprint + reachable path confirmation | |
-| Default credentials | ⬛ | — | Requires `AUTHENTICATED`. Human-approved per instance, never swept |
-| Container / dependency CVE | ✅ | Manifest parse + advisory match | `lane1_dependency_manifest`. Emits *version matches*, never vulnerability claims |
+| Version-matched CVE | `STATIC` | Version string → CVE range match | `lane1_dependency_manifest`; match alone is `contextual`, never a vulnerability claim |
+| Exposed known-vulnerable component | `NOT BUILT` | Fingerprint + reachable path confirmation | Requires network posture |
+| Default credentials | `NOT BUILT` | Exact approved credential check | Requires `AUTHENTICATED`; human-approved per instance, never swept |
+| Container / dependency CVE | `STATIC` | Manifest parse + advisory match | Ecosystem-aware matching over imported OSV data; reachability is separate |
 
 ## Lane 2 — Exposure
 
 | Class | Status | Deterministic check it would need | Notes |
 |---|---|---|---|
-| Exposed `.env` / config | ✅ | Assignment shape + entropy, placeholders excluded | `lane2_exposure`, over a local tree. Reports *presence*, not reachability |
-| Exposed `.git` directory | ✅ | Directory presence in the granted tree | `lane2_exposure`. Also .svn, .hg, .bzr |
-| Open object storage | ⬛ | Listing response parse | Derived asset — needs independent scope, and network |
-| Secrets in JavaScript bundles | ✅ | Known credential formats + entropy | `lane2_exposure`. Records shape and a digest, never the value. Validation of a live secret remains `INTRUSIVE`, opt-in, never automatic |
-| Exposed backups / archives | ✅ | Suffix match; the file is never opened | `lane2_exposure` |
-| Debug endpoints, stack traces | ⬛ | Response signature | Usually `informational` alone |
+| Exposed `.env` / config | `STATIC` | Assignment shape + entropy, placeholders excluded | Local-tree presence, not reachability |
+| Exposed VCS directory | `STATIC` | Directory presence in the granted tree | `.git`, `.svn`, `.hg`, and `.bzr` |
+| Open object storage | `NOT BUILT` | Listing response parse | Derived assets need independent scope and network posture |
+| Secrets in JavaScript bundles | `STATIC` | Known credential formats + entropy | Records shape and digest, never the value; live validation remains intrusive |
+| Exposed backups / archives | `STATIC` | Suffix match | The file is never opened |
+| Debug endpoints and stack traces | `NOT BUILT` | Response signature | Usually informational alone |
 
 ## Lane 3 — Web vulnerability
 
 | Class | Status | Deterministic check it would need | Notes |
 |---|---|---|---|
-| Subdomain takeover | ⬛ | CNAME → unclaimed-service fingerprint | Binary proof model; intended first Lane 3 module |
-| IDOR / BOLA | ⬛ | Cross-account response comparison | The primary specialism. Needs two controlled accounts |
-| Broken function-level authorization | ⬛ | Role × endpoint matrix diff | |
-| Business logic / workflow abuse | ⬛ | State-machine invariant break | Hardest to automate, highest value |
-| Race conditions | ⬛ | Concurrent-request outcome divergence | |
-| SSRF | ⬛ | Owned callback receipt | Deferred; tightly controlled only |
-| XSS (reflected / stored / DOM) | ⬛ | Sink execution confirmation | Commodity class, high duplicate pressure |
-| SQL / NoSQL / command injection | ⬛ | Differential response or out-of-band signal | |
+| Subdomain takeover | `NOT BUILT` | CNAME → unclaimed-service fingerprint | Intended first binary-proof network module |
+| IDOR / BOLA | `LOCAL LAB` | Cross-account response + ownership oracle | Complete in-memory Milestone 4 slice and test-fixture-sourced card revision; no live collector |
+| Broken function-level authorisation | `LOCAL LAB` | Role × function matrix difference | Synthetic two-role property fixture only |
+| Business-logic authorisation | `LOCAL LAB` | State-machine invariant break | Synthetic reversible workflow fixture only |
+| CSRF | `LOCAL LAB` | Intent-bound state-change comparison | Synthetic reversible state fixture only |
+| Session-management weakness | `LOCAL LAB` | Before/after invalidation comparison | Opaque synthetic handles only |
+| SSRF | `LOCAL LAB` | Controlled destination-policy result | Dictionary-backed fixture; no socket, DNS, redirect, or callback |
+| Reflected / stored / DOM XSS | `LOCAL LAB` | Source/output-context control comparison | Three marker-only fixtures; no payload, browser, or target |
+| SQL injection | `LOCAL LAB` | Query-structure comparison | Read-only synthetic query construction; no database target |
+| Race conditions | `NOT BUILT` | Concurrent outcome divergence | No concurrency fixture or collector |
+| NoSQL / command injection | `NOT BUILT` | Controlled differential or out-of-band result | No card in the first Milestone 5 set |
 
 ## Lane 4 — AI-app vulnerability
 
-The differentiated lane, and the one where agent-harness work is an advantage rather than table stakes.
-
 | Class | Status | Deterministic check it would need | Notes |
 |---|---|---|---|
-| Indirect prompt injection with consequence | ✅ | Untrusted content → privileged action trace | `lane4_agent_config` detects the *shape* statically: fetch-capable tools plus ungated consequential tools in one context |
-| Tool authorization bypass | ✅ | Wildcard permissions in config | `lane4_agent_config`, statically |
-| Approval-gate bypass | ✅ | Consequential tool with no approval requirement | `lane4_agent_config`. Directly transferable to ChaseOS |
-| Cross-tenant context leakage | ⬛ | Tenant A data in a tenant B response | |
-| Memory poisoning | ⬛ | Persisted untrusted claim reaching a privileged prompt | |
-| Insecure MCP transport or permissions | ✅ | Plaintext scheme to a non-loopback host | `lane4_agent_config` |
-| Excessive agency | ⬛ | Action taken beyond declared scope | |
-| Audit tampering | ⬛ | Chain verification failure | GreyTheory's own audit log is the reference implementation |
+| Indirect prompt injection with consequence | `STATIC + LOCAL LAB` | Untrusted content → privileged action trace | Static risky-shape signal plus model-free instruction/data fixture; neither proves a live consequence |
+| Tool-authorisation failure | `STATIC + LOCAL LAB` | Exact decision/action/target/effect binding | Static wildcard/ungated signal plus no-effect one-use-ticket fixture |
+| Approval-gate bypass | `STATIC` | Consequential tool with no approval requirement | `lane4_agent_config`; no tool is invoked |
+| Insecure MCP transport or permissions | `STATIC` | Plaintext scheme to a non-loopback host | Configuration signal only |
+| Cross-tenant context leakage | `NOT BUILT` | Tenant A data in a tenant B response | Requires explicit AI asset and account authority |
+| Memory poisoning | `NOT BUILT` | Persisted untrusted claim reaching privileged context | |
+| Excessive agency | `NOT BUILT` | Action beyond declared scope | |
+| Audit tampering | `NOT BUILT` as target test | Chain-verification failure | GreyTheory's own audit log is the local control reference |
 
 ## Deprioritised regardless of lane
 
-Low-signal classes that will not enter the hypothesis queue unless a programme explicitly rewards them and impact is demonstrable: missing security headers, version disclosure, self-XSS, generic open redirect, absent rate limiting with no consequence, CORS on non-sensitive endpoints, clickjacking without a meaningful action, and scanner-only outdated-library reports.
+Low-signal classes do not enter the future hypothesis queue unless a programme
+explicitly rewards them and impact is demonstrable: missing security headers,
+version disclosure, self-XSS, generic open redirect, absent rate limiting with
+no consequence, CORS on non-sensitive endpoints, clickjacking without a
+meaningful action, and scanner-only outdated-library reports.
 
 ## Build order
 
-1. ~~Deterministic, static, no network~~ — **done.** `lane1_dependency_manifest`, `lane4_agent_config`.
-2. ~~Local fixture lanes~~ — **done.** `fixtures/lab/vulnerable-agent` and `clean-agent`.
-3. ~~Secrets and exposure over local trees~~ — **done.** `lane2_exposure`.
-4. Binary-proof network lane — subdomain takeover.
-5. Authorization lanes — IDOR/BOLA against a controlled multi-account target.
+1. Deterministic, static, no network — **done**.
+2. Agent and exposure local fixtures — **done**.
+3. Local-tree exposure lane — **done**.
+4. Twelve vulnerability-card property fixtures and skill graph — **done**.
+5. Binary-proof network lane — subdomain takeover.
+6. Live authorisation lanes — only against a separately authorised,
+   controlled multi-account target.
 
-Steps 4 onward require the posture ceiling to be raised above `LOCAL_FIXTURE`. That is a separate, explicit operator decision, and the runner refuses any lane declaring network I/O until collectors move outside the core package.
+Steps 5 onward require the posture ceiling to be raised above `LOCAL_FIXTURE`.
+That is a separate operator decision, and the runner refuses any lane declaring
+network I/O until collectors move outside the core package and every threat-model
+precondition is tested.

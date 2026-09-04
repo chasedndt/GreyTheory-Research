@@ -1,0 +1,55 @@
+{
+  "id": "business-logic-authorization",
+  "version": "1.0.0",
+  "name": "Business-logic authorization failure",
+  "aliases": ["workflow authorization bypass", "business rule bypass"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-841", "url": "https://cwe.mitre.org/data/definitions/841.html"},
+    {"framework": "CWE", "reference": "CWE-862", "url": "https://cwe.mitre.org/data/definitions/862.html"},
+    {"framework": "OWASP WSTG", "reference": "WSTG-BUSL", "url": "https://owasp.org/www-project-web-security-testing-guide/stable/4-Web_Application_Security_Testing/10-Business_Logic_Testing/README"}
+  ],
+  "mental_model": "The application authorizes isolated endpoints but fails to enforce who may perform a transition, in what order, and under which business preconditions.",
+  "security_property": "Every business transition must enforce actor authority, current state, invariants, and one-time constraints on the server.",
+  "root_causes": ["Workflow state trusted from the client", "Authorization omitted from an alternate transition path", "One-time or sequencing invariant not enforced atomically"],
+  "application_shapes": ["Checkout, credits, and discounts", "Invitations, approvals, and onboarding", "Quota, voting, and one-time workflows"],
+  "prerequisite_card_ids": ["idor-bola", "bfla"],
+  "prerequisite_skills": ["State-machine modelling", "Actor-role-object matrices", "Reversible transaction design"],
+  "signals": ["A later step is reachable before a required earlier step", "An alternate route bypasses the same business check", "Replay changes synthetic state more than once"],
+  "hypothesis_templates": [
+    {
+      "id": "workflow-transition-boundary",
+      "statement": "When {actor} requests {transition} from {current_state} without {required_precondition}, {application} may produce {controlled_effect}.",
+      "variables": ["actor", "transition", "current_state", "required_precondition", "application", "controlled_effect"],
+      "preconditions": ["The workflow and data are entirely synthetic", "The effect is reversible and strictly budgeted"],
+      "expected_safe_behaviour": "The server denies the transition and leaves state unchanged.",
+      "expected_vulnerable_behaviour": "The transition succeeds despite the missing business precondition.",
+      "falsifier": "Every alternate path enforces the same precondition atomically.",
+      "stop_conditions": ["The action has financial or third-party effect", "The state cannot be restored", "The business rule is ambiguous"]
+    }
+  ],
+  "safe_test_pattern": "Model one synthetic workflow, take before/after state snapshots, attempt one missing-precondition transition, and compare a permitted transition plus fail-closed denial.",
+  "positive_controls": ["A transition with every required precondition succeeds once"],
+  "negative_controls": ["The missing-precondition transition is denied with state unchanged"],
+  "falsifiers": ["The documented rule permits the transition", "Server state remains unchanged across every alternate path"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Before/after synthetic workflow state and exact transition receipt.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Actor, state, precondition, and permitted-transition model.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Permitted-transition positive control and missing-precondition denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Repeat from reset synthetic state with identical transition budget.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the exact synthetic state invariant violated.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["An undocumented but intended workflow", "Client display differs while server state remains correct", "A race or cache artifact not reproduced from clean state"],
+  "impact_boundaries": ["Unexpected ordering does not itself prove unauthorized impact", "Synthetic state change does not prove financial or production effect"],
+  "minimum_impact_rules": ["Use synthetic, reversible state only", "Perform one transition and restore state", "Never create financial, inventory, communication, or third-party effects"],
+  "remediation": ["Enforce workflow invariants server-side and atomically", "Centralize transition authorization", "Make one-time operations idempotent and replay-resistant"],
+  "programme_policy_considerations": ["Confirm business-logic testing methods and rate limits", "Avoid financial or resource consumption effects", "Seek clarification when the intended rule is ambiguous"],
+  "local_fixture": {"id": "fixture-business-logic-authorization", "relative_path": "labs/business-logic-authorization.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial state-transition authorization card and reversible workflow fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-841", "CWE:CWE-862", "OWASP-WSTG:WSTG-BUSL"]}
+  ]
+}

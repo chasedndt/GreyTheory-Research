@@ -20,7 +20,7 @@ nothing and is rejected here rather than downstream.
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 from enum import Enum
 
 
@@ -71,30 +71,6 @@ class Claim:
     def is_proven(self) -> bool:
         """Only ``checked`` claims are proven. Observation is not proof."""
         return self.tag is Tag.CHECKED
-
-    def promote_to_checked(self, check_ref: str, *, could_have_failed: bool) -> Claim:
-        """Promote this claim to ``checked``.
-
-        Args:
-            check_ref: Identifier of the deterministic check that ran.
-            could_have_failed: Whether the check had a reachable failure path.
-                A check that cannot fail is not evidence, and promoting on one
-                would let inference launder itself into proof.
-
-        Raises:
-            ProvenanceError: If the check is not falsifiable, or the claim is
-                already ``checked``.
-        """
-        if self.tag is Tag.CHECKED:
-            raise ProvenanceError("claim is already checked")
-        if not could_have_failed:
-            raise ProvenanceError(
-                "promotion requires a falsifiable check; a test that cannot fail "
-                "is not evidence"
-            )
-        if not check_ref.strip():
-            raise ProvenanceError("promotion requires a check reference")
-        return replace(self, tag=Tag.CHECKED, check_ref=check_ref)
 
     def to_dict(self) -> dict:
         return {

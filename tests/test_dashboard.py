@@ -31,6 +31,7 @@ from greytheory.findings import Finding, Taxonomy
 from greytheory.ledger import Ledger, Payout, Session, SessionKind
 from greytheory.registry import ProgrammeRegistry
 from greytheory.provenance import Claim, Tag
+from tests.test_findings import bind_every_role
 
 NOW = datetime(2026, 8, 7, 9, 0, tzinfo=timezone.utc)
 AUTHORITY = "fingerprint_abc"
@@ -247,16 +248,29 @@ class TestEconomicsPanel:
 
 
 class TestCapabilityPanel:
-    def test_states_plainly_that_nothing_is_detected(self):
+    def test_states_plainly_that_detection_is_static_and_offline(self):
         panel = build_dashboard(now=lambda: NOW).panel("capability")
         detection = next(m for m in panel.metrics if m.label == "Detection")
-        assert detection.value == "none"
-        assert "detects nothing" in detection.detail
+        assert detection.value == "offline static"
+        assert "three local-file collectors" in detection.detail
+        assert "no web or network collector" in detection.detail
 
-    def test_unbuilt_components_are_listed_as_such(self):
+    def test_live_and_unavailable_components_are_distinguished(self):
         panel = build_dashboard(now=lambda: NOW).panel("capability")
-        assert ["Lane 1-4 collectors", "not built"] in panel.rows
-        assert ["Scope Watch", "roadmap"] in panel.rows
+        assert ["Lane 1 - dependency correlation", "live"] in panel.rows
+        assert ["Lane 2 - local-tree exposure", "live"] in panel.rows
+        assert ["Lane 3 - web observation", "unavailable"] in panel.rows
+        assert ["Lane 4 - agent configuration", "live"] in panel.rows
+        assert ["Scope Watch - offline comparison", "live"] in panel.rows
+        assert ["Scope Watch - governed collector", "unavailable"] in panel.rows
+        assert ["Graphical workbench", "partial"] in panel.rows
+        assert ["Windows root-key provider candidate", "partial"] in panel.rows
+        assert ["Passive HTTP worker", "unavailable"] in panel.rows
+
+    def test_capability_panel_names_status_as_code_not_runtime_health(self):
+        panel = build_dashboard(now=lambda: NOW).panel("capability")
+        assert "shipped code" in panel.note
+        assert "runtime health" in panel.note
 
 
 class TestNextAction:
@@ -282,7 +296,7 @@ class TestNextAction:
         registry.register(PROGRAMME, raw_source="rules")
         registry.review("acme", reviewer="chase")
         finding = Finding("f1", "t", 3, "app.acme.test", AUTHORITY)
-        finding.claims.append(Claim("proved", Tag.CHECKED, "validator", "c1"))
+        bind_every_role(finding)
         for state in (
             Taxonomy.CONTEXTUAL,
             Taxonomy.CANDIDATE,

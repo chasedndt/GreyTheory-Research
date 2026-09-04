@@ -1,0 +1,20 @@
+{
+  "id": "direct-mcp-python-sdk-public",
+  "contract_id": "scope_direct_mcp_python_sdk_public_2026_08_09",
+  "name": "Model Context Protocol Python SDK public security policy",
+  "confidential": false,
+  "verified_at": "2026-08-09T12:06:21+00:00",
+  "max_authority": "LOCAL_FIXTURE",
+  "in_scope": [
+    { "type": "exact", "value": "2.x (newest release)", "note": "SECURITY.md supported version row" },
+    { "type": "exact", "value": "1.x newest release (`v1.x` branch)", "note": "SECURITY.md supported version row" }
+  ],
+  "out_of_scope": [
+    { "type": "exact", "value": "older 1.x releases, and all pre-releases", "note": "SECURITY.md unsupported version row" }
+  ],
+  "prohibited_techniques": [
+    "public_security_reporting"
+  ],
+  "policy_summary": "The repository accepts private security reports for the newest supported 2.x and 1.x lines; older 1.x releases and all pre-releases are unsupported.",
+  "notes": "No live authority is compiled. This local fixture preserves the direct repository policy and requires human review before any other posture could be considered."
+}

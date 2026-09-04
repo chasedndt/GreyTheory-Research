@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "greytheory"
 version = "0.1.0"
-description = "GreyTheory AI — Authority Plane. Converts authorisation into evidence."
+description = "GreyTheory — a local-first, human-governed Security Research Operating System."
 requires-python = ">=3.11"
 license = "Apache-2.0"
 license-files = ["LICENSE", "NOTICE"]
@@ -24,13 +24,20 @@ classifiers = [
 dependencies = []
 
 [project.optional-dependencies]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "cryptography>=46.0.7,<51"]
+passive-broker = ["cryptography>=46.0.7,<51"]
+passive-worker = ["cryptography>=46.0.7,<51"]
 
 [project.scripts]
 greytheory = "greytheory.cli:main"
+greytheory-workbench = "greytheory_local.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["greytheory*"]
+
+[tool.setuptools.package-data]
+"greytheory.learning" = ["data/cards/*.json", "data/casepacks/*.json", "data/labs/*.json"]
+"greytheory_local" = ["ui/*", "ui/**/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

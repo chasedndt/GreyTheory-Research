@@ -1,4 +1,6 @@
-# GreyTheory AI — Complete Project Brief
+# GreyTheory AI — Complete Project Brief (Historical Snapshot)
+
+> **Superseded for product identity and roadmap on 2026-08-09.** This remains the complete 2026-08-07 trust-kernel handover. Start new work with [`../PROJECT_DEFINITION.md`](../PROJECT_DEFINITION.md), [`../PROJECT_STATE.md`](../PROJECT_STATE.md), [`roadmap.md`](roadmap.md), and the new domain/autonomy/threat/data/integration documents. Implementation claims in this snapshot remain historical evidence, not permission to treat later product layers as built.
 
 > **Snapshot:** 2026-08-07 · 347 tests passing · 6,974 lines of Python · zero runtime dependencies
 > **Repository:** `chasedndt/GreyTheory-Research` · Apache-2.0

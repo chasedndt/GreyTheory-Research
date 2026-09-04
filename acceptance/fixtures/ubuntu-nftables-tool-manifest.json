@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "distribution": "Ubuntu",
+  "version_id": "24.04",
+  "architecture": "amd64",
+  "source": "Ubuntu noble and noble-updates package repositories",
+  "system_install": false,
+  "packages": {
+    "libmnl0": "1.0.5-2build1",
+    "libnftables1": "1.0.9-1ubuntu0.1",
+    "libnftnl11": "1.2.6-2build1",
+    "libxtables12": "1.8.10-3ubuntu2",
+    "nftables": "1.0.9-1ubuntu0.1"
+  },
+  "purpose": "LOCAL_FIXTURE egress acceptance bootstrap only"
+}

@@ -1,0 +1,54 @@
+{
+  "id": "bfla",
+  "version": "1.0.0",
+  "name": "Broken function-level authorization",
+  "aliases": ["BFLA", "vertical authorization failure"],
+  "framework_references": [
+    {"framework": "CWE", "reference": "CWE-285", "url": "https://cwe.mitre.org/data/definitions/285.html"},
+    {"framework": "OWASP API Security", "reference": "API5:2023", "url": "https://owasp.org/API-Security/editions/2023/en/0xa5-broken-function-level-authorization/"}
+  ],
+  "mental_model": "The actor reaches a function reserved for another role because the server checks routing or authentication but not function authority.",
+  "security_property": "Every function invocation must authorize the exact actor role and action, independent of route naming, method, or client visibility.",
+  "root_causes": ["Missing server-side role check", "Inconsistent policy across methods or routes", "Client-side hiding treated as authorization"],
+  "application_shapes": ["Administrative APIs", "Role-tiered dashboards", "Method-dependent controller actions"],
+  "prerequisite_card_ids": ["idor-bola"],
+  "prerequisite_skills": ["Role and permission modelling", "Function inventory", "Horizontal versus vertical authorization"],
+  "signals": ["Privileged functions are discoverable to a basic role", "Authorization differs across HTTP methods or aliases", "The client hides a function that the server still accepts"],
+  "hypothesis_templates": [
+    {
+      "id": "actor-role-function-boundary",
+      "statement": "A controlled {basic_role} actor may invoke {privileged_function} reserved for {privileged_role}, causing {controlled_effect} without a server-side function check.",
+      "variables": ["basic_role", "privileged_function", "privileged_role", "controlled_effect"],
+      "preconditions": ["Both roles are controlled and explicitly permitted", "The function uses only synthetic data and a reversible effect"],
+      "expected_safe_behaviour": "The basic role is denied before the privileged function changes or returns protected state.",
+      "expected_vulnerable_behaviour": "The basic role completes the privileged function.",
+      "falsifier": "The basic role is consistently denied across the exact method, route, and function aliases.",
+      "stop_conditions": ["A privileged function affects other users", "The effect is irreversible", "The tested role is not researcher-controlled"]
+    }
+  ],
+  "safe_test_pattern": "Model two controlled roles, prove the privileged positive control, attempt one reversible function as the basic role, and compare a fail-closed denial.",
+  "positive_controls": ["The privileged controlled role can invoke the intended function"],
+  "negative_controls": ["The basic role is denied before any protected response or effect"],
+  "falsifiers": ["The role is permitted by documented policy", "The server denies the exact function for the basic role"],
+  "minimum_evidence": [
+    {"role": "behaviour", "description": "Exact role, function, method, and bounded synthetic outcome.", "accepted_provenance": ["observed", "checked"]},
+    {"role": "boundary", "description": "Role-function matrix showing why the basic role is not authorised.", "accepted_provenance": ["observed", "checked", "attested"]},
+    {"role": "control", "description": "Privileged-role positive control and basic-role denial control.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "reproduction", "description": "Clean role-state repeat for the same exact function.", "accepted_provenance": ["checked"], "check_required": true},
+    {"role": "impact", "description": "Human statement limited to the demonstrated controlled function effect.", "accepted_provenance": ["inferred", "attested"], "human_attestation_required": true}
+  ],
+  "common_false_positives": ["The function is intentionally available to both roles", "The response is a client shell and no privileged action occurs", "The tested account has an inherited permission"],
+  "impact_boundaries": ["Discovering a route is not proof of function access", "One controlled function does not prove administrative compromise"],
+  "minimum_impact_rules": ["Use only controlled roles and synthetic data", "Choose a reversible or read-only function", "Do not enumerate privileged functions"],
+  "remediation": ["Deny by default at the server function boundary", "Centralize role-function policy", "Test every method and route alias"],
+  "programme_policy_considerations": ["Confirm role testing is permitted", "Use researcher-owned accounts only", "Avoid administrative effects beyond the single synthetic action"],
+  "local_fixture": {"id": "fixture-bfla", "relative_path": "labs/bfla.json"},
+  "completed_lab_refs": [],
+  "real_session_refs": [],
+  "mastery_dimensions": ["explain", "recognise", "test", "prove", "remediate", "transfer"],
+  "review_date": "2026-11-09",
+  "lessons": [],
+  "revisions": [
+    {"version": "1.0.0", "date": "2026-08-09", "summary": "Initial role-function authorization card and two-role fixture.", "source_kind": "curated_reference", "source_refs": ["supplied-plan:milestone-5", "CWE:CWE-285", "OWASP-API:API5-2023"]}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-ssrf",
+  "card_id": "ssrf",
+  "title": "Server-side destination boundary",
+  "description": "A dictionary-backed synthetic fetcher models allowlisted and internal-only destinations without sockets or DNS.",
+  "mechanism": "destination_allowlist",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "allowlisted-destination", "role": "positive_control", "expected_property_held": true},
+    {"id": "controlled-internal-destination", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "internal-destination-denied", "role": "negative_control", "expected_property_held": true}
+  ]
+}

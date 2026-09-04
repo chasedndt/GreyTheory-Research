@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-session-management",
+  "card_id": "session-management",
+  "title": "Session invalidation boundary",
+  "description": "Synthetic session handles model current-token use, stale-token replay, and server-side invalidation.",
+  "mechanism": "session_invalidation",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "current-token-before-logout", "role": "positive_control", "expected_property_held": true},
+    {"id": "old-token-after-logout", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "old-token-invalidated", "role": "negative_control", "expected_property_held": true}
+  ]
+}

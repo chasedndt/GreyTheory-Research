@@ -13,7 +13,7 @@ from greytheory.audit import AuditLog
 from greytheory.evidence import EvidenceVault
 from greytheory.findings import Finding, Taxonomy
 from greytheory.provenance import Claim, Tag
-from greytheory.report import ReportDraft
+from greytheory.report import ReportClaim, ReportDraft
 from greytheory.validation import (
     Attestation,
     GateId,
@@ -91,6 +91,17 @@ def good_draft(**overrides) -> ReportDraft:
         security_impact="Cross-tenant confidentiality breach on any document whose "
         "identifier is known or guessable.",
         evidence_index=["artifact_1"],
+        claim_matrix=[
+            ReportClaim(
+                claim=Claim(
+                    "account B read account A's document",
+                    Tag.CHECKED,
+                    "validator",
+                    "check_1",
+                ),
+                evidence_refs=("artifact_1",),
+            )
+        ],
         data_minimisation_statement="All testing used researcher-controlled accounts "
         "and synthetic documents.",
         severity_proposed="High",
@@ -135,6 +146,10 @@ class TestAttestation:
         # A checkbox is not an attestation.
         with pytest.raises(ValueError, match="checkbox"):
             Attestation(GateId.C_IMPACT, "chase", "done", NOW)
+
+    def test_model_output_cannot_be_the_attester(self):
+        with pytest.raises(ValueError, match="model may draft"):
+            Attestation(GateId.C_IMPACT, "llm-assistant", "a" * 40, NOW)
 
 
 class TestGateB:

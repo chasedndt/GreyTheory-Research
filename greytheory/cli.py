@@ -1,8 +1,8 @@
-"""Command line surface for the Authority Plane.
+"""Command line surface for the GreyTheory trust kernel.
 
-Deliberately small. It exposes the four things an operator needs to do without
-writing Python: compile a programme, review a clean contract, ask the gate a
-question, and verify the audit chain.
+Deliberately small. It exposes programme compilation and review, source-bundle
+registration, gate checks, audit verification, and offline read models without
+turning the command line into an execution bypass.
 
     greytheory compile fixtures/programmes/mock-verified.json -o build/contract.json
     greytheory review build/contract.json --reviewer chase
@@ -18,13 +18,15 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 from greytheory.audit import AuditLog, AuditVerificationError
 from greytheory.authority.compiler import compile_contract, mark_reviewed
 from greytheory.authority.gate import AccessRequest, AuthorityLevel, Gate
 from greytheory.authority.scope import ScopeContract
-from greytheory.registry import ProgrammeRegistry, RegistryError
+from greytheory.learning.domain import MasteryDimension
+from greytheory.registry import ProgrammeRegistry, RegistrationResult, RegistryError
 
 DEFAULT_AUDIT = "audit.jsonl"
 DEFAULT_REGISTRY = "contracts"
@@ -145,6 +147,20 @@ def cmd_programme_register(args: argparse.Namespace) -> int:
         print(f"refused: {exc}", file=sys.stderr)
         return 1
 
+    return _print_registration(result)
+
+
+def cmd_programme_register_bundle(args: argparse.Namespace) -> int:
+    registry = ProgrammeRegistry(args.registry, audit=AuditLog(args.audit))
+    try:
+        result = registry.register_bundle(args.bundle)
+    except RegistryError as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    return _print_registration(result)
+
+
+def _print_registration(result: RegistrationResult) -> int:
     contract = result.version.contract
     print(f"programme:   {contract.programme_id}")
     print(f"version:     v{result.version.version}")
@@ -298,10 +314,580 @@ def cmd_dashboard(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_demo_local_two_account(args: argparse.Namespace) -> int:
+    from greytheory.vertical_slice import (
+        DEFAULT_PROGRAMME,
+        OperatorStatements,
+        VerticalSliceError,
+        run_local_two_account_slice,
+    )
+
+    try:
+        statements, _ = _load(args.attestations)
+        programme, _ = _load(DEFAULT_PROGRAMME)
+        fixture_time = datetime.fromisoformat(str(programme["verified_at"]))
+        result = run_local_two_account_slice(
+            args.root,
+            statements=OperatorStatements.from_dict(statements),
+            # The bundled demonstration is a historical synthetic proof, not
+            # live authority. Freeze its clock to its declared fixture time so
+            # the reproducible demo remains runnable while real contracts still
+            # fail closed when stale.
+            clock=lambda: fixture_time,
+        )
+    except (OSError, ValueError, VerticalSliceError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(result.to_dict(), indent=2))
+    else:
+        print("GreyTheory local two-account slice: COMPLETE")
+        print(f"  posture:       {result.operating_posture}")
+        print(f"  finding:       {result.finding_id} ({result.finding_state})")
+        print(f"  check receipt: {result.check_receipt_id}")
+        print(f"  report:        {result.report_path}")
+        print("  submission:    not performed")
+    return 0
+
+
+def cmd_learning_catalogue(args: argparse.Namespace) -> int:
+    from greytheory.learning import LearningError, load_builtin_catalogue
+
+    try:
+        catalogue = load_builtin_catalogue()
+        payload = (
+            catalogue.card(args.card).to_dict()
+            if args.card
+            else {
+                "catalogue_digest": catalogue.digest(),
+                "card_count": len(catalogue.card_ids),
+                "cards": [catalogue.card(item).to_dict() for item in catalogue.card_ids],
+                "skill_graph": catalogue.graph.to_dict(),
+            }
+        )
+    except LearningError as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    elif args.card:
+        print(f"{payload['name']} ({payload['id']} v{payload['version']})")
+        print(f"  fixture: {payload['local_fixture']['id']}")
+        print(f"  review:  {payload['review_date']}")
+    else:
+        print(f"GreyTheory vulnerability catalogue: {payload['card_count']} cards")
+        print(f"  digest: {payload['catalogue_digest']}")
+        for card in payload["cards"]:
+            print(f"  - {card['id']}: {card['name']}")
+    return 0
+
+
+def cmd_learning_verify(args: argparse.Namespace) -> int:
+    from greytheory.learning import LearningError, load_builtin_catalogue
+
+    try:
+        catalogue = load_builtin_catalogue()
+        receipts = catalogue.run_all_fixtures()
+    except LearningError as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = {
+        "status": "complete",
+        "operating_posture": "LOCAL_FIXTURE",
+        "catalogue_digest": catalogue.digest(),
+        "card_count": len(catalogue.card_ids),
+        "fixture_count": len(receipts),
+        "controls_passed": all(item.controls_passed for item in receipts),
+        "vulnerable_cases_demonstrated": all(
+            item.vulnerable_case_demonstrated for item in receipts
+        ),
+        "real_vulnerabilities_proven": 0,
+        "mastery_credits_awarded": 0,
+        "network_actions": 0,
+        "receipts": [item.to_dict() for item in receipts],
+    }
+    if not payload["controls_passed"] or not payload["vulnerable_cases_demonstrated"]:
+        payload["status"] = "failed"
+    if args.out:
+        output_path = Path(args.out).expanduser().resolve()
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"GreyTheory Milestone 5 fixture verification: {payload['status'].upper()}")
+        print(f"  cards/fixtures: {payload['card_count']}/{payload['fixture_count']}")
+        print(f"  posture:        {payload['operating_posture']}")
+        print("  real findings:  none")
+        print("  mastery credit: none")
+        if args.out:
+            print(f"  written:        {output_path}")
+    return 0 if payload["status"] == "complete" else 1
+
+
+def cmd_learning_status(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        LearningError,
+        MasteryStore,
+        load_builtin_catalogue,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        store = MasteryStore(args.root, catalogue=catalogue)
+        assessments = store.assessments()
+        credited = catalogue.graph.mastery_states(assessments)
+        all_states = catalogue.graph.mastery_states(
+            assessments, include_non_crediting=True
+        )
+    except (OSError, LearningError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = {
+        "catalogue_digest": catalogue.digest(),
+        "assessment_count": len(assessments),
+        "credited_assessment_count": sum(item.credits_mastery for item in assessments),
+        "non_crediting_assessment_count": sum(
+            not item.credits_mastery for item in assessments
+        ),
+        "mastery": [item.to_dict() for item in credited],
+        "all_recorded_states": [item.to_dict() for item in all_states],
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        assessed = sum(item["level"] != "not_assessed" for item in payload["mastery"])
+        total = len(payload["mastery"])
+        print(f"GreyTheory mastery status: {assessed}/{total} dimensions assessed")
+        print(f"  evidence-bound human records: {payload['credited_assessment_count']}")
+        print(f"  non-crediting fixture records: {payload['non_crediting_assessment_count']}")
+    return 0
+
+
+def cmd_learning_assess(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        AssessorKind,
+        LearningError,
+        MasteryAssessment,
+        MasteryDimension,
+        MasteryLevel,
+        MasteryStore,
+        ReviewPolicy,
+        load_builtin_catalogue,
+        resolve_learning_root,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        root = resolve_learning_root(args.root)
+        store = MasteryStore(root, catalogue=catalogue)
+        assessed_at = (
+            datetime.fromisoformat(args.assessed_at)
+            if args.assessed_at
+            else datetime.now(timezone.utc)
+        )
+        dimension = MasteryDimension(args.dimension)
+        level = MasteryLevel.parse(args.level)
+        assessor_kind = AssessorKind(args.assessor_kind)
+        schedule = None
+        if args.review_due:
+            review_due = date.fromisoformat(args.review_due)
+            review_policy_ref = "operator-set-v1"
+            review_rationale = "operator supplied review date"
+        elif assessor_kind is AssessorKind.HUMAN:
+            schedule = ReviewPolicy().schedule(
+                store.assessments(),
+                card_id=args.card,
+                dimension=dimension,
+                level=level,
+                assessed_at=assessed_at,
+            )
+            review_due = schedule.review_due
+            review_policy_ref = schedule.policy_ref
+            review_rationale = schedule.rationale
+        else:
+            review_due = ReviewPolicy().review_due(assessed_at.date(), level)
+            review_policy_ref = "test-fixture-non-crediting-v1"
+            review_rationale = "test fixture record uses the base interval and never credits mastery"
+        assessment = MasteryAssessment(
+            id=args.assessment_id,
+            card_id=args.card,
+            dimension=dimension,
+            level=level,
+            assessor=args.assessor,
+            assessor_kind=assessor_kind,
+            evidence_refs=tuple(args.evidence_ref),
+            rationale=args.rationale,
+            assessed_at=assessed_at,
+            review_due=review_due,
+            review_policy_ref=review_policy_ref,
+            review_rationale=review_rationale,
+        )
+        store.audit = AuditLog(root / "audit.jsonl")
+        store.record(assessment)
+        store.verify()
+    except (OSError, LearningError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = assessment.to_dict()
+    payload["credits_mastery"] = assessment.credits_mastery
+    payload["adaptive_review_schedule"] = schedule.to_dict() if schedule else None
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"recorded: {assessment.id}")
+        print(f"  card/dimension: {assessment.card_id}/{assessment.dimension.value}")
+        print(f"  level:          {assessment.level.name.lower()}")
+        print(f"  credits mastery: {'yes' if assessment.credits_mastery else 'no'}")
+    return 0
+
+
+def cmd_learning_plan(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        GuidedLearningPlanner,
+        LearningError,
+        LearningTrack,
+        MasteryDimension,
+        MasteryStore,
+        ReviewPolicy,
+        load_builtin_catalogue,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        store = MasteryStore(args.root, catalogue=catalogue)
+        assessments = store.assessments()
+        recommendation = GuidedLearningPlanner(catalogue).recommend(
+            assessments,
+            today=date.fromisoformat(args.today) if args.today else date.today(),
+            preferred_card_id=args.card,
+            preferred_dimension=(
+                MasteryDimension(args.dimension) if args.dimension else None
+            ),
+            track=LearningTrack(args.track),
+        )
+    except (OSError, LearningError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = {
+        "catalogue_digest": catalogue.digest(),
+        "assessment_count": len(assessments),
+        "review_policy_days": ReviewPolicy().to_dict(),
+        "recommendation": recommendation.to_dict(),
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        item = payload["recommendation"]
+        print(f"GreyTheory learning plan: {item['card_name']}")
+        print(f"  focus:   {item['card_id']}/{item['dimension']}")
+        print(f"  mode:    {item['mode']}")
+        print(f"  reason:  {item['reason']}")
+        print("  posture: LOCAL_FIXTURE")
+    return 0
+
+
+def cmd_learning_journey_start(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        GuidedLearningPlanner,
+        LearningError,
+        LearningJourneyStore,
+        LearningTrack,
+        MasteryDimension,
+        MasteryStore,
+        load_builtin_catalogue,
+        resolve_learning_root,
+        start_learning_journey,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        root = resolve_learning_root(args.root)
+        mastery = MasteryStore(root, catalogue=catalogue)
+        recommendation = GuidedLearningPlanner(catalogue).recommend(
+            mastery.assessments(),
+            today=date.fromisoformat(args.today) if args.today else date.today(),
+            preferred_card_id=args.card,
+            preferred_dimension=(
+                MasteryDimension(args.dimension) if args.dimension else None
+            ),
+            track=LearningTrack(args.track),
+        )
+        started_at = (
+            datetime.fromisoformat(args.at)
+            if args.at
+            else datetime.now(timezone.utc)
+        )
+        journey = start_learning_journey(
+            recommendation,
+            journey_id=args.journey_id,
+            now=started_at,
+            objective=args.objective,
+            transfer_context_ref=args.transfer_context_ref,
+        )
+        journeys = LearningJourneyStore(
+            root,
+            catalogue=catalogue,
+            audit=AuditLog(root / "audit.jsonl"),
+        )
+        journeys.save(journey)
+        journeys.verify()
+    except (OSError, LearningError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = {
+        "journey": journey.to_dict(),
+        "recommendation": recommendation.to_dict(),
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"started: {journey.id}")
+        print(f"  card/dimension: {journey.card_id}/{journey.dimension.value}")
+        print(f"  stage:          {journey.current_stage.value}")
+        print("  mastery credit: none")
+    return 0
+
+
+def cmd_learning_journey_status(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        LearningError,
+        LearningJourneyStore,
+        load_builtin_catalogue,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        store = LearningJourneyStore(args.root, catalogue=catalogue)
+        journeys = (
+            (store.get(args.journey_id),)
+            if args.journey_id
+            else store.journeys()
+        )
+        store.verify()
+    except (OSError, LearningError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    payload = {
+        "catalogue_digest": catalogue.digest(),
+        "journey_count": len(journeys),
+        "journeys": [item.to_dict() for item in journeys],
+    }
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"GreyTheory learning journeys: {len(journeys)}")
+        for item in journeys:
+            print(
+                f"  - {item.id}: {item.card_id}/{item.dimension.value} "
+                f"{item.status.value} at {item.current_stage.value} r{item.revision}"
+            )
+    return 0
+
+
+def cmd_learning_journey_advance(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        LearningError,
+        LearningJourneyStore,
+        MasteryStore,
+        advance_learning_journey,
+        load_builtin_catalogue,
+        resolve_learning_root,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        root = resolve_learning_root(args.root)
+        journeys = LearningJourneyStore(
+            root,
+            catalogue=catalogue,
+            audit=AuditLog(root / "audit.jsonl"),
+        )
+        mastery = MasteryStore(root, catalogue=catalogue)
+        current = journeys.get(args.journey_id)
+        assessments = mastery.assessments()
+        selected = next(
+            (item for item in assessments if item.id == args.assessment_id), None
+        )
+        if args.assessment_id and selected is None:
+            raise LearningError(
+                f"unknown persisted mastery assessment {args.assessment_id!r}"
+            )
+        updated = advance_learning_journey(
+            current,
+            at=(
+                datetime.fromisoformat(args.at)
+                if args.at
+                else datetime.now(timezone.utc)
+            ),
+            fixture_receipt_ref=args.fixture_receipt_ref,
+            evidence_refs=tuple(args.evidence_ref or ()),
+            reflection=args.reflection,
+            assessment=selected,
+            recorded_assessment_ids=tuple(item.id for item in assessments),
+        )
+        journeys.save(updated, expected_revision=current.revision)
+        journeys.verify()
+    except (OSError, LearningError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(updated.to_dict(), indent=2))
+    else:
+        print(f"advanced: {updated.id}")
+        print(f"  stage:    {updated.current_stage.value}")
+        print(f"  status:   {updated.status.value}")
+        print(f"  revision: {updated.revision}")
+    return 0
+
+
+def cmd_learning_journey_abandon(args: argparse.Namespace) -> int:
+    from greytheory.learning import (
+        LearningError,
+        LearningJourneyStore,
+        abandon_learning_journey,
+        load_builtin_catalogue,
+        resolve_learning_root,
+    )
+
+    try:
+        catalogue = load_builtin_catalogue()
+        root = resolve_learning_root(args.root)
+        store = LearningJourneyStore(
+            root,
+            catalogue=catalogue,
+            audit=AuditLog(root / "audit.jsonl"),
+        )
+        current = store.get(args.journey_id)
+        updated = abandon_learning_journey(
+            current,
+            at=(
+                datetime.fromisoformat(args.at)
+                if args.at
+                else datetime.now(timezone.utc)
+            ),
+            reason=args.reason,
+        )
+        store.save(updated, expected_revision=current.revision)
+        store.verify()
+    except (OSError, LearningError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(updated.to_dict(), indent=2))
+    else:
+        print(f"abandoned: {updated.id}")
+        print(f"  stage:  {updated.current_stage.value}")
+        print("  mastery credit: none")
+    return 0
+
+
+def cmd_hypothesis_verify(args: argparse.Namespace) -> int:
+    from greytheory.hypothesis import (
+        HypothesisRankingError,
+        run_local_ranking_fixture,
+        write_ranking_payload,
+    )
+
+    try:
+        payload = run_local_ranking_fixture()
+        output_path = write_ranking_payload(args.out, payload) if args.out else None
+    except (OSError, HypothesisRankingError, ValueError) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print("GreyTheory Milestone 6 hypothesis ranking: COMPLETE")
+        print(f"  ranked theories: {payload['ranked_hypotheses']}")
+        print("  factor explanations: nine per item")
+        print("  claim state: unproven")
+        print("  execution: not requested")
+        print("  network/model calls: none")
+        if output_path is not None:
+            print(f"  written: {output_path}")
+    return 0
+
+
+def cmd_hypothesis_rank(args: argparse.Namespace) -> int:
+    from greytheory.hypothesis import (
+        HypothesisRanker,
+        HypothesisRankingError,
+        parse_ranking_inputs,
+        write_research_queue,
+    )
+    from greytheory.learning import load_builtin_catalogue
+    from greytheory.research import ResearchStore, ResearchStoreError
+
+    try:
+        contract_data, _ = _load(args.contract)
+        contract = ScopeContract.from_dict(contract_data)
+        ranking_data, _ = _load(args.assessments)
+        ranking_inputs = parse_ranking_inputs(ranking_data)
+        as_of = (
+            datetime.fromisoformat(args.as_of)
+            if args.as_of
+            else datetime.now(timezone.utc)
+        )
+        store = ResearchStore(args.root)
+        snapshot = store.snapshot(args.workspace)
+        queue = HypothesisRanker(clock=lambda: as_of).rank(
+            snapshot=snapshot,
+            contract=contract,
+            ranking_inputs=ranking_inputs,
+            catalogue=load_builtin_catalogue(),
+        )
+        AuditLog(store.root / "ranking-audit.jsonl").append(
+            actor=args.actor,
+            action="hypothesis.queue.rank",
+            authority_ref=queue.contract_fingerprint,
+            detail={
+                "queue_id": queue.id,
+                "queue_digest": queue.queue_digest,
+                "workspace_id": queue.workspace_id,
+                "item_count": len(queue.items),
+                "decision_support_only": True,
+                "execution_requests_created": 0,
+                "action_receipts_created": 0,
+            },
+        )
+        output_path = write_research_queue(args.out, queue) if args.out else None
+    except (
+        OSError,
+        ValueError,
+        HypothesisRankingError,
+        ResearchStoreError,
+    ) as exc:
+        print(f"refused: {exc}", file=sys.stderr)
+        return 1
+
+    payload = queue.to_dict()
+    if args.json:
+        print(json.dumps(payload, indent=2))
+    else:
+        print(f"GreyTheory research queue: {len(queue.items)} unproven hypotheses")
+        print(f"  policy: {queue.policy.id} v{queue.policy.version}")
+        print(f"  digest: {queue.queue_digest}")
+        for item in queue.items:
+            print(
+                f"  {item.rank}. {item.hypothesis_id} - {item.score_bps}/10000 "
+                f"[{item.queue_partition.value}]"
+            )
+        print("  execution: not requested")
+        if output_path is not None:
+            print(f"  written: {output_path}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="greytheory",
-        description="GreyTheory AI - Authority Plane. No authorisation, no execution.",
+        description=(
+            "GreyTheory - local-first Security Research Operating System. "
+            "No authorisation, no execution."
+        ),
     )
     parser.add_argument("--audit", default=DEFAULT_AUDIT, help="audit log path")
     parser.add_argument("--actor", default="operator", help="who is acting")
@@ -351,6 +937,176 @@ def build_parser() -> argparse.ArgumentParser:
     p.add_argument("--json", action="store_true", help="emit the read model as JSON")
     p.set_defaults(func=cmd_dashboard)
 
+    demo = sub.add_parser(
+        "demo", help="run bounded local demonstrations (never a network target)"
+    )
+    dsub = demo.add_subparsers(dest="demo_command", required=True)
+    q = dsub.add_parser(
+        "local-two-account",
+        help="run the complete LOCAL_FIXTURE authorization research slice",
+    )
+    q.add_argument("--root", required=True, help="new private run directory outside Git")
+    q.add_argument(
+        "--attestations",
+        required=True,
+        help="explicit operator review/attestation JSON (may be labelled test_fixture)",
+    )
+    q.add_argument("--json", action="store_true", help="emit the result as JSON")
+    q.set_defaults(func=cmd_demo_local_two_account)
+
+    learning = sub.add_parser(
+        "learning", help="offline vulnerability cards, fixtures, and mastery state"
+    )
+    lsub = learning.add_subparsers(dest="learning_command", required=True)
+
+    q = lsub.add_parser("catalogue", help="inspect the built-in card catalogue")
+    q.add_argument("--card", help="show one card by id")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_catalogue)
+
+    q = lsub.add_parser(
+        "verify", help="run all synthetic, network-free local card fixtures"
+    )
+    q.add_argument("--out", help="write the structured fixture receipts to JSON")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_verify)
+
+    q = lsub.add_parser("status", help="show six-dimensional mastery state")
+    q.add_argument("--root", help="private mastery-state directory outside Git")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_status)
+
+    q = lsub.add_parser(
+        "assess", help="record one explicit evidence-bound mastery assessment"
+    )
+    q.add_argument("--root", help="private mastery-state directory outside Git")
+    q.add_argument("--assessment-id", required=True)
+    q.add_argument("--card", required=True)
+    q.add_argument(
+        "--dimension", required=True, choices=[item.value for item in MasteryDimension]
+    )
+    q.add_argument(
+        "--level",
+        required=True,
+        choices=["introductory", "assisted", "independent", "transferable"],
+    )
+    q.add_argument("--assessor", required=True)
+    q.add_argument(
+        "--assessor-kind", choices=["human", "test_fixture"], default="human"
+    )
+    q.add_argument("--evidence-ref", action="append", required=True)
+    q.add_argument("--rationale", required=True)
+    q.add_argument("--assessed-at", help="timezone-aware ISO-8601 timestamp")
+    q.add_argument(
+        "--review-due",
+        help="optional ISO date override; omitted uses the transparent adaptive policy",
+    )
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_assess)
+
+    q = lsub.add_parser(
+        "plan", help="recommend one deterministic evidence-bound learning path"
+    )
+    q.add_argument("--root", help="private learning-state directory outside Git")
+    q.add_argument("--card", help="prefer one card; unmet prerequisites win")
+    q.add_argument(
+        "--dimension", choices=[item.value for item in MasteryDimension]
+    )
+    q.add_argument("--today", help="ISO date for deterministic planning")
+    q.add_argument(
+        "--track",
+        choices=["standard", "assisted", "transfer"],
+        default="standard",
+    )
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_plan)
+
+    q = lsub.add_parser(
+        "journey-start", help="persist a guided LOCAL_FIXTURE learning journey"
+    )
+    q.add_argument("--root", help="private learning-state directory outside Git")
+    q.add_argument("--journey-id", required=True)
+    q.add_argument("--card", help="prefer one card; unmet prerequisites win")
+    q.add_argument(
+        "--dimension", choices=[item.value for item in MasteryDimension]
+    )
+    q.add_argument("--objective", help="operator-owned learning objective")
+    q.add_argument(
+        "--track",
+        choices=["standard", "assisted", "transfer"],
+        default="standard",
+    )
+    q.add_argument(
+        "--transfer-context-ref",
+        help="distinct local evidence/context reference required by transfer journeys",
+    )
+    q.add_argument("--today", help="ISO date for deterministic planning")
+    q.add_argument("--at", help="timezone-aware ISO-8601 start timestamp")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_journey_start)
+
+    q = lsub.add_parser(
+        "journey-status", help="show integrity-checked guided learning journeys"
+    )
+    q.add_argument("--root", help="private learning-state directory outside Git")
+    q.add_argument("--journey-id", help="show one journey")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_journey_status)
+
+    q = lsub.add_parser(
+        "journey-advance", help="advance one learning stage after its evidence exists"
+    )
+    q.add_argument("--root", help="private learning-state directory outside Git")
+    q.add_argument("--journey-id", required=True)
+    q.add_argument("--fixture-receipt-ref")
+    q.add_argument("--evidence-ref", action="append")
+    q.add_argument("--reflection")
+    q.add_argument("--assessment-id", help="already persisted human assessment")
+    q.add_argument("--at", help="timezone-aware ISO-8601 checkpoint timestamp")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_journey_advance)
+
+    q = lsub.add_parser(
+        "journey-abandon", help="stop a journey with a reusable operator reason"
+    )
+    q.add_argument("--root", help="private learning-state directory outside Git")
+    q.add_argument("--journey-id", required=True)
+    q.add_argument("--reason", required=True)
+    q.add_argument("--at", help="timezone-aware ISO-8601 timestamp")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_learning_journey_abandon)
+
+    hypothesis = sub.add_parser(
+        "hypothesis",
+        help="rank unproven research hypotheses with transparent factors",
+    )
+    hsub = hypothesis.add_subparsers(dest="hypothesis_command", required=True)
+
+    q = hsub.add_parser(
+        "verify",
+        help="run the synthetic, network-free Milestone 6 ranking proof",
+    )
+    q.add_argument("--out", help="write the private structured proof outside Git")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_hypothesis_verify)
+
+    q = hsub.add_parser(
+        "rank",
+        help="rank selected hypotheses from a private research workspace",
+    )
+    q.add_argument("--root", required=True, help="private research-store root outside Git")
+    q.add_argument("--workspace", required=True, help="workspace id")
+    q.add_argument("--contract", required=True, help="current contract JSON")
+    q.add_argument(
+        "--assessments",
+        required=True,
+        help="JSON with five explicit assessed factors per hypothesis",
+    )
+    q.add_argument("--as-of", help="timezone-aware ISO-8601 ranking time")
+    q.add_argument("--out", help="write the private ranked queue outside Git")
+    q.add_argument("--json", action="store_true", help="emit structured JSON")
+    q.set_defaults(func=cmd_hypothesis_rank)
+
     programme = sub.add_parser(
         "programme", help="the programme registry: versions, drift, what needs you"
     )
@@ -362,6 +1118,13 @@ def build_parser() -> argparse.ArgumentParser:
     q = psub.add_parser("register", help="register or re-register a programme")
     q.add_argument("programme")
     q.set_defaults(func=cmd_programme_register)
+
+    q = psub.add_parser(
+        "register-bundle",
+        help="register a saved multi-source programme bundle offline",
+    )
+    q.add_argument("bundle", help="bundle directory or manifest.json path")
+    q.set_defaults(func=cmd_programme_register_bundle)
 
     q = psub.add_parser("review", help="human-review the latest version")
     q.add_argument("programme_id")

@@ -1,22 +1,23 @@
-# GreyTheory AI — Canonical Definition
+# GreyTheory — Trust-Kernel Definition
 
-> **Status:** canonical. This document outranks `README.md` and `Docs/architecture.md` where they conflict.
+> **Status:** canonical for the trust kernel. `PROJECT_DEFINITION.md` is canonical for product identity and overall capability truth.
 > **Established:** 2026-08-06
+> **Reframed:** 2026-08-09 — the control plane remains intact inside the Security Research Operating System category.
 > **Supersedes:** the framing in `Docs/architecture.md` (retained as historical design reference only).
 
 ---
 
 ## 1. The definition
 
-> **GreyTheory AI is a proof-first security research control plane. It converts authorisation into evidence — and refuses to move without either.**
+> **GreyTheory is a standalone, local-first, human-governed Security Research Operating System. Its proof-first control plane converts authorisation into evidence — and refuses to move without either.**
 
 Long form:
 
-GreyTheory AI takes a written authorisation, compiles it into a machine-checkable scope contract, admits only the work that contract permits, records every action against it, and produces artifacts that carry their own proof. Its output is not "findings". Its output is **evidence with provenance**, which becomes either a report or a lesson.
+GreyTheory takes written authorisation, compiles it into a machine-checkable scope contract, admits only work that contract permits, records every action against it, and produces artifacts that carry their own proof. The existing code is the constitutional and evidentiary kernel. Research workspaces, hypotheses, experiments, the governed learning catalogue, transparent hypothesis ranking, offline model gateway, dark worker foundations, and the Windows-first Guided Mission Control workbench now exist at their documented local/offline maturity; network collection, passive posture, and live-programme operation remain later gated layers.
 
 ### What it is
 
-- A control plane that governs security research.
+- A Security Research Operating System whose trust kernel governs security research.
 - A system where authority is a first-class runtime object, not a paragraph in a policy file.
 - An engine that produces fewer, stronger, reproducible artifacts.
 - A learning system: work that produces no finding still produces a recorded lesson.
@@ -24,14 +25,14 @@ GreyTheory AI takes a written authorisation, compiles it into a machine-checkabl
 ### What it is not
 
 - Not a scanner. Scanners are a replaceable input.
-- Not an autonomous exploitation engine.
+- Not an autonomous exploitation or submission engine.
 - Not a system that decides what is legal, in scope, valid, or rewarded. Those are decisions made by humans and by programmes.
 - Not a source of income projections. Economics are measured, never forecast from other people's numbers.
 - **Not a governance product for other people's systems.** See below.
 
 ### What it is for, and what it governs
 
-**GreyTheory is a bug bounty and authorised security research engine.** That is the purpose. It is not a secondary reading and it does not drift.
+**GreyTheory is a bug bounty and authorised security research operating system.** That is the purpose. It is not a secondary reading and it does not drift.
 
 The question "a control plane governing *what*?" has one answer: **it governs the operator's own research activity.** What may be tested, under whose authorisation, at what authority level, with what evidence, and whether the result may leave. The Authority Plane is not a general-purpose permission system that happens to be pointed at bug bounty — it is the part of a research engine that stops the research becoming an incident.
 
@@ -183,7 +184,7 @@ Gate conditions between `candidate` and `report_ready` are the handover's Gates 
 
 ## 5. Scope Watch — external intelligence, when it is built
 
-*Formerly specified as an integration with a system called "Grapevine AI". That name came from a planning document which admitted, in its own words, that the system's implementation "was not available in the source context used to create this file". No such implementation was found. Building an interface against a system nobody has seen is how a guess hardens into a fact, so the name is retired and the capability is restated here on our own terms. See `roadmap.md` Phase 5.*
+*Formerly specified as an integration with a system called "Grapevine AI". That name came from a planning document which admitted, in its own words, that the system's implementation "was not available in the source context used to create this file". No such implementation was found. Building an interface against a system nobody has seen is how a guess hardens into a fact, so the name is retired and the capability is restated here on our own terms. See roadmap Milestone 8.*
 
 **Scope Watch** is a future component that watches programme sources for change. It is defined now so its boundary is fixed before anything is built against it.
 
@@ -210,28 +211,38 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Scope and authority policy | 1 | **Live** (documented, and now enforced in code) |
 | Disclosure / authority checklist | 1 | **Live** |
 | `ScopeContract` compiler | 1 | **Live** — `greytheory/authority/compiler.py`, fails closed on ambiguity |
-| Execution gate | 1 | **Live** — `greytheory/authority/gate.py`, 11 denial reasons + posture ceiling |
+| Execution gate | 1 | **Live** — `greytheory/authority/gate.py`, 17 denial reasons + posture ceiling |
 | Append-only audit log | 1 | **Live** — `greytheory/audit.py`, hash-chained, tamper-detecting |
 | Kill switch | 1 | **Live** — `Gate.engage_kill_switch` |
 | Provenance triple (I1) | 1 | **Live** — `greytheory/provenance.py` |
+| Validator-issued check receipts | 1/3 | **Live (offline)** — `greytheory/checks.py`, exact-input hashes and single-use promotion |
 | Finding schema + lifecycle | 1/3 | **Live** — `greytheory/findings.py`, I5 enforced at the internal/external seam |
 | Operator CLI | 1 | **Live** — `greytheory/cli.py` |
 | Operator approvals | 1 | **Live** — `greytheory/authority/approvals.py`, reads ChaseOS OSRIL; adds binding, expiry, single-use |
 | Programme registry | 1 | **Live** — `greytheory/registry.py`, versioned contracts, source snapshots, scope drift detection |
+| Programme source bundles | 1 | **Live (offline)** — `greytheory/authority/sources.py`; HackerOne/GitLab, blocked Bugcrowd/YNAB, and direct-policy/MCP Python SDK source shapes verified |
 | Lane framework + runner | 2 | **Live** — `greytheory/signal/`, gate-mediated, network lanes refused |
 | Lane 1 Known-Vuln | 2 | **Live (static)** — `lane1_dependency_manifest`, ecosystem-aware, over imported OSV data |
+| Lane 2 Exposure | 2 | **Live (static)** — local-tree inspection; presence, never reachability |
 | Advisory import | 3 | **Live** — `greytheory/advisories.py`, offline OSV ingestion |
 | Lane 4 AI-App | 2 | **Live (static)** — `lane4_agent_config`, offline config review |
-| Lane 4 AI-App | 2 | **Aspirational** — architected only |
+| Lane 3 Web and live versions of Lanes 1/2/4 | 2 | **Planned** — no network capability exists |
 | Evidence vault | 3 | **Live** — `greytheory/evidence.py`, raw/redacted split, repo guard, export gating |
 | Validation gates B–F | 3 | **Live** — `greytheory/validation.py`, deterministic where possible, attested where not |
 | Dashboard | 1/3 | **Live** — `greytheory/dashboard.py`, absent data reports unknown, never zero |
-| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, markdown rendering |
-| Curriculum / skill graph | 3 | **Aspirational** |
+| Report studio | 3 | **Live** — `greytheory/report.py`, structure enforced, claim/evidence matrix, markdown rendering |
+| Research workspace/domain objects | 1/3 | **Live (offline)** — all ten Milestone 3 records plus integrity-checked `ResearchStore` |
+| Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
+| Transparent research queue | 3 | **Live (offline)** — versioned nine-factor policy, explained ordinal scores, scope-review partition, integrity-bound private output, no execution authority |
+| Vulnerability cards / skill graph | 3 | **Live (offline)** — 12 versioned cards, 12 synthetic fixtures, acyclic prerequisites, and six evidence-bound mastery dimensions |
+| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, bounded standard/assisted/transfer journeys, 24 interactive lessons, topic roadmaps, and two ready Case Packs exist; the session/role pack, broader curricula, and governed coach conversation remain open |
+| Model gateway | cross-cutting | **Live offline** — governed roles, citations, budgets, provenance, adversarial evaluation, and deterministic local provider; no network provider configured |
+| Standalone graphical workbench | 1/3 | **Partial / implemented preview** — Guided Mission Control, thirteen journeys, same-origin persisted learner commands, repeatable whole-application keyboard acceptance, a bundled wheel, and current-user shortcut/restart/upgrade/runtime-recovery acceptance pass; separate-account, screen-reader/platform AT, signing, and uninstall acceptance remain open |
+| Passive broker / worker | cross-cutting | **Partial / dark local foundation** — Ubuntu 24.04.4 no-route/full-service, namespace-lifetime exact-egress, clean read-only WSL2 image-runtime, Windows CurrentUser DPAPI same-profile, and carrier-neutral authenticated-session candidate proofs pass; hardened local-VM/reboot acceptance, provisioned identity keys, durable replay, accepted carrier/VM binding, security review, approved recovery/ACLs, programme review, and posture approval remain open |
 | Triage + earnings ledger | 3 | **Live** — `greytheory/ledger.py`, all hours counted, forecasting refused below thresholds |
-| Scope Watch | 1/3 | **Roadmap** — Phase 5, needs the posture ceiling raised |
+| Scope Watch | 1/3 | **Partial** — offline captured-source comparison and invalidation are live; governed external collection is unavailable |
 
-Definitions: **Live** = exists and is used. **Designed** = specified to build-ready detail, not built. **Aspirational** = intended, not specified to build-ready detail. **Unreconciled** = depends on a system not yet inspected.
+Definitions: **Live** = exists and passes current tests. **Partial** = a useful subset exists. **Designed** = specified, not built. **Planned** = sequenced but not implemented. **Historical** = retained context, not current truth.
 
 ---
 
@@ -239,11 +250,11 @@ Definitions: **Live** = exists and is used. **Designed** = specified to build-re
 
 ### GitHub repository description
 
-> Proof-first security research control plane. Converts authorisation into evidence — authority, scope and provenance as runtime objects, not policy prose.
+> Local-first, human-governed Security Research Operating System. From scope to proof; every action authorised, every claim traceable.
 
 ### chasintech.com
 
-> **GreyTheory AI** — a security research control plane built on a single rule: nothing runs without authorisation, and nothing leaves without proof. Scope becomes a machine-checked contract. Every claim is tagged as observed, checked, or inferred. The AI reasons and critiques; deterministic tools prove; the human decides.
+> **GreyTheory** — a local-first Security Research Operating System built on one rule: nothing runs without authorisation, and nothing leaves without proof. Its offline trust kernel, structured research domain, complete in-memory two-account slice, governed 12-card learning catalogue, transparent unproven-hypothesis queue, and interactive Windows-first learning workbench are implemented as a research preview. Passive networking remains dark pending every host, recovery, programme, and human-approval gate.
 
 ### The line that does the work
 
@@ -257,7 +268,7 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 
 - Local-only. No external scanning, live target interaction, credential validation, disclosure, or outreach — per `Docs/scope-policy.md`, which is authoritative.
 - Lanes run against local fixtures only.
-- The first live engagement happens only after Plane 1 can actually gate it.
+- The first live engagement happens only after the network-worker, source-bundle, data-policy, threat-model, and posture gates are implemented and operator-approved.
 - Build substrate: local-first Python package with tests. No network dependency in the core.
 
 ---
@@ -273,7 +284,7 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D5 | Local-only until Plane 1 exists | Building the guardrails after operating without them inverts the entire thesis |
 | D6 | Python, local-first, tested | Fastest path to demonstrable proof with no network surface |
 | D7 | `Docs/architecture.md` superseded, retained | Historical design value; removing it would lose the lane detail |
-| D8 | Approvals are read from ChaseOS, never stored here | ChaseOS already owns the approval layer (`chaseos-reconciliation.md`); two approval stores would mean neither is complete |
+| D8 | Approval authority has one source per deployment | Local standalone and optional ChaseOS-backed providers must not mirror or compete. See ADR-0003. |
 | D9 | ChaseOS is coupled through its filesystem contract, not Python imports | Keeps `greytheory` dependency-free and standalone-usable; a ChaseOS refactor then breaks a test rather than the runtime |
 | D10 | Approvals are bound, expiring and single-use | A decision record alone says consent happened, not that it covers *this* act, *now*, *once* |
 | D11 | Apache-2.0 | Patent grant and explicit contribution terms matter more than MIT's brevity for security tooling |
@@ -291,6 +302,11 @@ Public copy must not imply live scanning capability, real-world findings, or inc
 | D25 | The runner refuses any lane declaring network I/O | Keeps the core offline by construction; a collector wanting otherwise must move out of the package rather than argue. |
 | D29 | **Purpose is bug bounty and authorised research. It governs the operator's own work.** | Corrects a drift: the Authority Plane's mechanisms are reusable, which is an observation about code, not a change of purpose. Governance products for other people's agents are derivative, downstream and separate. |
 | D30 | Grapevine cut; the capability restated as Scope Watch | The name came from a planning document that admitted it had never seen the implementation. Building an interface against an unseen system is how a guess hardens into a fact. |
+| D31 | **Security Research Operating System is the product category** | The control plane is the trust kernel, but not the complete researcher-facing product. ADR-0001. |
+| D32 | Trust planes and product layers coexist | Planes define trust; layers define capability. No layer may weaken a plane. ADR-0002. |
+| D33 | Exactly one approval provider is active | Standalone and ChaseOS-backed deployments share a protocol without mirroring authority. ADR-0003. |
+| D34 | Checked promotion migrates to validator-issued receipts | Caller-declared falsifiability is too easy to misuse; migration must preserve current behaviour until callers move. ADR-0004. |
+| D35 | A programme review attaches to one offline semantic source bundle | Platform defaults, programme policy, scope exports, precedence, field citations, and human resolutions are reviewed together; any substantive change invalidates review. ADR-0005. |
 | D27 | A collector records the shape of a secret, never its value | A lane that copies credentials into the evidence trail creates the problem it was looking for, at scale, into a store that outlives the engagement. |
 | D28 | Presence is reported, never reachability | A key in a tree is present; whether it is served depends on the web root, the branch and the build, none of which a directory knows. |
 | D26 | Absent dashboard data reports UNKNOWN, never zero | "0 out-of-scope attempts" and "nothing is being recorded" look identical on a screen and mean opposite things. |

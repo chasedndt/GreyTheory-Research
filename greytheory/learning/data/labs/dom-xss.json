@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-dom-xss",
+  "card_id": "dom-xss",
+  "title": "DOM source-to-sink boundary",
+  "description": "A synthetic DOM data-flow model compares an executable sink with a text-only sink without launching a browser.",
+  "mechanism": "dom_sink_control",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "trusted-dom-update", "role": "positive_control", "expected_property_held": true},
+    {"id": "untrusted-executable-sink", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "untrusted-text-sink", "role": "negative_control", "expected_property_held": true}
+  ]
+}

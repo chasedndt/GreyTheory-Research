@@ -1,0 +1,25 @@
+{
+  "id": "local-two-account-training",
+  "contract_id": "scope_local_two_account_v1",
+  "name": "GreyTheory local two-account authorization training fixture",
+  "_fixture_note": "Synthetic, in-memory, local-only fixture. These identifiers are not network locations and no real account or target is involved.",
+  "verified_at": "2026-08-09T00:00:00+00:00",
+  "max_authority": "LOCAL_FIXTURE",
+  "in_scope": [
+    {"type": "exact", "value": "fixture://two-account", "note": "local application root"},
+    {"type": "exact", "value": "fixture://two-account/accounts/identity-user-a", "note": "controlled account A"},
+    {"type": "exact", "value": "fixture://two-account/accounts/identity-user-b", "note": "controlled account B"},
+    {"type": "exact", "value": "fixture://two-account/objects/object-user-a", "note": "synthetic object owned by account A"},
+    {"type": "exact", "value": "fixture://two-account/objects/object-user-b", "note": "synthetic object owned by account B"}
+  ],
+  "out_of_scope": [],
+  "prohibited_techniques": [
+    "network_access",
+    "credential_validation",
+    "denial_of_service",
+    "social_engineering",
+    "brute_force",
+    "physical"
+  ],
+  "notes": "One local read is permitted only after human review and a GreyTheory gate allow. No network, real programme, credential, or third-party data is present."
+}

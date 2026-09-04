@@ -1,82 +1,155 @@
-﻿# PROJECT STATE
+# Project State
 
 ## Project
-GreyTheory AI
 
-## Subtitle
-Proof-First Security Research
+GreyTheory
+
+## Category
+
+Security Research Operating System
 
 ## Definition
-GreyTheory AI is a proof-first security research control plane. It converts authorisation into evidence — and refuses to move without either.
 
-Canonical: `Docs/definition.md`. It outranks `README.md` and `Docs/architecture.md`.
+GreyTheory is a standalone, local-first, human-governed security research operating system for bug bounty and authorised security testing. Its three-plane control plane is the trust kernel: it converts programme authority into enforceable boundaries and refuses to turn inference into proof.
 
-## Current Phase
-Roadmap Phase 3 - real programmes. Local-only posture. Authority, Judgement and the offline Signal Plane collectors are built.
+Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md).
 
-## Locked Decisions
-- Three ranked planes: **Authority** (root, fail-closed) → **Signal** (four lanes as pluggable collectors) → **Judgement** (operator loop). Lower planes cannot bypass higher ones.
-- The Authority Plane is the root and the defensible layer; detection is commodity and replaceable. It governs the operator's own research — it is not a governance product for other people's systems.
-- A lane observes and emits signals; it may not promote its own output past `contextual`.
-- One finding entity, one lifecycle, spanning internal states and recorded external programme states.
-- Every claim is tagged `observed` | `checked` | `inferred`. No silent promotion between them.
-- Every artifact carries an authority reference. No reference, no vault entry.
-- The system never marks a finding valid, accepted, rewarded, or disclosed — only programmes produce those states.
-- Zero-income and zero-finding hours are recorded with equal fidelity.
-- **Purpose: a bug bounty and authorised security research engine.** The Authority Plane governs the operator's own research. Governance offerings for other people's agents are derivative products, not this system.
-- External intelligence (Scope Watch, roadmap Phase 5) is information-only and never reaches Plane 2.
-- **GreyTheory is standalone and Apache-2.0.** Zero runtime dependencies; fully functional with no ChaseOS present. ChaseOS is an optional adapter, never a requirement, and every integration point ships a self-sufficient default beside it.
-- Raw evidence never enters a git working tree — enforced by a guard, not a `.gitignore` entry.
-- Only redacted evidence may be exported, and export is all-or-nothing.
-- Build substrate: local-first Python package with tests, no network in the core.
-- Public copy may not describe an Aspirational component as working. Capability register in `Docs/definition.md` §6 governs all claims.
-- GreyTheory AI × ChaseOS is a Business + GTM incubation lane, not yet a standalone business.
-- The lane exists to build proof in agent systems, cybersecurity, and agentic-system defense.
-- No external scanning, unauthorized testing, live target interaction, exploit publication, disclosure/outreach, credential validation, or public claims without explicit operator approval.
-- Modular four-lane design remains the long-term architecture.
-- LLM is planner/triager/reasoner, not the raw exploit engine.
-- Deterministic validation is required before a finding is treated as real.
-- System must support both learning value and practical bug bounty usefulness, but current work stays local/repo/demo-only.
-- Prefer proof-first workflows over maximum autonomy.
-- Prioritize low false positives and reproducible evidence.
-- SSRF is deferred from V1 unless tightly controlled.
+## Current stage
 
-## Core Lanes
-1. Known-Vuln Lane
-2. Exposure Lane
-3. Web Vuln Lane
-4. AI-App Lane
+- **Completed productisation milestones:** Milestones 1-7, plus the offline comparison/invalidation portion of Milestone 8.
+- **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
+- **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (ready exact 30-minute Agent Tool Authorization and 50-minute API Object Ownership missions, with Session and Role Transitions queued), scenario practice checks, an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, an offline programme-to-local-case readiness view, and a deliberately dark live-programme compatibility layer are implemented. Repeatable browser acceptance now proves first-Tab skip navigation, all thirteen first-entry route traversals with named workspace focus, Cases arrow/Home/End tab behavior, a desktop-only navigation rail, inert closed mobile navigation, mobile-drawer/modal focus containment and return, no positive `tabindex`, and a clean console. Case Pack 02 adds a responsive mission selector, object-authorization lesson, three-control synthetic lab, pack-specific evidence/report/readiness views, and a complete server-persisted journey. A reproducible wheel with bundled UI has passed empty-prefix Windows installation plus an isolated current-user shortcut/restart/upgrade/recovery lifecycle with real persisted learner state. Governed coach conversation, accepted public-intelligence fetching, a genuinely separate-account run, and signed release packaging remain open.
+- **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
+- **Verified baseline:** 716 repository tests, 29 UI tests, 4 Sites tests, the production UI build, responsive Case Pack 02 rendered QA, and accepted whole-application keyboard browser evidence pass on 2026-09-04. Both empty-prefix wheel acceptance and current-user install lifecycle acceptance pass on Windows; the latter proves shortcut configuration, a real same-origin learner command, restart, same-wheel upgrade, and replaceable-runtime recovery while explicitly recording `separate_user_accepted=false`. The full worker-service path passes on Ubuntu 24.04.4 with a non-root, capability-empty, no-new-privileges worker, exact synthetic `HEAD`, encrypted capture round trip, verified receipt, completed replay state, and clean exit. Its separate namespace-lifetime nftables candidate adds default-drop chains, one exact address/port, counted bypass denials, and refused route/firewall mutation without a WSL system install. A signed-input read-only image build/runtime candidate, 21 focused static/provenance tests, a clean two-build-identical release artifact, and WSL2 image-runtime acceptance now pass: read-only root, bounded tmpfs/devices, UID/GID 65534, zero capabilities, no-new-privileges, default-drop exact egress, three counted bypass denials, mutation refusal, encrypted capture, signed receipt, and completed replay. A separate network-free authenticated-session protocol now passes mutual pinned-identity, transcript/key derivation, encryption, sequence, tamper, replay, expiry, size, and existing worker-record round-trip tests; it has no carrier, listener, VM binding, durable reboot replay guard, or accepted identity-key provisioning. The image record explicitly retains `hardened_worker_image_accepted=false`, `reboot_vm_conformance_accepted=false`, and `LOCAL_FIXTURE`. A Windows CurrentUser DPAPI candidate passes same-profile recovery while provider approval, ACL hardening, and independent recovery remain open. Everything remains local fixture evidence, not an accepted hardened-image, transport, posture, or live-target claim.
 
-## V1 Direction
-Prioritize:
-- known-vuln lane
-- exposure lane
-- core web vuln lane
+## What is built
 
-AI-app lane should be designed from the start but may be partially phased depending on implementation complexity.
+The complete offline path from supplied authorisation to a validated report draft:
 
-## Open Decisions
-Tracked in `Docs/open-questions.md`. O2 (ChaseOS reconciliation) and O3 (evidence location) are resolved. Remaining: ChaseOS audit tamper-evidence (O9), and raising the posture ceiling (roadmap Phase 6).
+- programme registry plus single-source and multi-source bundle compilation;
+- public-source provenance with capture modes, retrieval times, per-source hashes, field citations, structured-export/operator-extract derivation checks, precedence, and human-resolution gates;
+- one real saved HackerOne/GitLab bundle containing the official 44-row scope export plus bounded programme/platform policy extracts;
+- one real saved Bugcrowd/YNAB bundle whose 3/5 target-group rows derive exactly and whose two prose conflicts correctly block pending human decisions;
+- one real saved direct-policy bundle for `modelcontextprotocol/python-sdk`; its immutable verbatim `SECURITY.md` derives the exact 2/1 supported-version split and reaches `PENDING_REVIEW`;
+- execution gate with seventeen denial reasons, posture ceiling, and kill switch;
+- bound, expiring, single-use approvals;
+- hash-chained audit and provenance triple;
+- local-only lane runner with three static collectors (dependency, local-tree exposure, agent/MCP configuration);
+- offline OSV advisory import;
+- a separate network-free `greytheory_intelligence` registry that validates
+  contract-only CVE or versioned-package plans for OSV, CISA KEV, FIRST EPSS,
+  NVD, and GitHub Advisories while rejecting target-shaped inputs and exposing
+  no HTTP client or execution entrypoint;
+- raw/redacted evidence vault, validation gates B-F, report studio, finding lifecycle, ledger, dashboard read model, and CLI;
+- all ten Milestone 3 research records: workspace, session, typed asset/relationship, controlled identity, hypothesis, experiment plan, action request/receipt, and lesson;
+- integrity-checked, atomically persisted local research workspaces with referential validation, repository-storage refusal, explicit lifecycles, contract-bound scope classification, request/time/effect budgets, and optional audit writeback;
+- one complete structured-session acceptance proof covering all ten records, gate binding, persistence/reopen, a refuted hypothesis, and a reusable lesson.
+- one complete deliberately vulnerable local two-account slice connecting saved training rules, an explicit labelled test-fixture review/attestation record, ownership graph, hypothesis/experiment, gate-bound action execution, observation, validator-issued `CheckReceipt`, raw/redacted evidence, claim-provenance report, postmortem, and proposed vulnerability-card update;
+- a one-use check-receipt registry that hashes exact input artifacts and validator code and refuses forged, modified, refuted, mismatched, or already-consumed receipts;
+- a CLI demonstration that stops at `report_ready`, records one action receipt for one executed local action, and exposes no submission or network path.
+- twelve versioned first-class vulnerability cards covering reflected/stored/DOM XSS, SQL injection, CSRF, SSRF, IDOR/BOLA, BFLA, session management, business-logic authorisation, indirect prompt injection, and tool-authorisation failure;
+- one distinct synthetic, network-free local fixture per card, each executed through positive, vulnerable, and negative-control paths and producing a runner/fixture-digested receipt that explicitly proves no real vulnerability and awards no mastery;
+- an acyclic card-prerequisite skill graph with separate `explain`, `recognise`, `test`, `prove`, `remediate`, and `transfer` dimensions, transparent credited-history review scheduling, assisted guidance capped at assisted mastery, and transfer journeys requiring independent test/prove foundations plus distinct-context evidence;
+- an integrity-checked private `MasteryStore` that refuses repository storage, requires explicit evidence and review dates, credits only human assessments, and keeps labelled test-fixture assessments non-crediting;
+- offline CLI catalogue, fixture-verification, mastery-status, and evidence-bound assessment commands;
+- the Milestone 4 BOLA proposal applied to `idor-bola` v1.0.0 as an explicitly `test_fixture`-sourced revision, without inventing a real session or human mastery record.
+- a versioned conservative ranking policy with the exact nine Milestone 6 factors, explicit direction/weight semantics, stable tie-breaking, and self-verifying queue integrity;
+- a private research queue that derives scope confidence, evidence quantity, cost, and side-effect risk from trusted records, requires provenance-rich assessments for the other five factors, explains every contribution, partitions scope-review items, and grants no execution authority;
+- offline CLI ranking/verification commands plus a three-theory synthetic fixture proving deterministic order, explanation arithmetic, `unproven` claim state, and zero action requests, receipts, network calls, model calls, or external targets;
+- a governed offline model gateway with explicit role/data ceilings, resolvable citation requirements, budgets, inferred-only output, prompt-digest audit, and an eight-case adversarial evaluation harness;
+- offline Scope Watch source comparison and review invalidation through the exact rooted `LocalSourceFetcher`; arbitrary and network-capable fetchers are structurally refused;
+- an executable capability register consumed by the dashboard and intended for the workbench, with separate shipped-code status and runtime-health semantics;
+- an accepted workbench boundary covering the Windows operator host, local application service, offline core, private storage, guided-learning journey, and future isolated Ubuntu worker.
+- deterministic guided-learning planning with prerequisite routing, due-review priority, explicit review intervals, Learn/Practise/Prove/Reflect/Assess progression, integrity-checked private journey storage, optimistic revisions, and CLI commands; completion still requires a separately persisted human mastery assessment and awards nothing itself.
+- a transport-neutral `greytheory_app` service that assembles versioned, fail-closed workbench snapshots from programmes, research, learning, hypotheses, evidence, reports, approvals, audit, and capability truth; its bounded standard/assisted/transfer learning and research-planning commands are idempotent/revision-aware, adaptive review decisions are inspectable and persisted, local-fixture action intent is derived from active persisted experiment state without Gate evaluation or execution, mastery assessment is bound to the configured local operator, and report export uses server-held drafts plus verified redacted evidence; all results remain non-executing.
+- an immutable private report-export writer that atomically emits Markdown, structured JSON, copied redacted artifacts, and a digest manifest outside Git while explicitly recording that no submission occurred.
+- an integrity-checked private report-case store with full finding/claim-role/check-receipt round trips, optimistic draft revisions, Git-worktree refusal, and audited atomic persistence; workbench commands create informational cases from testing/supported hypotheses and save drafts while authority-bearing fields remain server-owned.
+- fresh, operator-bound Gates B-F validation over persisted cases and private evidence, with complete restart-safe revision-bound attestation/result history, stale-command refusal, later-edit invalidation, read-model status, and no automatic finding promotion.
+- an exact two-account-fixture claim-assembly handler that reads existing private evidence, reruns five role-specific deterministic validators, derives two human judgement roles from persisted attestations, atomically updates the finding/report matrix, and performs no new target action; a next-state lifecycle handler requires fresh validation for `report_ready` and cannot submit.
+- a separate `greytheory_local` runtime and `greytheory-workbench` launcher that assemble private stores outside Git and expose an authenticated, exact-Host, exact-origin, no-CORS, 64-KiB numeric-loopback JSON boundary plus an optional bounded same-origin bundled UI; no target client or execution route is served.
+- a dark, offline `greytheory_broker` foundation for one `passive-head-v1` action: fresh hash-chain-verified Gate binding, canonical HTTPS and public-address policy, signed expiring tickets, exact-once SQLite reservation, default-engaged digest-protected kill switch, strict request/time/rate/capture ceilings, ticket-bound authenticated capture encryption, authorised KEK-wrapped recipient provision/rotation/revocation, retained decryption for old evidence, and signed completed/stopped receipt metadata derived from the typed envelope.
+- a network-free `greytheory_worker_contract` adapter boundary that converts
+  injected typed DNS/transport evidence into one exact-address, no-proxy,
+  no-redirect, deadline-bound, bounded-header passive result, encrypted capture,
+  and broker-sealed receipt; it contains no resolver, socket, TLS/HTTP client,
+  process, or live action.
+- a dark `greytheory_worker` package with absolute-name system DNS in one owned
+  cancellable spawned child, direct numeric-address TLS 1.2+ `HEAD`, and a
+  second owned-process boundary that permits exactly one resolve then one
+  broker-rechecked exact request. The lower-trust child receives no signing
+  keys, replay/kill-switch state, capture private key, or research store; it
+  scrubs its environment and must report non-root, zero-capability,
+  no-new-privileges Linux identity before its evidence is accepted. Earlier
+  Ubuntu namespace proof covered the primitive path. The full service
+  host harness now also passes on Ubuntu 24.04.4 and emits a durable JSON record:
+  it proves no-route namespace isolation, non-root/zero-capability/no-new-
+  privileges worker identity, exact synthetic TLS `HEAD`, encrypted capture,
+  receipt verification, completed replay state, and clean exit. It still uses
+  only an owned local canary and supplies no OS key, image, scheduler,
+  programme, VPS, or posture proof.
+- a candidate operator-side Windows CurrentUser DPAPI root-KEK provider that
+  refuses Git storage and replacement, audits provision/lease operations,
+  exposes only a short-lived zeroing lease to the capture-key store, and passes
+  real same-profile restart/protected-copy recovery plus tamper refusal. It is
+  not operator-approved, its inherited evidence ACL is not accepted for
+  operational use, and it has no cross-profile or bare-machine recovery path.
+- a namespace-lifetime Ubuntu nftables egress candidate that defaults
+  input/forward/output to drop, permits only the exact owned synthetic
+  `8.8.8.8:443` fixture, accounts for three denied bypass probes, denies route
+  and firewall mutation after capability drop, and still completes the full
+  encrypted worker path. It now also passes inside the reproducible read-only
+  WSL2 image candidate, but not a hardened local VM or reboot boundary.
+- a host-accepted Ubuntu image construction and clean-HEAD WSL2 runtime
+  candidate with Canonical signature/archive-chain verification, 18 exact
+  packages, two-build SquashFS reproducibility, read-only root, bounded
+  tmpfs/device mounts, non-root zero-capability admission, mandatory exact
+  egress, immutable-path checks, and composed receipt evidence. The record
+  explicitly refuses hardened-image, reboot/VM, posture, programme, and live
+  operation claims.
 
-Deferred until the Signal Plane is built: exact tool stack per lane, crawl/recon architecture, AI-app test isolation.
+## What is not built
 
-## Built
-The full path from authorisation to a validated report draft. `greytheory/` package, 347 tests, zero runtime dependencies, no network surface (CI-enforced).
+- human resolution of the two recorded YNAB policy conflicts;
+- broader curriculum packs beyond the first 12 cards, including the queued Session and Role Transitions Case Pack;
+- governed model-backed coach conversation and genuinely separate-user and signed-installer Windows acceptance; the Guided Mission Control shell and two ready local Case Packs have passed current visual QA, whole-application first-entry keyboard acceptance, same-origin persistence tests, mobile-drawer/modal focus, empty-prefix wheel acceptance, and current-user shortcut/restart/upgrade/runtime-recovery acceptance, while commands and synthetic receipts persist privately;
+- general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
+- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, an approved OS secret-provider/recovery/ACL policy for the root KEK, hardened local-VM/reboot image acceptance, accepted authenticated broker transport carrier/key provisioning/durable replay state, hardened VPS image acceptance, a launcher/scheduler, and live collectors; the launch-dark authenticated-session protocol, Ubuntu no-route service, namespace-lifetime nftables candidate, WSL2 image-runtime candidate, and Windows same-profile DPAPI candidate pass locally;
+- live research evidence, submissions, or programme outcomes.
 
-Programme registry (versioning, source snapshots, drift detection), scope compiler (fails closed), execution gate (17 denial reasons + posture ceiling + kill switch), operator approvals (bound, expiring, single-use), hash-chained audit log, provenance triple, evidence vault (raw/redacted split, repo guard), validation gates B-F, report studio, triage and earnings ledger, finding lifecycle, operator dashboard, Signal Plane lane framework with three static offline collectors (Lanes 1, 2 and 4), offline OSV advisory import, CLI.
+## Locked decisions
 
-Architecture articulated in `Docs/system-overview.md`.
+- GreyTheory is a Security Research Operating System; the control plane is its trust kernel.
+- Three ranked planes remain: Authority → Signal → Judgement. Lower planes cannot bypass higher ones.
+- Product layers add researcher-facing capability around the planes and may never weaken them.
+- GreyTheory governs the operator's own authorised research. Client-agent governance is a derivative product.
+- AI reasons, plans, critiques, curates, drafts, and tutors. It does not hold authority, execute directly, create proof, submit, contact, or disclose.
+- Every claim is `observed`, `checked`, or `inferred`; no silent promotion.
+- An existing observed or inferred claim is promoted to `checked` only by consuming a successful, matching `CheckReceipt` issued by the registry; caller-asserted falsifiability has been removed.
+- Legacy static collectors still originate deterministic `checked` claims directly; migrating those origins to persisted receipts is a separate open loop and no model output may use that helper.
+- Framework mappings classify a card; they never prove a vulnerability, impact, severity, or mastery.
+- Synthetic fixture receipts prove only the shipped local scenario and its controls. They cannot become real-session evidence or mastery credit.
+- Mastery is six separate evidence-bound human assessments; completing a lab or receiving model output awards nothing automatically.
+- Ranking inputs are ordinal decision-support assessments, not probabilities, severity, proof, or vulnerability labels; changing a score changes ordering only.
+- Scope confidence is system-derived and any missing, stale, unverified, unresolved, or out-of-scope basis partitions the hypothesis for scope review rather than allowing it into the planning queue.
+- Ranking never executes, creates action requests/receipts, invokes a model, or changes hypothesis/finding/claim lifecycle state.
+- Every action and artifact carries authority. Asset discovery never widens scope.
+- Programme outcomes are recorded from external evidence, never self-awarded.
+- Raw evidence remains outside repositories; only redacted evidence is exportable.
+- GreyTheory is standalone and Apache-2.0. ChaseOS is an optional integration and cannot bypass the gate.
+- Core remains minimal and offline; future workers/models/UI may use pinned isolated dependencies outside the trust kernel.
+- No external security activity occurs before the explicit posture milestone and all of its testable preconditions.
 
-## Immediate Next Step
-Phase 3 of `Docs/roadmap.md`: compile real programme rules and fix what breaks. Costs nothing, risks nothing, and tests the compiler against reality rather than fixtures we wrote. Phase 4 (advisory sourcing, vulnerability cards, curriculum, hypothesis engine) follows and is also offline. Phase 6 - raising the posture ceiling - is the operator decision that unlocks network collectors.
+## Immediate next step
 
-## Do Not Do Yet
-- no exploit automation assumptions
-- no giant monolithic agent
-- no unsafe autonomous behavior
-- no network collector inside greytheory/ - the runner refuses them
-- no external network calls in the core package
-- no duplicate approval/audit/graph system - ChaseOS owns these, GreyTheory adapts
+Promote the queued Session and Role Transitions Case Pack, and then connect coach conversation only through the governed model gateway. Repeat the accepted current-user lifecycle from a genuinely separate Windows account before release claims. For the passive pilot, bind the authenticated-session protocol to an approved local-VM carrier with provisioned worker identity and durable replay state, then run isolated local-VM/reboot conformance for the accepted WSL2 image candidate; the current host has no enabled VM runtime, so that host-level change remains separately operator-authorised. The candidate Windows DPAPI provider still waits on application-data ACL hardening and independent recovery. One verified programme review and explicit human posture approval follow; a VPS is not a shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
 
-## Source of Truth
-Current repo docs are the source of truth for architecture decisions.
+## Do not build next
+
+- mass scanning;
+- a general-purpose autonomous browser or shell agent;
+- automatic submission or disclosure;
+- a ten-agent swarm;
+- cloud raw-evidence storage;
+- a custom proxy;
+- a marketplace or enterprise collaboration surface;
+- public claims of live research capability.

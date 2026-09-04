@@ -20,7 +20,46 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any
 
+from greytheory.claims import ClaimRole, RoleBinding, build_matrix, readiness_problems
 from greytheory.provenance import Claim, Tag, partition
+
+
+@dataclass(frozen=True)
+class ScopeRecheck:
+    """Proof that the contract still holds at the moment of submission.
+
+    Evidence is gathered on Monday. The programme narrows its scope on
+    Wednesday. The report goes out on Friday citing a contract that no longer
+    grants what it did. Nothing in the earlier gates catches that, because they
+    all ran before the change.
+
+    So entering ``submitted`` requires re-reading the registry *now* and
+    proving the fingerprint still matches the one the evidence was produced
+    under. A mismatch is not a warning; it blocks.
+    """
+
+    finding_authority_ref: str
+    current_authority_ref: str
+    programme_id: str
+    checked_at: datetime
+    contract_status: str = ""
+
+    @property
+    def matches(self) -> bool:
+        return (
+            bool(self.current_authority_ref)
+            and self.finding_authority_ref == self.current_authority_ref
+        )
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "finding_authority_ref": self.finding_authority_ref,
+            "current_authority_ref": self.current_authority_ref,
+            "programme_id": self.programme_id,
+            "checked_at": self.checked_at.isoformat(),
+            "contract_status": self.contract_status,
+            "matches": self.matches,
+        }
 
 
 class Taxonomy(str, Enum):
@@ -113,6 +152,10 @@ class Finding:
     claims: list[Claim] = field(default_factory=list)
     evidence_refs: list[str] = field(default_factory=list)
     history: list[dict[str, Any]] = field(default_factory=list)
+    role_bindings: list[RoleBinding] = field(default_factory=list)
+    """Which claim answers which of the seven required questions. See
+    :mod:`greytheory.claims`. Empty until the finding is being prepared for a
+    report."""
 
     def __post_init__(self) -> None:
         if not self.authority_ref:
@@ -131,6 +174,25 @@ class Finding:
     def provenance_summary(self) -> dict[str, int]:
         return {tag.value: len(items) for tag, items in partition(self.claims).items()}
 
+    def bind_role(self, binding: RoleBinding) -> None:
+        """Offer a claim as the answer to one of the seven required roles.
+
+        Rebinding a role replaces the previous answer rather than accumulating
+        two, so the matrix always shows one answer per question.
+        """
+        self.role_bindings = [b for b in self.role_bindings if b.role is not binding.role]
+        self.role_bindings.append(binding)
+        if binding.claim not in self.claims:
+            self.claims.append(binding.claim)
+
+    def matrix(self):
+        """The claim-evidence matrix. Reports are generated from this."""
+        return build_matrix(self.role_bindings)
+
+    @property
+    def unanswered_roles(self) -> list[ClaimRole]:
+        return self.matrix().missing
+
     def advance(
         self,
         to: Taxonomy,
@@ -139,6 +201,7 @@ class Finding:
         note: str = "",
         programme_evidence: str | None = None,
         operator_approval: str | None = None,
+        scope_recheck: ScopeRecheck | None = None,
         now: datetime | None = None,
     ) -> None:
         """Move to a new state, or refuse.
@@ -150,6 +213,8 @@ class Finding:
                 Required for every state past ``submitted`` (I5).
             operator_approval: Approval reference. Required to enter
                 ``submitted``, which is an act, not an observation.
+            scope_recheck: Proof the contract still holds. Required to enter
+                ``submitted``.
 
         Raises:
             TransitionError: If the move is not permitted, or the evidence
@@ -173,11 +238,35 @@ class Finding:
                     "never awards itself a result)"
                 )
 
-        if to is Taxonomy.REPORT_READY and not self.proven_claims:
-            raise TransitionError(
-                "report_ready requires at least one 'checked' claim; inference "
-                "alone is not a report"
-            )
+        if to is Taxonomy.REPORT_READY:
+            problems = readiness_problems(self.role_bindings)
+            if problems:
+                raise TransitionError(
+                    "report_ready requires a claim in each of the seven roles; "
+                    "a count of checked claims can be satisfied by proving "
+                    "almost nothing. Outstanding:\n  - " + "\n  - ".join(problems)
+                )
+
+        if to is Taxonomy.SUBMITTED:
+            if scope_recheck is None:
+                raise TransitionError(
+                    "submission requires a scope recheck: the contract may have "
+                    "changed between gathering the evidence and sending the "
+                    "report, and nothing earlier in the lifecycle would notice"
+                )
+            if scope_recheck.finding_authority_ref != self.authority_ref:
+                raise TransitionError(
+                    "the scope recheck was performed against a different "
+                    "finding's authority reference"
+                )
+            if not scope_recheck.matches:
+                raise TransitionError(
+                    "the contract in force has changed since this evidence was "
+                    f"produced (evidence: {self.authority_ref[:12]}..., current: "
+                    f"{(scope_recheck.current_authority_ref or 'none')[:12]}...). "
+                    "Re-verify the programme and re-examine whether the work is "
+                    "still authorised before submitting"
+                )
 
         previous = self.state
         self.state = to
@@ -189,6 +278,7 @@ class Finding:
                 "note": note,
                 "programme_evidence": programme_evidence,
                 "operator_approval": operator_approval,
+                "scope_recheck": scope_recheck.to_dict() if scope_recheck else None,
                 "at": (now or datetime.now(timezone.utc)).isoformat(),
             }
         )
@@ -228,6 +318,7 @@ class Finding:
             "evidence_refs": list(self.evidence_refs),
             "provenance": self.provenance_summary(),
             "history": list(self.history),
+            "role_bindings": [b.to_dict() for b in self.role_bindings],
         }
 
     @classmethod
@@ -242,11 +333,18 @@ class Finding:
             claims=[Claim.from_dict(c) for c in data.get("claims", [])],
             evidence_refs=list(data.get("evidence_refs", [])),
             history=list(data.get("history", [])),
+            role_bindings=[
+                RoleBinding.from_dict(item)
+                for item in data.get("role_bindings", [])
+            ],
         )
 
 
 __all__ = [
+    "ClaimRole",
     "EXTERNAL_STATES",
+    "RoleBinding",
+    "ScopeRecheck",
     "Finding",
     "INTERNAL_STATES",
     "TRANSITIONS",

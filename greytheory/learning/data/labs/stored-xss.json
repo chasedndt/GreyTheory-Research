@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "fixture-stored-xss",
+  "card_id": "stored-xss",
+  "title": "Stored output-context boundary",
+  "description": "A synthetic stored marker is rendered to a second controlled viewer through vulnerable and encoded paths.",
+  "mechanism": "stored_output_encoding",
+  "synthetic_only": true,
+  "network_required": false,
+  "cases": [
+    {"id": "trusted-stored-render", "role": "positive_control", "expected_property_held": true},
+    {"id": "untrusted-stored-raw-render", "role": "vulnerable_probe", "expected_property_held": false},
+    {"id": "untrusted-stored-encoded-render", "role": "negative_control", "expected_property_held": true}
+  ]
+}
