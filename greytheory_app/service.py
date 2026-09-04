@@ -2328,6 +2328,10 @@ class WorkbenchApplicationService:
                 "a synthetic learning fixture may run only during an active practise stage"
             )
         pack = self.case_packs.pack(case_pack_id)
+        if pack.state != "ready_local":
+            raise WorkbenchContractError(
+                "a learning fixture may run only from a ready local case pack"
+            )
         if card_id != current.card_id or card_id not in pack.card_ids:
             raise WorkbenchContractError(
                 "the active journey card must belong to the selected case pack"

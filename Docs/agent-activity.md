@@ -4,6 +4,38 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - API Object Ownership Case Pack
+
+### What was built
+
+- Promoted Case Pack 02 to `ready_local` as an exact 50-minute
+  Learn/Practise/Prove/Reflect/Assess mission.
+- Added object-specific teaching, scored checks, three deterministic ownership
+  controls, evidence, report, readiness, demo, library, and research views.
+- Bound the same selected pack through every relevant panel and through the
+  server-persisted journey/fixture path.
+- Added a fail-closed server gate that refuses any pack not marked
+  `ready_local`.
+- Repaired desktop selector truncation and the mobile mission-selector layout,
+  then produced clean repository media and matched source/implementation
+  comparisons.
+
+### What the next agent should not undo
+
+Do not treat a known identifier, HTTP 200, or synthetic vulnerable result as a
+live BOLA finding. Keep the vulnerable path deliberately labelled as teaching
+data, preserve `externalAction: false`, and do not enable the dark programme
+adapter. Session and Role Transitions remains queued until it has its own
+reviewed end-to-end content and persistence acceptance.
+
+### Verification
+
+All 716 Python tests, 26 UI tests, 4 Sites tests, the production UI build, the
+bundled-wheel inventory, and isolated Windows packaged-workbench acceptance
+pass. Desktop and 390-pixel visual QA passes with no console errors or
+document-level horizontal overflow. See
+`07_LOGS/Build-Logs/2026-09-04-greytheory-api-object-ownership-case-pack.md`.
+
 ## 2026-09-04 - Codex - Authenticated worker-session foundation
 
 ### What was built

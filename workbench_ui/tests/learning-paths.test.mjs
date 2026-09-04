@@ -5,7 +5,7 @@ import { LEARNING_TOPICS, SKILL_TRACKS, topicById } from "../src/learningPaths.j
 import { INTEGRATION_GUARDRAILS, PROGRAMME_CONNECTORS, PUBLIC_INTELLIGENCE_SOURCES } from "../src/intelligenceSources.js";
 
 test("every learning topic has its own content, progression, and real resources", () => {
-  assert.equal(LEARNING_TOPICS.length, 3);
+  assert.equal(LEARNING_TOPICS.length, 4);
   assert.equal(new Set(LEARNING_TOPICS.map((topic) => topic.lede)).size, LEARNING_TOPICS.length);
   for (const topic of LEARNING_TOPICS) {
     assert.equal(topic.principles.length, 4);
@@ -18,6 +18,7 @@ test("every learning topic has its own content, progression, and real resources"
     assert.ok(topic.resources.every((resource) => resource[2].startsWith("https://")));
   }
   assert.equal(topicById("prompt-boundaries").title, "Prompt-injection boundaries");
+  assert.equal(topicById("object-authorization").title, "API object authorization");
 });
 
 test("skill tracks expose a complete beginner-to-transfer path", () => {

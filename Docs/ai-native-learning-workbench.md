@@ -166,7 +166,7 @@ The redesigned shell is not accepted until all of the following pass:
 | D3 Foundations | tokens, typography, shell, responsive grid, navigation | COMPLETE IN PREVIEW 2026-09-01 |
 | D4 Today/Learn | recommendation, exact 30-minute learner loop, scenario checks, focused lesson, skill graph | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
 | D5 Practise/Research/Prove | fixture command, immutable receipt, case canvas, ledger, evidence | SAME-ORIGIN PERSISTENCE IMPLEMENTED 2026-09-02 |
-| D5a Case Packs/Demos | one ready local pack, two queued packs, guided/full/transfer demo suite | IMPLEMENTED 2026-09-02 |
+| D5a Case Packs/Demos | two ready local packs, one queued pack, guided/full/transfer demo suite | IMPLEMENTED; PACK 02 PROMOTED 2026-09-04 |
 | D6 AI coach | advisory-only presentation complete; governed model conversation | PARTIAL |
 | D7 Acceptance | visual/reload/route-focus pass; mobile drawer and modal keyboard boundaries pass; bundled wheel plus current-user shortcut/restart/upgrade/runtime recovery pass; whole-app first-entry traversal, genuinely separate-account run, signing, and uninstall remain | PARTIAL |
 
@@ -177,10 +177,12 @@ current agent-security topics each own distinct instructional content,
 checkpoints, lenses, official resources, and a four-lesson progression from
 beginner orientation to independent transfer.
 
-The ready mission now budgets Learn 8, Practise 10, Prove 5, Reflect 4, and
-Assess 3 minutes. Each topic adds two scored scenarios to the learner's own
-explanation checklist. Both scenarios and three explanations are required to
-open the lab, but neither the unlock nor mission completion grants mastery.
+The Agent Tool Authorization mission budgets Learn 8, Practise 10, Prove 5,
+Reflect 4, and Assess 3 minutes. API Object Ownership budgets Learn 12,
+Practise 18, Prove 8, Reflect 6, and Assess 6 minutes. Each current topic adds
+two scored scenarios to the learner's own explanation checklist. Both
+scenarios and three explanations are required to open the lab, but neither the
+unlock nor mission completion grants mastery.
 
 ## Public intelligence and programme connectors
 
@@ -215,6 +217,19 @@ paired local controls:
 - the learner must inspect the evidence, write a limitations-aware reflection,
   and complete an independent readiness question; and
 - completion remains practice evidence rather than automatic mastery.
+
+`CASE-API-OWNERSHIP-001` now teaches object-level authorization through three
+synthetic local controls:
+
+- Account A reads its own object as the positive control;
+- the same actor reaches Account B's synthetic object only when the ownership
+  check is deliberately removed for the teaching failure;
+- restoring server-side ownership policy denies the identical cross-owner
+  request;
+- the receipt preserves actor, owner, object, action, policy mode, result, and
+  limitations while every result declares `externalAction: false`; and
+- identifier predictability, a synthetic teaching failure, live impact,
+  programme scope, and disclosure authority remain separate claims.
 
 ## Industry-practice grounding
 

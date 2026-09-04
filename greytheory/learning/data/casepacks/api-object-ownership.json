@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "id": "api-object-ownership",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": "API Object Ownership",
   "summary": "Build a two-account object-authorization method from HTTP identity through ownership evidence and report limitations.",
-  "state": "queued",
+  "state": "ready_local",
   "estimated_minutes": 50,
   "primary_card_id": "idor-bola",
   "card_ids": [

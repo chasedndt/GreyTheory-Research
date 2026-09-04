@@ -92,6 +92,52 @@ export const LEARNING_TOPICS = [
     ],
   },
   {
+    id: "object-authorization",
+    title: "API object authorization",
+    duration: "18 min",
+    level: "Foundation",
+    copy: "Test whether each object operation joins the authenticated actor to the requested object and action.",
+    lede: "Authentication tells the server who sent a request; object authorization decides whether that identity may perform this action on this object. A changed identifier is only a clue—the evidence is the server returning or changing an object the actor does not own.",
+    principles: [
+      ["Actor-object-action", "Write the identity, requested object, and operation as an explicit authorization invariant."],
+      ["Server-side enforcement", "Derive ownership and tenant rules from trusted server state for every object operation."],
+      ["Minimum-impact controls", "Use two owned synthetic identities and one exact cross-owner action without enumeration."],
+      ["Evidence separation", "Keep identifier shape, authorization result, impact, scope, and disclosure authority as distinct claims."],
+    ],
+    traditional: ["Horizontal access control", "Compare what two same-role identities may do to objects owned by themselves and each other.", "IDOR / BOLA method"],
+    ai: ["Hypothesis copilot", "Let AI propose identifier locations and counterexamples, but require verified ownership facts and bounded human-approved evidence.", "Advisory only"],
+    checkpoints: [
+      "A valid session does not authorize every object.",
+      "Identifier predictability is not proof of a vulnerability.",
+      "A safe test changes one ownership variable across controlled identities.",
+      "Evidence must preserve actor, owner, object, action, result, and limits.",
+    ],
+    practiceChecks: [
+      {
+        question: "Account A can read its own invoice. Which next local control isolates object authorization?",
+        options: ["Change to Account B's synthetic invoice ID while keeping actor and action fixed", "Try many random IDs", "Log out and compare the homepage"],
+        answer: 0,
+        explanation: "A single owned cross-account object changes only the ownership relationship and avoids enumeration or third-party data.",
+      },
+      {
+        question: "A UUID changes and the response is still 200. What has been proven?",
+        options: ["A reportable BOLA", "Only a response difference; ownership, data, and authorization still need evidence", "That UUIDs are unsafe"],
+        answer: 1,
+        explanation: "Status and identifier shape are insufficient; the evidence must show an unauthorized actor received or changed a protected object.",
+      },
+    ],
+    lessons: [
+      ["01", "Name the actors and objects", "Beginner", "Separate authentication identity from object ownership and permitted actions."],
+      ["02", "Write the invariant", "Foundation", "State the server-side actor-object-action rule that every operation must enforce."],
+      ["03", "Run the three controls", "Applied", "Compare own-object, vulnerable cross-owner, and fail-closed paths locally."],
+      ["04", "Transfer without expanding", "Transfer", "Apply the same invariant to a new identifier shape while preserving minimum impact."],
+    ],
+    resources: [
+      ["OWASP API Security", "API1:2023 Broken Object Level Authorization", "https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/"],
+      ["PortSwigger Academy", "Insecure direct object references", "https://portswigger.net/web-security/access-control/idor"],
+    ],
+  },
+  {
     id: "mcp-abuse",
     title: "MCP tool abuse patterns",
     duration: "10 min",

@@ -23,33 +23,39 @@ The canonical identity and capability truth live in [`PROJECT_DEFINITION.md`](PR
 | | |
 |---|---|
 | **LIVE** | Offline authority/evidence/reporting kernel; programme registry; single-source and multi-source bundle compiler; structured local research domain; transparent nine-factor hypothesis ranking and private research queue; governed offline model gateway and evaluation harness; offline Scope Watch comparison; validator-issued check receipts; claim-evidence report matrix; complete gate-bound two-account `LOCAL_FIXTURE` demonstration; 12-card vulnerability catalogue; synthetic local fixture runner; acyclic skill graph; evidence-bound six-dimensional mastery store; 17-denial execution gate; approvals; audit/provenance; evidence vault; validation/reporting/ledger/dashboard/CLI; static offline Lanes 1, 2, and 4; offline OSV import. |
-| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, two-phase owned-process worker assembly, and a launch-dark mutually authenticated encrypted-session protocol; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile key-provider candidate, and clean read-only WSL2 image-runtime candidate pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, worker identity-key provisioning, durable handshake replay state, carrier binding/security review, launcher, and every passive action remain open), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with one ready local pack, immutable synthetic fixture receipts, 24 interactive trajectory lessons, topic-owned roadmaps, and explicit human-assessed completion exist; broader ready curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, bundled same-origin UI, Guided Mission Control, thirteen visible journeys, working Demo Suite, retained Research Ledger, contract-only public intelligence, and accepted current-user lifecycle exist; comprehensive first-entry keyboard, signed/separate-account packaging, and external intelligence fetching remain open). |
-| **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, complete curriculum packs, accepted local-VM/reboot image conformance, and the VM carrier/key-provisioning layer for the passive worker's authenticated session protocol. |
+| **PARTIAL** | Programme authority intelligence (all three public source-shape proofs complete; individual bundle review states remain), execution broker (one in-memory local fixture plus a dark offline `passive-head-v1` broker, encrypted-capture/key lifecycle, network-free adapter contract, DNS/direct-TLS primitives, two-phase owned-process worker assembly, and a launch-dark mutually authenticated encrypted-session protocol; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, Windows CurrentUser DPAPI same-profile key-provider candidate, and clean read-only WSL2 image-runtime candidate pass; provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, worker identity-key provisioning, durable handshake replay state, carrier binding/security review, launcher, and every passive action remain open), check-receipt coverage (promotion migrated; legacy static collectors still originate deterministic checked claims directly), outcomes/learning (cards, graph, mastery, deterministic guidance, adaptive review, standard/assisted/transfer tracks, private journeys, three versioned case packs with two ready local packs, immutable synthetic fixture receipts, 24 interactive trajectory lessons, topic-owned roadmaps, and explicit human-assessed completion exist; the session/role pack and broader curricula remain open), workbench surface (CLI, read models, bounded commands, private runtime, authenticated numeric-loopback API, bundled same-origin UI, Guided Mission Control, thirteen visible journeys, working Demo Suite, retained Research Ledger, contract-only public intelligence, and accepted current-user lifecycle exist; comprehensive first-entry keyboard, signed/separate-account packaging, and external intelligence fetching remain open). |
+| **DESIGNED, NOT BUILT** | Governed model-backed coach conversations, remaining curriculum packs, accepted local-VM/reboot image conformance, and the VM carrier/key-provisioning layer for the passive worker's authenticated session protocol. |
 | **PLANNED** | Governed Scope Watch and public-intelligence collectors, network workers/live collectors, bug-bounty account connectors, and live research proof. |
 
 The detailed register is in [`PROJECT_DEFINITION.md`](PROJECT_DEFINITION.md#current-capability-truth). No public claim may describe a designed or planned component as working. **The implemented lanes are static and offline.** They read local files only; nothing touches a target.
 
 ### Workbench prototype
 
-![GreyTheory Guided Mission Control research preview](Docs/assets/guided-mission-control-current.png)
+![GreyTheory Case Pack 02 mission control research preview](Docs/assets/api-object-ownership-mission-current.png)
 
-| Topic-owned learning path | Read-only public intelligence |
+| Object-authorization learning path | Three-control safe lab |
+| --- | --- |
+| ![API object authorization learning path with an exact 50-minute route](Docs/assets/api-object-ownership-learning-current.png) | ![Synthetic own-object, vulnerable teaching, and safe-denial controls](Docs/assets/api-object-ownership-lab-current.png) |
+
+| Agent-tool learning path | Read-only public intelligence |
 | --- | --- |
 | ![Prompt-injection learning path with focused note and checkpoint](Docs/assets/guided-learning-path-current.png) | ![Public intelligence contracts and query guardrails](Docs/assets/public-intelligence-current.png) |
 
-![Four-stage prompt-injection roadmap from beginner to independent transfer](Docs/assets/topic-roadmap-current.png)
-
 The operator selected **Guided Mission Control** as the learner shell. The
 preview now includes inspectable recommendations, a six-stage learner loop,
-an exact 30-minute Learn/Practise/Prove/Reflect/Assess mission, scored practice
+two complete Learn/Practise/Prove/Reflect/Assess missions, scored practice
 checks that unlock practice without awarding mastery, focused ethical and
 technical lessons, an agent-security skill map, a
 deterministic local authorization lab, a case canvas, evidence-quality views,
 reflection, an independent readiness check, and a contract-only public
-intelligence catalogue. Its first complete test case
+intelligence catalogue. The 30-minute agent-tool case
 compares a consented local tool request with an indirect prompt-injection
 control; the injected instruction is denied before the tool adapter and neither
-path can contact a live target.
+path can contact a live target. The 50-minute API object-ownership case uses two
+synthetic accounts to compare an own-object read, a deliberately vulnerable
+cross-owner teaching path, and the same request denied by server-side ownership
+policy. It records actor, owner, object, action, result, and limitations without
+enumeration or external action.
 
 The Programmes journey also demonstrates how a versioned HackerOne, Bugcrowd,
 or direct-policy snapshot may become a human-reviewed synthetic learning case.

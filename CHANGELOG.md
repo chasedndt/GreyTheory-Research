@@ -4,6 +4,25 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - API Object Ownership learning mission
+
+- Promoted Case Pack 02 from queued metadata to a complete, exact 50-minute
+  `LOCAL_FIXTURE` mission spanning Learn, Practise, Prove, Reflect, and Assess.
+- Added an object-authorization lesson, two scored reasoning checks, a
+  four-step beginner-to-transfer roadmap, and official OWASP/PortSwigger
+  reading links.
+- Added deterministic own-object, deliberately vulnerable cross-owner, and
+  server-enforced denial controls. Every result declares
+  `externalAction: false` and separates synthetic evidence from live impact,
+  scope, and disclosure authority.
+- Bound Mission Control, Safe Lab, Cases, Hypotheses, Evidence, Reports,
+  Readiness, Demo Suite, and Library to the selected ready Case Pack while
+  keeping Session and Role Transitions disabled and queued.
+- Added server acceptance for the complete persisted Case Pack 02 journey and
+  fail-closed refusal of queued packs.
+- Added clean repository release media plus matching desktop/mobile comparison
+  evidence in the central GreyTheory Visual QA registry.
+
 ### Added - authenticated passive-worker session foundation
 
 - Added a carrier-neutral mutual handshake with pinned Ed25519 broker/worker

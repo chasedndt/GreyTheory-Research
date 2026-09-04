@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-04 - GreyTheory API Object Ownership Case Pack](2026-09-04-greytheory-api-object-ownership-case-pack.md) - exact 50-minute second local mission, three-control ownership lab, pack-bound panels, and responsive release media
+
 - [2026-09-04 - GreyTheory authenticated worker-session foundation](2026-09-04-greytheory-authenticated-worker-session-foundation.md) - launch-dark mutual identity and encrypted framing protocol; carrier, durable replay, VM/reboot, and posture gates remain open
 
 - [2026-09-04 - GreyTheory Ubuntu worker-image candidate](2026-09-04-greytheory-ubuntu-worker-image-candidate.md) - signed two-build-identical image and accepted WSL2 runtime contract; hardened local-VM/reboot and activation gates remain open

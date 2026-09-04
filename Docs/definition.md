@@ -13,7 +13,7 @@
 
 Long form:
 
-GreyTheory takes written authorisation, compiles it into a machine-checkable scope contract, admits only work that contract permits, records every action against it, and produces artifacts that carry their own proof. The existing code is the constitutional and evidentiary kernel. Research workspaces, hypotheses, experiments, the first governed learning catalogue, and transparent hypothesis ranking are live offline; training orchestration, workers, models, and the workbench remain later product layers.
+GreyTheory takes written authorisation, compiles it into a machine-checkable scope contract, admits only work that contract permits, records every action against it, and produces artifacts that carry their own proof. The existing code is the constitutional and evidentiary kernel. Research workspaces, hypotheses, experiments, the governed learning catalogue, transparent hypothesis ranking, offline model gateway, dark worker foundations, and the Windows-first Guided Mission Control workbench now exist at their documented local/offline maturity; network collection, passive posture, and live-programme operation remain later gated layers.
 
 ### What it is
 
@@ -235,7 +235,7 @@ Public and internal descriptions must use these words. Nothing here is inflated.
 | Hypothesis / experiment engine | 3 | **Live (offline)** — explicit lifecycles/budgets plus one complete two-account `LOCAL_FIXTURE` integration |
 | Transparent research queue | 3 | **Live (offline)** — versioned nine-factor policy, explained ordinal scores, scope-review partition, integrity-bound private output, no execution authority |
 | Vulnerability cards / skill graph | 3 | **Live (offline)** — 12 versioned cards, 12 synthetic fixtures, acyclic prerequisites, and six evidence-bound mastery dimensions |
-| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, bounded standard/assisted/transfer journeys, 24 interactive lessons, topic roadmaps, and one ready Case Pack exist; broader ready curricula and governed coach conversation remain open |
+| Training modes / adaptive curriculum | 3 | **Partial / live offline** — deterministic guidance, transparent adaptive review, explicit human assessment, bounded standard/assisted/transfer journeys, 24 interactive lessons, topic roadmaps, and two ready Case Packs exist; the session/role pack, broader curricula, and governed coach conversation remain open |
 | Model gateway | cross-cutting | **Live offline** — governed roles, citations, budgets, provenance, adversarial evaluation, and deterministic local provider; no network provider configured |
 | Standalone graphical workbench | 1/3 | **Partial / implemented preview** — Guided Mission Control, thirteen journeys, same-origin persisted learner commands, a bundled wheel, and current-user shortcut/restart/upgrade/runtime-recovery acceptance pass; comprehensive first-entry keyboard, separate-account, signing, and uninstall acceptance remain open |
 | Passive broker / worker | cross-cutting | **Partial / dark local foundation** — Ubuntu 24.04.4 no-route/full-service, namespace-lifetime exact-egress, clean read-only WSL2 image-runtime, Windows CurrentUser DPAPI same-profile, and carrier-neutral authenticated-session candidate proofs pass; hardened local-VM/reboot acceptance, provisioned identity keys, durable replay, accepted carrier/VM binding, security review, approved recovery/ACLs, programme review, and posture approval remain open |

@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 714 repository tests pass on 2026-09-04. The unchanged UI baseline remains 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded reproducibility diagnostic, a clean two-build-identical release artifact, and accepted WSL2 runtime evidence for the read-only mounts, exact egress, worker identity, encrypted capture, receipt, and replay contract. The record retains `hardened_worker_image_accepted=false` and `reboot_vm_conformance_accepted=false`. A separate carrier-neutral authenticated-session foundation passes six network-free mutual-identity, key-derivation, encrypted-framing, replay, expiry, size, and existing worker-record tests; carrier/VM binding, identity-key provisioning, durable replay across reboot, and security/host acceptance remain open. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, accepted authenticated broker transport, programme, and human approval gates remain open.
+- 716 repository tests, 26 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel Case Pack 02 QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness passes, and a namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A signed-input image candidate has 21 focused static/provenance tests, linked Windows-worktree normalization, lock-bound pre-dependency install groups, an owned minimal build-time `/dev` while retaining a `nodev` ext4 root, a bounded reproducibility diagnostic, a clean two-build-identical release artifact, and accepted WSL2 runtime evidence for the read-only mounts, exact egress, worker identity, encrypted capture, receipt, and replay contract. The record retains `hardened_worker_image_accepted=false` and `reboot_vm_conformance_accepted=false`. A separate carrier-neutral authenticated-session foundation passes six network-free mutual-identity, key-derivation, encrypted-framing, replay, expiry, size, and existing worker-record tests; carrier/VM binding, identity-key provisioning, durable replay across reboot, and security/host acceptance remain open. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, hardened local-VM/reboot acceptance, accepted authenticated broker transport, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -112,9 +112,9 @@ Milestone 4 BOLA proposal maps to exactly one `idor-bola` v1.0.0 revision with
 `test_fixture` provenance. Focused acceptance originally passed 10 tests and
 the then-current full suite passed 430. Transparent adaptive review plus bounded
 assisted and transfer tracks were added later under the workbench workstream.
-Three versioned Case Packs and the graphical Learn surface now exist, but only
-the first Case Pack is ready locally and installed product acceptance remains
-PARTIAL.
+Three versioned Case Packs and the graphical Learn surface now exist. Agent
+Tool Authorization and API Object Ownership are ready locally; Session and
+Role Transitions remains queued. Installed product acceptance remains PARTIAL.
 
 ## Milestone 6 — Hypothesis engine *(COMPLETE 2026-08-09)*
 
@@ -253,7 +253,12 @@ defined in
   live target activity remain blocked.
 - [ ] Connect the bounded AI coach to the governed model gateway; its advisory-only presentation and explicit no-execution/no-mastery boundary are implemented.
 - [x] Add transparent adaptive scheduling plus bounded assisted and transfer-specific learning modes beyond the deterministic foundation.
-- [x] Define versioned Case Pack contracts for guided, assisted, and independent transfer runs; ship Agent Tool Authorization as the first ready local pack and queue API ownership plus session/role transition packs.
+- [x] Define versioned Case Pack contracts for guided, assisted, and independent transfer runs; initially ship Agent Tool Authorization as the first ready local pack and queue API ownership plus session/role transition packs.
+- [x] Promote API Object Ownership to a complete exact 50-minute local mission
+  with object-specific Learn, three-control Practise, Evidence, Reports, and
+  Readiness surfaces plus server-persisted end-to-end acceptance.
+- [ ] Promote Session and Role Transitions from queued metadata to a complete,
+  reviewed local learning-to-proof journey.
 - [x] Persist immutable synthetic fixture receipts and bind the graphical Learn -> Practise -> Prove -> Reflect path to same-origin, revision-safe application commands.
 - [x] Serve the built learner UI from the numeric-loopback application under a self-only content policy while keeping separate preview origins read-only.
 - [x] Add a working three-story Demo Suite and expose the future live-programme adapter as dark, disabled, and gated by Windows, Ubuntu, egress/key, programme-review, and human-posture acceptance.
@@ -278,8 +283,10 @@ bounded session, complete a guided learning-to-proof journey, inspect authority
 and evidence, and export a report draft without any target-network capability.
 
 Current next product gate: finish first-entry and whole-application keyboard
-traversal, then repeat the accepted shortcut/install/recovery lifecycle from a
-genuinely separate Windows account. See [`live-programme-transition.md`](live-programme-transition.md)
+traversal, promote the queued Session and Role Transitions Case Pack, then
+repeat the accepted shortcut/install/recovery lifecycle from a genuinely
+separate Windows account. The governed model-backed coach remains a separate
+application boundary. See [`live-programme-transition.md`](live-programme-transition.md)
 for the later five-gate transition; no VPS or programme connection is part of
 this product gate.
 
