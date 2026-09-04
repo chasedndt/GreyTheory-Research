@@ -161,13 +161,31 @@ Candidate Windows operator-key host proof:
   local ACLs, cross-profile/bare-machine recovery is absent, and Python cannot
   guarantee erasure of every interpreter or OS-level temporary copy.
 
+Accepted namespace-lifetime Ubuntu egress candidate:
+
+- hash-locked Ubuntu 24.04 nftables packages are staged under E: and unpacked
+  into an owned temporary root for each acceptance run; nothing is installed
+  into the WSL distribution;
+- a fresh user/network/mount namespace defaults nftables input, forward, and
+  output to drop and permits only TCP to the owned synthetic `8.8.8.8:443`
+  canary on loopback;
+- a routed decoy address, wrong port, and IPv6 loopback probe each hit the
+  counted deny rule, while the exact full worker request, encrypted capture,
+  signed receipt, and replay completion still pass;
+- after UID/GID 65534, zero capabilities, and no-new-privileges are applied,
+  both route mutation and firewall flush are denied; and
+- this proves an OS-enforced boundary for the owned namespace lifetime. It does
+  not prove that a reproducible read-only worker image always installs/applies
+  the policy, survives VM reboot, or has passed VM/VPS conformance.
+
 Still required before any network posture:
 
 - operator approval of the candidate OS secret-provider binding, hardened
   application-data ACLs, and an independent profile/system backup and recovery
   procedure for the external root KEK; the repository does not persist it;
-- isolated unprivileged Ubuntu worker image, OS egress constraints, broker
-  transport/authentication, conformance acceptance, owned canary, one reviewed
-  programme, sustained clean operation, and explicit operator posture approval.
+- isolated reproducible unprivileged Ubuntu worker image with mandatory
+  namespace egress admission, broker transport/authentication, conformance
+  acceptance, owned canary, one reviewed programme, sustained clean operation,
+  and explicit operator posture approval.
 
 The foundation is therefore `PARTIAL`; `PASSIVE_HTTP` remains unavailable.

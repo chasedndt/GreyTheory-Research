@@ -116,7 +116,7 @@ export const panelData = {
     rows: [
       { id: "GOV-POSTURE", title: "Operating posture", detail: "LOCAL_FIXTURE is the current ceiling for this workspace.", status: "Enforced", tone: "verified", kind: "Policy" },
       { id: "GOV-AUTH", title: "Authority package", detail: "Synthetic fixture scope confirmed; external systems excluded.", status: "Verified", tone: "verified", kind: "Authority" },
-      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Ubuntu no-route proof and same-profile DPAPI candidate pass; durable egress, approved recovery/ACLs, hardened image, programme review, and human approval remain.", status: "Blocked", tone: "blocked", kind: "Capability" },
+      { id: "GOV-PASSIVE", title: "PASSIVE_HTTP capability", detail: "Ubuntu full-service and exact-egress namespace proofs plus the same-profile DPAPI candidate pass; reproducible image binding, approved recovery/ACLs, programme review, and human approval remain.", status: "Blocked", tone: "blocked", kind: "Capability" },
     ],
     boundary: "The UI displays policy state but cannot grant authority or execute a broker action directly.",
   },

@@ -68,6 +68,7 @@ def test_application_ui_and_passive_boundaries_remain_explicit():
     assert "owned-process" in broker.boundary.lower()
     assert "full ubuntu 24.04" in broker.boundary.lower()
     assert "acceptance passes" in broker.boundary.lower()
+    assert "exact-address/port" in broker.boundary.lower()
     assert "dpapi root-kek candidate" in broker.boundary.lower()
     key_provider = capability("windows_dpapi_root_kek_candidate")
     assert key_provider.status is CapabilityStatus.PARTIAL
@@ -86,10 +87,11 @@ def test_application_ui_and_passive_boundaries_remain_explicit():
     assert "cancellable" in primitives.detail.lower()
     assert "two-command" in primitives.detail.lower()
     assert "capability-empty" in primitives.detail.lower()
-    assert "full owned no-route service path" in primitives.boundary.lower()
+    assert "namespace-lifetime nftables" in primitives.boundary.lower()
+    assert "not yet bound" in primitives.boundary.lower()
     assert capability("passive_http_worker").status is CapabilityStatus.UNAVAILABLE
     passive = capability("passive_http_worker")
-    assert "no durable egress" in passive.detail.lower()
+    assert "no image-bound durable egress" in passive.detail.lower()
     assert "dpapi" in passive.detail.lower()
     assert "passive_http remains dark" in passive.boundary.lower()
 

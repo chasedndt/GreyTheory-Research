@@ -153,3 +153,74 @@ def test_full_worker_shell_entrypoint_is_lf_on_windows_checkouts():
 
     assert b"\r\n" not in shell_path.read_bytes()
     assert "*.sh text eol=lf" in attributes
+
+
+def test_egress_policy_defaults_to_drop_and_allows_only_the_owned_fixture():
+    policy = (ACCEPTANCE / "fixtures" / "ubuntu-egress-policy.nft").read_text(
+        encoding="utf-8"
+    )
+
+    assert policy.count("policy drop") == 3
+    assert 'oifname "lo" ip daddr 8.8.8.8 tcp dport 443 ct state new accept' in policy
+    assert 'iifname "lo" ip daddr 8.8.8.8 tcp dport 443 ct state new accept' in policy
+    assert "counter name denied_output reject" in policy
+    assert "1.1.1.1" not in policy
+    assert "flush ruleset" in policy
+
+
+def test_egress_acceptance_uses_hash_locked_e_drive_tools_without_installing():
+    stage = (ACCEPTANCE / "stage-ubuntu-nftables.sh").read_text(encoding="utf-8")
+    shell = (ACCEPTANCE / "run-ubuntu-egress-policy.sh").read_text(
+        encoding="utf-8"
+    )
+    powershell = (ACCEPTANCE / "run-ubuntu-egress-policy.ps1").read_text(
+        encoding="utf-8"
+    )
+    checksum = (
+        ACCEPTANCE / "fixtures" / "ubuntu-nftables-amd64.sha256"
+    ).read_text(encoding="ascii")
+
+    assert "apt-get download" in stage
+    assert "apt-get install" not in stage
+    assert "sha256sum --check" in stage
+    assert checksum.count("_amd64.deb") == 5
+    assert "GREYTHEORY_NFT_CACHE" in shell
+    assert "sha256sum --check" in shell
+    assert "unexpected package set" in shell
+    assert 'for package in "${packages[@]}"' in shell
+    assert "dpkg-deb -x" in shell
+    assert '"unshare", "-Urnm"' in powershell
+    assert '"--map-user=65534"' in powershell
+    assert '"--map-group=65534"' in powershell
+    assert "hardened_worker_image_accepted -ne $false" in powershell
+    assert "denied_probe_packets -lt 3" in powershell
+    assert not any(
+        token in (stage + shell + powershell).lower()
+        for token in ("curl ", "wget ", "invoke-webrequest", "apt-get install")
+    )
+
+
+def test_egress_probe_is_bounded_and_has_no_http_client():
+    path = ACCEPTANCE / "ubuntu_egress_probe.py"
+    source = path.read_text(encoding="utf-8")
+    tree = ast.parse(source, filename=str(path))
+    imported: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            imported.update(alias.name for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            imported.add(node.module)
+
+    assert {"socket", "time"}.issubset(imported)
+    assert imported.isdisjoint(
+        {"aiohttp", "http.client", "httpx", "requests", "subprocess", "urllib.request"}
+    )
+    assert "client.settimeout(1.0)" in source
+    assert source.count("_denied_tcp_probe(") == 4
+
+
+def test_egress_shell_entrypoints_are_lf_on_windows_checkouts():
+    attributes = (ACCEPTANCE.parent / ".gitattributes").read_text(encoding="utf-8")
+    for name in ("run-ubuntu-egress-policy.sh", "stage-ubuntu-nftables.sh"):
+        assert b"\r\n" not in (ACCEPTANCE / name).read_bytes()
+    assert "*.sh text eol=lf" in attributes

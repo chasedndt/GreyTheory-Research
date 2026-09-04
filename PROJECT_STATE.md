@@ -20,7 +20,7 @@ Canonical identity and capability truth: [`PROJECT_DEFINITION.md`](PROJECT_DEFIN
 - **Current research milestone:** Milestone 9 - passive execution pilot, gated on the explicit posture decision and broker preconditions.
 - **Current product workstream:** Guided Mission Control local application under `LOCAL_FIXTURE`; three versioned Case Packs (one ready as an exact 30-minute guided mission, two queued), scenario practice checks, an immutable synthetic receipt store, same-origin UI serving, bounded server-persisted Learn/Practise/Prove/Reflect commands, 24 interactive trajectory lessons, topic-owned roadmaps, thirteen working navigation journeys, a working Demo Suite, an offline programme-to-local-case readiness view, and a deliberately dark live-programme compatibility layer are implemented. Browser acceptance proves reload-safe same-origin journey persistence, route focus, named compact navigation, inert closed mobile navigation, themed navigation-scrollbar geometry, mobile drawer focus containment/return, and modal focus containment/return. A reproducible wheel with bundled UI has passed empty-prefix Windows installation plus an isolated current-user shortcut/restart/upgrade/recovery lifecycle with real persisted learner state. Governed coach conversation, accepted public-intelligence fetching, whole-application first-entry keyboard traversal, a genuinely separate-account run, and signed release packaging remain open.
 - **Operating posture:** `LOCAL_FIXTURE`; no network collector or live-target interaction.
-- **Verified baseline:** 694 repository tests pass on 2026-09-04, plus 22 UI and 4 Sites tests, production UI build, and fresh desktop/390-pixel rendered capability-truth QA. Both empty-prefix wheel acceptance and current-user install lifecycle acceptance pass on Windows; the latter proves shortcut configuration, a real same-origin learner command, restart, same-wheel upgrade, and replaceable-runtime recovery while explicitly recording `separate_user_accepted=false`. The full worker-service no-route harness passes on Ubuntu 24.04.4 with a non-root, capability-empty, no-new-privileges worker, exact synthetic `HEAD`, encrypted capture round trip, verified receipt, completed replay state, and clean exit. A separate Windows CurrentUser DPAPI candidate proof passes same-profile restart, protected-copy recovery, lease-buffer zeroing, tamper refusal, capture decryption, and audit verification while explicitly leaving provider approval, ACL hardening, and independent recovery open. Everything remains local fixture evidence, not a posture or live-target claim.
+- **Verified baseline:** 698 repository tests pass on 2026-09-04, plus 23 UI and 4 Sites tests, production UI build, and fresh desktop/390-pixel rendered capability-truth QA. Both empty-prefix wheel acceptance and current-user install lifecycle acceptance pass on Windows; the latter proves shortcut configuration, a real same-origin learner command, restart, same-wheel upgrade, and replaceable-runtime recovery while explicitly recording `separate_user_accepted=false`. The full worker-service path passes on Ubuntu 24.04.4 with a non-root, capability-empty, no-new-privileges worker, exact synthetic `HEAD`, encrypted capture round trip, verified receipt, completed replay state, and clean exit. Its separate namespace-lifetime nftables candidate adds default-drop chains, one exact address/port, counted bypass denials, and refused route/firewall mutation without a WSL system install. A Windows CurrentUser DPAPI candidate passes same-profile recovery while provider approval, ACL hardening, and independent recovery remain open. Everything remains local fixture evidence, not a hardened-image, posture, or live-target claim.
 
 ## What is built
 
@@ -80,19 +80,24 @@ The complete offline path from supplied authorisation to a validated report draf
   keys, replay/kill-switch state, capture private key, or research store; it
   scrubs its environment and must report non-root, zero-capability,
   no-new-privileges Linux identity before its evidence is accepted. Earlier
-  Earlier Ubuntu namespace proof covered the primitive path. The full service
+  Ubuntu namespace proof covered the primitive path. The full service
   host harness now also passes on Ubuntu 24.04.4 and emits a durable JSON record:
   it proves no-route namespace isolation, non-root/zero-capability/no-new-
   privileges worker identity, exact synthetic TLS `HEAD`, encrypted capture,
   receipt verification, completed replay state, and clean exit. It still uses
-  only an owned local canary and supplies no durable egress, OS key, image,
-  scheduler, programme, VPS, or posture proof.
+  only an owned local canary and supplies no OS key, image, scheduler,
+  programme, VPS, or posture proof.
 - a candidate operator-side Windows CurrentUser DPAPI root-KEK provider that
   refuses Git storage and replacement, audits provision/lease operations,
   exposes only a short-lived zeroing lease to the capture-key store, and passes
   real same-profile restart/protected-copy recovery plus tamper refusal. It is
   not operator-approved, its inherited evidence ACL is not accepted for
   operational use, and it has no cross-profile or bare-machine recovery path.
+- a namespace-lifetime Ubuntu nftables egress candidate that defaults
+  input/forward/output to drop, permits only the exact owned synthetic
+  `8.8.8.8:443` fixture, accounts for three denied bypass probes, denies route
+  and firewall mutation after capability drop, and still completes the full
+  encrypted worker path. It is not yet bound to a reproducible hardened image.
 
 ## What is not built
 
@@ -100,7 +105,7 @@ The complete offline path from supplied authorisation to a validated report draf
 - broader curriculum packs beyond the first 12 cards;
 - governed model-backed coach conversation, broader ready case packs, whole-application first-entry keyboard traversal, genuinely separate-user and signed-installer Windows acceptance; the Guided Mission Control shell has passed current visual QA, same-origin reload/persistence, mobile-drawer/modal focus, empty-prefix wheel acceptance, and current-user shortcut/restart/upgrade/runtime-recovery acceptance, while its commands and synthetic receipts persist privately;
 - general/passive validator-backed claim assembly beyond the exact local fixture, and all external programme-outcome recording; submission remains deliberately human-owned and unavailable to the workbench;
-- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, an approved OS secret-provider/recovery/ACL policy for the root KEK, durable OS egress constraints, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors; the Ubuntu no-route service and Windows same-profile DPAPI candidate harnesses pass locally;
+- governed external Scope Watch and public-intelligence collectors, bug-bounty account connectors, an approved OS secret-provider/recovery/ACL policy for the root KEK, a reproducible hardened image with mandatory egress policy, hardened VM/VPS image acceptance, a launcher/scheduler, and live collectors; the Ubuntu no-route service, namespace-lifetime nftables candidate, and Windows same-profile DPAPI candidate harnesses pass locally;
 - live research evidence, submissions, or programme outcomes.
 
 ## Locked decisions
@@ -128,7 +133,7 @@ The complete offline path from supplied authorisation to a validated report draf
 
 ## Immediate next step
 
-Finish whole-application first-entry keyboard traversal and repeat the now-accepted current-user lifecycle from a genuinely separate Windows account. In parallel, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. For the passive pilot, decide the candidate Windows DPAPI provider only after application-data ACL hardening and independent recovery are designed and accepted, then prove durable egress in a reproducible hardened local Ubuntu image. One verified programme review and explicit human posture approval still follow; a VPS is not a shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
+Finish whole-application first-entry keyboard traversal and repeat the now-accepted current-user lifecycle from a genuinely separate Windows account. In parallel, connect coach conversation only through the governed model gateway and expand the two queued Case Packs. For the passive pilot, turn the accepted namespace-lifetime nftables candidate into a reproducible read-only Ubuntu worker image with mandatory egress admission, while the candidate Windows DPAPI provider still waits on application-data ACL hardening and independent recovery. One verified programme review and explicit human posture approval follow; a VPS is not a shortcut. The posture remains `LOCAL_FIXTURE`; broader claim assembly, YNAB conflict resolution, submission, and every posture decision remain human-owned.
 
 ## Do not build next
 

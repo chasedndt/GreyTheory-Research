@@ -429,9 +429,10 @@ Not implemented now:
   model-backed coach conversation;
 - a general local fixture process broker;
 - operator approval, hardened application-data ACLs, and independent recovery
-  for the candidate root-KEK provider; durable egress policy, hardened image,
+  for the candidate root-KEK provider; a reproducible hardened image that makes
+  the accepted namespace-lifetime nftables policy mandatory,
   launcher/scheduler, or any `PASSIVE_HTTP` action; the full Ubuntu no-route
-  local-fixture worker-service harness now passes.
+  service and exact-egress local-fixture candidates now pass.
 
 The current Research Ledger remains a first-class Research case view. Guided
 Mission Control is the selected shell. Current browser visual, same-origin

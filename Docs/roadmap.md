@@ -16,7 +16,7 @@ The existing Authority, Signal, and Judgement planes remain the trust architectu
 
 - Authority Plane, offline Signal framework with three static collectors, and Judgement Plane are implemented.
 - Offline OSV advisory import is implemented.
-- 694 repository tests, 22 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness also passes with strict unprivileged identity, encrypted capture return, signed receipt verification, completed replay state, and clean exit. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, durable egress, hardened image, programme, and human approval gates remain open.
+- 698 repository tests, 23 UI tests, 4 Sites tests, the production UI build, and fresh desktop/390-pixel capability-truth QA pass on 2026-09-04. The full Ubuntu 24.04.4 no-route service harness passes, and a new namespace-lifetime nftables candidate adds default-drop input/forward/output, one exact synthetic address/port, counted bypass denials, mutation refusal after capability drop, and the same encrypted full-service completion. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart/protected-copy recovery, tamper refusal, capture decryption, and audit checks. These are still local host proofs; posture remains unchanged and provider approval, ACL hardening, independent recovery, reproducible hardened-image binding, programme, and human approval gates remain open.
 - Three saved source shapes compile offline without guessed authority: HackerOne/GitLab and direct-policy/MCP Python SDK reach `PENDING_REVIEW`; Bugcrowd/YNAB correctly reaches `BLOCKED` on two unresolved human policy decisions.
 - No network capability or live research outcome exists.
 
@@ -332,6 +332,12 @@ Offline broker foundation completed without enabling the posture:
   provision/lease operations, same-profile restart and protected-copy recovery,
   tamper refusal, capture decryption, and lease-buffer zeroing pass. This does
   not close the key gate.
+- [x] Prove a namespace-lifetime OS egress candidate on Ubuntu 24.04.4 WSL2:
+  hash-locked nftables userspace reconstructed under an owned temporary root,
+  default-drop input/forward/output, one exact synthetic address/port,
+  counted wrong-port/decoy-address/IPv6 denials, denied unprivileged route and
+  firewall mutation, and successful full encrypted worker completion. No
+  external packet, programme, posture raise, or WSL system install is involved.
 - [ ] Prove durable egress enforcement in the hardened local image.
 - [ ] Bind the external root KEK to an approved OS secret provider and prove
   hardened application-data ACLs plus independent cross-profile/bare-machine

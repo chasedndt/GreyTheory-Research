@@ -1,5 +1,7 @@
 # Build Logs Index
 
+- [2026-09-04 - GreyTheory Ubuntu exact-egress candidate](2026-09-04-greytheory-ubuntu-exact-egress-candidate.md) - hash-locked default-drop nftables proof, counted bypass denials, and repaired mobile capability visibility
+
 - [2026-09-04 - GreyTheory Windows DPAPI root-KEK candidate](2026-09-04-greytheory-windows-dpapi-root-kek-candidate.md) - same-profile OS-protected key proof, explicit ACL/recovery limits, and corrected workbench capability truth
 
 - [2026-09-04 - GreyTheory Ubuntu full-service acceptance](2026-09-04-greytheory-ubuntu-full-service-acceptance.md) - CRLF portability fix, durable JSON evidence, and accepted no-route Ubuntu 24.04.4 service chain

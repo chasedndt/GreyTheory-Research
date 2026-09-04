@@ -236,7 +236,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive broker foundation",
         CapabilityStatus.PARTIAL,
         "Offline passive-head-v1 contracts provide audit-bound signed tickets, canonical HTTPS and public-address policy, default-engaged kill switch, exact-once replay storage, ticket-bound X25519/ChaCha20-Poly1305 capture envelopes, audited KEK-wrapped recipient provisioning/rotation/revocation/decryption, and signed receipt metadata.",
-        "An owned-process broker/worker assembly keeps signing keys, replay state, kill-switch authority, private capture keys, and research data out of the worker. Its full Ubuntu 24.04 no-route local-fixture service acceptance passes. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart and protected-copy recovery, but operator approval, ACL hardening, independent recovery, durable egress, a hardened image, VM/VPS acceptance, and every target action remain unverified or unavailable; PASSIVE_HTTP remains unavailable.",
+        "An owned-process broker/worker assembly keeps signing keys, replay state, kill-switch authority, private capture keys, and research data out of the worker. Full Ubuntu 24.04 no-route and exact-address/port default-drop nftables local-fixture acceptance passes. A Windows CurrentUser DPAPI root-KEK candidate passes same-profile restart and protected-copy recovery, but operator approval, ACL hardening, independent recovery, image-bound durable egress, a hardened image, VM/VPS acceptance, and every target action remain unverified or unavailable; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_broker",
             "Docs/decisions/ADR-0011-dark-passive-broker-foundation.md",
@@ -259,7 +259,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive adapter conformance contract",
         CapabilityStatus.PARTIAL,
         "A network-free contract plus trusted parent assembly orchestrate one typed complete DNS result through a broker address recheck into one full-request-digest-bound direct worker HEAD, then strictly parse, encrypt, and seal completed or stopped receipts.",
-        "The two-phase owned-process assembly, identity/lifecycle controls, and complete Ubuntu 24.04 no-route local-fixture service path pass. No hardened image, durable egress policy, scheduler, VPS, programme action, or posture route exists; PASSIVE_HTTP remains unavailable.",
+        "The two-phase owned-process assembly and identity/lifecycle controls pass. The complete Ubuntu 24.04 no-route service path passes, as does the namespace-lifetime exact-egress candidate. No reproducible image binding, scheduler, VPS, programme action, or posture route exists; PASSIVE_HTTP remains unavailable.",
         (
             "greytheory_worker_contract",
             "Docs/decisions/ADR-0014-network-free-passive-adapter-contract.md",
@@ -270,7 +270,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "Passive worker OS primitives",
         CapabilityStatus.PARTIAL,
         "The worker package implements the cancellable resolver and direct-TLS primitives plus a capped two-command service. On Linux the outer worker starts from a clean fork server and only the scrubbed authority-free worker forks its resolver; evidence is refused unless Linux is non-root, capability-empty, and no-new-privileges.",
-        "Ubuntu 24.04 WSL2 now proves the full owned no-route service path, including real system resolution against the synthetic hosts view, broker recheck, exact request, encrypted capture, signed receipt, replay completion, and worker cleanup. Durable egress, hardened image, scheduler, and posture route remain unverified or unimplemented.",
+        "Ubuntu 24.04 WSL2 now proves the full owned service path and a namespace-lifetime nftables candidate: default-drop input/forward/output, one exact synthetic address/port, denied address/port/IPv6 probes, and denied unprivileged route/firewall mutation. The policy is not yet bound to a reproducible hardened image; scheduler and posture route remain unverified or unimplemented.",
         (
             "greytheory_worker",
             "Docs/decisions/ADR-0015-unlaunched-passive-worker-primitives.md",
@@ -280,7 +280,7 @@ CAPABILITIES: tuple[Capability, ...] = (
         "passive_http_worker",
         "Passive HTTP worker",
         CapabilityStatus.UNAVAILABLE,
-        "A dark owned-process assembly, accepted Ubuntu no-route fixture, and same-profile Windows DPAPI key-provider candidate exist, but there is no approved provider/recovery procedure, no durable egress, no hardened image, no launcher or scheduler, no programme route, and no passive target action.",
+        "A dark owned-process assembly, accepted Ubuntu no-route/full-service fixture, namespace-lifetime exact-egress candidate, and same-profile Windows DPAPI key-provider candidate exist, but there is no approved provider/recovery procedure, no image-bound durable egress, no hardened image, no launcher or scheduler, no programme route, and no passive target action.",
         "PASSIVE_HTTP remains dark until full host/image/egress/secret-provider controls, one reviewed programme, sustained operation, and explicit operator posture approval are proven.",
         (
             "Docs/roadmap.md",

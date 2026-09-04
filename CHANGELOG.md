@@ -4,6 +4,23 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
 
 ## [Unreleased]
 
+### Added - Ubuntu exact-egress policy candidate
+
+- Added an Ubuntu 24.04 namespace-lifetime nftables acceptance path that
+  defaults input/forward/output to drop and permits only the owned synthetic
+  `8.8.8.8:443` fixture.
+- Added counted negative probes for wrong port, separately routed decoy
+  address, and IPv6, plus route/firewall mutation refusal after UID/GID 65534,
+  zero capabilities, and no-new-privileges are applied.
+- Hash-locked the five Ubuntu userspace packages, staged them only under E:,
+  and reconstructed the executed tool in the owned temporary runtime without a
+  WSL system install.
+- Kept `hardened_worker_image_accepted=false`; reproducible read-only image
+  binding, VM/reboot conformance, keys, programme review, posture approval,
+  external contact, and `PASSIVE_HTTP` remain open.
+- Updated visible Settings/roadmap truth and changed the mobile boundary footer
+  to follow content after rendered QA found it obscuring the Passive Pilot card.
+
 ### Added - Windows DPAPI root-key provider candidate
 
 - Added an operator-side Windows CurrentUser DPAPI provider for the external

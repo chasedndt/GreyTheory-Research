@@ -4,6 +4,33 @@ A record of what each agent session did, **why it deviated from the roadmap wher
 
 Read this before changing anything that looks arbitrary. Several guards in this codebase are deliberately stricter than they need to be, and the reasoning is here rather than in the code.
 
+## 2026-09-04 - Codex - Ubuntu namespace-lifetime exact-egress candidate
+
+### What was built
+
+- A hash-locked, no-system-install nftables bootstrap under the governed E:
+  tool cache, reconstructed in an owned temporary root on every run.
+- Default-drop input/forward/output chains with one exact synthetic
+  address/port, three counted bypass denials, and refused route/firewall
+  mutation after the worker becomes unprivileged.
+- A successful full encrypted Ubuntu worker record plus corrected desktop and
+  390-pixel capability truth; the mobile footer no longer obscures panels.
+
+### What the next agent should not undo
+
+Do not mark the durable egress or hardened-image roadmap item complete. The
+accepted policy lasts for the owned namespace only, and the retained record
+explicitly says `hardened_worker_image_accepted=false`. Do not install the
+acceptance packages globally, remove their hash checks, allow the decoy address,
+or infer programme/VPS/posture authority.
+
+### Verification
+
+698 repository tests, 23 UI tests, 4 Sites tests, production build,
+PowerShell/bash syntax, one accepted Ubuntu host record, and inspected
+desktop/mobile captures pass. See
+`07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-exact-egress-candidate.md`.
+
 ## 2026-09-04 - Codex - Windows DPAPI root-KEK candidate
 
 ### What was built

@@ -31,7 +31,7 @@ Where to start, and which document wins when two disagree.
 | Workbench application, learning, storage, and worker boundary | [`workbench-architecture.md`](workbench-architecture.md) |
 | AI-native learner dashboard, agent-security track, visualisations, and delivery stages | [`ai-native-learning-workbench.md`](ai-native-learning-workbench.md) |
 | Exact live-programme compatibility fields and transition gate | [`live-programme-transition.md`](live-programme-transition.md) |
-| Passive pilot broker and worker gates | [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) · [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) · [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) · [`ADR-0015`](decisions/ADR-0015-unlaunched-passive-worker-primitives.md) · [`ADR-0016`](decisions/ADR-0016-offline-ubuntu-primitive-host-acceptance.md) · [`ADR-0018`](decisions/ADR-0018-keep-broker-authority-outside-passive-worker.md) · [`ADR-0019`](decisions/ADR-0019-windows-dpapi-root-kek-candidate.md) · [`THREAT_MODEL.md`](../THREAT_MODEL.md#preconditions-for-any-network-posture) |
+| Passive pilot broker and worker gates | [`ADR-0011`](decisions/ADR-0011-dark-passive-broker-foundation.md) · [`ADR-0013`](decisions/ADR-0013-passive-capture-encryption-and-key-lifecycle.md) · [`ADR-0014`](decisions/ADR-0014-network-free-passive-adapter-contract.md) · [`ADR-0015`](decisions/ADR-0015-unlaunched-passive-worker-primitives.md) · [`ADR-0016`](decisions/ADR-0016-offline-ubuntu-primitive-host-acceptance.md) · [`ADR-0018`](decisions/ADR-0018-keep-broker-authority-outside-passive-worker.md) · [`ADR-0019`](decisions/ADR-0019-windows-dpapi-root-kek-candidate.md) · [`ADR-0020`](decisions/ADR-0020-accept-namespace-lifetime-exact-egress-candidate.md) · [`THREAT_MODEL.md`](../THREAT_MODEL.md#preconditions-for-any-network-posture) |
 | Real public programme-source evidence | [`HackerOne/GitLab`](../fixtures/programmes/public/hackerone-gitlab-2026-08-09/) · [`Bugcrowd/YNAB`](../fixtures/programmes/public/bugcrowd-ynab-2026-08-09/) · [`Direct policy/MCP Python SDK`](../fixtures/programmes/public/direct-mcp-python-sdk-2026-08-09/) |
 
 ## Trust kernel and current implementation
@@ -53,6 +53,7 @@ Where to start, and which document wins when two disagree.
 - [`ADR-0016`](decisions/ADR-0016-offline-ubuntu-primitive-host-acceptance.md) - Ubuntu 24.04 WSL2 primitive proof inside a loopback-only, no-route namespace without enabling a worker.
 - [`ADR-0018`](decisions/ADR-0018-keep-broker-authority-outside-passive-worker.md) - two-phase owned-process assembly that keeps broker authority out of the worker; its full no-route Ubuntu host harness now passes.
 - [`ADR-0019`](decisions/ADR-0019-windows-dpapi-root-kek-candidate.md) - proposed Windows CurrentUser DPAPI root-KEK provider; same-profile candidate proof passes while ACL, independent recovery, and operator approval remain open.
+- [`ADR-0020`](decisions/ADR-0020-accept-namespace-lifetime-exact-egress-candidate.md) - default-drop exact-address/port Ubuntu namespace proof with counted bypass denials; hardened-image binding remains open.
 
 ## Planning and research policy
 

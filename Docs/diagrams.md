@@ -713,3 +713,17 @@ flowchart LR
     style Deny fill:#7f1d1d,stroke:#ef4444,color:#fff
     style Proof fill:#7f1d1d,stroke:#ef4444,color:#fff
 ```
+
+## 21. Ubuntu exact-egress candidate and remaining image gate
+
+```mermaid
+flowchart LR
+    Packages["Hash-locked Ubuntu nftables packages\nE: tool cache"] --> Temp["Owned temporary tool root\nno WSL install"]
+    Temp --> Policy["Fresh network namespace\ndefault drop: input · forward · output"]
+    Policy --> Exact["Only 8.8.8.8:443 TCP\nowned synthetic canary"]
+    Exact --> Worker["UID/GID 65534\nzero caps · no-new-privileges"]
+    Worker --> Proof["Encrypted capture · signed receipt\nreplay complete · clean exit"]
+    Wrong["Wrong port · decoy address · IPv6"] --> Deny["Counted OS deny rule"]
+    Deny --> Proof
+    Proof -. "candidate only" .-> Image["Reproducible read-only Ubuntu image\nmandatory policy admission · still open"]
+```

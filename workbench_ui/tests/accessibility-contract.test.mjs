@@ -43,6 +43,11 @@ test("navigation scrollbar stays visible and uses the mission-control palette", 
   assert.doesNotMatch(styles, /\.sidebar nav[^}]*scrollbar-width:none/);
 });
 
+test("mobile boundary footer follows content instead of obscuring panels", () => {
+  assert.match(styles, /@media\(max-width:760px\)\{[\s\S]*\.workspace\{[^}]*padding-bottom:0\}/);
+  assert.match(styles, /@media\(max-width:760px\)\{[\s\S]*\.global-footer\{position:static;/);
+});
+
 test("modal retains escape close and a bounded focus loop", () => {
   assert.match(appSource, /if \(event\.key === "Escape"\) onClose\(\)/);
   assert.match(appSource, /focusable\[0\]/);

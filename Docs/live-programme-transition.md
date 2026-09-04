@@ -62,11 +62,15 @@ evidence:
    Ubuntu 24.04.4 local fixture as of 2026-09-04; it grants no egress or posture.
 3. **Egress and key-provider acceptance** — durable network constraints and an
    approved OS-bound key provider are proven independently of application UI.
-   A Windows CurrentUser DPAPI candidate now passes same-profile restart,
+   A namespace-lifetime Ubuntu nftables candidate now passes exact-address/port
+   allowlisting, default-drop chains, counted bypass denials, and mutation
+   refusal; it is not yet bound to a reproducible hardened image. A Windows
+   CurrentUser DPAPI candidate passes same-profile restart,
    protected-copy recovery, tamper refusal, capture decryption, and audit
    checks. This gate remains open because application-data ACL hardening,
    independent cross-profile/bare-machine recovery, a profile/system backup
-   procedure, and explicit operator approval have not passed.
+   procedure, hardened-image egress binding, and explicit operator approval
+   have not passed.
 4. **One verified programme review** — one current programme bundle has no
    unresolved scope, rate, data, or disclosure conflict and permits only the
    proposed passive action.

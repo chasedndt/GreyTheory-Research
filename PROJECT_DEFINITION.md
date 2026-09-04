@@ -86,7 +86,7 @@ Lower planes cannot bypass higher ones. Signal collectors remain capped at `cont
 | 3 | Target and Asset Graph | LIVE offline; typed assets/edges, scope-neutral discovery |
 | 4 | Knowledge and Skill System | LIVE offline for 12 cards, synthetic fixtures, skill graph, evidence-bound mastery, deterministic guidance, adaptive review scheduling, standard/assisted/transfer tracks, persisted staged journeys, three versioned Case Packs with one ready 30-minute local mission, scored practice checks, immutable synthetic receipts, and a graphical Learn flow; broader ready curricula remain partial |
 | 5 | Hypothesis and Experiment Engine | LIVE offline; explicit lifecycles/budgets plus explained nine-factor ranking and private research queue |
-| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service and Windows CurrentUser DPAPI same-profile candidate harnesses pass; provider approval, ACL hardening, independent recovery, durable egress, hardened image, launcher, and every passive action remain open |
+| 6 | Execution and Tool Broker | PARTIAL; one bounded in-memory `LOCAL_FIXTURE` action is live; the passive broker, capture/key lifecycle, adapter contract, primitives, and two-phase owned-process worker assembly are unit-verified; the full Ubuntu 24.04 no-route service, namespace-lifetime exact-address/port nftables candidate, and Windows CurrentUser DPAPI same-profile candidate harnesses pass; provider approval, ACL hardening, independent recovery, hardened-image egress binding, launcher, and every passive action remain open |
 | 7 | Signal and Observation | PARTIAL; three static offline collectors |
 | 8 | Evidence, Validation and Reporting | LIVE offline; validator receipts and claim-evidence matrix verified in the local slice |
 | 9 | Outcomes, Economics and Learning | PARTIAL; ledger, lessons, card revisions, mastery records, transparent adaptive review, bounded assisted/transfer journeys, and the graphical learning loop are live for one ready Case Pack; broader ready curriculum remains open |
@@ -137,6 +137,13 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   without re-resolution, verifies explicit CA/hostname refusal and streamed
   bounded-header cleanup, and reaps a deliberately blocked spawned resolver
   child without making an external request or enabling `PASSIVE_HTTP`.
+- an Ubuntu 24.04 WSL2 exact-egress candidate that reconstructs hash-locked
+  nftables userspace packages under an owned temporary root, applies default
+  drop to input/forward/output, allows only the synthetic `8.8.8.8:443` local
+  canary, accounts for denied wrong-port/decoy-address/IPv6 probes, refuses
+  unprivileged route and firewall mutation, and completes the full encrypted
+  worker service without external contact. It is namespace-lifetime proof, not
+  a reproducible hardened-image acceptance.
 - a candidate operator-side Windows CurrentUser DPAPI root-KEK provider with
   strict versioned records, audited provision/lease operations, a short-lived
   zeroing lease, Git-storage refusal, and real same-profile restart,
@@ -155,7 +162,7 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
 - the dashboard is not yet a signed standalone release; Guided Mission Control binds bounded learner commands to the same-origin local service, while the retained Research Ledger and separate development preview may read authenticated server-owned snapshots through an explicit loopback-origin exception. Current-user lifecycle and same-origin visual/reload/focus acceptance pass; first-entry keyboard, genuinely separate-account, signing, and uninstall acceptance remain open;
 - general/passive claim-role assembly remains a later application use case; the exact local two-account fixture can assemble seven roles from stored evidence and advance one internal state only after explicit human acknowledgement, while submission and programme-owned outcomes remain unavailable;
 - the local executor supports only the deliberately vulnerable in-memory fixture; it is not a network broker or live collector.
-- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, ticket-bound X25519/HKDF/ChaCha20-Poly1305 envelopes, an external-KEK-wrapped operator key store with authorised provision/rotation/revocation, signed receipt metadata, and a Windows CurrentUser DPAPI provider candidate. The candidate passes only same-profile host recovery; provider approval, ACL hardening, independent recovery, durable egress, hardened image, launcher, and every live action remain absent.
+- `greytheory_broker` implements only the dark `passive-head-v1` protocol: exact audit-bound signed tickets, canonical HTTPS/public-address policy, one-use replay storage, default-engaged kill switch, strict ceilings, ticket-bound X25519/HKDF/ChaCha20-Poly1305 envelopes, an external-KEK-wrapped operator key store with authorised provision/rotation/revocation, signed receipt metadata, and a Windows CurrentUser DPAPI provider candidate. Namespace-lifetime exact-egress and same-profile key proof now pass, but provider approval, ACL hardening, independent recovery, hardened-image egress binding, launcher, and every live action remain absent.
 - `greytheory_worker_contract` is network-free. It proves orchestration against
   injected conformance doubles: one complete DNS result, one exact numeric
   address, matching TLS name, full request digest, no proxy or followed
@@ -169,8 +176,9 @@ Planes define trust boundaries. Layers define the capabilities a researcher uses
   worker performs one bound direct TLS request before exiting. It scrubs its
   environment and is refused unless Linux is non-root, capability-empty, and
   no-new-privileges. Ubuntu 24.04.4 WSL2 acceptance now covers the full no-route
-  local service chain and emits a successful JSON record; durable egress, a
-  hardened image, approved key-provider/recovery policy,
+  local service chain plus a default-drop exact-egress namespace candidate and
+  emits successful JSON records; a reproducible hardened image and policy
+  binding, approved key-provider/recovery policy,
   scheduler, and target contact remain unproven or unavailable.
 - the knowledge/skill layer now has deterministic guidance, adaptive review, assisted and transfer-specific journeys, explicit human-assessment completion, three versioned Case Packs, an offline programme-to-local-case readiness view, server-persisted graphical learner commands, and immutable synthetic receipts, but only the first Case Pack is ready for local use.
 

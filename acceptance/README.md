@@ -158,3 +158,40 @@ durable egress, a hardened image, an approved OS-bound root-KEK provider and
 independent recovery, authorised programme operation, VPS suitability, or
 posture approval, and it does not enable `PASSIVE_HTTP`. The separate Windows
 DPAPI candidate harness proves only same-profile key recovery.
+
+## Ubuntu 24.04 namespace-lifetime exact-egress candidate
+
+Stage the exact userspace dependency under E: without installing it into the
+shared Ubuntu distribution, then run the owned acceptance:
+
+```powershell
+& .\acceptance\stage-ubuntu-nftables.ps1
+& .\acceptance\run-ubuntu-egress-policy.ps1
+```
+
+The stage step downloads pinned Ubuntu Noble `nftables` packages and their
+small userspace dependency set to
+`E:\Projects\GreyTheory\toolcache\nftables-ubuntu-24.04-amd64`, checks the five
+repository-held SHA-256 values, and extracts a convenience copy. Every
+acceptance run checks those package hashes again and reconstructs the executed
+binary under its own `/tmp/greytheory-egress.*` root, so the WSL distribution
+is not modified and a stale extracted binary is not trusted.
+
+Inside a fresh user/network/mount namespace, the fixture policy defaults
+input, forward, and output to drop and accepts only TCP to the owned synthetic
+`8.8.8.8:443` canary on loopback. The harness routes `1.1.1.1` to loopback only
+as a decoy, then proves that the wrong port, decoy address, and IPv6 loopback
+all hit the counted deny rule. UID/GID 65534 with zero capabilities and
+no-new-privileges cannot add a route or flush the policy. The full worker path
+must still complete its exact request, encrypted capture, signed receipt,
+replay transition, and cleanup.
+
+Accepted record:
+`E:\Projects\GreyTheory\acceptance\ubuntu-egress-policy-20260904-105113-24804\acceptance.json`.
+
+This proves an OS-enforced exact-egress candidate only for the owned namespace
+lifetime. `hardened_worker_image_accepted` remains false: read-only rootfs,
+image identity/provenance, mandatory policy admission, reboot/VM conformance,
+broker transport authentication, key-provider approval/recovery, programme
+review, sustained operation, VPS acceptance, and human posture approval remain
+open. No external packet or target action occurred.
