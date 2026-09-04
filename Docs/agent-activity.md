@@ -12,6 +12,8 @@ Read this before changing anything that looks arbitrary. Several guards in this 
 - Two-build read-only SquashFS construction sourced from committed runtime code.
 - Clean-HEAD image admission for bounded mounts/devices, non-root zero-capability
   execution, exact egress, immutable paths, and full receipt/replay evidence.
+- Linked Windows-worktree normalization for Linux-side Git identity, clean-tree,
+  source-digest, and archive checks.
 
 ### What the next agent should not undo
 
@@ -23,9 +25,10 @@ human-posture gates independent.
 
 ### Verification
 
-20 focused and 707 full repository tests pass; all 18 packages match
-Canonical-signed indexes. Ubuntu process creation is blocked pending an
-operator-approved distro restart, so no image/runtime acceptance record exists.
+21 focused and all 708 repository tests pass; all 18 packages match
+Canonical-signed indexes. The operator-approved Ubuntu
+restart restored process creation, device nodes, and supervised user services.
+No image/runtime acceptance record exists yet.
 See `07_LOGS/Build-Logs/2026-09-04-greytheory-ubuntu-worker-image-candidate.md`.
 
 ## 2026-09-04 - Codex - Ubuntu namespace-lifetime exact-egress candidate

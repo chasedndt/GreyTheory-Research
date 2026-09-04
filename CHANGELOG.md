@@ -15,6 +15,8 @@ Notable changes to GreyTheory AI. Format loosely follows [Keep a Changelog](http
   existing default-drop exact-egress policy.
 - Added fail-closed composition of mount, identity, write-denial, network,
   mutation, encrypted-capture, signed-receipt, replay, and cleanup evidence.
+- Normalised linked Windows worktree Git metadata for Linux-side clean-tree,
+  source-digest, archive, and exact-revision checks.
 - Static and package-provenance checks pass, but an Ubuntu image/runtime record
   has not yet completed; hardened image, VM/reboot, transport, key, programme,
   VPS, posture, and live-operation gates remain open.

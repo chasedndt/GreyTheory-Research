@@ -385,6 +385,23 @@ def test_worker_image_builder_requires_two_identical_read_only_builds():
     assert "$record.hardened_worker_image_accepted -ne $false" in powershell
 
 
+def test_worker_image_scripts_normalize_linked_windows_worktree_git_context():
+    for name in (
+        "build-ubuntu-worker-image.sh",
+        "run-ubuntu-worker-image.sh",
+    ):
+        shell = (ACCEPTANCE / name).read_text(encoding="utf-8")
+
+        assert "configure_repository_git" in shell
+        assert 'wslpath -u "$git_dir"' in shell
+        assert 'export GIT_DIR="$git_dir"' in shell
+        assert 'export GIT_WORK_TREE="$repo_root"' in shell
+        assert "GIT_CONFIG_KEY_0=core.autocrlf" in shell
+        assert "GIT_CONFIG_VALUE_0=true" in shell
+        assert "GIT_CONFIG_KEY_1=core.filemode" in shell
+        assert "GIT_CONFIG_VALUE_1=false" in shell
+
+
 def test_worker_image_entrypoint_parses_and_requires_the_mount_contract():
     from acceptance.ubuntu_worker_image_entrypoint import _parse_mountinfo
 

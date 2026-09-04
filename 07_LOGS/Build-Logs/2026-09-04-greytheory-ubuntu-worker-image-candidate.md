@@ -49,7 +49,7 @@ the exact `main/binary-amd64/Packages.xz` files, and the new verifier matched al
 The base-image path also requires the repository-pinned digest to appear in the
 CD-image-key-signed checksum set.
 
-## Runtime blocker and safety response
+## Restart recovery and first build observation
 
 During a discarded prototype, a recursive bind of the live WSL `/dev` was not
 recursively unmounted before temporary-root cleanup. That removed ephemeral
@@ -63,25 +63,32 @@ exit=1
 stdout/stderr empty
 ```
 
-Windows readback confirms `/dev/null`, `/dev/zero`, `/dev/full`, `/dev/random`,
-`/dev/urandom`, `/dev/tty`, and `/dev/ptmx` are absent. Existing user-owned WSL
-processes were not terminated. A controlled `wsl --terminate Ubuntu` should
-regenerate devtmpfs, but that disruptive action requires explicit operator
-approval before the image build/runtime can be attempted.
+Windows readback confirmed `/dev/null`, `/dev/zero`, `/dev/full`, `/dev/random`,
+`/dev/urandom`, `/dev/tty`, and `/dev/ptmx` were absent. After explicit operator
+approval, only the Ubuntu distribution was terminated. One bounded restart
+probe briefly returned `Wsl/Service/CreateInstance/E_FAIL`; stopping only that
+owned stuck probe allowed Ubuntu to start normally. All required device nodes
+regenerated, and the pre-existing supervised user services returned healthy.
 
-Two reproducible scratch download roots and one build scratch root remain under
-`E:\Projects\GreyTheory`. They are not source and have ample storage headroom,
-but must not be recursively removed until WSL restarts and exact mount absence
-is reverified.
+The three abandoned reproducible scratch roots have no mounts or loop-device
+backing. Host command policy refused their exact recursive deletion, so they
+remain isolated and untouched rather than being removed by a workaround.
+
+The first release-build attempt then completed the Canonical signature checks
+but stopped before construction because Linux Git interpreted this linked
+worktree's Windows `C:/.../.git/worktrees/...` pointer as a relative path. The
+build and runtime entrypoints now resolve that pointer with `wslpath`, bind
+explicit `GIT_DIR`/`GIT_WORK_TREE`, and apply Windows checkout line-ending and
+file-mode semantics. A focused regression test covers both entrypoints.
 
 ## Verification
 
 ```text
 python -m pytest -q tests/test_ubuntu_worker_host_acceptance.py
-20 passed
+21 passed
 
 python -m pytest -q
-707 passed in 26.73s
+708 passed in 28.21s
 
 python -m py_compile
 3 image/provenance modules passed
@@ -110,15 +117,15 @@ production build, and rendered QA remain the UI baseline rather than new proof.
 
 - No target, programme, account, credential, provider, VPS, or external security
   action was used.
-- No WSL package was installed and no Ubuntu distribution was terminated.
+- No WSL package was installed; only the explicitly approved Ubuntu
+  distribution restart occurred, and other distributions were untouched.
 - No posture, approval, key-provider, launcher, scheduler, or live-action route
   was enabled.
 - The primary C: checkout and canonical vault were not modified.
 
 ## Next safe action
 
-After explicit approval, terminate and restart only the Ubuntu WSL distribution,
-verify device restoration and scratch-root mount safety, build the clean-commit
-image, run image acceptance, and repair any observed host defect. Do not close
-the hardened-image milestone until the emitted JSON and later local-VM reboot
+Commit the linked-worktree compatibility fix, build the clean-commit image, run
+image acceptance, and repair any observed host defect. Do not close the
+hardened-image milestone until the emitted JSON and later local-VM reboot
 conformance both pass.

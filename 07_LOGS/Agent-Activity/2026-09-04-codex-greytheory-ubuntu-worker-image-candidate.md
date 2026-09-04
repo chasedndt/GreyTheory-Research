@@ -22,24 +22,28 @@ image boundary without raising posture or contacting a target.
 - Removed the discarded unsafe host `/dev` bind approach and preserved the
   operator's existing WSL processes when the temporary devtmpfs damage was
   discovered.
+- After explicit approval, restarted only Ubuntu, verified regenerated devices
+  and returning supervised user services, and proved the retained scratch roots
+  were unmounted and not loop-device backing.
+- Reproduced and fixed Linux Git's handling of the linked Windows worktree
+  pointer before any image construction was accepted.
 
 ## Guardrails retained
 
 `LOCAL_FIXTURE` remains the ceiling. Source implementation is not image
-acceptance. No restart, WSL system install, target/programme contact, key
-activation, VPS, launcher, scheduler, or posture transition occurred.
+acceptance. The operator-approved Ubuntu restart did not install a WSL system
+package or enable target/programme contact, key activation, VPS, launcher,
+scheduler, or a posture transition.
 
 ## Verification
 
-20 focused tests and all 707 repository tests pass. Shell and PowerShell syntax
+21 focused tests and all 708 repository tests pass. Shell and PowerShell syntax
 checks pass. All 18 packages match three Canonical-signed Ubuntu archive
-indexes. The WSL runtime remains blocked before process creation, so no image
-build/runtime record exists.
+indexes. Ubuntu process creation and device state are restored; no image
+build/runtime record exists yet.
 
 ## Handoff
 
-Obtain explicit permission to restart only the Ubuntu WSL distribution. Then
-verify `/dev`, confirm no mounts under the exact scratch roots, run a clean
-release build and image acceptance, and retain VM/reboot, broker transport,
-key-provider/recovery, programme review, sustained operation, and human posture
-as independent gates.
+Commit the linked-worktree compatibility fix, run a clean release build and
+image acceptance, and retain VM/reboot, broker transport, key-provider/recovery,
+programme review, sustained operation, and human posture as independent gates.

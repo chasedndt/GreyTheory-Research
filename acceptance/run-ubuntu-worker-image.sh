@@ -15,6 +15,45 @@ package_lock="$repo_root/acceptance/fixtures/ubuntu-worker-image-package-lock.js
 supply_chain="$image_dir/supply-chain"
 archive_fingerprint="F6ECB3762474EDA9D21B7022871920D1991BC93C"
 
+configure_repository_git() {
+  local pointer
+  local git_dir
+  if test -d "$repo_root/.git"; then
+    return
+  fi
+  if ! test -f "$repo_root/.git"; then
+    printf 'Repository Git metadata is absent.\n' >&2
+    exit 1
+  fi
+  IFS= read -r pointer < "$repo_root/.git"
+  case "$pointer" in
+    'gitdir: '*) git_dir="${pointer#gitdir: }" ;;
+    *) printf 'Repository worktree pointer is invalid.\n' >&2; exit 1 ;;
+  esac
+  case "$git_dir" in
+    [A-Za-z]:/*|[A-Za-z]:\\*) git_dir="$(wslpath -u "$git_dir")" ;;
+    /*) ;;
+    *) git_dir="$(realpath -m "$repo_root/$git_dir")" ;;
+  esac
+  if ! test -f "$git_dir/HEAD"; then
+    printf 'Repository worktree Git directory is invalid.\n' >&2
+    exit 1
+  fi
+  export GIT_DIR="$git_dir"
+  export GIT_WORK_TREE="$repo_root"
+  case "$git_dir" in
+    /mnt/[A-Za-z]/*)
+      export GIT_CONFIG_COUNT=2
+      export GIT_CONFIG_KEY_0=core.autocrlf
+      export GIT_CONFIG_VALUE_0=true
+      export GIT_CONFIG_KEY_1=core.filemode
+      export GIT_CONFIG_VALUE_1=false
+      ;;
+  esac
+}
+
+configure_repository_git
+
 if [[ ! "$image_dir" =~ ^/mnt/e/Projects/GreyTheory/artifacts/ubuntu-worker-image/[0-9a-f]{40}$ ]]; then
   printf 'Refusing unexpected Ubuntu worker-image directory: %s\n' "$image_dir" >&2
   exit 1
