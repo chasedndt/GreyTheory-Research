@@ -1,0 +1,166 @@
+/* What a programme's scope asks you to understand, and the way into each lesson.
+
+   Moved out of the global sheet to sit beside its component, and brought up
+   from a .55-.7rem scale - about 9-11px - which made the one panel connecting a
+   real bounty to the curriculum the hardest thing on the page to read. */
+
+/* Pads and spaces itself: `.surface` is a skin with no padding (BountyBoard.css). */
+.surface.study-plan { padding: 17px; margin-bottom: 12px; }
+
+.study-plan__switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.study-plan__switch button {
+  padding: 6px 11px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--panel-soft);
+  color: var(--muted);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.study-plan__switch button.is-selected {
+  border-color: var(--amber);
+  background: var(--amber-soft);
+  color: var(--amber);
+}
+
+.study-plan__topics {
+  list-style: none;
+  display: grid;
+  gap: 8px;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.study-plan__topics li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--panel-soft);
+}
+
+.study-plan__rank {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--amber);
+  border-radius: 50%;
+  color: var(--amber);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem;
+}
+
+/* The title runs inline so the "?" stays on its line; the hint panel is a
+   block and opens underneath only when asked for. Child combinators keep these
+   off the paragraphs and label inside the hint panel itself. */
+.study-plan__topic > strong {
+  display: inline;
+  margin-right: 2px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+.study-plan__topic > p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+}
+
+.study-plan__topic > small {
+  display: block;
+  margin-top: 6px;
+  color: var(--subtle);
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+/* The compiled-scope identifier, kept small: the traceable name, not the
+   headline a beginner has to decode. */
+.study-plan__topic code {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--panel);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* The hand-off from a real bounty to the lesson that teaches it. */
+.study-plan__open {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 7px 12px;
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--amber);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.study-plan__open:hover { background: var(--amber-soft); }
+.study-plan__open:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.study-plan__open svg { width: 14px; }
+
+.study-plan__notes {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-left: 2px solid #7b621c;
+  border-radius: 0 7px 7px 0;
+  background: var(--amber-soft);
+}
+
+.study-plan__notes ul {
+  list-style: none;
+  padding: 0;
+  margin: 6px 0 0;
+  display: grid;
+  gap: 5px;
+}
+
+.study-plan__notes li {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.study-plan__boundary {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.study-plan__boundary > svg { width: 16px; color: var(--green); }
+
+.study-plan__boundary p {
+  margin: 0;
+  color: var(--subtle);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .surface.study-plan { padding: 14px; }
+  .study-plan__topics li { grid-template-columns: 28px minmax(0, 1fr); padding: 12px; }
+}

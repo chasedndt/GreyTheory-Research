@@ -138,8 +138,19 @@ export async function sendWorkbenchCommand({
     const message = payload?.error?.message || payload?.message || `Local API returned ${response.status}.`;
     throw new Error(message);
   }
-  if (!payload || payload.executed !== false || payload.disposition !== "accepted") {
+  // A result claiming execution is a protocol fault whatever its disposition:
+  // this application routes bounded commands and never runs anything.
+  if (!payload || payload.executed !== false || typeof payload.disposition !== "string") {
     throw new Error("The local API returned an unsupported command result.");
+  }
+  if (payload.disposition !== "accepted") {
+    // A refusal is a legitimate outcome, not a fault. The server's own words say
+    // which governance rule applied - "resolve its 2 ambiguity/ies and
+    // recompile" tells the operator what to do next, where a generic error
+    // would imply a bug rather than a decision.
+    throw new Error(
+      payload.message || `The local application refused this command (${payload.disposition}).`,
+    );
   }
   return payload;
 }

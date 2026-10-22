@@ -1,0 +1,132 @@
+/* Campaign panel: the journey rail and its reasons.
+   Co-located with the component rather than appended to the global sheet. */
+
+.campaign-panel__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 18px;
+}
+
+.campaign-panel__item {
+  border: 1px solid #1d3346;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+
+.campaign-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.campaign-panel__head strong {
+  font-size: 1.02rem;
+  letter-spacing: 0.01em;
+}
+
+.campaign-panel__tag {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #2b4a63;
+  color: #9fb0c2;
+  white-space: nowrap;
+}
+
+/* A decision you must make is not the same as work left to do, so it does not
+   look the same either. */
+.campaign-panel__tag--decision {
+  border-color: #ffb600;
+  color: #ffb600;
+}
+
+.campaign-panel__rail {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+}
+
+.campaign-panel__stage {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #6f8398;
+}
+
+.campaign-panel__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  flex: none;
+}
+
+.campaign-panel__stage.is-ok {
+  color: #43c98b;
+}
+
+.campaign-panel__stage.is-ok .campaign-panel__dot {
+  background: #43c98b;
+}
+
+.campaign-panel__stage.is-gov {
+  color: #ffb600;
+}
+
+.campaign-panel__stage.is-gov .campaign-panel__dot {
+  background: #ffb600;
+}
+
+.campaign-panel__stage[aria-current="step"] .campaign-panel__stage-name {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Available to screen readers, invisible on screen: the marker's meaning
+   must not depend on colour alone. */
+.campaign-panel__sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.campaign-panel__because {
+  margin: 0;
+  color: #c5d2de;
+  font-size: 0.92rem;
+}
+
+.campaign-panel__next {
+  margin: 10px 0 0;
+  color: #9fb0c2;
+  font-size: 0.88rem;
+  display: grid;
+  gap: 3px;
+}
+
+.campaign-panel__boundary {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #1d3346;
+}
+
+.campaign-panel__boundary p {
+  margin: 0;
+  color: #7d90a4;
+  font-size: 0.85rem;
+}

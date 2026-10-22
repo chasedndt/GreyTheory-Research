@@ -1,0 +1,155 @@
+/* Looking up a programme: the one control that sends a request.
+   Co-located with its component rather than appended to the global sheet. */
+
+.directory-panel__what {
+  margin: 0 0 16px;
+  color: #9fb0c2;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.directory-panel__form {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) minmax(0, 1fr);
+  gap: 14px 16px;
+  align-items: start;
+}
+
+.directory-panel__form label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.directory-panel__form label > span {
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7d90a4;
+}
+
+.directory-panel__form select,
+.directory-panel__form input {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #2b4a63;
+  background: #050d14;
+  color: #c5d2de;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+  min-width: 0;
+}
+
+.directory-panel__form select:disabled,
+.directory-panel__form input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.directory-panel__form small {
+  color: #6f8398;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.directory-panel__form code {
+  font-family: "IBM Plex Mono", monospace;
+  color: #9fb0c2;
+}
+
+/* Spans both columns: the action is about the pair above it, not one field. */
+.directory-panel__form button {
+  grid-column: 1 / -1;
+  justify-self: start;
+}
+
+.directory-panel__form button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.directory-panel__refusal {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ffb600;
+  color: #ffb600;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.directory-panel__results {
+  margin-top: 20px;
+}
+
+.directory-panel__results ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.directory-panel__results li {
+  display: grid;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid #1d3346;
+  border-radius: 12px;
+}
+
+.directory-panel__results strong {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.84rem;
+}
+
+.directory-panel__results small {
+  display: block;
+  margin-top: 2px;
+  color: #6f8398;
+  font-size: 0.76rem;
+  word-break: break-all;
+}
+
+.directory-panel__facts {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem;
+  color: #9fb0c2;
+}
+
+.directory-panel__facts code {
+  color: #7d90a4;
+}
+
+/* Amber rather than neutral: this is the line that stops a saved public page
+   being read as reviewed scope. */
+.directory-panel__trust {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #ffb600;
+}
+
+.directory-panel__boundary {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid #1d3346;
+}
+
+.directory-panel__boundary p {
+  margin: 0;
+  color: #7d90a4;
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .directory-panel__form {
+    grid-template-columns: 1fr;
+  }
+
+  .directory-panel__form button {
+    width: 100%;
+    justify-self: stretch;
+  }
+}

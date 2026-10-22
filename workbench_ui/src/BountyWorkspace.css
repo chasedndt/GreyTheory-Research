@@ -1,0 +1,88 @@
+/* Bounty workspace: one bounty's journey and its material, together.
+   Co-located with the component rather than appended to the global sheet. */
+
+.bounty-workspace__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #1d3346;
+}
+
+.bounty-workspace__tabs button {
+  display: grid;
+  gap: 3px;
+  padding: 9px 14px;
+  border: 1px solid #2b4a63;
+  border-radius: 10px;
+  background: transparent;
+  color: #9fb0c2;
+  text-align: left;
+  cursor: pointer;
+}
+
+.bounty-workspace__tabs button:hover {
+  border-color: #59728b;
+}
+
+.bounty-workspace__tabs button.is-selected {
+  border-color: #ffb600;
+  background: rgba(255, 182, 0, 0.07);
+}
+
+.bounty-workspace__tabs strong {
+  font-size: 0.82rem;
+  color: #e8eef5;
+}
+
+.bounty-workspace__tabs small {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #6f8398;
+}
+
+/* A decision you must make never looks like work still to do. */
+.bounty-workspace__tabs small.is-decision {
+  color: #ffb600;
+}
+
+.bounty-workspace__body {
+  display: grid;
+  gap: 18px;
+}
+
+.bounty-workspace__body:focus-visible {
+  outline: 3px solid #5aa9ff;
+  outline-offset: 4px;
+}
+
+/* Embedded panels drop their own chrome: the workspace supplies the surface,
+   so they must not nest a second bordered card inside this one. */
+.bounty-workspace__body .surface {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.bounty-workspace__body .section-heading {
+  margin-bottom: 12px;
+}
+
+.bounty-workspace__empty {
+  margin: 0;
+  padding: 14px;
+  border: 1px dashed #365069;
+  border-radius: 10px;
+  color: #7d90a4;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 760px) {
+  .bounty-workspace__tabs button {
+    flex: 1 1 100%;
+  }
+}

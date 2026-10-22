@@ -41,6 +41,11 @@ class CommandKind(str, Enum):
     PLAN_EXPERIMENT = "plan_experiment"
     REQUEST_ACTION = "request_action"
     RECORD_MASTERY_ASSESSMENT = "record_mastery_assessment"
+    REVIEW_PROGRAMME = "review_programme"
+    LOOK_UP_PROGRAMME = "look_up_programme"
+    SHORTLIST_PROGRAMME = "shortlist_programme"
+    ARCHIVE_PROGRAMME = "archive_programme"
+    RESTORE_PROGRAMME = "restore_programme"
     CREATE_REPORT_CASE = "create_report_case"
     SAVE_REPORT_DRAFT = "save_report_draft"
     RUN_REPORT_VALIDATION = "run_report_validation"
@@ -398,6 +403,51 @@ class WorkbenchCommand:
             raise WorkbenchContractError(
                 "scope review requires explicit human acknowledgement"
             )
+        if self.kind is CommandKind.LOOK_UP_PROGRAMME:
+            # This is the one command that opens an outbound connection, so it
+            # is explicit about what that is and is not. It reads what a
+            # platform publishes to anyone; it does not touch the programme's
+            # assets, so it asks for no execution authority at all.
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "reading a public directory carries no execution authority"
+                )
+            # Unlike the shortlist, this one does ask for acknowledgement: a
+            # request leaves the machine, and that should never happen as a
+            # side effect of something else.
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "a directory read sends a request from this machine and "
+                    "requires explicit human acknowledgement"
+                )
+        if self.kind in {
+            CommandKind.SHORTLIST_PROGRAMME,
+            CommandKind.ARCHIVE_PROGRAMME,
+            CommandKind.RESTORE_PROGRAMME,
+        }:
+            # Curating a shortlist says what you intend to work on. It reads
+            # nothing, touches nothing, and must never be mistaken for
+            # permission - so it asks for no authority at all.
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "curating the shortlist carries no execution authority"
+                )
+            # Deliberately no human_acknowledged requirement: these are cheap,
+            # reversible acts, and a ceremony on every one would train the
+            # operator to click through the ceremonies that do matter.
+        if self.kind is CommandKind.REVIEW_PROGRAMME:
+            # Reviewing is a statement that a person read a clean compile. It
+            # changes what the contract is trusted for, so it must be an
+            # explicit human act - but it grants no execution authority of its
+            # own, exactly like a mastery assessment.
+            if self.requested_authority is not AuthorityLevel.NONE:
+                raise WorkbenchContractError(
+                    "reviewing a programme carries no execution authority"
+                )
+            if not self.human_acknowledged:
+                raise WorkbenchContractError(
+                    "reviewing a programme requires explicit human acknowledgement"
+                )
         if self.kind is CommandKind.RECORD_MASTERY_ASSESSMENT:
             if self.expected_revision != 0:
                 raise WorkbenchContractError(

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import os
 from dataclasses import dataclass
+from decimal import Decimal
 from pathlib import Path
 
 from greytheory.audit import AuditLog
@@ -20,8 +21,19 @@ from greytheory.learning import (
     load_builtin_catalogue,
 )
 from greytheory.registry import ProgrammeRegistry
+from greytheory.directory_lookups import DirectoryLookupStore
+from greytheory.shortlist import ShortlistStore
+from greytheory.models import (
+    CoachHistoryStore,
+    DataClass,
+    LocalTutorProvider,
+    ModelGateway,
+    ProviderPolicy,
+)
 from greytheory.report_store import ReportStore
 from greytheory.research import ResearchStore
+from greytheory_intelligence.credential_cipher import default_credential_cipher
+from greytheory_intelligence.platform_credentials import PlatformCredentialStore
 from greytheory_app import ReportExportWriter, WorkbenchApplicationService
 
 
@@ -72,6 +84,9 @@ class LocalWorkbenchRuntime:
 
     root: Path
     service: WorkbenchApplicationService
+    #: Platform credentials the operator enters themselves. Held beside the
+    #: service rather than inside it, so a token never reaches the command bus.
+    credentials: PlatformCredentialStore | None = None
 
     @classmethod
     def assemble(
@@ -83,6 +98,12 @@ class LocalWorkbenchRuntime:
         service = WorkbenchApplicationService(
             posture=AuthorityLevel.LOCAL_FIXTURE,
             registry=ProgrammeRegistry(private_root / "programmes", audit=audit),
+            shortlist=ShortlistStore(private_root / "shortlist", audit=audit),
+            # No connection factory here: in the running application a real
+            # request is the point, and it happens only when the operator asks.
+            directory_lookups=DirectoryLookupStore(
+                private_root / "directory", audit=audit
+            ),
             audit=audit,
             research=ResearchStore(private_root / "research", audit=audit),
             mastery=MasteryStore(
@@ -100,8 +121,30 @@ class LocalWorkbenchRuntime:
                 private_root / "exports", audit=audit
             ),
             approvals=LocalApprovalStore(),
+            coach_history=CoachHistoryStore(private_root / "coach", audit=audit),
+            coach_gateway=ModelGateway(
+                LocalTutorProvider(),
+                ProviderPolicy(
+                    "local.tutor",
+                    local=True,
+                    max_data_class=DataClass.PUBLIC,
+                    approved_by="built-in-local-runtime",
+                    note="Deterministic network-free tutor; public curriculum only.",
+                ),
+                audit=audit,
+                budget=Decimal("0.01"),
+            ),
         )
-        return cls(private_root, service)
+        return cls(
+            private_root,
+            service,
+            credentials=PlatformCredentialStore(
+                private_root / "platform-credentials",
+                # None on a host without DPAPI: saving is then refused
+                # rather than silently downgraded to plaintext.
+                cipher=default_credential_cipher(),
+            ),
+        )
 
 
 __all__ = [

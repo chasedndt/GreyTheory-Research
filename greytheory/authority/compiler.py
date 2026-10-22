@@ -20,6 +20,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any
 
+from greytheory.authority.live_authority import live_authority_ambiguities
 from greytheory.authority.scope import (
     AssetPattern,
     ContractStatus,
@@ -141,6 +142,12 @@ def compile_contract(
             f"max_authority {max_authority} permits target interaction but no "
             "rate limit is defined"
         )
+    # A rate limit alone does not make traffic on someone else's production
+    # systems accountable. Identity the target can recognise while it arrives,
+    # a declared globally routable egress that fails closed, and a named human
+    # who accepted the programme's terms are required too. This is inert for
+    # any ceiling at or below LOCAL_FIXTURE.
+    ambiguities.extend(live_authority_ambiguities(programme, max_authority))
 
     if programme.get("paused"):
         ambiguities.append("programme is marked paused")

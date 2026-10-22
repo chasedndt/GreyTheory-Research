@@ -1,0 +1,153 @@
+/* Getting to real research. Co-located with its component rather than appended
+   to the global sheet. */
+
+.onboarding { border-left: 3px solid #2b4a63; }
+
+/* Not connected is not a cosmetic state: nothing is being kept, and the panel
+   should look like it means it. */
+.onboarding.is-urgent { border-left-color: var(--amber); }
+
+.onboarding__head-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.onboarding__count {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem;
+  color: #7d90a4;
+}
+
+.onboarding__collapse {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  border: 1px solid #2b4a63;
+  background: transparent;
+  color: #9fb0c2;
+  cursor: pointer;
+}
+
+.onboarding__collapse:hover { border-color: var(--amber); color: var(--amber); }
+.onboarding__collapse:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.onboarding__collapse svg { width: 14px; transition: transform .15s ease; }
+.onboarding.is-collapsed .onboarding__collapse svg { transform: rotate(-90deg); }
+
+.onboarding__bar {
+  height: 5px;
+  margin: 4px 0 16px;
+  border-radius: 999px;
+  background: #0b1a27;
+  overflow: hidden;
+}
+
+.onboarding__bar > span {
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--amber);
+  transition: width .25s ease;
+}
+
+.onboarding__urgent {
+  margin: 0 0 16px;
+  padding: 11px 13px;
+  border: 1px solid var(--amber);
+  border-radius: 10px;
+  color: var(--amber);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.onboarding__steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.onboarding__steps[hidden] { display: none; }
+
+.onboarding__steps li {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: start;
+  padding: 13px 15px;
+  border: 1px solid #1d3346;
+  border-radius: 12px;
+}
+
+/* Exactly one step is highlighted, so there is never a question about what to
+   do next. */
+.onboarding__steps li.is-current { border-color: var(--amber); background: #1a1300; }
+.onboarding__steps li.is-done { border-color: #1b4736; opacity: 0.72; }
+
+.onboarding__mark {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid #2b4a63;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.72rem;
+  color: #9fb0c2;
+}
+
+.onboarding__steps li.is-done .onboarding__mark { border-color: #43c98b; color: #43c98b; }
+.onboarding__steps li.is-current .onboarding__mark { border-color: var(--amber); color: var(--amber); }
+
+.onboarding__body { min-width: 0; }
+.onboarding__body strong { font-size: 0.9rem; }
+
+.onboarding__why {
+  margin: 5px 0 0;
+  color: #9fb0c2;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.onboarding__action {
+  margin: 6px 0 0;
+  color: #c5d2de;
+  font-size: 0.82rem;
+}
+
+/* The reason a piece of friction exists, kept next to the friction itself. */
+.onboarding__note {
+  margin: 8px 0 0;
+  padding-left: 10px;
+  border-left: 2px solid #2b4a63;
+  color: #7d90a4;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.onboarding__boundary {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 16px;
+  padding-top: 13px;
+  border-top: 1px solid #1d3346;
+}
+
+.onboarding__boundary[hidden] { display: none; }
+.onboarding__boundary svg { width: 18px; flex-shrink: 0; color: #7d90a4; }
+
+.onboarding__boundary p {
+  margin: 0;
+  color: #7d90a4;
+  font-size: 0.79rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .onboarding__steps li { grid-template-columns: 26px minmax(0, 1fr); }
+  .onboarding__steps li .button { grid-column: 2; justify-self: start; }
+}

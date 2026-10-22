@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test": "npm run test:ui && npm run test:sites",
     "test:sites": "node --test tests/sites-worker.test.mjs",
-    "test:ui": "node --test tests/workbench-api.test.mjs tests/learning-case.test.mjs tests/case-packs.test.mjs tests/learning-paths.test.mjs tests/accessibility-contract.test.mjs"
+    "test:ui": "node --test tests/workbench-api.test.mjs tests/campaign-api.test.mjs tests/review-api.test.mjs tests/learning-case.test.mjs tests/case-packs.test.mjs tests/learning-paths.test.mjs tests/achievements.test.mjs tests/rotation.test.mjs tests/share-card.test.mjs tests/titles.test.mjs tests/coach-guidance.test.mjs tests/lessons.test.mjs tests/accessibility-contract.test.mjs tests/layout-contract.test.mjs tests/deck.test.mjs tests/mastery-assessment.test.mjs tests/help-hints.test.mjs tests/shortlist-api.test.mjs tests/research-api.test.mjs tests/programmes-api.test.mjs tests/directory-api.test.mjs tests/bounty-board.test.mjs tests/refresh-policy.test.mjs tests/curriculum-path.test.mjs tests/onboarding.test.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

@@ -364,13 +364,141 @@ Offline broker foundation completed without enabling the posture:
 
 **Exit:** rate, DNS, redirects, kill switch, data policy, receipts, and sustained clean operation are verified.
 
+## Campaign spine — where an engagement stands *(added 2026-09-14)*
+
+`greytheory/campaign/` answers, in code, the question that was being answered
+in conversation: **where is this campaign, and what is stopping it?** Seven
+ordered stages - programme, curriculum, study, plan, evidence, draft,
+submission - each reporting what was observed and what would move it forward.
+
+Two properties make it load-bearing rather than decorative:
+
+- **Governance blockers are distinguished from unfinished work.** A stage
+  waiting on a posture change, a lifted kill switch, or a bound approval is
+  marked as such, so "not permitted" is never presented as a to-do.
+- **A later stage satisfied above an earlier gap is reported as premature.**
+  A finished report above missing evidence is the failure this product exists
+  to prevent, not 86% progress.
+
+It reaches the read model through `greytheory_app/campaign_section.py`, one
+record per compiled programme.
+
+**All seven stages are reachable as of 2026-09-15.** The section previously
+supplied only three of `assess_campaign`'s eight inputs, so plan, evidence,
+draft and submission reported "not yet done" permanently — not for want of
+work, but for want of wiring. Now supplied from real stored state: posture from
+the service, practised topics from fixture receipts, the chosen topic from the
+active learning journey, and the report draft matched on `authority_ref`
+against the contract fingerprint, so a draft written under an earlier compile
+correctly stops counting.
+
+Two inputs are **deliberately left unwired**, and the reason is recorded in the
+code rather than in a comment here alone:
+
+- `plan_reviewed_by` — `ExperimentPlan` records a status but never who reviewed
+  it. Deriving a reviewer from `status is READY` would assert a person acted
+  when nothing recorded that they did.
+- `claims` — nothing constructs a `SubmissionClaim`, correctly, because a claim
+  describes evidence gathered against a real target and `LOCAL_FIXTURE` forbids
+  that.
+
+Both stages therefore report honestly as unmet. The interface is
+`workbench_ui/src/BountyWorkspace.jsx`: one bounty selected at a time, its
+stage rail beside the compiled scope and the sources it came from.
+
+*Wording corrected 2026-09-14:* this previously said it "reaches the UI", which
+was overstated - the section existed and nothing rendered it. It is now
+genuinely rendered, by `workbench_ui/src/CampaignPanel.jsx`, which draws the
+stage rail and marks a stage awaiting an operator decision differently from one
+awaiting work.
+
+**Corrected 2026-09-14, after populating the live registry.** An earlier note
+here claimed GitLab was at "current stage study". That assessed the repo
+*fixture dict*, not a compiled contract. The three bundles are now registered,
+and every campaign reports **stage: programme**, blocked, with the reason
+"has N in-scope assets but no human verification".
+
+So the permissions standing before live evidence number **four**, and the first
+comes before any study at all:
+
+1. **the compiled contract must be human-verified** — `registry.review()`,
+   which `mark_reviewed` refuses on a blocked contract, because "review does
+   not resolve ambiguity, it only confirms that a clean compile was read by
+   someone";
+2. the isolated worker VM must exist (Milestone 9, blocked on a host repair);
+3. the execution posture must be raised to `PASSIVE_HTTP`;
+4. **the programme's own contract must permit it** — every programme compiled
+   so far caps at `max_authority: LOCAL_FIXTURE`, so 2 and 3 alone would change
+   nothing.
+
+Gate 4 now has teeth in code rather than in prose. As of 2026-09-14
+`greytheory/authority/live_authority.py` is wired into `compile_contract`, and
+a record claiming `PASSIVE_HTTP` or above must declare identity the target can
+recognise, a globally routable egress address that fails closed, and terms
+accepted by a named human who read the saved sources. A rate limit alone no
+longer compiles. This is inert for all three registered programmes, which cap
+at `LOCAL_FIXTURE`.
+
+Practically, that makes gate 4 the point where the **egress question** becomes
+concrete: a declared address implies a dedicated static one, which in turn
+implies a gateway that fails closed. See
+`07_LOGS/Agent-Activity/2026-09-14-claude-greytheory-research-egress-and-attribution.md`
+in the vault for provider criteria and the architecture.
+
+Live state: GitLab and the MCP SDK are `pending_review` with no ambiguities and
+can be reviewed now. YNAB is `blocked` on two unresolved human resolutions
+(`owned-host-wildcard-vs-listed-targets` and
+`production-api-vs-production-exclusion`); it cannot be reviewed until its
+source is resolved and recompiled — a distinct step, not a decision.
+
+That is the measured distance to a real submission.
+
 ## Milestone 10 — Binary-proof collectors
 
 Order: subdomain-takeover verification, reachable exposure, technology/advisory correlation, safe HTTP misconfiguration checks.
 
+**Subdomain-takeover verification — evaluator done offline 2026-09-11.**
+`greytheory_collectors/subdomain_takeover.py` turns fixture observations into
+`observed`/`inferred` claims and refuses live probing below `PASSIVE_HTTP`.
+The `checked` half is deliberately absent: it is an operator action on the
+target, recorded through the trust kernel once the posture allows it. The
+collector is complete for what `LOCAL_FIXTURE` permits, and no further.
+
+**Reachable exposure — evaluator done offline 2026-09-11.**
+`greytheory_collectors/reachable_exposure.py` classifies the host through the
+scope contract before anything else and records no claim for a host that is
+not `IN_SCOPE`. Shared probe gate in `probe_posture.py`. Same limit: complete
+for `LOCAL_FIXTURE`, live gathering refused below `PASSIVE_HTTP`.
+
+**Technology/advisory correlation — done offline 2026-09-11.**
+`greytheory_collectors/advisory_correlation.py`. Advisories are supplied, never
+bundled; versions inside `[affected_from, fixed_in)` yield an `inferred` claim
+naming the supplier. Unorderable versions are refused visibly.
+
+**Safe HTTP misconfiguration checks — done offline 2026-09-11.**
+`greytheory_collectors/http_misconfiguration.py`: HSTS, CSP, CORS, version
+disclosure, directory listing, over a supplied response.
+
+**Milestone 10 status: evaluators complete offline (2026-09-11).** Every
+collector shares `probe_posture.py` and the same rule: scope first, then
+`observed`/`inferred` only, never `checked`. The gathering side is what
+`LOCAL_FIXTURE` forbids; the milestone resumes when execution posture is
+raised to `PASSIVE_HTTP` under Milestone 9's exit gate.
+
 ## Milestone 11 — Controlled authenticated authorisation testing
 
 Two owned accounts, ownership records, role-object-action matrix, synthetic data, per-experiment plans, request budgets, and human review per test family.
+
+**Offline pieces in place (2026-09-12):** two owned accounts and ownership
+records (`greytheory/lab/two_account.py`, earlier); role-object-action
+matrix, per-family request budgets that refuse rather than trim, derived
+test families, paired owner controls for every denial, and human review per
+family (`greytheory/lab/authorisation_matrix.py`); binding of a reviewed
+plan to domain `ExperimentPlan` records, one per family
+(`greytheory/lab/matrix_binding.py`); `ActionRequest` emission per intent
+and control (`greytheory/lab/action_emission.py`). Still needed: execution
+through the authority gate against the two-account fixture, which sits behind
+`AUTHENTICATED` posture and a per-request gate decision.
 
 ## Milestone 12 — Live agentic-AI assessment
 

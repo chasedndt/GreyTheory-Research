@@ -1,0 +1,367 @@
+/* The bug bounty board: real programmes, marked unverified until looked up.
+   Co-located with its component rather than appended to the global sheet. */
+
+.bounty-board__what {
+  margin: 0 0 16px;
+  color: #9fb0c2;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.bounty-board__what em {
+  color: #c5d2de;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.bounty-board__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.bounty-board__list li {
+  border: 1px solid #1d3346;
+  border-left-width: 3px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bounty-board__row {
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(150px, 210px) minmax(0, 1fr) 28px;
+  gap: 16px;
+  width: 100%;
+  padding: 14px 16px;
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background .12s ease, box-shadow .12s ease;
+}
+
+/* Hover lights the row and nothing more. A card that opened on hover made the
+   list impossible to scan: crossing it with a pointer threw the layout around.
+   Pressing is what opens it. */
+.bounty-board__row:hover {
+  background: #0a1826;
+  box-shadow: inset 3px 0 0 var(--amber);
+}
+
+.bounty-board__row:focus-visible { outline: 2px solid var(--blue); outline-offset: -2px; }
+
+.bounty-board__chevron {
+  display: grid;
+  place-items: center;
+  color: #7d90a4;
+}
+
+.bounty-board__chevron svg {
+  width: 15px;
+  transition: transform .15s ease;
+}
+
+.bounty-board__list li.is-open .bounty-board__chevron svg { transform: rotate(180deg); }
+.bounty-board__list li.is-open .bounty-board__row { background: #0a1826; }
+
+/* Opened and closed by the button above it; `hidden` does the hiding, and this
+   rule exists so `display` cannot quietly override the attribute. */
+.bounty-board__card {
+  display: block;
+  padding: 14px 16px;
+  border-top: 1px solid #1d3346;
+}
+
+.bounty-board__card[hidden] { display: none; }
+
+/* The status light: a statement about whether the page responded, never about
+   whether the programme is accepting submissions. */
+.bounty-board__status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  font-size: 0.78rem;
+  color: #9fb0c2;
+}
+
+.bounty-board__light {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: #2b4a63;
+}
+
+.bounty-board__light.is-live {
+  background: #43c98b;
+  box-shadow: 0 0 0 3px rgba(67, 201, 139, .16);
+}
+
+.bounty-board__light.is-stale {
+  background: #ffb600;
+  box-shadow: 0 0 0 3px rgba(255, 182, 0, .14);
+}
+
+.bounty-board__light.is-down {
+  background: #ff6b6b;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, .16);
+}
+
+.bounty-board__status-note {
+  margin: 12px 0 0;
+  color: #7d90a4;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.bounty-board__reward em {
+  display: block;
+  font-style: normal;
+  font-size: 0.82rem;
+  color: #c5d2de;
+}
+
+.bounty-board__reward small {
+  display: block;
+  margin-top: 2px;
+  color: #6f8398;
+  font-size: 0.68rem;
+}
+
+.bounty-board__states {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.bounty-board__contract {
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid #2b4a63;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  color: #9fb0c2;
+}
+
+.bounty-board__contract.is-blocked { border-color: #ff6b6b; color: #ff6b6b; }
+.bounty-board__contract.is-attention { border-color: #ffb600; color: #ffb600; }
+.bounty-board__contract.is-ready { border-color: #43c98b; color: #43c98b; }
+
+.bounty-board__facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px 18px;
+  margin: 12px 0 0;
+}
+
+.bounty-board__facts dt {
+  color: #7d90a4;
+  font-size: 0.68rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.bounty-board__facts dd {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  color: #c5d2de;
+}
+
+/* Absent is said, not left blank. A blank cell reads as zero. */
+.bounty-board__facts .is-unknown {
+  color: #6f8398;
+  font-style: italic;
+}
+
+.bounty-board__reward-note {
+  margin: 12px 0 0;
+  color: #7d90a4;
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.bounty-board__actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.bounty-board__actions small {
+  flex: 1;
+  min-width: 200px;
+  color: #6f8398;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+.bounty-board__refresh {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid #1d3346;
+  border-radius: 12px;
+}
+
+.bounty-board__auto {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 260px;
+  color: #9fb0c2;
+  font-size: 0.82rem;
+}
+
+.bounty-board__auto input { margin-top: 3px; accent-color: #ffb600; }
+
+.bounty-board__auto small {
+  display: block;
+  margin-top: 3px;
+  color: #6f8398;
+  font-size: 0.74rem;
+  line-height: 1.5;
+}
+
+/* Retrieved and not-yet-retrieved are different kinds of row, so the
+   difference is visible before you read a word of it. */
+.bounty-board__list li.is-verified { border-left-color: #43c98b; }
+.bounty-board__list li.is-unchecked { border-left-color: #2b4a63; }
+
+.bounty-board__who strong {
+  display: block;
+  font-size: 0.92rem;
+}
+
+.bounty-board__who small {
+  display: block;
+  margin-top: 3px;
+  color: #7d90a4;
+  font-size: 0.74rem;
+}
+
+.bounty-board__who code,
+.bounty-board__state code {
+  font-family: "IBM Plex Mono", monospace;
+  color: #9fb0c2;
+}
+
+.bounty-board__target {
+  margin: 6px 0 0;
+  color: #7d90a4;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.bounty-board__why p {
+  margin: 0;
+  color: #9fb0c2;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+.bounty-board__found {
+  font-style: italic;
+  color: #7d90a4;
+}
+
+.bounty-board__compiled {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #06231a;
+  color: #43c98b;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+}
+
+.bounty-board__state {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+
+.bounty-board__state small {
+  color: #7d90a4;
+  font-size: 0.72rem;
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.bounty-board__checked {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #06231a;
+  color: #43c98b;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Muted rather than alarming: not looked up is an ordinary starting state,
+   not a fault. It just must never be mistaken for confirmed. */
+.bounty-board__unchecked {
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid #2b4a63;
+  color: #7d90a4;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.bounty-board__state .button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.bounty-board__boundary {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #1d3346;
+}
+
+.bounty-board__boundary p {
+  margin: 0;
+  color: #7d90a4;
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1030px) {
+  .bounty-board__list li {
+    grid-template-columns: minmax(0, 1fr) minmax(140px, 180px);
+  }
+
+  .bounty-board__why {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .bounty-board__list li {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .bounty-board__state {
+    justify-items: stretch;
+  }
+
+  .bounty-board__state .button {
+    width: 100%;
+  }
+}

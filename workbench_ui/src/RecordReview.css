@@ -1,0 +1,110 @@
+/* The review gate, directly beneath the material it is about.
+   Co-located with the component rather than appended to the global sheet. */
+
+.record-review {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border: 1px solid #ffb600;
+  border-radius: 12px;
+}
+
+/* Settled reads as resolved, not as another thing waiting to be done. */
+.record-review.is-settled {
+  border-color: #43c98b;
+}
+
+.record-review h3 {
+  margin: 2px 0 0;
+  font-size: 1rem;
+}
+
+.record-review p {
+  margin: 10px 0 0;
+  color: #9fb0c2;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.record-review.is-settled strong {
+  font-family: "IBM Plex Mono", monospace;
+  color: #43c98b;
+}
+
+.record-review__what em {
+  color: #c5d2de;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.record-review__refusal {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ff6b6b;
+  color: #ff6b6b;
+  font-size: 0.82rem;
+}
+
+.record-review__form {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.record-review__field {
+  display: grid;
+  gap: 6px;
+}
+
+.record-review__field > span {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #7d90a4;
+}
+
+.record-review__field input {
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1px solid #2b4a63;
+  background: #050d14;
+  color: #c5d2de;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.record-review__field input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.record-review__field small {
+  color: #6f8398;
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.record-review__confirm {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #9fb0c2;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.record-review__confirm input {
+  margin-top: 3px;
+  accent-color: #ffb600;
+}
+
+.record-review__form button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+@media (max-width: 760px) {
+  .record-review {
+    padding: 14px;
+  }
+}

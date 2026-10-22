@@ -1,0 +1,83 @@
+/* The "?" disclosure. Co-located with its component rather than appended to
+   the global sheet. */
+
+.help-hint__trigger {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: 999px;
+  border: 1px solid #2b4a63;
+  background: transparent;
+  color: #7d90a4;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.help-hint__trigger:hover,
+.help-hint__trigger[aria-expanded="true"] {
+  border-color: #ffb600;
+  color: #ffb600;
+}
+
+.help-hint__trigger:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
+.help-hint__panel {
+  display: block;
+  margin: 8px 0 4px;
+  padding: 10px 12px;
+  border-left: 2px solid #ffb600;
+  border-radius: 0 8px 8px 0;
+  background: #050d14;
+  color: #9fb0c2;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* `display:block` above would otherwise defeat the hidden attribute and leave
+   every panel permanently open. */
+.help-hint__panel[hidden] {
+  display: none;
+}
+
+.help-hint__panel > strong {
+  display: block;
+  margin-bottom: 4px;
+  color: #c5d2de;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.help-hint__panel p {
+  margin: 0 0 6px;
+}
+
+.help-hint__panel em {
+  display: block;
+  margin: 8px 0 4px;
+  color: #7d90a4;
+  font-style: normal;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.help-hint__panel ul {
+  margin: 0;
+  padding-left: 16px;
+  display: grid;
+  gap: 4px;
+}
+
+.help-hint__panel li {
+  color: #9fb0c2;
+}

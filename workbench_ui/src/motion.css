@@ -1,0 +1,98 @@
+/* Motion, in one file because it is cross-cutting by nature.
+ *
+ * Two rules govern everything here.
+ *
+ * **Every animation is gated behind `prefers-reduced-motion: no-preference`.**
+ * The app already ships a global `reduce` guard that neutralises transitions
+ * and animations, so this is belt and braces - but stating it positively means
+ * a reader can see the intent rather than having to trust a rule three hundred
+ * lines away in another file.
+ *
+ * **Motion has to earn its place.** Each of these answers a question the
+ * interface was otherwise answering only in words: is this live, did that
+ * open, did something just complete, is this pressable. Nothing here decorates
+ * for its own sake, and nothing moves while you are trying to read it.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* A reachable page breathes. The light already carries the fact; the motion
+     makes it legible at a glance across a list of six, which a static dot of
+     the same colour does not. Only "live" animates - a stale or failed light
+     must not draw the eye as though it were healthy. */
+  .bounty-board__light.is-live {
+    animation: gt-breathe 2.6s ease-in-out infinite;
+  }
+
+  @keyframes gt-breathe {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(67, 201, 139, .16); }
+    50%      { box-shadow: 0 0 0 6px rgba(67, 201, 139, .05); }
+  }
+
+  /* The guide arrives rather than appearing. It sits above everything, so an
+     abrupt paint reads as a glitch; a short rise reads as a panel. */
+  .onboarding-overlay {
+    animation: gt-rise .26s cubic-bezier(.2, .7, .3, 1) both;
+  }
+
+  .onboarding-overlay__pill {
+    transition: border-color .14s ease, transform .14s ease;
+  }
+
+  .onboarding-overlay__pill:hover { transform: translateY(-1px); }
+
+  @keyframes gt-rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Opening a bounty card. Short enough that it never delays reading, long
+     enough that the eye follows the content rather than being surprised by it. */
+  .bounty-board__card:not([hidden]) {
+    animation: gt-reveal .16s ease-out both;
+  }
+
+  @keyframes gt-reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* A completed lesson's tick lands rather than replacing the number silently.
+     This is the one place a small flourish is warranted: it marks something the
+     learner actually did. */
+  .curriculum-steps li.is-done .curriculum-steps__mark svg {
+    animation: gt-pop .32s cubic-bezier(.2, 1.4, .4, 1) both;
+  }
+
+  @keyframes gt-pop {
+    from { transform: scale(.4); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+
+  /* Pressable things lift very slightly. Enough to read as interactive,
+     not enough to shift the layout around a pointer. */
+  .metric-card,
+  .programme-roster__list li,
+  .curriculum-steps li > button {
+    transition: transform .14s ease, background .14s ease, border-color .14s ease;
+  }
+
+  .metric-card:hover,
+  .curriculum-steps li > button:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Progress that changes while you watch should visibly travel, so a step
+     completing is something you see happen rather than notice afterwards. */
+  .onboarding-overlay__bar > span,
+  .curriculum-track__progress > span {
+    transition: width .32s cubic-bezier(.2, .7, .3, 1);
+  }
+
+  /* The shortlist and directory rows settle in when a command returns, which
+     is the moment their content actually changed. */
+  .shortlist-panel__list li,
+  .directory-panel__results li {
+    animation: gt-reveal .18s ease-out both;
+  }
+}

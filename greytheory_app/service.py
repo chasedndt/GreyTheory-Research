@@ -22,6 +22,7 @@ from greytheory.authority.approvals import (
     ApprovalStore,
 )
 from greytheory.authority.gate import AuthorityLevel
+from greytheory.authority.live_authority import _NOT_A_PERSON
 from greytheory.authority.scope import ScopeClassification
 from greytheory.capabilities import CAPABILITIES, CapabilityStatus
 from greytheory.claim_assembly import assemble_two_account_fixture_claims
@@ -47,6 +48,9 @@ from greytheory.learning import (
     start_learning_journey,
 )
 from greytheory.registry import ProgrammeRegistry
+from greytheory.shortlist import ShortlistOutcome
+from greytheory_intelligence.directory_fetcher import fetch_directory
+from greytheory_intelligence.registry import build_intelligence_plan
 from greytheory.report import ReportDraft
 from greytheory.report_store import (
     ReportRevisionConflict,
@@ -192,6 +196,10 @@ class WorkbenchApplicationService:
         *,
         posture: AuthorityLevel = AuthorityLevel.LOCAL_FIXTURE,
         registry: ProgrammeRegistry | None = None,
+        shortlist: Any | None = None,
+        directory_lookups: Any | None = None,
+        #: Injected only by tests, so the suite performs no network I/O.
+        directory_connection: Any | None = None,
         audit: AuditLog | None = None,
         research: ResearchStore | None = None,
         mastery: MasteryStore | None = None,
@@ -212,6 +220,9 @@ class WorkbenchApplicationService:
             )
         self.posture = posture
         self.registry = registry
+        self.shortlist = shortlist
+        self.directory_lookups = directory_lookups
+        self.directory_connection = directory_connection
         self.audit = audit
         self.research = research
         self.mastery = mastery
@@ -1288,6 +1299,16 @@ class WorkbenchApplicationService:
                 result = self._plan_experiment(command)
             elif command.kind is CommandKind.RECORD_MASTERY_ASSESSMENT:
                 result = self._record_mastery_assessment(command)
+            elif command.kind is CommandKind.REVIEW_PROGRAMME:
+                result = self._review_programme(command)
+            elif command.kind is CommandKind.LOOK_UP_PROGRAMME:
+                result = self._look_up_programme(command)
+            elif command.kind is CommandKind.SHORTLIST_PROGRAMME:
+                result = self._shortlist_programme(command)
+            elif command.kind is CommandKind.ARCHIVE_PROGRAMME:
+                result = self._archive_programme(command)
+            elif command.kind is CommandKind.RESTORE_PROGRAMME:
+                result = self._restore_programme(command)
             elif command.kind is CommandKind.EXPORT_REPORT:
                 result = self._export_report(command)
             elif command.kind is CommandKind.REQUEST_ACTION:
@@ -1936,6 +1957,178 @@ class WorkbenchApplicationService:
                 f"finding:{finding_id}",
                 f"manifest-sha256:{receipt.manifest_sha256}",
             ),
+        )
+
+    def _look_up_programme(self, command: WorkbenchCommand) -> CommandResult:
+        """Read what a platform publishes about one named programme.
+
+        The only command in this service that opens an outbound connection. It
+        is deliberately narrow: a platform and a handle you already know, read
+        anonymously over HTTPS with redirects refused. It cannot enumerate
+        programmes, cannot reach a programme's assets, and what comes back is
+        PUBLIC and UNTRUSTED source material - not a scope contract, and not
+        permission to test anything.
+        """
+
+        if self.directory_lookups is None:
+            raise WorkbenchContractError("no directory lookup store is configured")
+        _require_command_fields(command, required={"platform", "handle"})
+
+        platform = (_command_text(command, "platform") or "").lower()
+        handle = (_command_text(command, "handle") or "").lower()
+        # Resolved here rather than taken from the command, so a caller cannot
+        # name a provider that does not match the platform it claims.
+        plan = build_intelligence_plan(f"{platform}-directory", f"{platform}:{handle}")
+
+        # Injected in tests so the suite never reaches a third party; None in
+        # the running application, where a real request is the point.
+        evidence = fetch_directory(plan, connection_factory=self.directory_connection)
+        lookup = self.directory_lookups.record(evidence, actor=command.operator_ref)
+
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "programme_looked_up",
+            f"Read {lookup.url} - {lookup.body_bytes} bytes, sha256 "
+            f"{lookup.body_sha256[:12]}. This is public, untrusted material and "
+            f"grants no authority to test {handle}",
+            (f"lookup:{lookup.identifier}",),
+        )
+
+    def _shortlist_store(self):
+        """The store, or a refusal that names what is missing.
+
+        Shared by the three curation handlers so a missing store reads the same
+        way whichever one the operator reached for.
+        """
+
+        if self.shortlist is None:
+            raise WorkbenchContractError("no shortlist store is configured")
+        return self.shortlist
+
+    def _shortlist_programme(self, command: WorkbenchCommand) -> CommandResult:
+        """Record an intention to work a programme.
+
+        Deliberately does not require the programme to be registered, let alone
+        reviewed. Shortlisting is what leads someone to review a programme, so
+        demanding the outcome as a precondition of the intent would make the
+        front door unreachable.
+        """
+
+        store = self._shortlist_store()
+        _require_command_fields(command, required={"programme_id"})
+        programme_id = _command_text(command, "programme_id") or ""
+        entry = store.shortlist(programme_id, actor=command.operator_ref)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "programme_shortlisted",
+            f"{programme_id} is on your active list at revision {entry.revision}; "
+            f"this records an intention and grants no authority",
+            (f"shortlist:{programme_id}",),
+        )
+
+    def _archive_programme(self, command: WorkbenchCommand) -> CommandResult:
+        """Set a programme aside. Reversible, and nothing is deleted."""
+
+        store = self._shortlist_store()
+        _require_command_fields(
+            command,
+            required={"programme_id"},
+            optional={"outcome", "note"},
+        )
+        programme_id = _command_text(command, "programme_id") or ""
+        note = _command_text(command, "note", optional=True) or ""
+        outcome_name = _command_text(command, "outcome", optional=True) or "unset"
+        try:
+            outcome = ShortlistOutcome(outcome_name)
+        except ValueError as exc:
+            permitted = ", ".join(item.value for item in ShortlistOutcome)
+            raise WorkbenchContractError(
+                f"unknown shortlist outcome {outcome_name!r}; expected one of: {permitted}"
+            ) from exc
+
+        entry = store.archive(
+            programme_id,
+            actor=command.operator_ref,
+            outcome=outcome,
+            note=note,
+            expected_revision=command.expected_revision,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "programme_archived",
+            f"{programme_id} was set aside at revision {entry.revision}; nothing "
+            f"was deleted and it can be restored at any time",
+            (f"shortlist:{programme_id}",),
+        )
+
+    def _restore_programme(self, command: WorkbenchCommand) -> CommandResult:
+        """Bring a programme back to the active list."""
+
+        store = self._shortlist_store()
+        _require_command_fields(command, required={"programme_id"})
+        programme_id = _command_text(command, "programme_id") or ""
+        entry = store.restore(
+            programme_id,
+            actor=command.operator_ref,
+            expected_revision=command.expected_revision,
+        )
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "programme_restored",
+            f"{programme_id} is back on your active list at revision {entry.revision}; "
+            f"its earlier reason for being set aside was cleared",
+            (f"shortlist:{programme_id}",),
+        )
+
+    def _review_programme(self, command: WorkbenchCommand) -> CommandResult:
+        """Record that a named person read this compiled contract.
+
+        The registry does the refusing, and its reasons are the right ones to
+        show: `mark_reviewed` rejects a blocked contract because review
+        confirms a clean compile was read, it does not resolve ambiguity. Those
+        raise and are turned into an honest refusal by the dispatch, so this
+        handler does not second-guess them.
+        """
+
+        if self.registry is None:
+            raise WorkbenchContractError("no programme registry is configured")
+        _require_command_fields(command, required={"programme_id", "reviewer"})
+
+        # Same freshness bounds as a mastery assessment: an approval that sat in
+        # a queue must not land long after the person meant it.
+        now = self.clock().astimezone(timezone.utc)
+        issued = command.issued_at.astimezone(timezone.utc)
+        if issued > now + timedelta(seconds=30):
+            raise WorkbenchContractError("programme review command is future-dated")
+        if now - issued > timedelta(minutes=10):
+            raise WorkbenchContractError("programme review command is stale")
+
+        programme_id = _command_text(command, "programme_id") or ""
+        # _command_text already strips and refuses a blank value with its own
+        # message, so there is no second emptiness check worth writing here.
+        reviewer = _command_text(command, "reviewer") or ""
+        # A model may prepare a contract for review but cannot be its reviewer.
+        # Shared with live_authority rather than copied, so the two lists cannot
+        # drift apart.
+        if any(marker in reviewer.lower() for marker in _NOT_A_PERSON):
+            raise WorkbenchContractError(
+                "a model may present a contract for review but cannot be its reviewer"
+            )
+
+        contract = self.registry.review(programme_id, reviewer=reviewer)
+        return CommandResult(
+            command.id,
+            CommandDisposition.ACCEPTED,
+            "programme_reviewed",
+            (
+                f"{programme_id} reviewed by {reviewer}; contract is now "
+                f"{contract.status.value} and still capped at {contract.max_authority}"
+            ),
+            (f"programme:{programme_id}", f"authority:{contract.fingerprint()}"),
         )
 
     def _record_mastery_assessment(

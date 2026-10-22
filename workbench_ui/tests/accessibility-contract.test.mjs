@@ -4,6 +4,12 @@ import test from "node:test";
 
 const appSource = await readFile(new URL("../src/App.jsx", import.meta.url), "utf8");
 const styles = await readFile(new URL("../src/styles.css", import.meta.url), "utf8");
+// The guided-learning surface moved out of App.jsx: the old Learn page asked
+// questions before it taught anything, so it was replaced by an ordered
+// curriculum that opens the real lessons. These are read so the accessibility
+// properties it used to guard are still guarded, at their new addresses.
+const curriculumSource = await readFile(new URL("../src/CurriculumView.jsx", import.meta.url), "utf8");
+const lessonSource = await readFile(new URL("../src/LessonDialog.jsx", import.meta.url), "utf8");
 
 test("navigation moves focus to the named workspace without forced motion", () => {
   assert.match(appSource, /const workspaceRef = useRef\(null\)/);
@@ -59,13 +65,37 @@ test("modal retains escape close and a bounded focus loop", () => {
   assert.match(appSource, /focusable\[focusable\.length - 1\]/);
 });
 
-test("guided learning exposes accessible mission stages and scenario checks", () => {
-  assert.match(appSource, /aria-labelledby="mission-plan-title"/);
-  assert.match(appSource, /aria-label="Mission stages"/);
-  assert.match(appSource, /<fieldset key=\{item\.question\}>/);
-  assert.match(appSource, /<legend>\{checkIndex \+ 1\}\. \{item\.question\}<\/legend>/);
-  assert.match(appSource, /disabled=\{!labReady\}/);
-  assert.match(appSource, /This unlocks practice only; it does not award mastery\./);
+test("the curriculum exposes its tracks and ordered steps to assistive technology", () => {
+  // Each track is a labelled region, and its lessons are an ordered list that
+  // announces which track it belongs to - so the path is navigable without
+  // seeing the layout that conveys it visually.
+  assert.match(curriculumSource, /aria-labelledby=\{`track-\$\{track\.id\}`\}/);
+  assert.match(curriculumSource, /aria-label=\{`\$\{track\.title\} lessons in order`\}/);
+  assert.match(curriculumSource, /aria-labelledby="next-title"/);
+});
+
+test("practice stays gated behind having read something, and says so", () => {
+  // This gate moved off the old Learn page rather than being dropped: it also
+  // carries the guided journey from its learn stage into practise.
+  assert.match(curriculumSource, /const labReady = /);
+  assert.match(curriculumSource, /disabled=\{!labReady\}/);
+  assert.match(curriculumSource, /This unlocks practice only; it does not award mastery\./);
+});
+
+test("lesson checks group their options and announce every response", () => {
+  // Replaces the old fieldset/legend assertions. The property being protected
+  // is that questions are grouped and every reaction reaches a screen reader -
+  // a labelled group with live regions serves that better than a fieldset did.
+  assert.match(lessonSource, /role="group" aria-label="Answer options"/);
+  assert.match(lessonSource, /aria-pressed=\{isChosen\}/);
+  assert.match(lessonSource, /className="lesson-hints" aria-live="polite"/);
+  assert.match(lessonSource, /lesson-verdict\$\{verdict\.correct \? " is-correct" : " is-wrong"\}`} aria-live="polite"/);
+});
+
+test("a wrong answer buys a hint and never the answer", () => {
+  // The rule that makes the number of attempts an honest signal.
+  assert.match(lessonSource, /A wrong answer unlocks a hint, never the answer\./);
+  assert.match(lessonSource, /setHintsShown\(\(current\) => Math\.min\(current \+ 1/);
 });
 
 test("case views implement roving keyboard tabs and labelled tab panels", () => {
@@ -83,4 +113,21 @@ test("truthful preview actions expose their state to assistive technology", () =
   assert.match(appSource, /Preview review packet/);
   assert.match(appSource, /No file was exported, no reviewer was contacted, and no approval was granted\./);
   assert.match(appSource, /aria-label="Open local learner profile"/);
+});
+
+test("governed coach exposes its data and authority boundaries in every mode", () => {
+  assert.match(appSource, /Public learning context only/);
+  assert.match(appSource, /Do not paste credentials, tokens, private programme data, target URLs, or captures/);
+  assert.match(appSource, /kind: "request_coach_guidance"/);
+  assert.match(appSource, /data_class: "PUBLIC"/);
+  assert.match(appSource, /humanAcknowledged: true/);
+  assert.match(appSource, /className="coach-launch" aria-label="Open AI research coach"/);
+  assert.match(appSource, /Guidance is inferred and cannot perform actions or award mastery/);
+  assert.match(appSource, /kind: "clear_coach_history"/);
+  assert.match(appSource, /aria-label=\{confirmClear \? "Confirm clearing coach history" : "Clear coach history"\}/);
+  assert.match(appSource, /Research, evidence, and mastery were unchanged/);
+  assert.match(appSource, /aria-live="polite"/);
+  assert.match(styles, /\.modal--coach\{width:min\(880px,100%\);overflow:hidden\}/);
+  assert.match(styles, /\.coach-provenance\{display:grid/);
+  assert.match(styles, /\.coach-history-bar\{display:flex/);
 });

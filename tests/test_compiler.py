@@ -76,9 +76,80 @@ class TestAmbiguityDetection:
         assert result.blocked
         assert any("no rate limit" in a for a in result.ambiguities)
 
-    def test_interactive_authority_with_a_rate_limit_compiles(self):
-        result = compile_clean(max_authority="PASSIVE_HTTP", rate_limit_rps=2)
+    def test_a_complete_live_authority_declaration_compiles_clean(self):
+        """The accept path, which the refusals alone do not prove.
+
+        Without this, a check wired to always fail would pass every other
+        assertion in this class - they are all refusals. This is the one test
+        that would catch that.
+        """
+
+        result = compile_clean(
+            max_authority="PASSIVE_HTTP",
+            rate_limit_rps=2,
+            live_authority={
+                "identification_header": "X-Bug-Bounty",
+                "identification_value": "chaseintech",
+                "user_agent": "GreyTheory-research/1 (+chaseintech)",
+                "egress": {"addresses": ["51.15.44.201"], "fail_closed": True},
+                "terms": {
+                    "accepted_by": "chase",
+                    "statement": "Read the programme guidelines and ineligible list, and accept them.",
+                    "accepted_at": "2026-09-14T12:00:00+00:00",
+                    "source_refs": ["sources/gitlab-programme-guidelines.md"],
+                },
+            },
+        )
+
         assert not result.blocked
+        assert result.ambiguities == []
+        # The ceiling must actually survive. The compiler downgrades an
+        # unrecognised max_authority to NONE, so "compiled clean" alone would
+        # not notice a ceiling that was silently dropped on the way through.
+        assert result.contract.max_authority == "PASSIVE_HTTP"
+        # Still not verified: declaring live authority is not being granted it.
+        assert result.contract.status is ContractStatus.PENDING_REVIEW
+        assert result.contract.human_reviewed is False
+
+    def test_an_incomplete_declaration_blocks_with_the_modules_own_reason(self):
+        """The compiler must surface why, not a generic 'something is wrong'."""
+
+        result = compile_clean(
+            max_authority="PASSIVE_HTTP",
+            rate_limit_rps=2,
+            live_authority={
+                "identification_header": "X-Bug-Bounty",
+                "identification_value": "chaseintech",
+                "user_agent": "GreyTheory-research/1 (+chaseintech)",
+                # A tunnel that drops back to the researcher's own address.
+                "egress": {"addresses": ["51.15.44.201"], "fail_closed": False},
+                "terms": {
+                    "accepted_by": "chase",
+                    "statement": "Read the programme guidelines and ineligible list, and accept them.",
+                    "accepted_at": "2026-09-14T12:00:00+00:00",
+                    "source_refs": ["sources/gitlab-programme-guidelines.md"],
+                },
+            },
+        )
+
+        assert result.blocked
+        assert any("fail closed" in item for item in result.ambiguities)
+
+    def test_a_rate_limit_alone_no_longer_permits_interactive_authority(self):
+        """Changed 2026-09-14, deliberately.
+
+        This previously asserted that a rate limit was enough to compile an
+        interactive ceiling cleanly. It is not: a rate limit does not make
+        traffic on someone else's production systems accountable. Identity the
+        target can recognise while it arrives, a declared globally routable
+        egress that fails closed, and a named human who accepted the terms are
+        required too. See greytheory/authority/live_authority.py.
+        """
+
+        result = compile_clean(max_authority="PASSIVE_HTTP", rate_limit_rps=2)
+
+        assert result.blocked
+        assert any("live_authority" in item for item in result.ambiguities)
 
     def test_unknown_authority_downgrades_to_none_and_blocks(self):
         result = compile_clean(max_authority="SUPERUSER")

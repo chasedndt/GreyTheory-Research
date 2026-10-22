@@ -31,12 +31,17 @@ import {
   createWorkbenchCommand,
   fetchWorkbenchSnapshot,
   learningStateFromSnapshot,
+  directoryFromSnapshot,
+  programmesFromSnapshot,
+  researchFromSnapshot,
+  reviewFromSnapshot,
   sendWorkbenchCommand,
+  shortlistFromSnapshot,
   validateLocalConnection,
 } from "./workbenchApi";
 import { runCasePackSimulation } from "./learningCase";
-import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES, PROGRAMME_READINESS, casePackById, casePackForCard, missionSegmentsForPack } from "./casePacks";
-import { LEARNING_TOPICS, SKILL_TRACKS, topicById } from "./learningPaths";
+import { CASE_PACKS, DEMO_RUNS, LIVE_PROGRAMME_GATES, casePackById, casePackForCard, missionSegmentsForPack } from "./casePacks";
+import { SKILL_TRACKS, topicById } from "./learningPaths";
 import { INTEGRATION_GUARDRAILS, PROGRAMME_CONNECTORS, PUBLIC_INTELLIGENCE_SOURCES } from "./intelligenceSources";
 
 const NAV_ITEMS = [
@@ -184,8 +189,6 @@ const TOPIC_ICONS = {
   "mcp-abuse": Warning,
 };
 
-const PRINCIPLE_ICONS = [Scales, UserCircle, ShieldCheck, Receipt];
-
 function simulationPresentation(result) {
   if (result?.propertyHeld === false) {
     return {
@@ -266,10 +269,16 @@ function MissionControl({ navigate, startMission, journey, persistenceMode, acti
         <LearnerLoop current={0} onSelect={(step) => navigate(step === "learn" ? "learn" : step === "practise" ? "labs" : step === "prove" ? "evidence" : "reviews")} />
         <SkillTrajectory navigate={navigate} />
         <div className="metric-grid">
-          <button className="metric-card" onClick={() => navigate("evidence")}><Receipt /><span>Evidence receipts</span><strong>7</strong><small>3 verified this week</small></button>
-          <button className="metric-card" onClick={() => navigate("reviews")}><GraduationCap /><span>Reviews</span><strong>2</strong><small>Awaiting your response</small></button>
-          <div className="metric-card"><ShieldCheck /><span>Authority violations</span><strong>0</strong><small>All sessions within policy</small></div>
-          <div className="metric-card"><TrendUp /><span>Learning rhythm</span><strong>5 days</strong><small>Best streak: 5 days</small></div>
+          {/* Every figure here is counted from something on this machine. These
+              were four hardcoded literals - "7 receipts", "2 reviews", "0
+              authority violations", "5 day streak" - on a dashboard whose whole
+              argument is that claims must be sourced. Nothing is shown now that
+              cannot answer where it came from, and "authority violations" is
+              gone entirely because nothing counts them. */}
+          <button className="metric-card" onClick={() => navigate("evidence")}><Receipt /><span>Evidence receipts</span><strong>{evidencedCards.size}</strong><small>cards with a server-issued fixture receipt</small></button>
+          <button className="metric-card" onClick={() => navigate("programmes")}><GraduationCap /><span>Programmes needing you</span><strong>{programmes?.counts?.needingAttention ?? 0}</strong><small>of {programmes?.counts?.registered ?? 0} compiled locally</small></button>
+          <button className="metric-card" onClick={() => navigate("mission")}><Target /><span>On your shortlist</span><strong>{shortlist?.counts?.active ?? 0}</strong><small>{shortlist?.counts?.archived ?? 0} set aside</small></button>
+          <button className="metric-card" onClick={() => navigate("mission")}><MagnifyingGlass /><span>Pages checked</span><strong>{directory?.counts?.read ?? 0}</strong><small>public programme pages retrieved</small></button>
         </div>
       </main>
       <CoachPanel activePack={activePack} onOpenLesson={() => navigate("learn")} />
@@ -399,25 +408,54 @@ function LabView({ navigate, labState, setLabState, onRunFixture, onCaptureProof
   );
 }
 
-function ProgrammesView() {
-  const [selectedId, setSelectedId] = useState(PROGRAMME_READINESS[0].id);
-  const [stage, setStage] = useState("source");
-  const selected = PROGRAMME_READINESS.find((programme) => programme.id === selectedId) || PROGRAMME_READINESS[0];
-  const stages = [
-    ["source", "Read source", selected.sourceState],
-    ["review", "Review scope", selected.reviewState],
-    ["case", "Derive local case", selected.caseState],
-    ["live", "Raise posture", "Unavailable"],
-  ];
+function ProgrammesView({ programmes }) {
+  // Every programme here is compiled from sources saved on this machine. The
+  // panel previously rendered a hardcoded array while the server published this
+  // exact list and nothing read it.
+  const entries = programmes?.available ? programmes.programmes : [];
+  const [selectedId, setSelectedId] = useState(null);
+  const selected = entries.find((item) => item.id === selectedId) || entries[0] || null;
+  const next = programmeNextStep(selected);
+
+  if (!entries.length) {
+    return (
+      <div className="content-page programmes-page">
+        <header className="page-heading"><div><span className="eyebrow">Research · Authority first</span><h1>Programme scope library</h1><p>Programmes compiled from sources saved on this machine.</p></div></header>
+        <section className="surface"><p className="programme-empty">No programme is registered yet. A programme arrives by compiling a saved source bundle — nothing is fetched, and registering one grants no authority to test anything.</p></section>
+      </div>
+    );
+  }
+
   return (
     <div className="content-page programmes-page">
-      <header className="page-heading"><div><span className="eyebrow">Research · Authority first</span><h1>Programme scope library</h1><p>Review versioned scope and policy sources before creating a hypothesis. Imported text cannot activate testing.</p></div><Pill tone="amber">3 offline bundles</Pill></header>
-      <section className="surface programme-readiness" aria-labelledby="programme-readiness-title"><div><span className="eyebrow">Learning-to-research transition</span><h2 id="programme-readiness-title">From public policy to a safe local case</h2><p>Select each stage to see what can happen now. Nothing here grants target authority.</p></div><div className="programme-stages" role="group" aria-label="Programme readiness stages">{stages.map(([id, label, state], index) => <button type="button" key={id} className={stage === id ? "is-selected" : ""} onClick={() => setStage(id)} aria-pressed={stage === id}><span>{index + 1}</span><strong>{label}</strong><small>{state}</small></button>)}</div><div className="programme-stage-note" role="status"><ShieldCheck /><div><strong>{stage === "source" ? "Saved source, not live truth" : stage === "review" ? "A human resolves scope" : stage === "case" ? "Learning stays synthetic" : "Live access remains dark"}</strong><p>{stage === "source" ? "Inspect the versioned snapshot and record its date; refresh is a separate governed action." : stage === "review" ? "Confirm assets, exclusions, rates, data handling, and disclosure terms without guessing through conflicts." : stage === "case" ? selected.nextAction : "Ubuntu full-service and exact-egress namespace proofs plus the same-profile DPAPI candidate pass. Separate-account Windows acceptance, reproducible hardened-image binding, approved key recovery and ACLs, programme review, and explicit posture approval are still required."}</p></div></div></section>
-      <div className="programme-layout"><main className="surface programme-list"><div className="section-heading"><div><span className="eyebrow">Available sources</span><h2>Programme bundles</h2></div></div>{PROGRAMME_READINESS.map((programme) => <button key={programme.id} className={selected.id === programme.id ? "is-selected" : ""} onClick={() => { setSelectedId(programme.id); setStage("source"); }}><Target /><div><small>{programme.platform}</small><strong>{programme.name}</strong><span>{programme.source}</span></div><Pill tone={programme.blocked ? "amber" : "green"}>{programme.reviewState}</Pill></button>)}</main><aside className="surface programme-inspector"><span className="eyebrow">Selected programme</span><h2>{selected.name}</h2><p>{selected.nextAction}</p><dl><div><dt>Platform</dt><dd>{selected.platform}</dd></div><div><dt>Source state</dt><dd>{selected.sourceState}</dd></div><div><dt>Review state</dt><dd>{selected.reviewState}</dd></div><div><dt>Local case</dt><dd>{selected.caseState}</dd></div><div><dt>Network access</dt><dd>Unavailable</dd></div></dl><div className="evidence-limit"><ShieldCheck /><p>This panel teaches programme analysis and can shape a synthetic case. It cannot contact, scan, or test any programme asset.</p></div></aside></div>
+      <header className="page-heading"><div><span className="eyebrow">Research · Authority first</span><h1>Programme scope library</h1><p>Compiled from sources saved on this machine. Registering a programme grants no authority to test it.</p></div><Pill tone="amber">{programmes.counts.registered} registered · {programmes.counts.needingAttention} need you</Pill></header>
+      <div className="programme-layout">
+        <main className="surface programme-list">
+          <div className="section-heading"><div><span className="eyebrow">Your registry</span><h2>Registered programmes</h2></div></div>
+          {entries.map((programme) => (
+            <button key={programme.id} className={selected?.id === programme.id ? "is-selected" : ""} onClick={() => setSelectedId(programme.id)}>
+              <Target />
+              <div><small>version {programme.version}</small><strong>{programme.id}</strong><span>{programme.humanReviewed ? "reviewed by a person" : "no human review recorded"}</span></div>
+              <Pill tone={programme.contractStatus === "blocked" ? "amber" : programme.humanReviewed ? "green" : "neutral"}>{programme.contractStatus}</Pill>
+            </button>
+          ))}
+        </main>
+        <aside className="surface programme-inspector">
+          <span className="eyebrow">What to do next</span>
+          <h2>{next.step}</h2>
+          <p>{next.because}</p>
+          <dl>
+            <div><dt>Contract state</dt><dd>{selected.contractStatus}</dd></div>
+            <div><dt>Human review</dt><dd>{selected.humanReviewed ? "recorded" : "none recorded"}</dd></div>
+            <div><dt>Authority ceiling</dt><dd>{selected.maxAuthority || "not recorded"}</dd></div>
+            <div><dt>Contract version</dt><dd>{selected.version}</dd></div>
+          </dl>
+          <div className="evidence-limit"><ShieldCheck /><p>This panel reads compiled contracts. It cannot contact, scan, or test any programme asset, and the authority ceiling above is the programme's own — not something this screen can raise.</p></div>
+        </aside>
+      </div>
     </div>
   );
 }
-
 function HypothesesView({ navigate, activePack }) {
   const [selectedId, setSelectedId] = useState(activePack.lab.hypothesisId);
   const [queued, setQueued] = useState(false);
@@ -457,9 +495,12 @@ function ReportsView({ navigate, activePack }) {
 }
 
 function SettingsView({ connection, openConnection }) {
-  const [lessonHints, setLessonHints] = useState(true);
+  // Reads the same browser-local preference the hints themselves read. This
+  // toggle previously changed nothing but its own caption, so the promise that
+  // hints were "hidden for independent practice" was not true.
+  const [lessonHints, setLessonHints] = useState(() => readHintPreference());
   return (
-    <div className="content-page settings-page"><header className="page-heading"><div><span className="eyebrow">System · Local preferences</span><h1>Workspace controls and capability truth</h1><p>Adjust learner presentation without weakening posture, authority, evidence, privacy, or approval gates.</p></div><Pill tone="green">Telemetry off</Pill></header><div className="settings-grid"><section className="surface settings-card"><ShieldCheck /><div><span className="eyebrow">Operating posture</span><h2>LOCAL_FIXTURE</h2><p>Synthetic local learning only. Live-target action is not available from this application.</p></div><Pill tone="green">Enforced</Pill></section><section className="surface settings-card"><UserCircle /><div><span className="eyebrow">Storage and privacy</span><h2>Private local state</h2><p>No product analytics, cloud sync, or remote telemetry is connected.</p></div><Pill>Local</Pill></section><section className="surface settings-card"><Target /><div><span className="eyebrow">Passive pilot</span><h2>Unavailable</h2><p>Ubuntu full-service and exact-egress namespace proofs plus the same-profile DPAPI candidate pass. Reproducible image binding, approved recovery and ACLs, programme review, and human posture approval remain gates.</p></div><Pill tone="amber">Blocked</Pill></section></div><section className="surface preference-panel"><div><span className="eyebrow">Learning preferences</span><h2>Presentation controls</h2><p>These settings change guidance visibility only. They cannot award mastery or change security policy.</p></div><label><input type="checkbox" checked={lessonHints} onChange={(event) => setLessonHints(event.target.checked)} /><span><i><Check /></i><strong>Show lesson hints</strong><small>{lessonHints ? "Context prompts are visible in guided lessons." : "Hints are hidden for independent practice."}</small></span></label></section><section className="surface connection-card"><div><span className="eyebrow">Local application</span><h2>{connection.mode === "interactive" ? "Same-origin persistence connected" : connection.state === "connected" ? "Read model connected" : "Preview mode"}</h2><p>The numeric-loopback application is the only route to persisted learner commands. A separate preview remains read-only.</p></div><button className="button button--secondary" onClick={openConnection}>Inspect local connection</button></section></div>
+    <div className="content-page settings-page"><header className="page-heading"><div><span className="eyebrow">System · Local preferences</span><h1>Workspace controls and capability truth</h1><p>Adjust learner presentation without weakening posture, authority, evidence, privacy, or approval gates.</p></div><Pill tone="green">Telemetry off</Pill></header><div className="settings-grid"><section className="surface settings-card"><ShieldCheck /><div><span className="eyebrow">Operating posture</span><h2>LOCAL_FIXTURE</h2><p>Synthetic local learning only. Live-target action is not available from this application.</p></div><Pill tone="green">Enforced</Pill></section><section className="surface settings-card"><UserCircle /><div><span className="eyebrow">Storage and privacy</span><h2>Private local state</h2><p>No product analytics, cloud sync, or remote telemetry is connected.</p></div><Pill>Local</Pill></section><section className="surface settings-card"><Target /><div><span className="eyebrow">Passive pilot</span><h2>Unavailable</h2><p>Ubuntu full-service and exact-egress namespace proofs plus the same-profile DPAPI candidate pass. Reproducible image binding, approved recovery and ACLs, programme review, and human posture approval remain gates.</p></div><Pill tone="amber">Blocked</Pill></section></div><section className="surface preference-panel"><div><span className="eyebrow">Learning preferences</span><h2>Presentation controls</h2><p>These settings change guidance visibility only. They cannot award mastery or change security policy.</p></div><label><input type="checkbox" checked={lessonHints} onChange={(event) => { const next = event.target.checked; setLessonHints(next); writeHintPreference(next); announceHintPreference(next); }} /><span><i><Check /></i><strong>Show lesson hints</strong><small>{lessonHints ? "Context prompts are visible in guided lessons." : "Hints are hidden for independent practice."}</small></span></label></section><section className="surface connection-card"><div><span className="eyebrow">Local application</span><h2>{connection.mode === "interactive" ? "Same-origin persistence connected" : connection.state === "connected" ? "Read model connected" : "Preview mode"}</h2><p>The numeric-loopback application is the only route to persisted learner commands. A separate preview remains read-only.</p></div><button className="button button--secondary" onClick={openConnection}>Inspect local connection</button></section></div>
   );
 }
 
@@ -569,7 +610,11 @@ function LibraryView({ navigate, activePack, selectPack }) {
 }
 
 function FooterBoundary() {
-  return <footer className="global-footer"><div><ShieldCheck /><span><strong>LOCAL_FIXTURE</strong><small>All activities are isolated and safe.</small></span></div><div><Target /><span><strong>No live targets</strong><small>Research-only environment.</small></span></div><div><UserCircle /><span><strong>Human approval required</strong><small>You control what happens next.</small></span></div><div><FileText /><span><strong>Apache-2.0</strong><small>Open source research preview.</small></span></div></footer>;
+  // Compact by design: these four are governance statements, so the labels
+  // stay at every width. Only the explanatory sentences collapse, and they
+  // remain in the DOM for assistive technology with the wording repeated in
+  // `title` so a pointer can still reach it.
+  return <footer className="global-footer"><div title="All activities are isolated and safe."><ShieldCheck /><span><strong>LOCAL_FIXTURE</strong><small>All activities are isolated and safe.</small></span></div><div title="Research-only environment."><Target /><span><strong>No live targets</strong><small>Research-only environment.</small></span></div><div title="You control what happens next."><UserCircle /><span><strong>Human approval required</strong><small>You control what happens next.</small></span></div><div title="Open source research preview."><FileText /><span><strong>Apache-2.0</strong><small>Open source research preview.</small></span></div></footer>;
 }
 
 function useMediaQuery(query) {
@@ -762,6 +807,146 @@ export function App() {
     }
   }
 
+  // Curating the shortlist. Each pins its write to the revision the panel was
+  // showing, so a change made elsewhere is refused rather than overwritten.
+  async function curateShortlist(kind, fields, expectedRevision, fallback) {
+    if (persistenceMode !== "interactive") {
+      setNotice("Connect the local application to change your shortlist.");
+      return;
+    }
+    try {
+      const { result } = await dispatch(createWorkbenchCommand({
+        kind,
+        fields,
+        expectedRevision,
+      }));
+      setNotice(result?.message || fallback);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : fallback);
+    }
+  }
+
+  // Only whether the guide is collapsed is remembered. Its progress is never
+  // stored: it is recomputed from what actually happened, so it cannot drift
+  // out of step with reality or be clicked past.
+  const [guideCollapsed, setGuideCollapsed] = useState(() => readCollapsed());
+  const toggleGuideCollapsed = useCallback((next) => {
+    setGuideCollapsed(Boolean(next));
+    writeCollapsed(Boolean(next));
+  }, []);
+
+  // Which lessons have been worked through in this browser. A practice record,
+  // never a claim about skill: mastery stays six separately assessed
+  // dimensions recorded by a person, and nothing here touches it.
+  const [completedLessons, setCompletedLessons] = useState(() => readProgress());
+  const markLessonComplete = useCallback((lessonId) => {
+    if (!lessonId) return;
+    setCompletedLessons((current) => {
+      if (current.includes(lessonId)) return current;
+      return writeProgress([...current, lessonId]);
+    });
+  }, []);
+
+  // Automatic refresh is off until asked for, and the preference is browser
+  // local: it changes what this tab does, never what is recorded.
+  const [autoRefresh, setAutoRefresh] = useState(() => {
+    try {
+      return window.localStorage?.getItem("greytheory.autoRefresh") === "on";
+    } catch { return false; }
+  });
+  const toggleAutoRefresh = useCallback((next) => {
+    setAutoRefresh(Boolean(next));
+    try {
+      window.localStorage?.setItem("greytheory.autoRefresh", next ? "on" : "off");
+    } catch { /* storage optional */ }
+  }, []);
+
+  // The only action in this application that sends a request from this machine.
+  // It is acknowledged explicitly for that reason, and it happens only when the
+  // operator presses the button that says so.
+  async function lookUpProgramme({ platform, handle }) {
+    if (persistenceMode !== "interactive") {
+      setNotice("Connect the local application before sending a request.");
+      return;
+    }
+    try {
+      const { result } = await dispatch(createWorkbenchCommand({
+        kind: "look_up_programme",
+        fields: { platform, handle },
+        humanAcknowledged: true,
+      }));
+      setNotice(result?.message || `${platform}:${handle} was read.`);
+    } catch (error) {
+      setNotice(
+        error instanceof Error ? error.message : `${platform}:${handle} could not be read.`,
+      );
+    }
+  }
+
+  // Sequential with a gap, never Promise.all. Six simultaneous requests to a
+  // bug bounty platform is the traffic pattern that gets a researcher's access
+  // restricted; one every few seconds is a person reading pages.
+  async function refreshAllProgrammes(plan) {
+    if (persistenceMode !== "interactive" || !plan?.targets?.length) return;
+    setNotice(`Refreshing ${plan.requests} programme${plan.requests === 1 ? "" : "s"}, one at a time.`);
+    for (const [index, row] of plan.targets.entries()) {
+      if (index > 0) {
+        await new Promise((resolve) => setTimeout(resolve, plan.spacingMs));
+      }
+      await lookUpProgramme({ platform: row.platform, handle: row.handle });
+    }
+  }
+
+  async function shortlistProgramme(programmeId) {
+    // A new entry has no revision to pin; the store refuses a duplicate itself.
+    await curateShortlist(
+      "shortlist_programme",
+      { programme_id: programmeId },
+      null,
+      `${programmeId} could not be shortlisted.`,
+    );
+  }
+
+  async function archiveProgramme({ programmeId, revision }) {
+    await curateShortlist(
+      "archive_programme",
+      { programme_id: programmeId },
+      revision,
+      `${programmeId} could not be set aside.`,
+    );
+  }
+
+  async function restoreProgramme({ programmeId, revision }) {
+    await curateShortlist(
+      "restore_programme",
+      { programme_id: programmeId },
+      revision,
+      `${programmeId} could not be restored.`,
+    );
+  }
+
+  async function recordProgrammeReview({ programmeId, reviewer }) {
+    if (persistenceMode !== "interactive") {
+      setNotice("Connect the local application to record a review. A review that is not persisted is not a review.");
+      return;
+    }
+    try {
+      const { result } = await dispatch(createWorkbenchCommand({
+        kind: "review_programme",
+        fields: { programme_id: programmeId, reviewer },
+        // Reviewing states that a person read a clean compile. It is a claim
+        // about having read something, not permission to act on it, so it asks
+        // for no authority and leaves the programme's own ceiling untouched.
+        requestedAuthority: "NONE",
+        humanAcknowledged: true,
+      }));
+      // The server says what changed and what stayed capped; prefer its words.
+      setNotice(result?.message || `${programmeId} is recorded as reviewed by ${reviewer}.`);
+    } catch (error) {
+      setNotice(error instanceof Error ? error.message : "The review could not be recorded.");
+    }
+  }
+
   async function captureProof() {
     if (persistenceMode !== "interactive") { setNotice("Preview evidence captured for this browser session only."); return true; }
     try {
@@ -807,11 +992,33 @@ export function App() {
     }
   }
 
+  // One overdue programme per tick, and only while the tab is actually being
+  // looked at: a window left open overnight must not sit there issuing
+  // requests nobody is reading. The clamp inside nextDue means a short tick
+  // cannot produce a short interval.
+  // Read through a ref rather than closing over `directory`: that value changes
+  // on every snapshot, and depending on it would tear down and recreate the
+  // interval after each completed lookup, restarting the tick every time.
+  const lookupsRef = useRef([]);
+  lookupsRef.current = directory?.lookups || [];
+
+  useEffect(() => {
+    if (!autoRefresh || persistenceMode !== "interactive") return undefined;
+    const timer = setInterval(() => {
+      // A window left open overnight must not sit there issuing requests
+      // nobody is reading.
+      if (document.hidden) return;
+      const due = nextDue(boardRows(lookupsRef.current), Date.now(), DEFAULT_INTERVAL_MS);
+      if (due) lookUpProgramme({ platform: due.platform, handle: due.handle });
+    }, 60000);
+    return () => clearInterval(timer);
+  }, [autoRefresh, persistenceMode]);
+
   const views = {
     mission: <MissionControl navigate={navigate} startMission={startMission} journey={journey} persistenceMode={persistenceMode} activePack={activePack} selectPack={selectPack} />,
-    learn: <LearnView openLab={openLab} journey={journey} activePack={activePack} />,
+    learn: <CurriculumView completed={completedLessons} onOpenLesson={openLesson} onOpenLab={openLab} />,
     labs: <LabView navigate={navigate} labState={labState} setLabState={setLabState} onRunFixture={runFixture} onCaptureProof={captureProof} onSaveReflection={saveReflection} persistenceMode={persistenceMode} activePack={activePack} />,
-    programmes: <ProgrammesView />,
+    programmes: <ProgrammesView programmes={registeredProgrammes} />,
     cases: <CasesView navigate={navigate} labState={labState} activePack={activePack} />,
     hypotheses: <HypothesesView navigate={navigate} activePack={activePack} />,
     intelligence: <IntelligenceView />,
@@ -825,7 +1032,7 @@ export function App() {
   const view = views[active];
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-rail={railCollapsed ? "collapsed" : "expanded"}>
       <a className="skip-link" href="#workspace-main">Skip to workspace</a>
       <header className="topbar">
         <button ref={mobileMenuRef} className="mobile-menu icon-button" onClick={() => setMobileNav(true)} aria-label="Open navigation" aria-expanded={mobileNav} aria-controls="primary-sidebar"><List /></button>
@@ -837,11 +1044,26 @@ export function App() {
       </header>
       <aside ref={mobileNavRef} id="primary-sidebar" className={`sidebar ${mobileNav ? "is-open" : ""}`} inert={isMobile && !mobileNav} aria-hidden={isMobile && !mobileNav ? "true" : undefined} role={isMobile && mobileNav ? "dialog" : undefined} aria-modal={isMobile && mobileNav ? "true" : undefined} aria-label={isMobile && mobileNav ? "Navigation drawer" : undefined}>
         <div className="sidebar-mobile"><Brand /><button ref={mobileNavCloseRef} className="icon-button" onClick={() => setMobileNav(false)} aria-label="Close navigation"><X /></button></div>
+        <button type="button" className="rail-toggle" onClick={toggleRail} aria-expanded={!railCollapsed} aria-controls="primary-sidebar" aria-label={railCollapsed ? "Expand the navigation rail" : "Collapse the navigation rail"}><CaretDown /><span>Collapse</span></button>
         <nav aria-label="Primary navigation">{groups.map((group) => <div className="nav-group" key={group}><span>{group}</span>{NAV_ITEMS.filter((item) => item.group === group).map(({ id, label, icon: Icon, badge }) => <button key={id} aria-label={label} title={label} aria-current={active === id ? "page" : undefined} className={active === id ? "is-active" : ""} onClick={() => navigate(id)}><Icon /><span>{label}</span>{badge && <b>{badge}</b>}</button>)}</div>)}</nav>
-        <div className="sidebar-profile"><div>GT</div><span><strong>Grey Researcher</strong><small>Learner · local</small></span><CaretDown /></div>
+        <button type="button" className="sidebar-profile" onClick={() => setModal("progress")} aria-label="Open your local progress record"><span className="sidebar-profile__avatar">GT</span><span className="sidebar-profile__identity"><strong>Grey Researcher</strong><small>Learner · local</small></span><CaretDown /></button>
       </aside>
       {mobileNav && <button className="nav-scrim" onClick={() => setMobileNav(false)} tabIndex="-1" aria-hidden="true" aria-label="Close navigation" />}
       <main ref={workspaceRef} id="workspace-main" className="workspace" tabIndex="-1" aria-label={currentNav.label}>{view}</main>
+      {/* Above every panel on every view: the steps span the whole product, so
+          anchoring the guide to one page would lose your place the moment you
+          went to do what a step told you to. */}
+      <OnboardingOverlay
+        connected={persistenceMode === "interactive"}
+        programmes={registeredProgrammes}
+        completedLessons={completedLessons}
+        shortlist={shortlist}
+        directory={directory}
+        collapsed={guideCollapsed}
+        onToggleCollapsed={toggleGuideCollapsed}
+        onConnect={() => setModal("connection")}
+        navigate={navigate}
+      />
       <FooterBoundary />
       {notice && <div className="toast" role="status" aria-live="polite"><CheckCircle /><span>{notice}</span><button className="icon-button" onClick={() => setNotice("")} aria-label="Dismiss notification"><X /></button></div>}
       {modal === "connection" && <Modal title="Connect the local workbench" eyebrow="Numeric loopback only" onClose={() => setModal(null)} actions={<><button className="button button--secondary" onClick={() => setModal(null)}>Cancel</button><button className="button button--primary" type="submit" form="connect-form" disabled={connection.state === "connecting"}>{connection.state === "connecting" ? "Connecting…" : "Connect securely"}</button></>}><form id="connect-form" onSubmit={connect} className="connect-form"><p>The same-origin Windows application can persist bounded learner commands. A separate preview origin remains read-only. Neither mode can contact a live target.</p><label><span>Local API URL</span><input value={apiUrl} onChange={(e) => setApiUrl(e.target.value)} autoComplete="off" /></label><label><span>One-process session token</span><input type="password" value={apiToken} onChange={(e) => setApiToken(e.target.value)} autoComplete="off" placeholder="Paste token from local launch" /></label>{connection.error && <div className="form-error"><Warning />{connection.error}</div>}<div className="modal-boundary"><ShieldCheck /><p>Commands are accepted only from the API's exact origin. The token stays in memory and is cleared from this form after connection.</p></div></form></Modal>}

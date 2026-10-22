@@ -1,0 +1,210 @@
+/* The curriculum path. Co-located with its view rather than appended to the
+   global sheet. */
+
+.curriculum-next {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  border-left: 3px solid var(--amber);
+}
+
+.curriculum-next h2 {
+  margin: 4px 0 0;
+  font-size: 1.35rem;
+}
+
+.curriculum-next__line {
+  margin: 8px 0 12px;
+  max-width: 62ch;
+  color: #9fb0c2;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.curriculum-tracks {
+  display: grid;
+  gap: 18px;
+}
+
+.curriculum-track__progress {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 150px;
+  height: 6px;
+  border-radius: 999px;
+  background: #0b1a27;
+}
+
+.curriculum-track__progress > span {
+  position: absolute;
+  left: 0;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--amber);
+}
+
+.curriculum-track__progress small {
+  position: absolute;
+  right: -34px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+  color: #7d90a4;
+}
+
+.curriculum-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  counter-reset: step;
+}
+
+.curriculum-steps li > button {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #1d3346;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.curriculum-steps li > button:hover { background: #0a1826; border-color: #2b4a63; }
+.curriculum-steps li > button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+
+/* The current step is the only one that draws attention. Everything else is
+   quiet, so there is exactly one obvious place to start. */
+.curriculum-steps li.is-current > button {
+  border-color: var(--amber);
+  background: #1a1300;
+}
+
+.curriculum-steps li.is-done > button { border-color: #1b4736; }
+
+.curriculum-steps__mark {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #2b4a63;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.76rem;
+  color: #9fb0c2;
+}
+
+.curriculum-steps li.is-done .curriculum-steps__mark {
+  border-color: #43c98b;
+  color: #43c98b;
+}
+
+.curriculum-steps li.is-current .curriculum-steps__mark {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.curriculum-steps li.is-later .curriculum-steps__mark svg { width: 13px; }
+
+.curriculum-steps__body { min-width: 0; }
+
+.curriculum-steps__body strong { font-size: 0.92rem; }
+
+.curriculum-steps__body small {
+  display: block;
+  margin-top: 2px;
+  color: #7d90a4;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7rem;
+}
+
+.curriculum-steps__body p {
+  margin: 6px 0 0;
+  color: #9fb0c2;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.curriculum-steps__state {
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #7d90a4;
+  border: 1px solid #2b4a63;
+}
+
+.curriculum-steps__state.is-done { color: #43c98b; border-color: #1b4736; }
+.curriculum-steps__state.is-current { color: #1d1600; background: var(--amber); border-color: var(--amber); }
+
+/* Deliberately not a disabled look: reading ahead is learning, not cheating. */
+.curriculum-steps__state.is-later { opacity: 0.75; }
+
+.curriculum-practise {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.curriculum-practise > div { flex: 1; min-width: 260px; }
+
+.curriculum-practise h2 { margin: 4px 0 0; font-size: 1.05rem; }
+
+.curriculum-practise p {
+  margin: 8px 0 0;
+  max-width: 62ch;
+  color: #9fb0c2;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.curriculum-practise .button:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* The reason the gate exists, kept beside the gate. */
+.curriculum-practise > small {
+  flex-basis: 100%;
+  color: #7d90a4;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.curriculum-boundary {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.curriculum-boundary svg { width: 20px; flex-shrink: 0; color: #7d90a4; }
+
+.curriculum-boundary p {
+  margin: 0;
+  color: #7d90a4;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 760px) {
+  .curriculum-steps li > button {
+    grid-template-columns: 30px minmax(0, 1fr);
+    row-gap: 8px;
+  }
+
+  .curriculum-steps__state { grid-column: 2; justify-self: start; }
+}
